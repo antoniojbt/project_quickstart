@@ -28,8 +28,9 @@
 # Input
 # Output
 
-# Use docopt, see file here and
+# Use docopt, see
 #https://github.com/AntonioJBT/various.dir/blob/master/Notes-common-cmds/docopt_argument_parser.txt
+#https://github.com/docopt/docopt.R
 
 #############################################
 
