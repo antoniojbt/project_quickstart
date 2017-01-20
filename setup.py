@@ -8,10 +8,10 @@
 
 from setuptools import setup
 
-setup(name='pipeline_genotype_QC',
+setup(name='project_quickstart',
       version='0.1',
-      description='Genotype QC pipeline for thousands of samples and markers follows UKB protocol',
-      url='https://github.com/EpiCompBio/genotype_tools',
+      description='',
+      url='',
       author='Antonio J Berlanga-Taylor',
       author_email='a.berlanga at imperial.ac.uk',
       license='GPL-3.0',
