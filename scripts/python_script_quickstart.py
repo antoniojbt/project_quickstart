@@ -25,6 +25,22 @@ To use type::
 
     xxx.py --help
 
+
+docopt
+======
+https://github.com/docopt/docopt
+https://github.com/docopt/docopt/blob/master/examples/options_example.py
+https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
+
+Usage: my_program.py [-hso FILE] [--quiet | --verbose] [INPUT ...]
+
+-h --help    show this
+-s --sorted  sorted output
+-o FILE      specify output file [default: ./test.txt]
+--quiet      print less text
+--verbose    print more text
+
+
 Options
 =======
 
@@ -38,6 +54,7 @@ import os
 import sys
 import glob
 import imp
+from docopt import docopt
 
 import pandas as pd
 import numpy as np
@@ -75,5 +92,7 @@ def main(argv=None):
     del sys.argv[0]
     module.main(sys.argv)
 
-if __name__ == "__main__":
-sys.exit(main())
+if __name__ == '__main__':
+    arguments = docopt(__doc__, version='xxx 0.1')
+    print(arguments)
+    sys.exit(main())
