@@ -5,11 +5,14 @@
 project_quickstart
 ##################
 
-Various scripts and tools for 
+In progress...
 
-Check Ruffus:
+Various scripts and tools
+
+See:
+Ruffus
 http://www.ruffus.org.uk/
 
-and CGAT:
+CGAT
 http://www.cgat.org/cgat/Tools/the-cgat-code-collection
 
