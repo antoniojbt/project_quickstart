@@ -14,6 +14,9 @@ Current state:
 
 - There is a pipeline in progress in the src folder with a dummy report in the report folder (based on CGAT's quickstart pipeline).
 
+- B with T and E
+
+- Wrap pipe quickstart, add R quickstart, report quickstart, standard folder structure, instructions for dependencies, CLI runs, etc
 
 Future work:
 ############
