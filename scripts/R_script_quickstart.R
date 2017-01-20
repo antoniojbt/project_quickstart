@@ -68,11 +68,12 @@ R_session_saved_image
 args <- commandArgs(trailingOnly = TRUE)
 #############################################
 
-#############################################
-## Load libraries:
-packages <-c('MatrixEQTL', 'data.table')
-lapply(packages, require, character.only = TRUE)
-#############################################
+#############################
+# Import libraries:
+library(ggplot2)
+library(data.table)
+library(gridExtra)
+#############################
 
 
 #############################################
