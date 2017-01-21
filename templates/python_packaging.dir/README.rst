@@ -1,18 +1,11 @@
+.. copy across your travis "build..." logo so that it appears in your Github page
+
 .. .. image:: https://travis-ci.org
     :target: https://travis-ci.org/
-    
-##################
-project_quickstart
-##################
 
-In progress...
 
-Various scripts and tools
+#############
+Project Noble
+#############
 
-See:
-Ruffus
-http://www.ruffus.org.uk/
-
-CGAT
-http://www.cgat.org/cgat/Tools/the-cgat-code-collection
-
+Various scripts and tools to solve the world's problems
