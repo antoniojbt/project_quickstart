@@ -9,32 +9,59 @@ restructuredText tutorials/info:
 
   - http://www.sphinx-doc.org/en/1.5.1/rest.html
 
-Generate the documentation with sphinx: 
-(empty line and **3 spaces** of indentation)::
+Generate the documentation with sphinx::
 
    pip install sphinx
 
-A sphinx template report can be generated with:
+A sphinx template report can be generated with::
 
    mkdir my_report_docs
 
    cd my_report_docs
-   
+
    sphinx-quickstart
 
-After adding content, you can generate html, pdf, etc. with:
+After adding content, you can generate html, pdf, etc. with::
 
    make html
 
-Cross-file links: Sections can be labelled by labels in format ``.. _LABELNAME:``
+The rendered file will be found in the ``_build`` directory.
 
-They can be referenced like this: ``:ref:`LABELNAME```: 
+Include another rst file::
 
-.. .. _the-awesome-section:
-..   This Section is Awesome
-..   -----------------------
-..   This text is awesomely recursive: :ref:`the-awesome-section`
-   
+
+Include an image::
+
+``.. image:: images/ball1.gif``
+
+Or::
+
+.. image:: images/biohazard.png
+   :height: 100
+   :width: 200
+   :scale: 50
+   :alt: alternate text
+
+::
+
+See image_ directive full markup.
+
+.. _image: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
+
+Include a simple csv table::
+
+.. csv-table:: a title
+   :header: "name", "firstname", "age"
+   :widths: 20, 20, 10
+
+   "Smith", "John", 40
+   "Smith", "John, Junior", 20
+
+See csv-table_ directive for example.
+
+.. _csv-table: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#the-csv-table-directive
+
+
 #############
 Project title
 #############
