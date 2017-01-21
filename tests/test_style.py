@@ -29,7 +29,6 @@ from nose.tools import ok_
 EXPRESSIONS = (
     ('tests', 'tests/*.py'),
     ('scripts', 'scripts/*.py'),
-    ('src', 'src/*.py')
     )
 
 # Codes to ignore in the pep8 BaseReport
