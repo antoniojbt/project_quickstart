@@ -23,18 +23,15 @@
 ## External tools
 ## ---------------
 
-plink:
-    executable: plink
-    version: --version
-    regex: '^plink v(\S+)'
+#plink:
+#    executable: plink
+#    version: --version
+#    regex: '^plink v(\S+)'
 
 ## R Packages
-    
-rcolorbrewer:
-    rpackage: RColorBrewer
 
 ggplot2:
     rpackage: ggplot2
 
-reshape:
-    rpackage: reshape
+data.table:
+    rpackage: data.table
