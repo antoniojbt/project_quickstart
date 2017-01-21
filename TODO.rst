@@ -34,7 +34,7 @@ TO DO main tasks:
 	+ results
 	+ manuscripts
 	
-
+- Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, ?)
 - Check travis setup, is pep8 running? flake8 gives errors and log at travis
 - Update external dependencies file
 - Keep track of installations for Docker, David has an initial dockerfile
