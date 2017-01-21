@@ -27,10 +27,9 @@ After adding content, you can generate html, pdf, etc. with::
 
 The rendered file will be found in the ``_build`` directory.
 
-
 Include other rst files::
 
-.. toctree::
+``` .. toctree::
     :maxdepth: 2
     :numbered:
     :titlesonly:
@@ -40,8 +39,7 @@ Include other rst files::
     intro.rst
     chapter1.rst
     chapter2.rst
-
-::
+```
 
 See the toctree_ directive for full info.
 
