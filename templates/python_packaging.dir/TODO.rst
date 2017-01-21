@@ -2,21 +2,16 @@
 Plan 
 ################################
 
-:Date: 20 January 2017
-:Author: Antonio B 
+:Date: 
+:Author: 
 
 Current state:
 ##############
 
-- The plan is to create xxxx that can be automated using Ruffus and CGAT tools. 
+-
+-
+-
 
-- CGAT, ruffus, drmaa 
-
-- There is a pipeline in progress in the src folder with a dummy report in the report folder (based on CGAT's quickstart pipeline).
-
-- B with T and E
-
-- Wrap pipe quickstart, add R quickstart, report quickstart, standard folder structure, instructions for dependencies, CLI runs, etc
 
 Future work:
 ############
@@ -25,15 +20,20 @@ Future work:
 TO DO main tasks:
 #################
 
-- Check travis setup, is pep8 running? flake8 gives errors and log at travis
-- Update external dependencies file
-- Keep track of installations for Docker, David has an initial dockerfile
+- What's the question?!
+- Write project pipeline steps, scripts needed, pseudocode and sketch
+- Write scripts, write it up as a package
+- Upload to GitHub account
+- Check Travis setup: pep8, flake8, create unit tests
+- Update python and external dependencies file
+- Keep track of installations for Docker instructions
+
 
 PIPELINE PLAN
 #############
 
 .. todo::
-	TO DO: scan/ppt pipeline workflow plus notes
+	TO DO: 
 
 -----
 
@@ -44,4 +44,6 @@ The output should be input for:
 References
 ##########
 
+
 Also see:
+
