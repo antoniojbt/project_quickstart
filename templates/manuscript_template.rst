@@ -1,3 +1,40 @@
+
+restructuredText tutorials/info:
+
+  - http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html
+
+  - http://docutils.sourceforge.net/docs/user/rst/quickstart.html
+
+  - https://github.com/kiith-sa/RestructuredText-tutorial
+
+  - http://www.sphinx-doc.org/en/1.5.1/rest.html
+
+Generate the documentation with sphinx: 
+(empty line and **3 spaces** of indentation)::
+
+   pip install sphinx
+
+A sphinx template report can be generated with:
+
+   mkdir my_report_docs
+
+   cd my_report_docs
+   
+   sphinx-quickstart
+
+After adding content, you can generate html, pdf, etc. with:
+
+   make html
+
+Cross-file links: Sections can be labelled by labels in format ``.. _LABELNAME:``
+
+They can be referenced like this: ``:ref:`LABELNAME```: 
+
+.. .. _the-awesome-section:
+..   This Section is Awesome
+..   -----------------------
+..   This text is awesomely recursive: :ref:`the-awesome-section`
+   
 #############
 Project title
 #############
@@ -225,4 +262,10 @@ Supplementary Table 3:
 References
 ##########
 
+Here is a citation reference: [CIT2002]_.
+    .. [CIT2002] This is the citation.
+
+.. At the end of the file add:
+
+  
 
