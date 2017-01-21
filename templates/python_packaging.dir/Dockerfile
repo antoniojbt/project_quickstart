@@ -8,7 +8,7 @@
 # Base image is from Ubuntu 16.04 aka 'Xenial Xerus'
 # Provide Python 2.7.12
 ####################################################
-# TO DO: will need to update to py3.5
+# TO DO: update to py3.5
 
 FROM ubuntu:16.04
 
@@ -16,12 +16,6 @@ FROM ubuntu:16.04
 # Contact:
 ##########
 MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
-
-# See David M.'s ITMAP example and cgat Dockerfiles:
-# https://github.com/CGATOxford/cgat/blob/master/Dockerfile
-# CGATPipelines doesn't have a Dockerfile (?), check:
-# https://github.com/CGATOxford/CGATPipelines/blob/master/INSTALL
-
 
 #########################
 # Update/install packages
@@ -61,7 +55,8 @@ RUN wget --no-check-certificate https://raw.github.com/CGATOxford/cgat/master/in
     bash install-CGAT-tools.sh --cgat-devel --zip --location /shared
 
 # TO DO: install CGATPipelines
-
+# https://github.com/CGATOxford/cgat/blob/master/Dockerfile
+# https://github.com/CGATOxford/CGATPipelines/blob/master/INSTALL
 
 
 #########################
@@ -82,15 +77,15 @@ RUN pip install ruffus --upgrade
 
 # install PLINK:
 
-ENV PLINK_VERSION       1.9
-ENV PLINK_NO		  plink170113
-ENV PLINK_HOME          /usr/local/plink
+#ENV PLINK_VERSION       1.9
+#ENV PLINK_NO		  plink170113
+#ENV PLINK_HOME          /usr/local/plink
 
-RUN wget https://www.cog-genomics.org/static/bin/$PLINK_NO/plink_linux_x86_64.zip && \
-    unzip plink_linux_x86_64.zip -d /usr/local/ && \
-    rm plink_linux_x86_64.zip && \
-    cd /usr/local/bin && \
-    ln -s $PLINK_HOME plink
+#RUN wget https://www.cog-genomics.org/static/bin/$PLINK_NO/plink_linux_x86_64.zip && \
+#    unzip plink_linux_x86_64.zip -d /usr/local/ && \
+#    rm plink_linux_x86_64.zip && \
+#    cd /usr/local/bin && \
+#    ln -s $PLINK_HOME plink
 
 #############################
 # Install R (currently 3.3.2)
@@ -113,41 +108,36 @@ RUN 	echo '#!/usr/bin/env r' > /usr/local/bin/install.r && \
 
 RUN Rscript /usr/local/bin/install.r \
 	ggplot2 \
-	plyr \
-	qqman \
-	data.table \
-	geneplotter \
-	SNPRelate
+	data.table
 
-# TO DO: install 
+###############
+# Housekeeping:
+###############
 
+# This from David M.'s ITMAT Dockerfile example:
+#ENV USER datasci
+#ENV HOME /home/$USER
 
-#########################################################
-# housekeeping; may not be necessary:
-#########################################################
+#RUN useradd -ms /bin/bash $USER && \
+#	echo "$USER:DaTaSc1" | chpasswd && \
+#	adduser $USER sudo
 
-ENV USER datasci
-ENV HOME /home/$USER
+########################
+# Set the default action
+########################
 
-RUN useradd -ms /bin/bash $USER && \
-	echo "$USER:DaTaSc1" | chpasswd && \
-	adduser $USER sudo
-
-#########################################################
-# Set the default action to  
-#########################################################
-
-# TO DO: Set environment variables (this is from cgat tools):
+# Examples:
+# Set environment variables (this is from cgat tools):
 # ENV PATH=/shared/conda-install/envs/cgat-devel/bin:$PATH
 
-# TO DO: set up entrypoint for specific pipeline
+# Set up entrypoint:
 #ENTRYPOINT ["plink"]
 #CMD ["--help"]
 
-# Add an entry point to the cgat command (?):
+# Add an entry point to the cgat command:
 # ENTRYPOINT ["/shared/conda-install/envs/cgat-devel/bin/cgat"]
 
-# TO DO: Create a shared folder between docker container and host
+# Create a shared folder between docker container and host
 #VOLUME ["/shared/data"]
 
 
