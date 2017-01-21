@@ -25,16 +25,6 @@ Future work:
 TO DO main tasks:
 #################
 
-- project_quickstart/scripts/project_quickstart.py basically just copies the contents of project_quickstart/templates/python_packaging.dir/
-- project_quickstart/scripts/script_quickstart.py copies project_quickstart/templates/python_script_template.py
-- project_quickstart/scripts/R_script_quickstart.R copies project_quickstart/templates/R_script_template.R
-- project_quickstart/scripts/folder_structure.py creates a folder structure for a data science project:
-	+ data
-	+ code
-	+ results
-	+ manuscripts
-	
-
 - Check travis setup, is pep8 running? flake8 gives errors and log at travis
 - Update external dependencies file
 - Keep track of installations for Docker, David has an initial dockerfile
