@@ -1,5 +1,5 @@
-.. .. image:: https://travis-ci.org
-    :target: https://travis-ci.org/
+.. image:: https://travis-ci.org/AntonioJBT/project_quickstart.svg?branch=master
+    :target: https://travis-ci.org/AntonioJBT/project_quickstart
     
 ##################
 project_quickstart
