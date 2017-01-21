@@ -6,9 +6,11 @@
 
 # TO DO: to add tests see https://python-packaging.readthedocs.io/en/latest/testing.html
 
+# TO DO: pass variable names for project and author when executing project_quickstart.py
+
 from setuptools import setup
 
-setup(name='project_quickstart',
+setup(name='iExplore_iAnswer_super_Project',
       version='0.1',
       description='',
       url='',
