@@ -29,37 +29,42 @@ The rendered file will be found in the ``_build`` directory.
 
 Include other rst files::
 
-``` .. toctree::
-    :maxdepth: 2
-    :numbered:
-    :titlesonly:
-    :glob:
-    :hidden:
+  .. toctree::
+      :maxdepth: 2
+      :numbered:
+      :titlesonly:
+      :glob:
+      :hidden:
 
-    intro.rst
-    chapter1.rst
-    chapter2.rst
-```
+      intro.rst
+      chapter1.rst
+      chapter2.rst
 
 See the toctree_ directive for full info.
 
 .. _toctree: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#include-other-rst-files-with-the-toctree-directive
 
+
+It is also possible to include the literal contents of a file with::
+
+  .. literalinclude:: filename
+      :linenos:
+      :language: python
+      :lines: 1, 3-5
+      :start-after: 3
+      :end-before: 5
+
 Include an image::
 
-.. image:: images/ball1.gif
-
-::
+  .. image:: images/ball1.gif
 
 Or::
 
-.. image:: images/xxx.png
-   :height: 100
-   :width: 200
-   :scale: 50
-   :alt: alternate text
-
-::
+  .. image:: images/xxx.png
+     :height: 100
+    :width: 200
+    :scale: 50
+    :alt: alternate text
 
 See image_ directive full markup.
 
@@ -67,33 +72,27 @@ See image_ directive full markup.
 
 Or import a figure which can have a caption and whatever else you add::
 
-.. figure:: xxx.jpg
-    :width: 200px
-    :align: center
-    :height: 100px
-    :alt: alternate text
-    :figclass: align-center
-
-::
-
-    a caption would be written here as plain text. You can add more with eg::
-
+  .. figure:: xxx.jpg
+      :width: 200px
+      :align: center
+      :height: 100px
+      :alt: alternate text
+      :figclass: align-center
+      
+      a caption would be written here as plain text. You can add more with eg::
+  
     .. code-block:: python
 
         import image
 
-::
-
 Include a simple csv table::
 
-.. csv-table:: a title
-   :header: "name", "firstname", "age"
-   :widths: 20, 20, 10
-
-   "Smith", "John", 40
-   "Smith", "John, Junior", 20
-
-::
+  .. csv-table:: a title
+     :header: "name", "firstname", "age"
+     :widths: 20, 20, 10
+     
+     "Smith", "John", 40
+     "Smith", "John, Junior", 20
 
 See csv-table_ directive for example.
 
@@ -329,11 +328,10 @@ References
 
 References, e.g. [CIT2002]_ are defined at the bottom of the page as::
 
-.. [CIT2002] A citation
+  .. [CIT2002] A citation
 
 and called with::
 
-[CIT2002]_
+  [CIT2002]_
 
-::
 
