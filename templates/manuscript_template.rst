@@ -27,6 +27,7 @@ After adding content, you can generate html, pdf, etc. with::
 
 The rendered file will be found in the ``_build`` directory.
 
+
 Include another rst file::
 
 
@@ -36,7 +37,7 @@ Include an image::
 
 Or::
 
-.. image:: images/biohazard.png
+.. image:: images/xxx.png
    :height: 100
    :width: 200
    :scale: 50
@@ -48,6 +49,25 @@ See image_ directive full markup.
 
 .. _image: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
 
+Or import a figure which can have a caption and whatever else you add::
+
+.. figure:: xxx.jpg
+    :width: 200px
+    :align: center
+    :height: 100px
+    :alt: alternate text
+    :figclass: align-center
+
+    figure are like images but with a caption
+
+    and whatever else youwish to add
+
+    .. code-block:: python
+
+        import image
+
+::
+
 Include a simple csv table::
 
 .. csv-table:: a title
@@ -56,6 +76,8 @@ Include a simple csv table::
 
    "Smith", "John", 40
    "Smith", "John, Junior", 20
+
+::
 
 See csv-table_ directive for example.
 
@@ -289,10 +311,13 @@ Supplementary Table 3:
 References
 ##########
 
-Here is a citation reference: [CIT2002]_.
-    .. [CIT2002] This is the citation.
+References, e.g. [CIT2002]_ are defined at the bottom of the page as::
 
-.. At the end of the file add:
+.. [CIT2002] A citation
 
-  
+and called with::
+
+[CIT2002]_
+
+::
 
