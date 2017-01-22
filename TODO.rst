@@ -32,7 +32,9 @@ TO DO main tasks:
 	+ Python packaging files
 	+ Dockerfile
 	+ etc
-	
+	+ Zenodo?
+	+ conda?
+
 - project_quickstart/scripts/script_quickstart.py copies project_quickstart/templates/python_script_template.py
 - project_quickstart/scripts/R_script_quickstart.R copies project_quickstart/templates/R_script_template.R
 - project_quickstart/scripts/folder_structure.py creates a folder structure for a data science project:
@@ -41,13 +43,15 @@ TO DO main tasks:
 	+ results
 	+ manuscript
 	+ etc. these can be specified in the PARAMS.ini file
-	
-- Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, ?)
+
+- rst_report/manuscript.py: create skeleton file template for automatic reporting
+
+- Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, manuscript_template, ... )
+
 - Check travis setup, is pep8 running? flake8 gives errors and log at travis
 - Update external dependencies file
-- Keep track of installations for Docker, David has an initial dockerfile
+- Keep track of installations for Docker
 
-- rst_report.py: create skeleton file/folder/templates, etc for automatic reporting
 
 PIPELINE PLAN
 #############
