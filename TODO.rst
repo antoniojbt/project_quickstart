@@ -62,7 +62,7 @@ TO DO main tasks:
 - Check travis setup, is pep8 running? flake8 gives errors and log at travis
 - Update external dependencies file
 - Keep track of installations for Docker
-
+- Add a project checklist template (eg with comp bio best practice checklist, conda recipe, zenodo deposit, etc.)
 
 PIPELINE PLAN
 #############
