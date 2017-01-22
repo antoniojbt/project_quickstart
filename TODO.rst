@@ -32,8 +32,14 @@ TO DO main tasks:
 	+ Python packaging files
 	+ Dockerfile
 	+ etc
-	+ Zenodo?
-	+ conda?
+	+ Zenodo? See: 
+	+ conda? See: bioconda_, contributing a recipe_ and guidelines_.
+	
+	.. _bioconda: https://bioconda.github.io/index.html
+	
+	.. _recipe: https://bioconda.github.io/contribute-a-recipe.html
+	
+	.. _guidelines: https://bioconda.github.io/guidelines.html
 
 - project_quickstart/scripts/script_quickstart.py copies project_quickstart/templates/python_script_template.py
 - project_quickstart/scripts/R_script_quickstart.R copies project_quickstart/templates/R_script_template.R
