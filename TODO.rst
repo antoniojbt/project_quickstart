@@ -32,7 +32,12 @@ TO DO main tasks:
 	+ Python packaging files
 	+ Dockerfile
 	+ etc
-	+ Zenodo? See: 
+	+ Zenodo? See: zenodo_ github guide. It's easy: allow permissions and then with each tag release zenodo archives the repo and gives it a DOI. See also SSI blog_ on zenodo.
+	
+	.. _zenodo: https://guides.github.com/activities/citable-code/
+	
+	.. blog_: https://www.software.ac.uk/blog/2016-09-26-making-code-citable-zenodo-and-github
+	
 	+ conda? See: bioconda_, contributing a recipe_ and guidelines_.
 	
 	.. _bioconda: https://bioconda.github.io/index.html
