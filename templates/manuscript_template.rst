@@ -1,6 +1,6 @@
-See rst basics_ for webpages and tutorials.
+See rst-basics_ for webpages and tutorials.
 
-.. rst _basics:: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
+.. _rst-basics: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
 
 
 #############
