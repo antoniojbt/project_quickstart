@@ -1,4 +1,5 @@
 See rst basics_ for webpages and tutorials.
+
 .. rst _basics:: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
 
 
@@ -49,6 +50,7 @@ Include other rst files::
       chapter2.rst
 
 See the toctree_ directive for full info.
+
 .. _toctree: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#include-other-rst-files-with-the-toctree-directive
 
 
@@ -152,6 +154,7 @@ Or::
     :alt: alternate text
 
 See image_ directive full markup.
+
 .. _image: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
 
 Or import a figure which can have a caption and whatever else you add::
@@ -179,6 +182,7 @@ Include a simple csv table::
      "Smith", "John, Junior", 20
 
 See csv-table_ directive for example.
+
 .. _csv-table: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#the-csv-table-directive
 
 Result 2
