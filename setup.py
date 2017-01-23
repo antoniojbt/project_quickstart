@@ -6,6 +6,8 @@
 
 # TO DO: to add tests see https://python-packaging.readthedocs.io/en/latest/testing.html
 
+# See also this example: https://github.com/pypa/sampleproject/blob/master/setup.py
+
 from setuptools import setup
 
 setup(name='project_quickstart',
