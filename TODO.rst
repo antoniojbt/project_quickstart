@@ -55,7 +55,10 @@ TO DO main tasks:
 	+ manuscript
 	+ etc. these can be specified in the PARAMS.ini file
 
-- rst_report/manuscript.py: create skeleton file template for automatic reporting
+- rst_report/manuscript.py: create skeleton file template for automatic reporting. See some notes in cgat reports_.
+
+.. _reports: https://www.cgat.org/downloads/public/cgatpipelines/documentation/PipelineReports.html#writingreports
+
 
 - Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, manuscript_template, ... )
 
