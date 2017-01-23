@@ -59,12 +59,17 @@ TO DO main tasks:
 
 - Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, manuscript_template, ... )
 
-- Check travis setup, is pep8 running? flake8 gives errors and log at travis
+- Testing:
+	+ See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
+	+ Check travis setup, is pep8 running? flake8 gives errors and log at travis
+
 - Update external dependencies file
 - Keep track of installations for Docker
 - Add a project checklist template (eg with comp bio best practice checklist, conda recipe, zenodo deposit, etc.)
 
 - Add python docs with rst/sphinx and doctests, see sphinx_, quickstart_ and doctests_.
+- See this tutorial for Sphinx and general python packaging/workflow 
+	https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
 
 .. _sphinx: http://www.sphinx-doc.org/en/stable/
 
