@@ -59,6 +59,16 @@ TO DO main tasks:
 
 - Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, manuscript_template, ... )
 
+- Project workflow! e.g.::
+	1. run this package to setup folders, github repo structure, code testing, py package files, etc.
+	2. code and test code with tox, travis and py.test for example
+	3. analyse, re-analyse
+	4. create new scripts, new pipelines, test them
+	5. document code with sphinx autodoc
+	6. generate internal report with plots, text, etc.
+	7. freeze with release tag + zenodo archiving
+	8. Repeat cycle
+
 - Testing:
 	+ See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
 	+ Check travis setup, is pep8 running? flake8 gives errors and log at travis
@@ -76,6 +86,11 @@ TO DO main tasks:
 .. _quickstart: http://thomas-cokelaer.info/tutorials/sphinx/quickstart.html
 
 .. _doctests: http://thomas-cokelaer.info/tutorials/sphinx/doctest.html
+
+- Check PyPi as a repository for pip install and conda recipe. Check python's cheesecake for sanity checking before
+uploading to PyPi
+
+- Use releases as code freezes
 
 
 PIPELINE PLAN
