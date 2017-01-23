@@ -64,6 +64,15 @@ TO DO main tasks:
 - Keep track of installations for Docker
 - Add a project checklist template (eg with comp bio best practice checklist, conda recipe, zenodo deposit, etc.)
 
+- Add python docs with rst/sphinx and doctests, see sphinx_, quickstart_ and doctests_.
+
+.. _sphinx: http://www.sphinx-doc.org/en/stable/
+
+.. _quickstart: http://thomas-cokelaer.info/tutorials/sphinx/quickstart.html
+
+.. _doctests: http://thomas-cokelaer.info/tutorials/sphinx/doctest.html
+
+
 PIPELINE PLAN
 #############
 
