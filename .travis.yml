@@ -33,8 +33,8 @@ language: python
 ################
 # Install dependencies:
 install: 
-    - "pip install -r requirements.txt --use-mirrors"
-    - "pip install coverage"
+    - "pip install -r requirements.txt" # --use-mirrors errors in Py3.5
+    - "pip install coverage" # coveralls.io continuously monitors test case coverage
     - "pip install coveralls"
 
 ################
