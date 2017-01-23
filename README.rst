@@ -1,6 +1,10 @@
 .. image:: https://travis-ci.org/AntonioJBT/project_quickstart.svg?branch=master
     :target: https://travis-ci.org/AntonioJBT/project_quickstart
-    
+
+.. image:: https://readthedocs.org/projects/project-quickstart/badge/?version=latest
+    :target: http://project-quickstart.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
 ##################
 project_quickstart
 ##################
