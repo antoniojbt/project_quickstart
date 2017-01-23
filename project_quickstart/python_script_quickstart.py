@@ -222,4 +222,4 @@ The source code for the pipeline is in %(destination_dir)s/src.
 ##############################
 
 if __name__ == "__main__":
-sys.exit(main())
+   sys.exit(main())
