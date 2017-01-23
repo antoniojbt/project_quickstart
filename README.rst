@@ -12,6 +12,8 @@ project_quickstart
     "Quickstart" documentation (how to quickly install and use your project)
     A list of non-Python dependencies (if any) and how to install them
 
+.. I discovered CookieCutter, which does what I have setup here: https://github.com/audreyr/cookiecutter-pypackage
+.. Probably better and with more features but will keep this as it's personalised.
 
 In progress...
 
