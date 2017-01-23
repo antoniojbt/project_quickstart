@@ -72,8 +72,15 @@ TO DO main tasks:
 - Testing:
 	+ See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
 	+ Check travis setup, is pep8 running? flake8 gives errors and log at travis
+	+ See CGAT docs for testing_
+	
+	.. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
 
-- Update external dependencies file
+
+- Update external dependencies file, see some help here_.
+
+.. _here: https://www.cgat.org/downloads/public/cgat/documentation/modules/Requirements.html
+
 - Keep track of installations for Docker
 - Add a project checklist template (eg with comp bio best practice checklist, conda recipe, zenodo deposit, etc.)
 
@@ -92,6 +99,9 @@ uploading to PyPi
 
 - Use releases as code freezes
 
+- Style: have a look at cgat style_ example which also includes info 
+
+.. _style: https://www.cgat.org/downloads/public/cgat/documentation/styleguide.html#styleguide
 
 PIPELINE PLAN
 #############
