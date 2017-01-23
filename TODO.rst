@@ -54,6 +54,9 @@ TO DO main tasks:
 	+ results
 	+ manuscript
 	+ etc. these can be specified in the PARAMS.ini file
+	+ See this layout_ explanation
+	
+.. _layout: https://www.cgat.org/downloads/public/cgatpipelines/documentation/Reference.html#term-pipeline-scripts
 
 - rst_report/manuscript.py: create skeleton file template for automatic reporting. See some notes in cgat reports_.
 
