@@ -6,7 +6,6 @@ project_quickstart
 ##################
 
 ..
-
     A description of your project
     Links to the project's ReadTheDocs page
     A TravisCI button showing the state of the build
