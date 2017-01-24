@@ -18,6 +18,7 @@ project_quickstart
 
 .. I discovered CookieCutter, which does what I have setup here: https://github.com/audreyr/cookiecutter-pypackage
 .. Probably better and with more features but will keep this as it's personalised.
+.. Also see its data science templates, they look good: https://github.com/mkrapp/cookiecutter-reproducible-science
 
 In progress...
 
