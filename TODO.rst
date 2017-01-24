@@ -83,7 +83,7 @@ TO DO main tasks:
 	.. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
 
 
-- Update external dependencies file, see some help here_.
+- Update external dependencies file, see some help here_. Consider using pyup.io for alerts on package updates?
 
 .. _here: https://www.cgat.org/downloads/public/cgat/documentation/modules/Requirements.html
 
