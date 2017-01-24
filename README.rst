@@ -18,14 +18,30 @@ project_quickstart
 
 In progress...
 
-Various scripts and tools
+Boilerplate tools and templates for setting up a data analysis project. The package is setup with reproducibility concepts in mind, Ruffus_ as a pipeline tool, CGAT_ tools for support, Python_ and its packaging_, restructuredText_ and Sphinx_ for reporting, Travis_ and tox_ for testing, Conda_ and Docker_, and GitHub_ for version control.
 
-See:
-Ruffus
-http://www.ruffus.org.uk/
+.. _Ruffus: http://www.ruffus.org.uk/
 
-CGAT
-http://www.cgat.org/cgat/Tools/the-cgat-code-collection
+.. _CGAT: http://www.cgat.org/cgat/Tools/the-cgat-code-collection
+
+.. _Python: https://www.python.org/
+
+.. _packaging: https://packaging.python.org/
+
+.. _restructuredText: http://docutils.sourceforge.net/rst.html
+
+.. _Sphinx: http://www.sphinx-doc.org/en/stable/
+
+.. _Travis: https://travis-ci.org/
+
+.. _tox: https://tox.readthedocs.io/en/latest/
+
+.. _Conda: http://conda.pydata.org/docs/#
+
+.. _Docker: https://www.docker.com/
+
+.. _GitHub: https://github.com/
+
 
 I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
 
