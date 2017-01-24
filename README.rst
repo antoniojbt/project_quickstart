@@ -18,7 +18,7 @@ project_quickstart
 
 In progress...
 
-Boilerplate tools and templates for setting up a data analysis project. The package is setup with reproducibility concepts in mind, Ruffus_ as a pipeline tool, CGAT_ tools for support, Python_ and its packaging_, restructuredText_ and Sphinx_ for reporting, Travis_ and tox_ for testing, Conda_ and Docker_, and GitHub_ for version control.
+Boilerplate tools and templates for setting up a data analysis project. The package is setup with reproducibility concepts in mind, Ruffus_ as a pipeline tool, CGAT_ tools for support, Python_ programming and packaging_, restructuredText_ and Sphinx_ for reporting, Travis_ and tox_ for testing, Conda_ and Docker_ for management and development, and GitHub_ for version control. I've additionally put some basic instructions/reminders to link GitHub with ReadtheDocs_, Zenodo_ (for archiving your code and generating a DOI) and Travis CI.
 
 .. _Ruffus: http://www.ruffus.org.uk/
 
@@ -42,6 +42,9 @@ Boilerplate tools and templates for setting up a data analysis project. The pack
 
 .. _GitHub: https://github.com/
 
+.. _ReadtheDocs: https://readthedocs.org/
+
+.. _Zenodo: https://guides.github.com/activities/citable-code/
 
 I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
 
