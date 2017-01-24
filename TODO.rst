@@ -81,6 +81,8 @@ TO DO main tasks:
 	+ See CGAT docs for testing_
 	
 	.. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
+	
+	+ Add Travis tests for R
 
 
 - Update external dependencies file, see some help here_. Consider using pyup.io for alerts on package updates?
