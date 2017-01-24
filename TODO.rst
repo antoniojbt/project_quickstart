@@ -113,6 +113,8 @@ uploading to PyPi
 
 - Add R's sessionInfo() and python and shell env equivalents to logs (pip freeze?, conda list, etc.).
 
+- Have methods and plot scripts output legend\*.rst with parameters used, method\*.rst and generic interpretation\*.rst files output to disk to then glob into manuscript template.
+
 PIPELINE PLAN
 #############
 
