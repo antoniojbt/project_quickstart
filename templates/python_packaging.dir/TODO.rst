@@ -47,7 +47,9 @@ To do manually:
 			The rest should be OK with the defualts. The EPUB option may need further configuring though.
 			Copy the RTD image to your README.rst so the badge shows up.
 		
-- Setup conda recipe or PyPi if appropriate
+- Setup conda recipe or PyPi if appropriate. See CookieCutter's helpful tutorial for PyPi_ instructions for example.
+
+.. _Pypi: https://cookiecutter-pypackage.readthedocs.io/en/latest/pypi_release_checklist.html
 
 
 PIPELINE PLAN
