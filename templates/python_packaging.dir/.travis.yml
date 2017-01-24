@@ -79,3 +79,25 @@ script: sh run_travis_tests.sh
 after_success:
 - codecov
 ################
+
+# From https://github.com/johnmyleswhite/ProjectTemplate/blob/master/.travis.yml
+#language: r
+#sudo: required 
+#cache: packages
+#warnings_are_errors: true
+#addons:
+#  apt:
+#    sources:
+#      - ubuntu-toolchain-r-test
+#    packages:
+#      - gcc-4.9
+#      - g++-4.9
+#      - r-cran-rodbc
+#before_install: |
+#  mkdir ~/.R
+#  cat <<EOF > ~/.R/Makevars
+#  CXX=g++-4.9
+#  CXX1X=g++-4.9
+#  CXX1XSTD=-std=c++11
+#r_github_packages:
+#- johnmyleswhite/log4r
