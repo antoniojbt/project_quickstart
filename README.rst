@@ -64,13 +64,28 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 
 Some of the reasoning:
 
-    - A project is built around one data set/experiment/question.
-    - Packaging your project can help with reproducibility, freezing code, version control, collaboration, overall sanity, etc.
+    - Analyses are rarely only run once even within the same project. Automating as much as possible saves time and errors. The setup can be costly initially but over time this pays off, particularly when needing to track errors, confirming results, handing over or reconstructing the history and reasoning (even to yourself months later).
+    - Usually a project is built around one data set/experiment/question but even in this case it's easy to see potential gains from automating and packaging.
+    - Packaging your project can help with reproducibility, freezing code, version control, collaboration and general mental sanity (while managing a project at least).
     - Later on the code or parts of it could be extracted to work on the general case as a separate entity.
-    - See much more eloquent and deeper discussion
+    - This package is based on Python but the same applies to other languages. See much more eloquent and deeper discussions on writing your projects as packages from R. Flight_, H. Parker_ (also here_), H. Wickham_ and others_ for example. Hadley Wickham has a great ecosystem_ and a book_ on doing the same (and much more) with R_.
     
+.. _Flight: http://rmflight.github.io/posts/2014/07/analyses_as_packages.html
     
-    
+.. _Parker: https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
+
+.. _here: https://hilaryparker.com/2013/04/03/personal-r-packages/
+
+.. _Wickham: http://r-pkgs.had.co.nz/intro.html
+
+.. _others: https://github.com/kbroman/broman
+
+.. _book: http://r-pkgs.had.co.nz/
+
+.. _ecosystem: http://hadley.nz/
+
+.. _R: https://www.r-project.org/
+
 -----
 
 I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
