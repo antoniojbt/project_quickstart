@@ -19,6 +19,7 @@ project_quickstart
 In progress...
 
 Boilerplate tools and templates for setting up a data analysis project. The package is setup with: 
+
 - reproducibility concepts in mind
 - Ruffus_ as a pipeline tool and CGAT_ tools for support 
 - Python_ programming and packaging_
@@ -28,6 +29,7 @@ Boilerplate tools and templates for setting up a data analysis project. The pack
 - GitHub_ for version control
 
 I've additionally put some basic instructions/reminders to link GitHub with:
+
 - ReadtheDocs_
 - Zenodo_ (for archiving your code and generating a DOI)
 - Travis CI.
@@ -57,6 +59,8 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 .. _ReadtheDocs: https://readthedocs.org/
 
 .. _Zenodo: https://guides.github.com/activities/citable-code/
+
+-----
 
 I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
 
