@@ -28,6 +28,7 @@ Documentation
 -------------
 
 .. todo::
+
   Add docs
 
 Code
@@ -38,7 +39,7 @@ import sys
 import re
 import os
 import shutil
-import CGAT.Experiment as E
+#import CGAT.Experiment as E
 
 
 ##############################
@@ -52,49 +53,39 @@ def main(argv=sys.argv):
 
     parser.add_option(
         "-n", "--set-name", dest="name", type="string",
-        help="name of this pipeline. 'pipeline_' will be prefixed.")
+        help="name of this project. 'project_' will be prefixed.")
 
     parser.add_option(
         "-f", "--force-output", dest="force", action="store_true",
         help="overwrite existing files.")
 
-    parser.add_option(
-        "-t", "--pipeline-type", dest="pipeline_type", type="choice",
-        choices=("full", "minimal"),
-        help="type of pipeline to output. "
-        "full=a complete pipeline for the CGAT environment "
-        "minimum=minimum pipeline "
-        "[%default]")
-
     parser.set_defaults(
         destination=".",
         name=None,
         force=False,
-        pipeline_type="full",
     )
 
     (options, args) = E.Start(parser)
 
     if not options.name:
-        raise ValueError("please provide a pipeline name")
+        raise ValueError("please provide a project name")
 
 ##############################
 
-    reportdir = os.path.abspath("src/pipeline_docs/pipeline_%s" % options.name)
-    confdir = os.path.abspath("src/pipeline_%s" % (options.name))
+#    reportdir = os.path.abspath("code/pipeline_docs/pipeline_%s" % options.name)
+    confdir = os.path.abspath("code/project_%s" % (options.name))
 
     destination_dir = options.destination
 
 ##############################
 
     # create directories
-    for d in ("", "src", "report",
-              "src/pipeline_docs",
-              "src/pipeline_%s" % options.name,
-              reportdir,
-              "%s/_templates" % reportdir,
-              "%s/pipeline" % reportdir,
-              "%s/trackers" % reportdir):
+    for d in ("", "code", "data",
+              "data/raw",
+              "data/processed",
+              "data/external",
+              "results_1",
+              "manuscript"):
 
         dd = os.path.join(destination_dir, d)
         if not os.path.exists(dd):
@@ -106,9 +97,7 @@ def main(argv=sys.argv):
     # replaces all instances of template with options.name within
     # filenames and inside files.
     rx_file = re.compile("template")
-    rx_type = re.compile("_%s" % options.pipeline_type)
     rx_template = re.compile("@template@")
-    rx_reportdir = re.compile("@reportdir@")
 
     srcdir = P.CGATPIPELINES_PIPELINE_DIR
 
@@ -204,18 +193,23 @@ def main(argv=sys.argv):
 
 ##############################
 
-    print("""
-Welcome to your new %(name)s CGAT pipeline.
-All files have been successfully copied to `%(destination_dir)s`. In
-order to start the pipeline, go to `%(destination_dir)s/report`
-   cd %(destination_dir)s/report
-You can start the pipeline by typing:
-   python ../src/pipeline_%(name)s.py -v 5 -p 5 make full
-To build the report, type:
-   python ../src/pipeline_%(name)s.py -v 5 -p 5 make build_report
-The report will be in file:/%(absdest)s/report/report/html/index.html.
-The source code for the pipeline is in %(destination_dir)s/src.
-""" % locals())
+    print(""" Time to start procrastinating! Welcome to your %(name)s project. 
+    
+    The folder structure and files have been successfully copied to `%(destination_dir)s`. 
+    Files have been copied 'as is'. You can edit the configuration file and run:
+    
+    python project quickstart.py --update
+    
+    to update files with your chosen parameters (note files get overwritten!).
+    
+    The folder structure is %(tree_dir)s.
+    Feel free to raise issues, fork or contribute at:
+    
+    https://github.com/AntonioJBT/project_quickstart
+    
+    Have fun!
+    """ % locals()
+         )
 
     E.Stop()
 
