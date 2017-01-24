@@ -18,7 +18,19 @@ project_quickstart
 
 In progress...
 
-Boilerplate tools and templates for setting up a data analysis project. The package is setup with reproducibility concepts in mind, Ruffus_ as a pipeline tool, CGAT_ tools for support, Python_ programming and packaging_, restructuredText_ and Sphinx_ for reporting, Travis_ and tox_ for testing, Conda_ and Docker_ for management and development, and GitHub_ for version control. I've additionally put some basic instructions/reminders to link GitHub with ReadtheDocs_, Zenodo_ (for archiving your code and generating a DOI) and Travis CI.
+Boilerplate tools and templates for setting up a data analysis project. The package is setup with: 
+- reproducibility concepts in mind
+- Ruffus_ as a pipeline tool and CGAT_ tools for support 
+- Python_ programming and packaging_
+- restructuredText_ and Sphinx_ for reporting
+- Travis_ and tox_ for testing
+- Conda_ and Docker_ for management and development
+- GitHub_ for version control
+
+I've additionally put some basic instructions/reminders to link GitHub with:
+- ReadtheDocs_
+- Zenodo_ (for archiving your code and generating a DOI)
+- Travis CI.
 
 .. _Ruffus: http://www.ruffus.org.uk/
 
