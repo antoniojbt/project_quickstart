@@ -1,5 +1,5 @@
-'''script_quickstart.py - setup a new python script
-===================================================
+'''project_quickstart.py - setup a new python based project
+===========================================================
 
 :Author: Antonio Berlanga-Taylor
 :Release: $Id$
@@ -7,22 +7,27 @@
 
 Purpose
 -------
-This script creates a python script template.
+This script creates a python project template.
 
 It is mostly taken from CGAT's
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 
-Usage
------
-To start a new script, use  :file:`script_quickstart.py`::
-   python <srcdir>script_quickstart.py --set-name=start_procrastinating
-   
-This will create a new directory called ``chipseq`` in the current directory
 
-Type::
-  python script_quickstart.py --help
+Options
+=======
 
-for command line help.
+Usage: project_quickstart.py --set-name=start_procrastinating
+
+To start a new project
+
+This will create a new directory, subfolders and files in the current directory
+
+that will help quickstart your data science project.
+
+-h --help    show this
+--quiet      print less text
+--verbose    print more text
+-L --log     log file name.
 
 Documentation
 -------------
@@ -30,16 +35,19 @@ Documentation
 .. todo::
 
   Add docs
+  Add tree structure
 
 Code
 ----
 
 '''
+
 import sys
 import re
 import os
 import shutil
 #import CGAT.Experiment as E
+from docopt import docopt
 
 
 ##############################
