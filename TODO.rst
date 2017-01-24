@@ -109,6 +109,8 @@ uploading to PyPi
 
 .. _style: https://www.cgat.org/downloads/public/cgat/documentation/styleguide.html#styleguide
 
+- Add R's sessionInfo() and python and shell env equivalents to logs (pip freeze?, conda list, etc.).
+
 PIPELINE PLAN
 #############
 
