@@ -61,7 +61,7 @@ See the toctree_ directive for full info.
 
 Methods
 #######
-
+      
 Briefly, the primary objectives of 
 
 Briefly, 
@@ -83,6 +83,13 @@ Statistical analysis
 A priori power for 
 
 Method 1
+
+.. Glob all methods*.rst files:
+
+.. toctree::
+    :glob:
+    
+    methods*rst
 
 Method 2
 
@@ -146,6 +153,14 @@ Results
 
 Result 1
 
+.. Glob all legends*.rst files:
+
+.. toctree::
+    :glob:
+    
+    legends*rst
+    interpretation*rst    
+
 Include an image::
 
   .. image:: images/ball1.gif
@@ -153,7 +168,7 @@ Include an image::
 Or::
 
   .. image:: images/xxx.png
-     :height: 100
+    :height: 100
     :width: 200
     :scale: 50
     :alt: alternate text
