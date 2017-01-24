@@ -62,6 +62,17 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 
 -----
 
+Some of the reasoning:
+
+    - A project is built around one data set/experiment/question.
+    - Packaging your project can help with reproducibility, freezing code, version control, collaboration, overall sanity, etc.
+    - Later on the code or parts of it could be extracted to work on the general case as a separate entity.
+    - See much more eloquent and deeper discussion
+    
+    
+    
+-----
+
 I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
 
 .. _CookieCutter: https://github.com/audreyr/cookiecutter-pypackage
