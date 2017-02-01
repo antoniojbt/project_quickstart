@@ -169,27 +169,24 @@ for d in ("",
           "manuscript"):
     
     tree_dir = os.path.join(project_dir, d)
-    if not os.path.exists(dd):
-        os.makedirs(dd)
+    if not os.path.exists(tree_dir):
+        os.makedirs(tree_dir)
 
 ##############################
 
     # copy files and directories
-    # replaces all instances of project with options.name
+    # replaces all instances of template with 'namexx' as
+    # specified in options
     rx_file = re.compile("template")
     rx_template = re.compile("@template@")
-
-    srcdir = cwd
-#    srcdir = P.CGATPIPELINES_PIPELINE_DIR
 
 ##############################
 
     def copy(src, dst, name):
 
-        # remove "project" and the pipeline type from file/directory
-        # names.
+        # remove 'project' from template file names.
         fn_dest = os.path.join(
-            destination_dir,
+            project_dir,
             dst,
             rx_type.sub("", rx_file.sub(name, src)))
 
@@ -268,25 +265,23 @@ for d in ("",
 
 ##############################
 
-    print(""" Time to start procrastinating! Welcome to your %(name)s project. 
+    print(""" Welcome to your {} project!
     
-    The folder structure and files have been successfully copied to `%(destination_dir)s`. 
+    The folder structure and files have been successfully copied to {}. 
     Files have been copied 'as is'. You can edit the configuration file and run:
     
     python project quickstart.py --update
     
-    to update files with your chosen parameters (note files get overwritten!).
+    to update files with your chosen parameters (note files get overwritten).
     
-    The folder structure is %(tree_dir)s.
+    The folder structure is {}.
     Feel free to raise issues, fork or contribute at:
     
     https://github.com/AntonioJBT/project_quickstart
     
     Have fun!
-    """ % locals()
+    """.format(project_name, project_dir, tree_dir)
          )
-
-    E.Stop()
 
 ##############################
 
