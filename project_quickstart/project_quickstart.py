@@ -153,24 +153,24 @@ def main():
 
 ##############################
 
-# Set up default paths and directory:
-project_name = {}.format.options['--project_name']
-project_dir = str(os.getcwd() + '/' + project_name)
+    # Set up default paths and directory:
+    project_name = {}.format.options['--project_name']
+    project_dir = str(os.getcwd() + '/' + project_name)
 
-if not os.path.exists(project_dir):
-    os.makedirs(project_dir)
+    if not os.path.exists(project_dir):
+        os.makedirs(project_dir)
 
 ##############################
 
-# Create directories:
-for d in ("", 
-          "code", 
-          "data",
-          "data/raw",
-          "data/processed",
-          "data/external",
-          "results_1",
-          "manuscript"):
+    # Create directories:
+    for d in ("", 
+              "code", 
+              "data",
+              "data/raw",
+              "data/processed",
+              "data/external",
+              "results_1",
+              "manuscript"):
     
     tree_dir = os.path.join(project_dir, d)
     if not os.path.exists(tree_dir):
@@ -184,29 +184,25 @@ for d in ("",
     rx_file = re.compile("template")
     rx_template = re.compile("@template@")
 
-
     def copy(src, dst, name):
-
-        # remove 'project' from template file names.
+        ''' remove 'project' from template file names'''
         fn_dest = os.path.join(
             project_dir,
-            dst,
-            rx_type.sub("", rx_file.sub(name, src)))
-
-        fn_src = os.path.join(srcdir,
-                              "project_template", src)
-
+            dst,)
+    
+        fn_src = os.path.join(project_dir,
+                              'code',
+                              src)
         if os.path.exists(fn_dest) and not options['--force']:
-            raise OSError(
-                '''file/directory {} already exists 
-                - not overwriting, use --force option.'''.format(project_name))
-
+             raise OSError('''file/directory {} already exists 
+                           - not overwriting, use --force option.'''.format(project_name))
+    
         outfile = open(fn_dest, "w")
         infile = open(fn_src)
+    
         for line in infile:
             outfile.write(rx_reportdir.sub(reportdir,
                                            rx_template.sub(name, line)))
-
         outfile.close()
         infile.close()
 
