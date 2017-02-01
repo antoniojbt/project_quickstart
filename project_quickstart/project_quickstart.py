@@ -68,7 +68,53 @@ import shutil
 #import CGAT.Experiment as E
 from docopt import docopt
 
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
+##############################
+# Set up default paths and directory:
+
+project_dir = os.path.dirname(os.path.realpath(__file__))
+if not os.path.exists(project_dir):
+    os.makedirs(project_dir)
+    
+
+    
+##############################
+# Check configuration and print to standard out
+# See https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/Pipeline/Parameters.py
+
+# Global variable for configuration file ('.ini'):
+CONFIG = configparser.ConfigParser()
+
+class TriggeredDefaultFactory:
+    with_default = False
+
+    def __call__(self):
+        if TriggeredDefaultFactory.with_default:
+            return str()
+        else:
+            raise KeyError("missing parameter accessed")
+
+# Global variable for parameter interpolation in commands
+# This is a dictionary that can be switched between defaultdict
+# and normal dict behaviour.
+PARAMS = collections.defaultdict(TriggeredDefaultFactory())
+
+# patch - if --help or -h in command line arguments,
+# switch to a default dict to avoid missing paramater
+# failures
+if isTest() or "--help" in sys.argv or "-h" in sys.argv:
+TriggeredDefaultFactory.with_default = True
+
+CONFIG.read('project_quickstart.ini')
+CONFIG.getfloat('Section', 'my_option') # returns 12.2
+print(CONFIG.sections())
+
+for key in CONFIG['project_quickstart.ini']: print(key)
+    
 ##############################
 def main(argv=sys.argv):
 
