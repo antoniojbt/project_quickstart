@@ -75,7 +75,6 @@ Documentation
 
 Code
 ----
-
 '''
 
 ##############################
@@ -178,17 +177,14 @@ def main():
     rx_template = re.compile("@template@")
     # TO DO:
     source_dir = os.path.join(sys.exec_prefix, "bin")
-    template_dir = os.path.join(source_dir, '')
+    template_dir = os.path.join(source_dir, 'project_quickstart/templates/project_template')
 
-    def copy(project_dir, project_name):
-        ''' remove 'project' from template file names'''
-        fn_dest = os.path.join(
-            project_dir,
-            dst,)
-    
-        fn_src = os.path.join(project_dir,
-                              'code',
-                              src)
+########################################
+    def copy(project_dir, project_name, source_dir):
+        ''' remove 'project' from template file names '''
+        copy_from = source
+        copy_to = os.path.join(project_dir, 'code', fn_dest)
+        
         if os.path.exists(fn_dest) and not options['--force']:
              raise OSError('''file/directory {} already exists 
                            - not overwriting, use --force option.'''.format(project_name))
