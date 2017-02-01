@@ -32,21 +32,35 @@ For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 (on which this code is based on)
 
-Options
-=======
+Usage and Options
+=================
+Quickstart a data science project with a folder structure and script, packaging, testing, etc. templates
 
-Usage: project_quickstart.py --set-name=start_procrastinating
+.. These are using docopt: http://docopt.org/
+.. https://github.com/docopt/docopt
+.. An example for loading arguments from an INI file: https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
 
-to start a new project.
+Usage:
+    project_quickstart.py (--project_name=<project_name>) ...
 
-This will create a new directory, subfolders and files in the current directory
+to start a new project ('project_' will be prefixed)
+This will create a new directory, subfolders and files in the current directory that will help quickstart your data science project.
 
-that will help quickstart your data science project.
-
--h --help    show this
---quiet      print less text
---verbose    print more text
--L --log     log file name.
+    project_quickstart.py (--project_name | -n) <project_name> 
+    project_quickstart.py -f | --force
+    project_quickstart.py -h | --help
+    project_quickstart.py --version
+    project_quickstart.py --quiet
+    project_quickstart.py --verbose
+    project_quickstart.py [-L | --log] <project_quickstart.log>
+    
+Options:
+    -f --force   Careful, overwrites anything with the same name.
+    -h --help    Show this screen.
+    --version    Show version.
+    --quiet      Print less text.
+    --verbose    Print more text.
+    -L --log     Log file name. [default: project_quickstart.log]
 
 Documentation
 -------------
@@ -55,6 +69,7 @@ Documentation
 
   Add docs
   Add tree structure
+  New string formatting https://pyformat.info/ '{} {}'.format('one', 'two')
 
 Code
 ----
@@ -65,6 +80,7 @@ import sys
 import re
 import os
 import shutil
+import collections
 #import CGAT.Experiment as E
 from docopt import docopt
 
@@ -74,17 +90,9 @@ except ImportError:
     import ConfigParser as configparser
 
 ##############################
-# Set up default paths and directory:
-
-project_dir = os.path.dirname(os.path.realpath(__file__))
-if not os.path.exists(project_dir):
-    os.makedirs(project_dir)
-    
-
-    
-##############################
 # Check configuration and print to standard out
 # See https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/Pipeline/Parameters.py
+# https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
 
 # Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser()
@@ -106,63 +114,63 @@ PARAMS = collections.defaultdict(TriggeredDefaultFactory())
 # patch - if --help or -h in command line arguments,
 # switch to a default dict to avoid missing paramater
 # failures
-if isTest() or "--help" in sys.argv or "-h" in sys.argv:
-TriggeredDefaultFactory.with_default = True
+
+# TO DO: (see E.py)
+#if "--help" in sys.argv or "-h" in sys.argv:
+#    TriggeredDefaultFactory.with_default = True
 
 CONFIG.read('project_quickstart.ini')
-CONFIG.getfloat('Section', 'my_option') # returns 12.2
-print(CONFIG.sections())
+for key in CONFIG:
+    print key, CONFIG[key]
 
-for key in CONFIG['project_quickstart.ini']: print(key)
+##############################
+
     
 ##############################
-def main(argv=sys.argv):
+# Set up arguments (see docopt above):
 
-    parser = E.OptionParser(version="%prog version: $Id$",
-                            usage=globals()["__doc__"])
+def main():
+    try:
+        # Parse arguments, use file docstring as a parameter definition:
+        arguments = docopt(__doc__, version = {}).format(prog_version)
+        if not options['--project_name']:
+            print('Project name required, it will be appended to "project_"')
+#        if options['--force']:
+            #overwrite directory
+        if not options['--log']:
+            log = str('project_quickstart.log')
+            
+    print(arguments)
 
-    parser.add_option("-d", "--dest", dest="destination", type="string",
-                      help="destination directory.")
-
-    parser.add_option(
-        "-n", "--set-name", dest="name", type="string",
-        help="name of this project. 'project_' will be prefixed.")
-
-    parser.add_option(
-        "-f", "--force-output", dest="force", action="store_true",
-        help="overwrite existing files.")
-
-    parser.set_defaults(
-        destination=".",
-        name=None,
-        force=False,
-    )
-
-    (options, args) = E.Start(parser)
-
-    if not options.name:
-        raise ValueError("please provide a project name")
+    # Handle exceptions:
+    except docopt.DocoptExit:
+        print ('Invalid option, use project_quickstart.py --help')
+        raise
 
 ##############################
 
-#    reportdir = os.path.abspath("code/pipeline_docs/pipeline_%s" % options.name)
-    confdir = os.path.abspath("code/project_%s" % (options.name))
+# Set up default paths and directory:
+project_name = {}.format.options['--project_name']
+project_dir = str(os.getcwd() + '/' + project_name)
 
-    destination_dir = options.destination
+if not os.path.exists(project_dir):
+    os.makedirs(project_dir)
 
 ##############################
 
-    # create directories
-    for d in ("", "code", "data",
-              "data/raw",
-              "data/processed",
-              "data/external",
-              "results_1",
-              "manuscript"):
-
-        dd = os.path.join(destination_dir, d)
-        if not os.path.exists(dd):
-            os.makedirs(dd)
+# create directories
+for d in ("", 
+          "code", 
+          "data",
+          "data/raw",
+          "data/processed",
+          "data/external",
+          "results_1",
+          "manuscript"):
+    
+    tree_dir = os.path.join(project_dir, d)
+    if not os.path.exists(dd):
+        os.makedirs(dd)
 
 ##############################
 
@@ -282,5 +290,6 @@ def main(argv=sys.argv):
 
 ##############################
 
-if __name__ == "__main__":
-   sys.exit(main())
+if __name__ == '__main__':
+    main()
+#    sys.exit(main())
