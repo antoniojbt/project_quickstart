@@ -78,6 +78,7 @@ Code
 
 '''
 
+##############################
 import sys
 import re
 import os
@@ -91,7 +92,6 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
-##############################
 # Check configuration and print to standard out
 # See https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/Pipeline/Parameters.py
 # https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
@@ -124,14 +124,13 @@ PARAMS = collections.defaultdict(TriggeredDefaultFactory())
 CONFIG.read('project_quickstart.ini')
 for key in CONFIG:
     print key, CONFIG[key]
-
 ##############################
 
     
 ##############################
-# Set up arguments (see docopt above):
 
 def main():
+    # Set up arguments (see docopt above):
     try:
         # Parse arguments, use file docstring as a parameter definition:
         arguments = docopt(__doc__, version = {}).format(prog_version)
@@ -151,16 +150,12 @@ def main():
         print ('Invalid option, use project_quickstart.py --help')
         raise
 
-##############################
-
     # Set up default paths and directory:
     project_name = {}.format.options['--project_name']
     project_dir = str(os.getcwd() + '/' + project_name)
 
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
-
-##############################
 
     # Create directories:
     for d in ("", 
@@ -176,15 +171,16 @@ def main():
     if not os.path.exists(tree_dir):
         os.makedirs(tree_dir)
 
-##############################
-
     # Copy files and directories
     # replaces all instances of template with 'name' from project_'name' as
     # specified in options
     rx_file = re.compile("template")
     rx_template = re.compile("@template@")
+    # TO DO:
+    source_dir = os.path.join(sys.exec_prefix, "bin")
+    template_dir = os.path.join(source_dir, '')
 
-    def copy(src, dst, name):
+    def copy(project_dir, project_name):
         ''' remove 'project' from template file names'''
         fn_dest = os.path.join(
             project_dir,
@@ -206,7 +202,6 @@ def main():
         outfile.close()
         infile.close()
 
-##############################
 
     def copytree(src, dst, name):
 
@@ -223,9 +218,8 @@ def main():
               "project.ini"):
         copy(f, 'src/project_%s' % options.name, name=options.name)
 
-##############################
-
-    # create links
+##########################################################################################
+    # Create links:
     for src, dest in (("conf.py", "conf.py"),
                       ("pipeline.ini", "pipeline.ini")):
         d = os.path.join("report", dest)
@@ -260,7 +254,6 @@ def main():
 
     name = options.name
 
-##############################
 
     print(""" Welcome to your {} project!
     
@@ -279,8 +272,6 @@ def main():
     Have fun!
     """.format(project_name, project_dir, tree_dir)
          )
-
-##############################
 
 if __name__ == '__main__':
     main()
