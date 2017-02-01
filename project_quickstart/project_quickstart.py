@@ -30,7 +30,7 @@ create a Python or R script template.
 
 For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
-
+(on which this code is based on)
 
 Options
 =======
@@ -120,19 +120,19 @@ def main(argv=sys.argv):
 
 ##############################
 
-    # copy files
-    # replaces all instances of template with options.name within
-    # filenames and inside files.
+    # copy files and directories
+    # replaces all instances of project with options.name
     rx_file = re.compile("template")
     rx_template = re.compile("@template@")
 
-    srcdir = P.CGATPIPELINES_PIPELINE_DIR
+    srcdir = cwd
+#    srcdir = P.CGATPIPELINES_PIPELINE_DIR
 
 ##############################
 
     def copy(src, dst, name):
 
-        # remove "template" and the pipeline type from file/directory
+        # remove "project" and the pipeline type from file/directory
         # names.
         fn_dest = os.path.join(
             destination_dir,
@@ -140,7 +140,7 @@ def main(argv=sys.argv):
             rx_type.sub("", rx_file.sub(name, src)))
 
         fn_src = os.path.join(srcdir,
-                              "pipeline_template_data", src)
+                              "project_template", src)
 
         E.debug("fn_src=%s, fn_dest=%s, src=%s, dest=%s" %
                 (fn_src, fn_dest, src, dst))
@@ -163,7 +163,7 @@ def main(argv=sys.argv):
     def copytree(src, dst, name):
 
         fn_dest = os.path.join(destination_dir, dst, rx_file.sub(name, src))
-        fn_src = os.path.join(srcdir, "pipeline_template_data", src)
+        fn_src = os.path.join(srcdir, "project_template", src)
 
         if os.path.exists(fn_dest) and not options.force:
             raise OSError(
@@ -172,14 +172,8 @@ def main(argv=sys.argv):
         shutil.copytree(fn_src, fn_dest)
 
     for f in ("conf.py",
-              "pipeline.ini"):
-        copy(f, 'src/pipeline_%s' % options.name, name=options.name)
-
-##############################
-
-    # copy the script
-    copy("pipeline_template_%s.py" % options.pipeline_type, 'src',
-         name=options.name)
+              "project.ini"):
+        copy(f, 'src/project_%s' % options.name, name=options.name)
 
 ##############################
 
