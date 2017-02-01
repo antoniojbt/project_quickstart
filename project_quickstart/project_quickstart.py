@@ -47,6 +47,7 @@ to start a new project ('project_' will be prefixed)
 This will create a new directory, subfolders and files in the current directory that will help quickstart your data science project.
 
     project_quickstart.py (--project_name | -n) <project_name> 
+    project_quickstart.py --update | -u 
     project_quickstart.py -f | --force
     project_quickstart.py -h | --help
     project_quickstart.py --version
@@ -55,7 +56,8 @@ This will create a new directory, subfolders and files in the current directory 
     project_quickstart.py [-L | --log] <project_quickstart.log>
     
 Options:
-    -f --force   Careful, overwrites anything with the same name.
+    --update -u  Configure the project_quickstart.ini manually and run this option to propagate changes.
+    -f --force   Take care, forces to overwrite files and directories.
     -h --help    Show this screen.
     --version    Show version.
     --quiet      Print less text.
@@ -135,11 +137,13 @@ def main():
         arguments = docopt(__doc__, version = {}).format(prog_version)
         if not options['--project_name']:
             print('Project name required, it will be appended to "project_"')
-#        if options['--force']:
-            #overwrite directory
+        if options['--force']: # overwrite directory
+            pass # TO DO            
         if not options['--log']:
             log = str('project_quickstart.log')
-            
+        if options['--update']:
+            pass # TO DO
+
     print(arguments)
 
     # Handle exceptions:
@@ -158,7 +162,7 @@ if not os.path.exists(project_dir):
 
 ##############################
 
-# create directories
+# Create directories:
 for d in ("", 
           "code", 
           "data",
@@ -174,13 +178,12 @@ for d in ("",
 
 ##############################
 
-    # copy files and directories
-    # replaces all instances of template with 'namexx' as
+    # Copy files and directories
+    # replaces all instances of template with 'name' from project_'name' as
     # specified in options
     rx_file = re.compile("template")
     rx_template = re.compile("@template@")
 
-##############################
 
     def copy(src, dst, name):
 
@@ -193,12 +196,10 @@ for d in ("",
         fn_src = os.path.join(srcdir,
                               "project_template", src)
 
-        E.debug("fn_src=%s, fn_dest=%s, src=%s, dest=%s" %
-                (fn_src, fn_dest, src, dst))
-
-        if os.path.exists(fn_dest) and not options.force:
+        if os.path.exists(fn_dest) and not options['--force']:
             raise OSError(
-                "file %s already exists - not overwriting." % fn_dest)
+                '''file/directory {} already exists 
+                - not overwriting, use --force option.'''.format(project_name))
 
         outfile = open(fn_dest, "w")
         infile = open(fn_src)
