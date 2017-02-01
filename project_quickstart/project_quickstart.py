@@ -7,9 +7,28 @@
 
 Purpose
 -------
-This script creates a python project template.
 
-It is mostly taken from CGAT's
+This script creates a python data science project template. The main idea is to be able to easily turn 
+a project into a package with software testing, version control, reporting, docs, etc. It has:
+
+    Reproducibility concepts in mind
+    Ruffus as a pipeline tool and CGAT tools for support
+    Python programming and packaging
+    restructuredText and Sphinx for reporting
+    Travis and tox for testing
+    Conda and Docker for management and development
+    GitHub for version control
+
+I've additionally put some basic instructions/reminders to link GitHub with:
+
+    ReadtheDocs
+    Zenodo (for archiving your code and generating a DOI)
+    Travis CI.
+
+Once you've quickstarted your project you can run script_quickstart.py to quickly
+create a Python or R script template. 
+
+For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 
 
@@ -18,7 +37,7 @@ Options
 
 Usage: project_quickstart.py --set-name=start_procrastinating
 
-To start a new project
+to start a new project.
 
 This will create a new directory, subfolders and files in the current directory
 
