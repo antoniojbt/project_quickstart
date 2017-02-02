@@ -1,227 +1,160 @@
-'''project_quickstart.py - setup a new python based project
+'''script_quickstart.py - setup a new python based project
 ===========================================================
 
 :Author: Antonio Berlanga-Taylor
-:Release: $Id$
-:Date: |today|
+:Release:
+:Date: 
 
 Purpose
 -------
-This script creates a python project template.
+This script creates a 
+The main idea is to 
+We've additionally put 
+Once you've quickstarted your 
 
-It is mostly taken from CGAT's
+For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
+(on which this code is based on)
 
+Usage and Options
+=================
+Quickstart a script 
+.. These are using docopt: http://docopt.org/
+.. https://github.com/docopt/docopt
+.. An example for loading arguments from an INI file: https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
 
-Options
-=======
+Usage:
+    script_quickstart.py (--script_name=<script_name>) ...
 
-Usage: project_quickstart.py --set-name=start_procrastinating
+to create a script template.
 
-To start a new project
-
-This will create a new directory, subfolders and files in the current directory
-
-that will help quickstart your data science project.
-
--h --help    show this
---quiet      print less text
---verbose    print more text
--L --log     log file name.
-
+    script_quickstart.py (--script_name | -n) <script_name>
+    script_quickstart.py (--language | -lang) <python | R>    
+    script_quickstart.py [-f | --force]
+    script_quickstart.py -h | --help
+    script_quickstart.py --version
+    script_quickstart.py --quiet
+    script_quickstart.py --verbose
+    script_quickstart.py [-L | --log] <project_quickstart.log>
+    
+Options:
+    -lang --language    R or Python templates available
+    -f --force   Take care, forces to overwrite files and directories.
+    -h --help    Show this screen.
+    --version    Show version.
+    --quiet      Print less text.
+    --verbose    Print more text.
+    -L --log     Log file name. [default: project_quickstart.log]
 Documentation
 -------------
-
 .. todo::
-
   Add docs
-  Add tree structure
-
+  New string formatting https://pyformat.info/ '{} {}'.format('one', 'two')
+  
 Code
 ----
-
 '''
-
+##############################
 import sys
 import re
 import os
 import shutil
+import collections
 #import CGAT.Experiment as E
 from docopt import docopt
 
+try:
+    import configparser
+except ImportError: # Py2 to Py3
+    import ConfigParser as configparser
 
-##############################
-def main(argv=sys.argv):
+# Check configuration and print to standard out
+# See https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/Pipeline/Parameters.py
+# https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
 
-    parser = E.OptionParser(version="%prog version: $Id$",
-                            usage=globals()["__doc__"])
+# Global variable for configuration file ('.ini'):
+CONFIG = configparser.ConfigParser()
 
-    parser.add_option("-d", "--dest", dest="destination", type="string",
-                      help="destination directory.")
+class TriggeredDefaultFactory:
+    with_default = False
 
-    parser.add_option(
-        "-n", "--set-name", dest="name", type="string",
-        help="name of this project. 'project_' will be prefixed.")
+    def __call__(self):
+        if TriggeredDefaultFactory.with_default:
+            return str()
+        else:
+            raise KeyError("missing parameter accessed")
 
-    parser.add_option(
-        "-f", "--force-output", dest="force", action="store_true",
-        help="overwrite existing files.")
+# Global variable for parameter interpolation in commands
+# This is a dictionary that can be switched between defaultdict
+# and normal dict behaviour.
+PARAMS = collections.defaultdict(TriggeredDefaultFactory())
 
-    parser.set_defaults(
-        destination=".",
-        name=None,
-        force=False,
-    )
+# patch - if --help or -h in command line arguments,
+# switch to a default dict to avoid missing paramater
+# failures
 
-    (options, args) = E.Start(parser)
+# TO DO: (see E.py)
+#if "--help" in sys.argv or "-h" in sys.argv:
+#    TriggeredDefaultFactory.with_default = True
 
-    if not options.name:
-        raise ValueError("please provide a project name")
-
-##############################
-
-#    reportdir = os.path.abspath("code/pipeline_docs/pipeline_%s" % options.name)
-    confdir = os.path.abspath("code/project_%s" % (options.name))
-
-    destination_dir = options.destination
-
-##############################
-
-    # create directories
-    for d in ("", "code", "data",
-              "data/raw",
-              "data/processed",
-              "data/external",
-              "results_1",
-              "manuscript"):
-
-        dd = os.path.join(destination_dir, d)
-        if not os.path.exists(dd):
-            os.makedirs(dd)
-
+CONFIG.read('project_quickstart.ini')
+for key in CONFIG:
+    print key, CONFIG[key]
 ##############################
 
-    # copy files
-    # replaces all instances of template with options.name within
-    # filenames and inside files.
-    rx_file = re.compile("template")
-    rx_template = re.compile("@template@")
-
-    srcdir = P.CGATPIPELINES_PIPELINE_DIR
-
+    
 ##############################
+def main():
+    
 
-    def copy(src, dst, name):
-
-        # remove "template" and the pipeline type from file/directory
-        # names.
-        fn_dest = os.path.join(
-            destination_dir,
-            dst,
-            rx_type.sub("", rx_file.sub(name, src)))
-
-        fn_src = os.path.join(srcdir,
-                              "pipeline_template_data", src)
-
-        E.debug("fn_src=%s, fn_dest=%s, src=%s, dest=%s" %
-                (fn_src, fn_dest, src, dst))
-
-        if os.path.exists(fn_dest) and not options.force:
+    # Copy files from template directory:
+    def copyTemplate(source_dir, project_dir):
+        '''
+        Copy across template files and directories for a Python/GitHub/etc setup.
+        TO DO: 'code' dir is hard coded, change to ini parameter later
+        The intention is to use the 'code' dir as a GitHub/packageable directory
+        '''
+        copy_from = project_template
+        copy_to = os.path.join(project_dir, '/code')
+        
+        if os.path.exists(copy_to) and not options['--force']:
             raise OSError(
-                "file %s already exists - not overwriting." % fn_dest)
+                '''file {} already exists - not overwriting, see --help or use --force 
+                to overwrite.'''.format(project_name)
 
-        outfile = open(fn_dest, "w")
-        infile = open(fn_src)
-        for line in infile:
-            outfile.write(rx_reportdir.sub(reportdir,
-                                           rx_template.sub(name, line)))
+        shutil.copytree(copy_from, copyt_to) # https://docs.python.org/3/library/shutil.html
 
-        outfile.close()
-        infile.close()
 
-##############################
+    # Replace all instances of template with 'name' from project_'name' as
+    # specified in options:
+    def rename(project_dir, old_substring, project_name):
+        ''' rename 'template' to 'project' from template file names '''
+        for dirpath, dirname, filename in os.walk(project_dir):
+            for filename in files:
+                os.rename(os.path.join(project_dir, filename), 
+                          os.path.join(project_dir, filename.replace('template', {})).format(project_name)
 
-    def copytree(src, dst, name):
-
-        fn_dest = os.path.join(destination_dir, dst, rx_file.sub(name, src))
-        fn_src = os.path.join(srcdir, "pipeline_template_data", src)
-
-        if os.path.exists(fn_dest) and not options.force:
-            raise OSError(
-                "file %s already exists - not overwriting." % fn_dest)
-
-        shutil.copytree(fn_src, fn_dest)
-
-    for f in ("conf.py",
-              "pipeline.ini"):
-        copy(f, 'src/pipeline_%s' % options.name, name=options.name)
-
-##############################
-
-    # copy the script
-    copy("pipeline_template_%s.py" % options.pipeline_type, 'src',
-         name=options.name)
-
-##############################
-
-    # create links
-    for src, dest in (("conf.py", "conf.py"),
-                      ("pipeline.ini", "pipeline.ini")):
-        d = os.path.join("report", dest)
-        if os.path.exists(d) and options.force:
+    # Create links for the manuscript and lab_notebook 
+    # templates to go into the 'manuscript' directory:
+    for template_dir, project_dir in (("manuscript_template.rst", "lab_notebook_template.rst"), 
+                                      ("manuscript_template.rst", "lab_notebook_template.rst")):
+        d = os.path.join("", project_dir)
+        if os.path.exists(d) and options['--force']:
             os.unlink(d)
-        os.symlink(os.path.join(confdir, src), d)
+        os.symlink(os.path.join(project_dir, ), d)
 
-    for f in ("cgat_logo.png",):
-        copy(f, "%s/_templates" % reportdir,
-             name=options.name)
-
-    for f in ("themes",):
-        copytree(f, "src/pipeline_docs",
-                 name=options.name)
-
-    for f in ("contents.rst",
-              "pipeline.rst",
-              "__init__.py"):
-        copy(f, reportdir,
-             name=options.name)
-
-    for f in ("Dummy.rst",
-              "Methods.rst"):
-        copy(f, "%s/pipeline" % reportdir,
-             name=options.name)
-
-    for f in ("TemplateReport.py", ):
-        copy(f, "%s/trackers" % reportdir,
-             name=options.name)
-
-    absdest = os.path.abspath(destination_dir)
-
-    name = options.name
-
-##############################
-
-    print(""" Time to start procrastinating! Welcome to your %(name)s project. 
+    # Print a nice welcome message (if successful):
+    print(""" Done, welcome to your {1}!
     
-    The folder structure and files have been successfully copied to `%(destination_dir)s`. 
-    Files have been copied 'as is'. You can edit the configuration file and run:
+    Remember to 
     
-    python project quickstart.py --update
-    
-    to update files with your chosen parameters (note files get overwritten!).
-    
-    The folder structure is %(tree_dir)s.
     Feel free to raise issues, fork or contribute at:
     
-    https://github.com/AntonioJBT/project_quickstart
+    https://github.com/
     
     Have fun!
-    """ % locals()
+    """.format(1, 2, 3, )
          )
-
-    E.Stop()
-
-##############################
 
 if __name__ == "__main__":
    sys.exit(main())
