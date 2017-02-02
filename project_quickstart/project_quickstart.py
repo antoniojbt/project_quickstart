@@ -127,7 +127,6 @@ for key in CONFIG:
 
     
 ##############################
-
 def main():
     # Set up arguments (see docopt above):
     try:
@@ -158,6 +157,17 @@ def main():
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
 
+    # Get locations of source code and of the 'templates' folder to copy over from:
+    source_dir = os.path.join(sys.exec_prefix, "/bin")
+    template_dir = os.path.join(source_dir, '/project_quickstart/templates/')
+    project_template = os.path.join(template_dir, '/project_template')
+    print('Paths discovered:', '\n', 
+          source_dir, '\n', 
+          template_dir, '\n', 
+          project_template, '\n',
+         'Creating the structure for {} in:', '\n',
+         project_dir).format(project_name)
+    
     # Create directories:
     for d in ("", 
               "code", 
@@ -172,112 +182,44 @@ def main():
     if not os.path.exists(tree_dir):
         os.makedirs(tree_dir)
 
-##################################
-
     # Copy files from template directory:
-    def copyTemplate(source_dir, project_dir, project_name):
+    def copyTemplate(source_dir, project_dir):
         '''
         Copy across template files and directories for a Python/GitHub/etc setup.
-        # TO DO: 'code' dir is hard coded, change to ini parameter later
-        # The intention is to use the 'code' dir as a GitHub/packageable directory
+        TO DO: 'code' dir is hard coded, change to ini parameter later
+        The intention is to use the 'code' dir as a GitHub/packageable directory
         '''
-        source = os.path.join(source_dir, "/project_quickstart/templates/project_template/")
-        dest = os.path.join(project_dir, 'code', rx_file.sub(project_name, source_dir))
+        copy_from = project_template
+        copy_to = os.path.join(project_dir, '/code')
         
-        if os.path.exists(fn_dest) and not options['--force']:
+        if os.path.exists(copy_to) and not options['--force']:
             raise OSError(
                 '''file {} already exists - not overwriting, see --help or use --force 
                 to overwrite.'''.format(project_name)
 
-        shutil.copytree(fn_src, fn_dest)
+        shutil.copytree(copy_from, copyt_to) # https://docs.python.org/3/library/shutil.html
 
-
-        fn_dest = os.path.join(destination_dir, dst, rx_file.sub(name, src))
-        fn_src = os.path.join(srcdir, "pipeline_template_data", src)
-
-        if os.path.exists(fn_dest) and not options.force:
-            raise OSError(
-                "file %s already exists - not overwriting." % fn_dest)
-
-        shutil.copytree(fn_src, fn_dest)
-
-    for f in ("conf.py",
-              "pipeline.ini"):
-        copy(f, 'src/pipeline_%s' % options.name, name=options.name)
-
-    # copy the script
-    copy("pipeline_template_%s.py" % options.pipeline_type, 'src', name=options.name)
-                
-##################################
 
     # Replace all instances of template with 'name' from project_'name' as
     # specified in options:
-    rx_file = re.compile("template")
-    rx_template = re.compile("@template@")
-    # Get locations of source code and of the 'templates' dir to copy over:
-    source_dir = os.path.join(sys.exec_prefix, "bin")
-    template_dir = os.path.join(source_dir, 'project_quickstart/templates/project_template')
-
     def rename(project_dir, old_substring, project_name):
-        ''' remove 'project' from template file names '''
-        
-        for f in os.listdir(path):
-            os.rename(os.path.join(template_dir, f), 
-                  os.path.join(path, f.replace(old, new)))
-        copy_to = os.path.join(project_dir, 'code')
-        
-        if os.path.exists(copy_to) and not options['--force']:
-             raise OSError('''file/directory {} already exists 
-                           - not overwriting, use --force option.'''.format(project_name))
-    
-        outfile = open(copy_to, "w")
-        infile = open(template_dir)
-    
-        for line in infile:
-            outfile.write(rx_file.sub(copy_to, rx_template.sub(project_name, line)))
-            
-        outfile.close()
-        infile.close()
+        ''' rename 'template' to 'project' from template file names '''
+        for dirpath, dirname, filename in os.walk(project_dir):
+            for filename in files:
+                os.rename(os.path.join(project_dir, filename), 
+                          os.path.join(project_dir, filename.replace('template', {})).format(project_name)
 
-
-##########################################################################################
-    # Create links:
-    for src, dest in (("conf.py", "conf.py"),
+    # Create links for the manuscript and lab_notebook 
+    # templates to go into the 'manuscript' directory:
+    for template_dir, dest in (("conf.py", "conf.py"),
                       ("pipeline.ini", "pipeline.ini")):
         d = os.path.join("report", dest)
         if os.path.exists(d) and options.force:
             os.unlink(d)
         os.symlink(os.path.join(confdir, src), d)
 
-    for f in ("cgat_logo.png",):
-        copy(f, "%s/_templates" % reportdir,
-             name=options.name)
-
-    for f in ("themes",):
-        copytree(f, "src/pipeline_docs",
-                 name=options.name)
-
-    for f in ("contents.rst",
-              "pipeline.rst",
-              "__init__.py"):
-        copy(f, reportdir,
-             name=options.name)
-
-    for f in ("Dummy.rst",
-              "Methods.rst"):
-        copy(f, "%s/pipeline" % reportdir,
-             name=options.name)
-
-    for f in ("TemplateReport.py", ):
-        copy(f, "%s/trackers" % reportdir,
-             name=options.name)
-
-    absdest = os.path.abspath(destination_dir)
-
-    name = options.name
-
-
-    print(""" Welcome to your {} project!
+    # Print a nice welcome message (if successful):
+    print(""" Done, welcome to your {}!
     
     The folder structure and files have been successfully copied to {}. 
     Files have been copied 'as is'. You can edit the configuration file and run:
