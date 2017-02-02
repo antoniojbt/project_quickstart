@@ -172,6 +172,8 @@ def main():
     if not os.path.exists(tree_dir):
         os.makedirs(tree_dir)
 
+##################################
+
     # Copy files from template directory:
     def copyTemplate(source_dir, project_dir, project_name):
         '''
@@ -190,6 +192,25 @@ def main():
         shutil.copytree(fn_src, fn_dest)
 
 
+    def copytree(src, dst, name):
+
+        fn_dest = os.path.join(destination_dir, dst, rx_file.sub(name, src))
+        fn_src = os.path.join(srcdir, "pipeline_template_data", src)
+
+        if os.path.exists(fn_dest) and not options.force:
+            raise OSError(
+                "file %s already exists - not overwriting." % fn_dest)
+
+        shutil.copytree(fn_src, fn_dest)
+
+    for f in ("conf.py",
+              "pipeline.ini"):
+        copy(f, 'src/pipeline_%s' % options.name, name=options.name)
+
+    # copy the script
+    copy("pipeline_template_%s.py" % options.pipeline_type, 'src', name=options.name)
+                
+##################################
 
     # Replace all instances of template with 'name' from project_'name' as
     # specified in options:
