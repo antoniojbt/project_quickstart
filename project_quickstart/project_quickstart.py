@@ -48,6 +48,8 @@ This will create a new directory, subfolders and files in the current directory 
 
     project_quickstart.py (--project_name | -n) <project_name> 
     project_quickstart.py --update | -u 
+    project_quickstart.py [--script_python] <script_name>
+    project_quickstart.py [--script_R] <script_name>
     project_quickstart.py -f | --force
     project_quickstart.py -h | --help
     project_quickstart.py --version
@@ -56,13 +58,15 @@ This will create a new directory, subfolders and files in the current directory 
     project_quickstart.py [-L | --log] <project_quickstart.log>
     
 Options:
-    --update -u  Configure the project_quickstart.ini manually and run this option to propagate changes.
-    -f --force   Take care, forces to overwrite files and directories.
-    -h --help    Show this screen.
-    --version    Show version.
-    --quiet      Print less text.
-    --verbose    Print more text.
-    -L --log     Log file name. [default: project_quickstart.log]
+    --update -u     Configure the project_quickstart.ini manually and run this option to propagate changes.
+    --script_python Create a python script template, '.py' is appended
+    --script_R      Create an R script template, '.R' is appended
+    -f --force      Take care, forces to overwrite files and directories.
+    -h --help       Show this screen.
+    --version       Show version.
+    --quiet         Print less text.
+    --verbose       Print more text.
+    -L --log        Log file name. [default: project_quickstart.log]
 
 Documentation
 -------------
@@ -83,6 +87,7 @@ import re
 import os
 import shutil
 import collections
+import glob
 #import CGAT.Experiment as E
 from docopt import docopt
 
@@ -135,24 +140,43 @@ def main():
         if not options['--project_name']:
             print('Project name required, it will be appended to "project_"')
         if options['--force']: # overwrite directory
+            print('Force overwriting directories and files')
             print('Option not in use at the moment')
             pass # TO DO            
         if not options['--log']:
             log = str('project_quickstart.log')
         if options['--update']:
+            print('After manually editing the ini file run to propagate changes.')
             print('Option not in use at the moment')
             pass # TO DO
-
+        if options['--script_python']:
+            print('''Create a Python script template. A softlink is created in the current 
+                  working directory and the actual file in xxx/code/scripts/ ''')
+        if options['--script_R']:
+            print('''Create an R script template. A softlink is created in the current 
+                  working directory and the actual file in xxx/code/scripts/ ''')
+ 
     print(arguments)
 
     # Handle exceptions:
     except docopt.DocoptExit:
-        print ('Invalid option, try project_quickstart.py --help')
+        print ('Invalid option or argument missing, try project_quickstart.py --help')
         raise
 
-    # Set up default paths and directory:
-    project_name = {}.format.options['--project_name']
+    # Set up default paths, directoy and file names:
+    if options['--project_name']:
+        project_name = str('project_'{}).format.options['--project_name']
+    else:
+        raise NameError('No project name given.')
+
     project_dir = str(os.getcwd() + '/' + project_name)
+
+    if options['--script_python']:
+        script_name = str({}'.py').format.options['--script_name']
+    elif options['--script_R']:
+        script_name = str({}'.R').format.options['--script_name']
+    else:
+        raise NameError('No name given to the script.')
 
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
@@ -164,8 +188,9 @@ def main():
     manuscript_dir = os.path.join(project_dir, '/manuscript')
     code_dir = os.path.join(project_dir, '/code')
     data_dir = os.path.join(project_dir, '/data')
-    
-    
+    script_template_py = str('python_script_template.py')
+    script_template_R = str('R_script_template.R')
+
     print('Paths discovered:', '\n', 
           source_dir, '\n', 
           template_dir, '\n', 
@@ -174,33 +199,33 @@ def main():
          project_dir).format(project_name)
     
     # Create directories:
-    for d in ("", 
-              "code", 
-              "data",
-              "data/raw",
-              "data/processed",
-              "data/external",
-              "results_1",
-              "manuscript"):
+    for d in ({1}, 
+              "{1}/code", 
+              "{1}/data",
+              "{1}/data/raw",
+              "{1}/data/processed",
+              "{1}/data/external",
+              "{1}/results_1",
+              "{1}/manuscript").format(project_name):
     
     tree_dir = os.path.join(project_dir, d)
     if not os.path.exists(tree_dir):
         os.makedirs(tree_dir)
 
     # Copy files from template directory:
-    def copyTemplate(source_dir, project_dir):
+    def projectTemplate(source_dir, project_dir):
         '''
-        Copy across template files and directories for a Python/GitHub/etc setup.
+        Copy across project template files and directories for a Python/GitHub/etc setup.
         TO DO: 'code' dir is hard coded, change to ini parameter later
         The intention is to use the 'code' dir as a GitHub/packageable directory
         '''
         copy_from = project_template
-        copy_to = os.path.join(project_dir, '/code')
+        copy_to = code_dir
         
         if os.path.exists(copy_to) and not options['--force']:
             raise OSError(
                 '''file {} already exists - not overwriting, see --help or use --force 
-                to overwrite.'''.format(project_name)
+                to overwrite.'''.format(script_name)
 
         shutil.copytree(copy_from, copyt_to) # https://docs.python.org/3/library/shutil.html
 
@@ -214,14 +239,39 @@ def main():
                 os.rename(os.path.join(project_dir, filename), 
                           os.path.join(project_dir, filename.replace('template', {})).format(project_name)
 
-    # Create links for the manuscript and lab_notebook 
-    # templates to go into the 'manuscript' directory:
-    for template_dir, project_dir in (("manuscript_template.rst", "lab_notebook_template.rst"), 
-                                      ("manuscript_template.rst", "lab_notebook_template.rst")):
-        d = os.path.join("", project_dir)
-        if os.path.exists(d) and options['--force']:
-            os.unlink(d)
-        os.symlink(os.path.join(project_dir, ), d)
+    def manuscriptTemplates(template_dir, manuscript_dir):
+        '''Copy the manuscript and lab_notebook templates to the 'manuscript' directory.'''
+        
+        files = glob.glob(r'*\.rst')
+        for f in files:
+            shutil.copy(template_dir, manuscript_dir)
+
+    def scriptTemplate(python_script, R_script):
+        ''' Copy script templates and rename them according to option given'''
+        copy_to = os.path.join(code_dir, '/scripts')
+        
+        if option['--script_python']:
+            if os.path.exists(copy_to) and not options['--force']:
+                raise OSError('''File {} already exists - not overwriting, 
+                              see --help or use --force to overwrite.'''.format(script_name)
+            else:
+                copy_from = os.path.join(template_dir, script_template_py)
+                shutil.copy(copy_from, copy_to)
+                os.rename(os.path.join(copy_to, script_template_py), 
+                          filename.replace('template', {})).format(script_name)
+                              
+        elif option['--script_R']:
+            if os.path.exists(copy_to) and not options['--force']:
+                raise OSError('''File {} already exists - not overwriting, 
+                              see --help or use --force to overwrite.'''.format(script_name)
+            else:
+                copy_from = os.path.join(template_dir, script_template_R)
+                shutil.copy(copy_from, copy_to)
+                os.rename(os.path.join(copy_to, script_template_R), 
+                          filename.replace('template', {})).format(script_name)
+
+        else:
+            raise ValueError('Bad arguments/options used for script template, try --help')
 
     # Print a nice welcome message (if successful):
     print(""" Done, welcome to your {1}!
@@ -260,5 +310,4 @@ def main():
          )
 
 if __name__ == '__main__':
-    main()
-#    sys.exit(main())
+    sys.exit(main())
