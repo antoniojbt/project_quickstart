@@ -136,10 +136,12 @@ def main():
         if not options['--project_name']:
             print('Project name required, it will be appended to "project_"')
         if options['--force']: # overwrite directory
+            print('Option not in use at the moment')
             pass # TO DO            
         if not options['--log']:
             log = str('project_quickstart.log')
         if options['--update']:
+            print('Option not in use at the moment')
             pass # TO DO
 
     print(arguments)
@@ -170,7 +172,25 @@ def main():
     if not os.path.exists(tree_dir):
         os.makedirs(tree_dir)
 
-    # Copy files and directories
+    # Copy files from template directory:
+    def copyTemplate(source_dir, project_dir, project_name):
+        '''
+        Copy across template files and directories for a Python/GitHub/etc setup.
+        # TO DO: 'code' dir is hard coded, change to ini parameter later
+        # The intention is to use the 'code' dir as a GitHub/packageable directory
+        '''
+         = os.path.join(project_dir, 'code', rx_file.sub(project_name, source_dir))
+        fn_src = os.path.join(srcdir, "project_template", src)
+
+        if os.path.exists(fn_dest) and not options['--force']:
+            raise OSError(
+                '''file {} already exists - not overwriting, see --help or use --force 
+                to overwrite.'''.format(project_name)
+
+        shutil.copytree(fn_src, fn_dest)
+
+
+
     # Replace all instances of template with 'name' from project_'name' as
     # specified in options:
     rx_file = re.compile("template")
@@ -179,9 +199,12 @@ def main():
     source_dir = os.path.join(sys.exec_prefix, "bin")
     template_dir = os.path.join(source_dir, 'project_quickstart/templates/project_template')
 
-    def copy(project_dir, project_name, source_dir):
+    def rename(project_dir, old_substring, project_name):
         ''' remove 'project' from template file names '''
         
+        for f in os.listdir(path):
+            os.rename(os.path.join(template_dir, f), 
+                  os.path.join(path, f.replace(old, new)))
         copy_to = os.path.join(project_dir, 'code')
         
         if os.path.exists(copy_to) and not options['--force']:
@@ -197,20 +220,6 @@ def main():
         outfile.close()
         infile.close()
 
-    def copytree(source_dir, copy_to, project_name):
-
-        fn_dest = os.path.join(copy_to, , rx_file.sub(project_name, source_dir))
-        fn_src = os.path.join(srcdir, "project_template", src)
-
-        if os.path.exists(fn_dest) and not options['--force']:
-            raise OSError(
-                '''file {} already exists - not overwriting, see --help or use --force 
-                to overwrite.'''.format(project_name)
-
-        shutil.copytree(fn_src, fn_dest)
-
-    for f in ("xxx", "project_template.ini"):
-        copy(f, 'code/project_{}'.format(project_name)
 
 ##########################################################################################
     # Create links:
