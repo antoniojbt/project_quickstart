@@ -161,6 +161,11 @@ def main():
     source_dir = os.path.join(sys.exec_prefix, "/bin")
     template_dir = os.path.join(source_dir, '/project_quickstart/templates/')
     project_template = os.path.join(template_dir, '/project_template')
+    manuscript_dir = os.path.join(project_dir, '/manuscript')
+    code_dir = os.path.join(project_dir, '/code')
+    data_dir = os.path.join(project_dir, '/data')
+    
+    
     print('Paths discovered:', '\n', 
           source_dir, '\n', 
           template_dir, '\n', 
@@ -211,30 +216,47 @@ def main():
 
     # Create links for the manuscript and lab_notebook 
     # templates to go into the 'manuscript' directory:
-    for template_dir, dest in (("conf.py", "conf.py"),
-                      ("pipeline.ini", "pipeline.ini")):
-        d = os.path.join("report", dest)
-        if os.path.exists(d) and options.force:
+    for template_dir, project_dir in (("manuscript_template.rst", "lab_notebook_template.rst"), 
+                                      ("manuscript_template.rst", "lab_notebook_template.rst")):
+        d = os.path.join("", project_dir)
+        if os.path.exists(d) and options['--force']:
             os.unlink(d)
-        os.symlink(os.path.join(confdir, src), d)
+        os.symlink(os.path.join(project_dir, ), d)
 
     # Print a nice welcome message (if successful):
-    print(""" Done, welcome to your {}!
+    print(""" Done, welcome to your {1}!
     
-    The folder structure and files have been successfully copied to {}. 
-    Files have been copied 'as is'. You can edit the configuration file and run:
+    The folder structure and files have been successfully copied to {2}. 
+    Files have been copied 'as is'. You can edit the configuration file ('xxx.ini') and run:
     
     python project quickstart.py --update
     
-    to update files with your chosen parameters (note files get overwritten).
+    to update files with your chosen parameters (note files get overwritten though).
     
-    The folder structure is {}.
+    The folder structure is {3}.
+    
+    Remember to back up code, data and manuscript directories (or your equivalent).
+    The {4} (or equivalent) directory can be uploaded to a version control system
+    for example (file templates are for GitHub). Link to Travis CI, Zenodo and ReadtheDocs 
+    (notes and reminders within the files copied over) if needed.
+    Script templates are in the {4}/scripts/ location (or equivalent if renamed).
+    You can put scripts and modules in the {4}/code/scripts/ location and
+    pipelines (eg Ruffus/CGAT or others) in the {4}/code/{1} location for example.
+    Sphinx can be used to render your rst documents in the {5} directory. 
+    Basic, single rst template files have been generated already. 
+    Use sphinxqhickstart if you want a fuller version for instance.
+    
     Feel free to raise issues, fork or contribute at:
     
     https://github.com/AntonioJBT/project_quickstart
-    
+
     Have fun!
-    """.format(project_name, project_dir, tree_dir)
+    """.format(project_name, 
+               project_dir, 
+               tree_dir, 
+               code_dir, 
+               manuscript_dir, 
+               data_dir)
          )
 
 if __name__ == '__main__':
