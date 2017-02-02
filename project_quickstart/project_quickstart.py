@@ -88,7 +88,7 @@ from docopt import docopt
 
 try:
     import configparser
-except ImportError:
+except ImportError: # Py2 to Py3
     import ConfigParser as configparser
 
 # Check configuration and print to standard out
@@ -146,7 +146,7 @@ def main():
 
     # Handle exceptions:
     except docopt.DocoptExit:
-        print ('Invalid option, use project_quickstart.py --help')
+        print ('Invalid option, try project_quickstart.py --help')
         raise
 
     # Set up default paths and directory:
@@ -171,48 +171,46 @@ def main():
         os.makedirs(tree_dir)
 
     # Copy files and directories
-    # replaces all instances of template with 'name' from project_'name' as
-    # specified in options
+    # Replace all instances of template with 'name' from project_'name' as
+    # specified in options:
     rx_file = re.compile("template")
     rx_template = re.compile("@template@")
-    # TO DO:
+    # Get locations of source code and of the 'templates' dir to copy over:
     source_dir = os.path.join(sys.exec_prefix, "bin")
     template_dir = os.path.join(source_dir, 'project_quickstart/templates/project_template')
 
-########################################
     def copy(project_dir, project_name, source_dir):
         ''' remove 'project' from template file names '''
-        copy_from = source
-        copy_to = os.path.join(project_dir, 'code', fn_dest)
         
-        if os.path.exists(fn_dest) and not options['--force']:
+        copy_to = os.path.join(project_dir, 'code')
+        
+        if os.path.exists(copy_to) and not options['--force']:
              raise OSError('''file/directory {} already exists 
                            - not overwriting, use --force option.'''.format(project_name))
     
-        outfile = open(fn_dest, "w")
-        infile = open(fn_src)
+        outfile = open(copy_to, "w")
+        infile = open(template_dir)
     
         for line in infile:
-            outfile.write(rx_reportdir.sub(reportdir,
-                                           rx_template.sub(name, line)))
+            outfile.write(rx_file.sub(copy_to, rx_template.sub(project_name, line)))
+            
         outfile.close()
         infile.close()
 
+    def copytree(source_dir, copy_to, project_name):
 
-    def copytree(src, dst, name):
-
-        fn_dest = os.path.join(destination_dir, dst, rx_file.sub(name, src))
+        fn_dest = os.path.join(copy_to, , rx_file.sub(project_name, source_dir))
         fn_src = os.path.join(srcdir, "project_template", src)
 
-        if os.path.exists(fn_dest) and not options.force:
+        if os.path.exists(fn_dest) and not options['--force']:
             raise OSError(
-                "file %s already exists - not overwriting." % fn_dest)
+                '''file {} already exists - not overwriting, see --help or use --force 
+                to overwrite.'''.format(project_name)
 
         shutil.copytree(fn_src, fn_dest)
 
-    for f in ("conf.py",
-              "project.ini"):
-        copy(f, 'src/project_%s' % options.name, name=options.name)
+    for f in ("xxx", "project_template.ini"):
+        copy(f, 'code/project_{}'.format(project_name)
 
 ##########################################################################################
     # Create links:
