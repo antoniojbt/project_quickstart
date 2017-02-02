@@ -181,9 +181,9 @@ def main():
         # TO DO: 'code' dir is hard coded, change to ini parameter later
         # The intention is to use the 'code' dir as a GitHub/packageable directory
         '''
-         = os.path.join(project_dir, 'code', rx_file.sub(project_name, source_dir))
-        fn_src = os.path.join(srcdir, "project_template", src)
-
+        source = os.path.join(source_dir, "/project_quickstart/templates/project_template/")
+        dest = os.path.join(project_dir, 'code', rx_file.sub(project_name, source_dir))
+        
         if os.path.exists(fn_dest) and not options['--force']:
             raise OSError(
                 '''file {} already exists - not overwriting, see --help or use --force 
@@ -191,8 +191,6 @@ def main():
 
         shutil.copytree(fn_src, fn_dest)
 
-
-    def copytree(src, dst, name):
 
         fn_dest = os.path.join(destination_dir, dst, rx_file.sub(name, src))
         fn_src = os.path.join(srcdir, "pipeline_template_data", src)
