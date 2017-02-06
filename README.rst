@@ -98,21 +98,24 @@ Also see its data-science_ and reproducibility_ templates, they look good.
 
 .. _data-science: https://github.com/drivendata/cookiecutter-data-science
 
+-----
+
 To install:
 
 TODO
 
-.. git clone
+From GitHub
+===========
 
 To download and install from GitHub (you need git installed) do::
-
-.. code-block::
 
 |    project_quickstart
 |    ├── project_quickstart
 |    │   ├── __init__.py
 |    │   └── scripts and other files
 |    └── setup.py
+
+.. code-block::
 
     Install from github from the command line with::
     
@@ -122,18 +125,31 @@ To download and install from GitHub (you need git installed) do::
     or
     $ pip install git+git://github.com/myuser/foo.git@newbranch
 
+or clone from GitHub (https example, you may need ssh)::
+
+.. code-block::
+
+    git clone https://github.com/AntonioJBT/project_quickstart.git
+    
+    python setup.py install
+
 
 See stackoverflow_ example and pip docs_ for further help and explanations pip and git installs.
 
 .. _stackoverflow: http://stackoverflow.com/questions/8247605/configuring-so-that-pip-install-can-work-from-github
 .. _docs: https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support/pip_install.html#vcs-support
 
-.. pip
-.. conda
 
-Then: 
+pip
+===
 
-.. python setup.py check
+TODO
+
+Conda
+=====
+
+TODO
+
 
 To use:
 TODO
