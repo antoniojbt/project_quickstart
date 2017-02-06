@@ -10,6 +10,7 @@ include INSTALL
 include README.rst
 include KNOWN_BUGS
 include THANKS.txt
+#recursive-include docs *.html *.css *.png *.gif
 
 #include install.sh
 #include requirements.txt
