@@ -52,13 +52,13 @@ To do manually::
 	+ Manually modify the Python packaging template files with your project information and then (info directly from diveintopython3_)::
 		* Run the Distutils built-in validation command:: 
 		
-.. code-block::
+.. code-block:: python
 
 	python setup.py check
 			
-Distutils can build different types of releases. Build a “source distribution” as a minimum that includes your source code, setup.py script, README and any additional files (which you need to manually specify in the MANIFEST.in template). Then, build a source distribution wtih:: 
+Distutils can build different types of releases. Build a “source distribution” as a minimum that includes your source code, setup.py script, README and any additional files (which you need to manually specify in the MANIFEST.in template). Then, build a source distribution with:: 
 		
-.. code-block::
+.. code-block:: python
 
 	python setup.py sdist
 
@@ -73,7 +73,7 @@ This will create a *"dist/"* folder which should contain a *".zip"* file that ca
 	    * Upload the packages you created with setup.py sdist and setup.py bdist_*
 	    * To release a new version, update setup.py with the new version number, then run the same upload command::
 
-.. code-block::
+.. code-block:: python
 
 	python setup.py register sdist upload
 
@@ -87,7 +87,7 @@ Add bdist_wininst to include a Windows graphical installer_.
 
 - You need to manually choose a license, classify your software using the PyPI classification system () and write a README.txt file.
 
-- See also CookieCutter's helpful tutorial_ for PyPi instructions for example.
+- See also CookieCutter's helpful tutorial_ for PyPi instructions.
 
 .. _tutorial: https://cookiecutter-pypackage.readthedocs.io/en/latest/pypi_release_checklist.html
 
