@@ -56,14 +56,13 @@ To do manually::
 
 	python setup.py check
 			
-		* Distutils can build different types of releases, build a “source distribution” as a minimum that includes your source code, setup.py script, README and any additional files (which you need to manually specify in the MANIFEST.in template). Then, build a source distribution wtih:: 
+Distutils can build different types of releases. Build a “source distribution” as a minimum that includes your source code, setup.py script, README and any additional files (which you need to manually specify in the MANIFEST.in template). Then, build a source distribution wtih:: 
 		
 .. code-block::
 
 	python setup.py sdist
 
-.. note::
-	This will create a *"dist/" folder which should contain a *".zip" file that can be distributed.
+This will create a *"dist/"* folder which should contain a *".zip"* file that can then be shared.
 
 - See diveintopython3_ for instructions for Python3 and Distutils (basic instructions copied here)::
 
@@ -72,13 +71,13 @@ To do manually::
 	    * Register yourself (go to PyPi's registration_)
 	    * Register your software
 	    * Upload the packages you created with setup.py sdist and setup.py bdist_*
-	    * To release a new version, update setup.py with the new version number, then run the same upload command.
+	    * To release a new version, update setup.py with the new version number, then run the same upload command::
 
 .. code-block::
 
 	python setup.py register sdist upload
 
-	(Add bdist_wininst to include a Windows graphical installer_)
+Add bdist_wininst to include a Windows graphical installer_.
 
 .. _diveintopython3: http://www.diveintopython3.net/packaging.html
 
@@ -96,6 +95,7 @@ PIPELINE PLAN
 #############
 
 .. todo::
+
 	TO DO
 
 -----
