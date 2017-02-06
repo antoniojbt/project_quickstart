@@ -107,7 +107,7 @@ TODO
 From GitHub
 ===========
 
-To download and install from GitHub (you need git installed) do::
+To download and install from GitHub (you need git installed), at the command line do::
 
 |    project_quickstart
 |    ├── project_quickstart
@@ -117,8 +117,6 @@ To download and install from GitHub (you need git installed) do::
 
 .. code-block::
 
-    Install from github from the command line with::
-    
     $ pip install git+git://github.com/AntonioJBT/project_quickstart.git
 
 ..    $ pip install git+git://github.com/myuser/foo.git@v123
@@ -151,7 +149,12 @@ Conda
 TODO
 
 
-To use:
+Usage
+=====
 TODO
 
-project_quickstart.py --help
+.. code-block::
+    
+    project_quickstart.py --help
+
+
