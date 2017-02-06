@@ -97,3 +97,18 @@ Also see its data-science_ and reproducibility_ templates, they look good.
 .. _reproducibility: https://github.com/mkrapp/cookiecutter-reproducible-science
 
 .. _data-science: https://github.com/drivendata/cookiecutter-data-science
+
+To install:
+TODO
+.. git clone
+.. pip
+.. conda
+
+Then: 
+
+.. python setup.py check
+
+To use:
+TODO
+
+project_quickstart.py --help
