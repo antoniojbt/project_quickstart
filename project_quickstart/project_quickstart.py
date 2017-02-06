@@ -155,7 +155,7 @@ def main():
         if options['--script_R']:
             print('''Create an R script template. A softlink is created in the current 
                   working directory and the actual file in xxx/code/scripts/ ''') 
-    print(arguments)
+        print(arguments)
 
     # Handle exceptions:
     except docopt.DocoptExit:
