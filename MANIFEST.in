@@ -1,4 +1,10 @@
-# Example from https://github.com/CGATOxford/cgat/blob/master/MANIFEST.in
+# By default, Distutils (the packaging framework, called in setup.py) will include the following files in your release package:
+#    README.txt
+#    setup.py
+#    The .py files needed by the multi-file modules listed in the packages parameter
+#    The individual .py files listed in the py_modules parameter 
+
+# See explanation in: http://www.diveintopython3.net/packaging.html
 
 # Use .add_data_files and .add_data_dir methods in a appropriate
 # setup.py files to include non-python files such as documentation,
