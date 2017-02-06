@@ -99,8 +99,35 @@ Also see its data-science_ and reproducibility_ templates, they look good.
 .. _data-science: https://github.com/drivendata/cookiecutter-data-science
 
 To install:
+
 TODO
+
 .. git clone
+
+To download and install from GitHub (you need git installed) do::
+
+.. code-block::
+
+|    project_quickstart
+|    ├── project_quickstart
+|    │   ├── __init__.py
+|    │   └── scripts and other files
+|    └── setup.py
+
+    Install from github from the command line with::
+    
+    $ pip install git+git://github.com/AntonioJBT/project_quickstart.git
+
+..    $ pip install git+git://github.com/myuser/foo.git@v123
+    or
+    $ pip install git+git://github.com/myuser/foo.git@newbranch
+
+
+See stackoverflow_ example and pip docs_ for further help and explanations pip and git installs.
+
+.. _stackoverflow: http://stackoverflow.com/questions/8247605/configuring-so-that-pip-install-can-work-from-github
+.. _docs: https://pip.pypa.io/en/stable/reference/pip_install/#vcs-support/pip_install.html#vcs-support
+
 .. pip
 .. conda
 
