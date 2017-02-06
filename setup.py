@@ -8,19 +8,34 @@
 
 # See also this example: https://github.com/pypa/sampleproject/blob/master/setup.py
 
-from setuptools import setup
+# This may be a better way, based on Py3: http://www.diveintopython3.net/packaging.html
 
-setup(name='project_quickstart',
-      version='0.1',
-      description='',
-      url='',
-      author='Antonio J Berlanga-Taylor',
-      author_email='a.berlanga at imperial.ac.uk',
-      license='GPL-3.0',
-#      packages=['funniest'],
+from distutils.core import setup
+#from setuptools import setup # Py2
+
+setup(name = 'project_quickstart',
+      packages = ['project_quickstart'],
 #      install_requires=[
 #            'cgat',
 #            'CGATPipelines',
 #      ],
-      zip_safe=False
+      version = '0.1',
+      url = '',
+      download_url = '',
+      author = 'Antonio J Berlanga-Taylor',
+      author_email = 'a.berlanga at imperial.ac.uk',
+      license = 'GPL-3.0',
+      zip_safe = False,
+      classifiers = ["Programming Language :: Python",
+                     "Programming Language :: Python :: 3",
+                     "Development Status :: Alpha",
+                     "Environment :: Other Environment",
+                     "Intended Audience :: Developers",
+                     "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
+                     "Operating System :: Linux and OSX",
+                     "Topic :: Software Development :: Libraries :: Python Modules",
+                    ],
+      description = 'Data science Python project quickstart',
+      keywords = ['', ''],
+      long_description = ''
      )
