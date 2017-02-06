@@ -36,7 +36,7 @@ To do manually:
 - Manually connect to Travis for testing, add image to README.rst
 - Keep track of installations for Docker instructions
 - Manually connect to Zenodo, each release will trigger an archive and DOI
-- Manually connect to ReadtheDocs, triggers will build the package's documentation on their webpage:
+- Manually connect to ReadtheDocs, triggers will build the package's documentation on their webpage::
 	+ Manual configuration is needed on both the GitHub and ReadtheDocs sides:
 		* Sign up to RTD, connect it to your GitHub account and allow permissions
 		* At RTD setup the configuration as needed, check:
@@ -47,10 +47,29 @@ To do manually:
 			The rest should be OK with the defualts. The EPUB option may need further configuring though.
 			Copy the RTD image to your README.rst so the badge shows up.
 		
-- Setup conda recipe or PyPi if appropriate. See CookieCutter's helpful tutorial for PyPi_ instructions for example.
+- Setup conda recipe or PyPi if appropriate::
+	+ Manually modify the Python packaging files:
+		* Run the Distutils built-in validation command: python setup.py check
+
+
+
+- See diveintopython3_ for instructions for Python3 and Distutils (basic instructions copied here)::
+
+	+ Upload your software tools to the Python Package Index (PyPi)::
+
+	    * Register yourself (go to https://pypi.python.org/pypi?:action=register_form)
+	    * Register your software
+	    * Upload the packages you created with setup.py sdist and setup.py bdist_*
+	    * To release a new version, update setup.py with the new version number, then run the same upload command.
+
+
+.. _diveintopython3: http://www.diveintopython3.net/packaging.html
+
+- You need to manually choose a license, classify your software using the PyPI classification system () and write a README.txt file.
+
+- See also CookieCutter's helpful tutorial for PyPi_ instructions for example.
 
 .. _Pypi: https://cookiecutter-pypackage.readthedocs.io/en/latest/pypi_release_checklist.html
-
 
 PIPELINE PLAN
 #############
