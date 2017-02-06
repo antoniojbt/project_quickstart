@@ -17,7 +17,8 @@ Future work
 ############
 
 
-TO DO main tasks
+
+Main tasks
 #################
 
 Plan::
@@ -40,9 +41,8 @@ To do manually::
 	+ Manual configuration is needed on both the GitHub and ReadtheDocs sides::
 		* Sign up to RTD, connect it to your GitHub account and allow permissions
 		* At RTD setup the configuration as needed, check::
-		
 			- Repo:: https://github.com/github_username/project_name.git
-			- Add the *.git* to it.
+			- Add the *.git* to it
 			- Use virtualenv: (checked)
 			- Requirements file:: requirements.txt
 			- The rest should be OK with the defualts. The EPUB option may need further configuring though.
@@ -56,7 +56,7 @@ To do manually::
 
 	python setup.py check
 			
-Distutils can build different types of releases. Build a “source distribution” as a minimum that includes your source code, setup.py script, README and any additional files (which you need to manually specify in the MANIFEST.in template). Then, build a source distribution with:: 
+Distutils can build different types of releases. Build a “source distribution” as a minimum that includes your source code, setup.py script, README and any additional files (which you need to manually specify in the MANIFEST.in template). Then, build a source distribution with::
 		
 .. code-block:: python
 
@@ -67,7 +67,6 @@ This will create a *"dist/"* folder which should contain a *".zip"* file that ca
 - See diveintopython3_ for instructions for Python3 and Distutils (basic instructions copied here)::
 
 	+ Upload your software tools to the Python Package Index (PyPi)::
-
 	    * Register yourself (go to PyPi's registration_)
 	    * Register your software
 	    * Upload the packages you created with setup.py sdist and setup.py bdist_*
