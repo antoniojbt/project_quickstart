@@ -82,6 +82,10 @@ Code
 '''
 
 ##############################
+# To delete:
+prog_version = '0.1'
+
+
 import sys
 import re
 import os
@@ -89,7 +93,7 @@ import shutil
 import collections
 import glob
 #import CGAT.Experiment as E
-from docopt import docopt
+import docopt
 
 try:
     import configparser
@@ -239,11 +243,12 @@ def main():
             for filename in files:
                 os.rename(os.path.join(project_dir, filename), 
                           os.path.join(project_dir, filename.replace('template', {})).format(project_name)
+                         ) 
 
     def manuscriptTemplates(template_dir, manuscript_dir):
         '''Copy the manuscript and lab_notebook templates to the 'manuscript' directory.'''
         
-        files = glob.glob(r'*\.rst')
+        files = glob.glob('(*).rst')
         for f in files:
             shutil.copy(template_dir, manuscript_dir)
 
@@ -253,8 +258,10 @@ def main():
         
         if option['--script_python']:
             if os.path.exists(copy_to) and not options['--force']:
-                raise OSError('''File {} already exists - not overwriting, 
+                raise OSError(
+                              '''File {} already exists - not overwriting, 
                               see --help or use --force to overwrite.'''.format(script_name)
+                             )
             else:
                 copy_from = os.path.join(template_dir, script_template_py)
                 shutil.copy(copy_from, copy_to)
@@ -263,8 +270,10 @@ def main():
                               
         elif option['--script_R']:
             if os.path.exists(copy_to) and not options['--force']:
-                raise OSError('''File {} already exists - not overwriting, 
+                raise OSError(
+                              '''File {} already exists - not overwriting, 
                               see --help or use --force to overwrite.'''.format(script_name)
+                             )
             else:
                 copy_from = os.path.join(template_dir, script_template_R)
                 shutil.copy(copy_from, copy_to)
