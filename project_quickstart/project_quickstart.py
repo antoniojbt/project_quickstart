@@ -164,16 +164,16 @@ def main():
 
     # Set up default paths, directoy and file names:
     if options['--project_name']:
-        project_name = str('project_'{}).format.options['--project_name']
+        project_name = str('project_{}').format.options['--project_name']
     else:
         raise NameError('No project name given.')
 
     project_dir = str(os.getcwd() + '/' + project_name)
 
     if options['--script_python']:
-        script_name = str({}'.py').format.options['--script_name']
+        script_name = str('{}.py').format.options['--script_name']
     elif options['--script_R']:
-        script_name = str({}'.R').format.options['--script_name']
+        script_name = str('{}.R').format.options['--script_name']
     else:
         raise NameError('No name given to the script.')
 
@@ -207,9 +207,10 @@ def main():
               "{1}/results_1",
               "{1}/manuscript").format(project_name):
     
-    tree_dir = os.path.join(project_dir, d)
-    if not os.path.exists(tree_dir):
-        os.makedirs(tree_dir)
+        tree_dir = os.path.join(project_dir, d)
+    
+        if not os.path.exists(tree_dir):
+            os.makedirs(tree_dir)
 
     # Copy files from template directory:
     def projectTemplate(source_dir, project_dir):
@@ -223,10 +224,11 @@ def main():
         
         if os.path.exists(copy_to) and not options['--force']:
             raise OSError(
-                '''file {} already exists - not overwriting, see --help or use --force 
+                          ''' file {} already exists - not overwriting, see --help or use --force 
                 to overwrite.'''.format(script_name)
-
-        shutil.copytree(copy_from, copyt_to) # https://docs.python.org/3/library/shutil.html
+                         )
+        else:
+            shutil.copytree(copy_from, copy_to) # https://docs.python.org/3/library/shutil.html
 
 
     # Replace all instances of template with 'name' from project_'name' as
