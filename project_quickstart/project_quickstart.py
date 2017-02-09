@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''project_quickstart.py - setup a new python based project
 ===========================================================
 
@@ -36,42 +38,52 @@ https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickst
 
 Usage and Options
 =================
-Quickstart a data science project with a folder structure and script,
-packaging, testing, etc. templates
+Create a new directory, subfolders and files in the current directory that will
+help quickstart your data science project with packaging, testing, scripts and
+other templates.
 
 .. These are using docopt: http://docopt.org/
 .. https://github.com/docopt/docopt
 .. An example for loading arguments from an INI file:
 .. https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
+.. http://docopt.readthedocs.io/en/latest/#help-message-format
+.. Basic reminders for docopt:
+    Use two spaces to separate options with their informal description
+    () are required, [] are optional
+    Default values are specified in the Options section with eg [default:
+    xxx.log]
+
+.. See also Schema for input argument validation, e.g.:
+    https://github.com/docopt/docopt/blob/master/examples/validation_example.py
+
 
 Usage:
-    project_quickstart.py (--project_name=<project_name>) ...
 
-to start a new project ('project_' will be prefixed)
-This will create a new directory, subfolders and files in the current directory
-that will help quickstart your data science project.
+    python project_quickstart.py (--project_name=<project_name>) ...
 
-    project_quickstart.py (--project_name | -n) <project_name>
-    project_quickstart.py --update | -u
-    project_quickstart.py [--script_python] <script_name>
-    project_quickstart.py [--script_R] <script_name>
+    project_quickstart.py (--project_name | -n = <project_name>)
+    project_quickstart.py [--update | -u]
+    project_quickstart.py [--script_python=<script_name>]
+    project_quickstart.py [--script_R=<script_name>]
     project_quickstart.py -f | --force
     project_quickstart.py -h | --help
     project_quickstart.py --version
     project_quickstart.py --quiet
     project_quickstart.py --verbose
-    project_quickstart.py [-L | --log] <project_quickstart.log>
+    project_quickstart.py [-L | --log = <project_quickstart.log>]
+
 
 Options:
-    --update -u     Propagate changes made in project_quickstart.ini
-    --script_python Create a python script template, '.py' is appended
-    --script_R      Create an R script template, '.R' is appended
-    -f --force      Take care, forces to overwrite files and directories.
-    -h --help       Show this screen.
-    --version       Show version.
-    --quiet         Print less text.
-    --verbose       Print more text.
-    -L --log        Log file name. [default: project_quickstart.log]
+    --project-name -n     Starts a new project, 'project_' is prefixed
+    --update -u           Propagate changes made in project_quickstart.ini
+    --script_python=FILE  Create a python script template, '.py' is appended
+    --script_R=FILE       Create an R script template, '.R' is appended
+    -f --force            Take care, forces to overwrite files and directories.
+    -h --help             Show this screen.
+    --version             Show version.
+    --quiet               Print less text.
+    --verbose             Print more text.
+    -L FILE --log=FILE    Log file name. [default: project_quickstart.log]
 
 Documentation
 -------------
@@ -105,16 +117,26 @@ try:
 except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
 
+try:
+    from StringIO import StringIO
+except ImportError:  # Python 3
+    from io import StringIO
+
 # Check configuration and print to standard out
 # See:
 # https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/
 # Pipeline/Parameters.py
 # https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
 
-# Global variable for configuration file ('.ini'):
-CONFIG = configparser.ConfigParser()
+# Global variable for configuration file ('.ini')
+# allow_no_value addition is from:
+# https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
+# By using `allow_no_value=True` we are allowed to
+# write `--force` instead of `--force=true` below.
+CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 
+'''
 class TriggeredDefaultFactory:
     with_default = False
 
@@ -122,12 +144,14 @@ class TriggeredDefaultFactory:
         if TriggeredDefaultFactory.with_default:
             return str()
         else:
-            raise KeyError("missing parameter accessed")
+            print("Missing argument, see python project_quickstart.py --help")
+            raise KeyError("Missing parameter accessed")
+'''
 
 # Global variable for parameter interpolation in commands
 # This is a dictionary that can be switched between defaultdict
 # and normal dict behaviour.
-PARAMS = collections.defaultdict(TriggeredDefaultFactory())
+#PARAMS = collections.defaultdict(TriggeredDefaultFactory())
 
 # patch - if --help or -h in command line arguments,
 # switch to a default dict to avoid missing paramater
@@ -148,9 +172,10 @@ def main():
     # Set up arguments (see docopt above):
     try:
         # Parse arguments, use file docstring as a parameter definition:
-        options = docopt.docopt(__doc__)  #, version = {}).format(prog_version)
-        if not options['--project_name']:
+        arguments = docopt.docopt(__doc__, version='0.1')  # , version = {}).format(prog_version)
+        if not options['--project_name', '-n']:
             print('Project name required, it will be appended to "project_"')
+            sys.exit()
         if options['--force']:  # overwrite directory
             print('Force overwriting directories and files')
             print('Option not in use at the moment')
@@ -170,11 +195,11 @@ def main():
             print(''' Create an R script template. A softlink is
                      created in the current working directory
                      and the actual file in xxx/code/scripts/ ''')
-        print(options)
+        print(arguments)
 
     # Handle exceptions:
     except docopt.DocoptExit:
-        print(''' Invalid option or argument missing,
+        print(''' Invalid option or missing argument,
         try project_quickstart.py --help''')
         raise
 
