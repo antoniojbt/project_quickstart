@@ -12,10 +12,18 @@ https://github.com/AntonioJBT/project_quickstart
 '''
 
 # Load arguments from an INI file
-# See as an example:
+# Modified from:
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
+# See also:
+# http://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python
+# https://wiki.python.org/moin/ConfigParserExamples
+# CGAT tools do a better job, using argparser.
+
 
 def load_ini_config():
+    ''' Loads an *.ini file if present in the current directory and prepares it
+    for use with docopt'''
+
     try:  # Python 2
         from ConfigParser import ConfigParser
         from StringIO import StringIO
@@ -31,23 +39,31 @@ def load_ini_config():
     # write `--force` instead of `--force=true` below.
     config = ConfigParser(allow_no_value=True)
 
-    # Load the INI file:
-    if glob.glob('*.ini'):
-        INI_file = glob.glob('*.ini')
+    # Check if there's an INI file present:
+    if len(glob.glob('*.ini')) == 0:
+        return 'No configuration file (e.g. xxx.ini) present in the directory'
+    elif len(glob.glob('*.ini')) > 1:
+        return ''' More than one configuration file present
+        (several files ending in ".ini" files") present in the directory')
+        '''
     else:
-        print('No configuration (e.g. xxx.ini) file present in the directory')
-        sys.exit()
+        INI_file = glob.glob('*.ini')
 
     # ConfigParser requires a file-like object and
     # no leading whitespace.
-    config_file = StringIO('\n'.join(INI_file.split()))
-    config.readfp(config_file)
+    with open(INI_file, 'r') as f:
+        config_file = f.StringIO('\n'.join(INI_file.split()))
+        config_file = config.read_file(config_file)
+        config_file = config.read(config_file)
+
+        for section, key, value in config_file:
+            print(section, key, value)
 
     # ConfigParsers sets keys which have no value
-    # (like `--force` above) to `None`. Thus we
-    # need to substitute all `None` with `True`.
+    # (like `--force`) to `None`. Thus we
+    # need to substitute all `None` with `True` for docopt:
     return dict((key, True if value is None else value)
-                for key, value in config.items('default-arguments'))
+                for key, value in config_file)
 
 
     ini_config = load_ini_config()
@@ -56,9 +72,12 @@ def load_ini_config():
     result = arguments, ini_config
 
     from pprint import pprint
+
     print('\nINI config:')
     pprint(ini_config)
     print('\nResult:')
-pprint(result)
 
+    pprint(result)
+    
+    return(result)
 

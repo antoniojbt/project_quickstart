@@ -122,6 +122,9 @@ try:
 except ImportError:  # Python 3
     from io import StringIO
 
+# project_quickstart.py modules:
+import quickstart_utilities.py as quickUtils
+
 # Check configuration and print to standard out
 # See:
 # https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/
@@ -164,6 +167,11 @@ class TriggeredDefaultFactory:
 CONFIG.read('project_quickstart.ini')
 for key in CONFIG:
     print(key, CONFIG[key])
+
+# docopt requires Nones to be passed as False:
+quickUtils.load_ini_config()
+results = ini_values
+
 ##############################
 
 
@@ -240,6 +248,7 @@ def main():
           project_dir).format(project_name)
 
     # Create directories:
+    # TO DO: pass these from ini file
     for d in ({1},
               "{1}/code",
               "{1}/data",
