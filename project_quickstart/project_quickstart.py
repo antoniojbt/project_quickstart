@@ -148,7 +148,7 @@ def main():
     # Set up arguments (see docopt above):
     try:
         # Parse arguments, use file docstring as a parameter definition:
-        arguments = docopt(__doc__, version = {}).format(prog_version)
+        options = docopt.docopt(__doc__)  #, version = {}).format(prog_version)
         if not options['--project_name']:
             print('Project name required, it will be appended to "project_"')
         if options['--force']:  # overwrite directory
@@ -170,7 +170,7 @@ def main():
             print(''' Create an R script template. A softlink is
                      created in the current working directory
                      and the actual file in xxx/code/scripts/ ''')
-        print(arguments)
+        print(options)
 
     # Handle exceptions:
     except docopt.DocoptExit:
