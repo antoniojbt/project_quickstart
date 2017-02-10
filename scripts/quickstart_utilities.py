@@ -11,10 +11,10 @@ https://github.com/AntonioJBT/project_quickstart
 
 '''
 
-# Load arguments from an INI file
+# Load arguments for docopt from an INI file 
 # Modified from:
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
-# See also:
+# See also *which includes reading from json):
 # http://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python
 # https://wiki.python.org/moin/ConfigParserExamples
 # CGAT tools do a better job, using argparser.
