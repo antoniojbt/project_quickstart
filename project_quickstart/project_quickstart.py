@@ -7,8 +7,9 @@
 :Release: $Id$
 :Date: |today|
 
+
 Purpose
--------
+=======
 
 This script creates a python data science project template. The main idea is
 to
@@ -36,8 +37,10 @@ For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 (on which this code is based on)
 
+
 Usage and Options
 =================
+
 Create a new directory, subfolders and files in the current directory that will
 help quickstart your data science project with packaging, testing, scripts and
 other templates.
@@ -56,21 +59,29 @@ other templates.
 .. See also Schema for input argument validation, e.g.:
     https://github.com/docopt/docopt/blob/master/examples/validation_example.py
 
+.. Usage pattern in docopt can't have empty lines and ends with an empty line.
+   The first word after usage\: is interpreted as the program's name (e.g.
+   'python xxx.py' makes it think your programme is called 'python' with
+   option 'xxx.py')
+.. docopt reads multi-line descriptions in Options so 80 character lines can be
+   wrapped.
+.. 'Usage' and 'Options' case insensitive and followed by ':' are recognised by
+   docopt in the docstrings.
+.. docopt
+
 
 Usage:
-
-    python project_quickstart.py (--project_name=<project_name>) ...
-
-    project_quickstart.py (--project_name | -n = <project_name>)
-    project_quickstart.py [--update | -u]
-    project_quickstart.py [--script_python=<script_name>]
-    project_quickstart.py [--script_R=<script_name>]
-    project_quickstart.py -f | --force
-    project_quickstart.py -h | --help
-    project_quickstart.py --version
-    project_quickstart.py --quiet
-    project_quickstart.py --verbose
-    project_quickstart.py [-L | --log = <project_quickstart.log>]
+       project_quickstart.py (--project_name=<project_name>) ...
+       project_quickstart.py (--project_name | -n = <project_name>)
+       project_quickstart.py [--update | -u]
+       project_quickstart.py [--script_python=<script_name>]
+       project_quickstart.py [--script_R=<script_name>]
+       project_quickstart.py [-f | --force]
+       project_quickstart.py [-h | --help]
+       project_quickstart.py [--version]
+       project_quickstart.py [--quiet]
+       project_quickstart.py [--verbose]
+       project_quickstart.py [-L | --log = <project_quickstart.log>]
 
 
 Options:
@@ -85,8 +96,9 @@ Options:
     --verbose             Print more text.
     -L FILE --log=FILE    Log file name. [default: project_quickstart.log]
 
+
 Documentation
--------------
+=============
 
 .. todo::
 
@@ -95,22 +107,17 @@ Documentation
   New string formatting https://pyformat.info/ '{} {}'.format('one', 'two')
 
 Code
-----
+====
 '''
 
 ##############################
-# To delete:
-prog_version = '0.1'
-
-
 import sys
 import re
 import os
 import shutil
 import collections
 import glob
-# import CGAT.Experiment as E
-import docopt
+import string
 
 try:
     import configparser
@@ -122,8 +129,14 @@ try:
 except ImportError:  # Python 3
     from io import StringIO
 
+# Modules not in core library:
+# import CGAT.Experiment as E
+import docopt
+
+
 # project_quickstart.py modules:
-import quickstart_utilities.py as quickUtils
+# import quickstart_utilities.py as quickUtils
+
 
 # Check configuration and print to standard out
 # See:
@@ -169,20 +182,27 @@ for key in CONFIG:
     print(key, CONFIG[key])
 
 # docopt requires Nones to be passed as False:
-quickUtils.load_ini_config()
-results = ini_values
+# quickUtils.load_ini_config()
+# results = ini_values
 
 ##############################
 
 
 ##############################
-def main():
-    # Set up arguments (see docopt above):
+# To delete:
+prog_version = '0.1'
+
+def main(options):
+    ''' with docopt main() expects a dictionary with arguments from docopt()
+    docopt will automatically check your docstrings for usage, set -h, etc.
+    '''
     try:
         # Parse arguments, use file docstring as a parameter definition:
-        arguments = docopt.docopt(__doc__, version='0.1')  # , version = {}).format(prog_version)
-        if not options['--project_name', '-n']:
-            print('Project name required, it will be appended to "project_"')
+        if not options['--project_name']:
+            print(''' Error in options given, a project name is required, such
+                      as "super", which will be appended to "project_".
+                      Try python project_quickstart.py --help .''')
+            print(docopt.docopt(__doc__))
             sys.exit()
         if options['--force']:  # overwrite directory
             print('Force overwriting directories and files')
@@ -203,7 +223,8 @@ def main():
             print(''' Create an R script template. A softlink is
                      created in the current working directory
                      and the actual file in xxx/code/scripts/ ''')
-        print(arguments)
+
+        print('Options in place:', '\n', options)
 
     # Handle exceptions:
     except docopt.DocoptExit:
@@ -385,4 +406,10 @@ def main():
           )
 
 if __name__ == '__main__':
-    sys.exit(main())
+    # if using docopt:
+    # it will check all arguments pass, if not exits with 'Usage:':
+    options = docopt.docopt(__doc__, version='{}'.format(prog_version))
+         # switch to template from INI with t = string.Template('$version') ;
+         # t.substitute({'version':0.1})
+    # if arguments are valid, run the program:
+    sys.exit(main(options))
