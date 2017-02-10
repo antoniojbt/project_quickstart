@@ -71,30 +71,29 @@ other templates.
 
 
 Usage:
-       project_quickstart.py (--project_name=<project_name>) ...
-       project_quickstart.py (--project_name | -n = <project_name>)
+       project_quickstart.py (--project-name=<project_name> | -n <project_name>) ...
        project_quickstart.py [--update | -u]
-       project_quickstart.py [--script_python=<script_name>]
-       project_quickstart.py [--script_R=<script_name>]
+       project_quickstart.py [--script-python=<script_name>]
+       project_quickstart.py [--script-R=<script_name>]
        project_quickstart.py [-f | --force]
        project_quickstart.py [-h | --help]
        project_quickstart.py [--version]
        project_quickstart.py [--quiet]
        project_quickstart.py [--verbose]
-       project_quickstart.py [-L | --log = <project_quickstart.log>]
+       project_quickstart.py [--log=<log_file> | -L <log_file>]
 
 
 Options:
-    --project-name -n     Starts a new project, 'project_' is prefixed
-    --update -u           Propagate changes made in project_quickstart.ini
-    --script_python=FILE  Create a python script template, '.py' is appended
-    --script_R=FILE       Create an R script template, '.R' is appended
-    -f --force            Take care, forces to overwrite files and directories.
-    -h --help             Show this screen.
-    --version             Show version.
-    --quiet               Print less text.
-    --verbose             Print more text.
-    -L FILE --log=FILE    Log file name. [default: project_quickstart.log]
+    --project-name=DIR -n DIR     Starts a new project, 'project_' is prefixed
+    --update -u                   Propagate changes made in project_quickstart.ini
+    --script-python=FILE          Create a python script template, '.py' is appended
+    --script-R=FILE               Create an R script template, '.R' is appended
+    -f --force                    Take care, forces to overwrite files and directories.
+    -h --help                     Show this screen.
+    --version                     Show version.
+    --quiet                       Print less text.
+    --verbose                     Print more text.
+    -L FILE --log=FILE            Log file name. [default: project_quickstart.log]
 
 
 Documentation
@@ -196,56 +195,67 @@ def main(options):
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
+    docopt_error_msg = str('Options in place:' + '\n' +
+                           str(docopt.docopt(__doc__)))
+
     try:
         # Parse arguments, use file docstring as a parameter definition:
-        if not options['--project_name']:
-            print(''' Error in options given, a project name is required, such
-                      as "super", which will be appended to "project_".
+        # These are required, exit with message if not present:
+        if not options['--project-name']:
+            print(''' Error in  the options given, a project name is required, such
+                      as "super", which will be appended to "project_" .
                       Try python project_quickstart.py --help .''')
-            print(docopt.docopt(__doc__))
+            print(docopt_error_msg)
             sys.exit()
+        elif options['--project-name']:
+            project_name = str('project_{}').format(options['--project-name'])
+
+        # These arguments are optional:
         if options['--force']:  # overwrite directory
             print('Force overwriting directories and files')
             print('Option not in use at the moment')
             pass  # TO DO
         if not options['--log']:
             log = str('project_quickstart.log')
+        else:
+            log = '{}'.format(options['--log'])
         if options['--update']:
             print(''' After manually editing the ini file run to
                     propagate changes.''')
             print('Option not in use at the moment')
             pass  # TO DO
-        if options['--script_python']:
-            print(''' Create a Python script template. A softlink is
+        if options['--script-python'] and len(options['--script-python']) > 0:
+            print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
                   actual file in xxx/code/scripts/ ''')
-        if options['--script_R']:
-            print(''' Create an R script template. A softlink is
-                     created in the current working directory
-                     and the actual file in xxx/code/scripts/ ''')
-
-        print('Options in place:', '\n', options)
+            script_name = str('{}.py').format.options['--script-python']
+            print(script_name)
+        elif options['--script-python'] and len(options['--script-python']) == 0:
+            print(''' You need to provide a script name. This will be prefixed to
+                  ".py" ''')
+            print(docopt_error_msg)
+            sys.exit()
+        if options['--script-R'] and len(options['--script-R']) > 0:
+            print(''' Creating an R script template. A softlink is
+                  created in the current working directory and the
+                  actual file in xxx/code/scripts/ ''')
+            script_name = str('{}.R').format.options['--script-R']
+            print(script_name)
+        elif options['--script-R'] and len(options['--script-R']) == 0:
+            print(''' You need to provide a script name. This will be prefixed to
+                  ".R" ''')
+            print(docopt_error_msg)
+            sys.exit()
 
     # Handle exceptions:
     except docopt.DocoptExit:
         print(''' Invalid option or missing argument,
         try project_quickstart.py --help''')
+        print(docopt_error_msg)
         raise
 
     # Set up default paths, directoy and file names:
-    if options['--project_name']:
-        project_name = str('project_{}').format.options['--project_name']
-    else:
-        raise NameError('No project name given.')
-
     project_dir = str(os.getcwd() + '/' + project_name)
-
-    if options['--script_python']:
-        script_name = str('{}.py').format.options['--script_name']
-    elif options['--script_R']:
-        script_name = str('{}.R').format.options['--script_name']
-    else:
-        raise NameError('No name given to the script.')
 
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
@@ -261,23 +271,23 @@ def main(options):
     script_template_py = str('python_script_template.py')
     script_template_R = str('R_script_template.R')
 
-    print('Paths discovered:', '\n',
-          source_dir, '\n',
-          template_dir, '\n',
-          project_template, '\n',
-          'Creating the structure for {} in:', '\n',
-          project_dir).format(project_name)
+    print(str('Paths discovered:' + '\n' +
+          source_dir + '\n' +
+          template_dir + '\n' +
+          project_template + '\n' +
+          'Creating the structure for {} in:' + '\n' +
+          project_dir).format(project_name))
 
     # Create directories:
     # TO DO: pass these from ini file
-    for d in ({1},
+    for d in (({1},
               "{1}/code",
               "{1}/data",
               "{1}/data/raw",
               "{1}/data/processed",
               "{1}/data/external",
               "{1}/results_1",
-              "{1}/manuscript").format(project_name):
+              "{1}/manuscript").format(project_name)):
 
         tree_dir = os.path.join(project_dir, d)
 
@@ -336,7 +346,7 @@ def main(options):
         '''
         copy_to = os.path.join(code_dir, '/scripts')
 
-        if option['--script_python']:
+        if option['--script-python']:
             if os.path.exists(copy_to) and not options['--force']:
                 raise OSError(''' File {} already exists - not overwriting,
                               see --help or use --force to overwrite.
@@ -348,7 +358,7 @@ def main(options):
                 os.rename(os.path.join(copy_to, script_template_py),
                           filename.replace('template', {})).format(script_name)
 
-        elif option['--script_R']:
+        elif option['--script-R']:
             if os.path.exists(copy_to) and not options['--force']:
                 raise OSError(''' File {} already exists - not overwriting,
                               see --help or use --force to overwrite.
