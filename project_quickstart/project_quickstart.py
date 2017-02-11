@@ -81,7 +81,7 @@ Usage:
        project_quickstart.py [--quiet]
        project_quickstart.py [--verbose]
        project_quickstart.py [--log=<log_file> | -L <log_file>]
-
+       project_quickstart.py [--dry-run]
 
 Options:
     --project-name=DIR -n DIR     Starts a new project, 'project_' is prefixed
@@ -94,7 +94,7 @@ Options:
     --quiet                       Print less text.
     --verbose                     Print more text.
     -L FILE --log=FILE            Log file name. [default: project_quickstart.log]
-
+    --dry-run                     Print to screen only.
 
 Documentation
 =============
@@ -103,7 +103,6 @@ Documentation
 
   Add docs
   Add tree structure
-  New string formatting https://pyformat.info/ '{} {}'.format('one', 'two')
 
 Code
 ====
@@ -208,17 +207,20 @@ def main(options):
             print(docopt_error_msg)
             sys.exit()
         elif options['--project-name']:
-            project_name = str('project_{}').format(options['--project-name'])
+            # py3.6 formatting:
+            project_name = str(options["--project-name"]).strip('[]').strip("''")
+            project_name = str(f'project_{project_name}')
 
         # These arguments are optional:
-        if options['--force']:  # overwrite directory
+        if options['--force']:
             print('Force overwriting directories and files')
             print('Option not in use at the moment')
             pass  # TO DO
         if not options['--log']:
+    #        log = str(options["--log"]).strip('[]').strip("''")
             log = str('project_quickstart.log')
         else:
-            log = '{}'.format(options['--log'])
+            log = str(options["--log"]).strip('[]').strip("''")
         if options['--update']:
             print(''' After manually editing the ini file run to
                     propagate changes.''')
@@ -228,7 +230,11 @@ def main(options):
             print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
                   actual file in xxx/code/scripts/ ''')
-            script_name = str('{}.py').format.options['--script-python']
+            # py3.5 formatting:
+#            script_name = str('{}.py').format.options['--script-python']
+            # py3.6:
+            script_name = str(options["--script-python"]).strip('[]').strip("''")
+            script_name = str(f'{script_name}.py')
             print(script_name)
         elif options['--script-python'] and len(options['--script-python']) == 0:
             print(''' You need to provide a script name. This will be prefixed to
@@ -239,13 +245,18 @@ def main(options):
             print(''' Creating an R script template. A softlink is
                   created in the current working directory and the
                   actual file in xxx/code/scripts/ ''')
-            script_name = str('{}.R').format.options['--script-R']
+            script_name = str(options["--script-R"]).strip('[]').strip("''")
+            script_name = str(f'{script_name}.R') 
             print(script_name)
         elif options['--script-R'] and len(options['--script-R']) == 0:
             print(''' You need to provide a script name. This will be prefixed to
                   ".R" ''')
             print(docopt_error_msg)
             sys.exit()
+        if options['--dry-run']:
+            print('Dry run, only print what folders will be created.')
+            print('Option not in use at the moment')
+            pass  # TO DO
 
     # Handle exceptions:
     except docopt.DocoptExit:
@@ -255,19 +266,21 @@ def main(options):
         raise
 
     # Set up default paths, directoy and file names:
-    project_dir = str(os.getcwd() + '/' + project_name)
+    project_dir = os.path.join(os.getcwd(), project_name)
 
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
 
     # Get locations of source code and of the 'templates'
     # folder to copy over from:
-    source_dir = os.path.join(sys.exec_prefix, "/bin")
-    template_dir = os.path.join(source_dir, '/project_quickstart/templates/')
-    project_template = os.path.join(template_dir, '/project_template')
-    manuscript_dir = os.path.join(project_dir, '/manuscript')
-    code_dir = os.path.join(project_dir, '/code')
-    data_dir = os.path.join(project_dir, '/data')
+    # os.path.join note: a subsequent argument with an '/' discards anything
+    # before it
+    source_dir = os.path.join(sys.exec_prefix, "bin")
+    template_dir = os.path.join(source_dir, 'project_quickstart/templates/')
+    project_template = os.path.join(template_dir, 'project_template')
+    manuscript_dir = os.path.join(project_dir, 'manuscript')
+    code_dir = os.path.join(project_dir, 'code')
+    data_dir = os.path.join(project_dir, 'data')
     script_template_py = str('python_script_template.py')
     script_template_R = str('R_script_template.R')
 
@@ -275,19 +288,19 @@ def main(options):
           source_dir + '\n' +
           template_dir + '\n' +
           project_template + '\n' +
-          'Creating the structure for {} in:' + '\n' +
-          project_dir).format(project_name))
+          f'Creating the project structure for {project_name} in:' + '\n' +
+          project_dir))
 
     # Create directories:
     # TO DO: pass these from ini file
-    for d in (({1},
-              "{1}/code",
-              "{1}/data",
-              "{1}/data/raw",
-              "{1}/data/processed",
-              "{1}/data/external",
-              "{1}/results_1",
-              "{1}/manuscript").format(project_name)):
+    for d in (str(project_name),
+              f"{project_name}/{project_name}",
+              f"{project_name}/data",
+              f"{project_name}/data/raw",
+              f"{project_name}/data/processed",
+              f"{project_name}/data/external",
+              f"{project_name}/results_1",
+              f"{project_name}/manuscript"):
 
         tree_dir = os.path.join(project_dir, d)
 
