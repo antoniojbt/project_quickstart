@@ -84,10 +84,10 @@ Usage:
        project_quickstart.py [--dry-run]
 
 Options:
-    --project-name=DIR -n DIR     Starts a new project, 'project_' is prefixed
+    --project-name=DIR -n DIR     Starts a new project, 'project_' is prefixed.
     --update -u                   Propagate changes made in project_quickstart.ini
-    --script-python=FILE          Create a python script template, '.py' is appended
-    --script-R=FILE               Create an R script template, '.R' is appended
+    --script-python=FILE          Create a python script template, '.py' is appended.
+    --script-R=FILE               Create an R script template, '.R' is appended.
     -f --force                    Take care, forces to overwrite files and directories.
     -h --help                     Show this screen.
     --version                     Show version.
