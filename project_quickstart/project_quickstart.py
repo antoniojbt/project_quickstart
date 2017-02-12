@@ -213,7 +213,9 @@ def main(options):
             # py3.6 formatting:
             project_name = str(options["--project-name"]).strip('[]').strip("''")
             project_name = str(f'project_{project_name}')
-
+        # TO DO: add --path ? To avoid problems with searching for the 'templates' folder?
+        # See path search below
+            
         # These arguments are optional:
         if options['--force']:
             print('Force overwriting directories and files')
@@ -230,6 +232,7 @@ def main(options):
                     propagate changes.''')
             print('Option not in use at the moment')
             pass  # TO DO
+        # Is len()> 0 needed? docopt takes care of missing arg? TO DO
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
