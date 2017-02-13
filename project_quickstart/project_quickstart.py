@@ -215,7 +215,7 @@ def main(options):
             project_name = str(f'project_{project_name}')
         # TO DO: add --path ? To avoid problems with searching for the 'templates' folder?
         # See path search below
-            
+
         # These arguments are optional:
         if options['--force']:
             print('Force overwriting directories and files')
@@ -253,7 +253,7 @@ def main(options):
                   created in the current working directory and the
                   actual file in xxx/code/scripts/ ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
-            script_name = str(f'{script_name}.R') 
+            script_name = str(f'{script_name}.R')
             print(script_name)
         elif options['--script-R'] and len(options['--script-R']) == 0:
             print(docopt_error_msg)
@@ -436,6 +436,7 @@ def main(options):
                 shutil.copy(copy_from, copy_to)
                 os.rename(os.path.join(copy_to, script_template_py),
                           filename.replace('template', {})).format(script_name)
+                os.symlink(copy_from, os.getcwd())
 
         elif option['--script-R']:
             if os.path.exists(copy_to) and not options['--force']:
@@ -450,6 +451,7 @@ def main(options):
                 os.rename(os.path.join(copy_to, script_template_R),
                           filename.replace('template',
                                            {})).format(script_name)
+                os.symlink(copy_from, os.getcwd())
 
         else:
             print(docopt_error_msg)
