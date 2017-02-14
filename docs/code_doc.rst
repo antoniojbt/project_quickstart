@@ -10,4 +10,8 @@ Code documentation
 
 # 
 
-.. automodule:: project_quickstart.py
+.. automodule:: project_quickstart
+
+#.. automodule:: script_quickstart
+
+.. automodule:: quickstart_utilities

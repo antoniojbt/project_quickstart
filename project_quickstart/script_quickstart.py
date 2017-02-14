@@ -99,7 +99,7 @@ PARAMS = collections.defaultdict(TriggeredDefaultFactory())
 
 CONFIG.read('project_quickstart.ini')
 for key in CONFIG:
-    print key, CONFIG[key]
+    print(key, CONFIG[key])
 ##############################
 
     
