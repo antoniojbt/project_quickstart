@@ -23,3 +23,4 @@ _templates
 # Python builds:
 __pycache__
 *.pyc
+MANIFEST

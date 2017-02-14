@@ -21,24 +21,30 @@ include external_dependencies.rst
 include requirements.rst
 include Dockerfile
 include COPYING
-recursive-include scripts/ *.py
-recursive-include templates/ *.R *.rst *.py #*.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
-recursive-include templates/project_template/ *.R *.rst *.py *.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
+include templates/*
+include templates/project_template/*
+include templates/project_template/docs/*
+include templates/project_template/scripts/*
+include templates/project_template/tests/*
+include templates/project_template/project_template/*
+#recursive-include templates/ *.R *.rst *.py *.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
+#recursive-include templates/project_template/ *.R *.rst *.py *.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
 
 #recursive-include docs *.html *.css *.png *.gif
-
 #include install.sh
 
-#exclude xxx
+# Exclude:
+exclude .dir_bash_history
 
-# scripts to include named explicitely:
+
+# Scripts to include that are named explicitly:
 #include xxx/xxx/xxx.py
 
-# others to include:
+# Others to include:
 #include xxx/scripts/__init__.py
 #include xxx/scripts/version.py
 
-# extensions
+# Extensions
 #include *.pyxbld
 #include *.pyx
 #include *.h
@@ -46,3 +52,5 @@ recursive-include templates/project_template/ *.R *.rst *.py *.ini *.cfg *.sh *t
 #include *.h
 #include *.pxd
 #include *.c
+
+
