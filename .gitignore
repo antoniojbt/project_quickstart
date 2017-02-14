@@ -20,3 +20,6 @@ _build
 _static
 _templates
 
+# Python builds:
+__pycache__
+*.pyc

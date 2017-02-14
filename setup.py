@@ -15,6 +15,7 @@ from distutils.core import setup
 
 setup(name = 'project_quickstart',
       packages = ['project_quickstart'],
+      package_dir = {'': 'scripts'},  # https://docs.python.org/3/distutils/setupscript.html#setup-script
 #      install_requires=[
 #            'cgat',
 #            'CGATPipelines',
@@ -25,7 +26,7 @@ setup(name = 'project_quickstart',
       author = 'Antonio J Berlanga-Taylor',
       author_email = 'a.berlanga at imperial.ac.uk',
       license = 'GPL-3.0',
-      zip_safe = False,
+#      zip_safe = False,
       classifiers = ["Programming Language :: Python", # see https://pypi.python.org/pypi?:action=list_classifiers
                      "Programming Language :: Python :: 3",
                      "Development Status :: 2- Pre-Alpha",

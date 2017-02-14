@@ -14,12 +14,20 @@ include MANIFEST.in
 include LICENSE
 include INSTALL
 include README.rst
-include KNOWN_BUGS
-include THANKS.txt
+include KNOWN_BUGS.rst
+include THANKS.rst
+include TODO.rst
+include external_dependencies.rst
+include requirements.rst
+include Dockerfile
+include COPYING
+recursive-include scripts/ *.py
+recursive-include templates/ *.R *.rst *.py #*.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
+recursive-include templates/project_template/ *.R *.rst *.py *.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
+
 #recursive-include docs *.html *.css *.png *.gif
 
 #include install.sh
-#include requirements.txt
 
 #exclude xxx
 
