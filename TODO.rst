@@ -122,6 +122,14 @@ uploading to PyPi
 
 - Have methods and plot scripts output legend\*.rst with parameters used, method\*.rst and generic interpretation\*.rst files output to disk to then glob into manuscript template.
 
+- Fix readthedocs 'too many symbolic links'. How to link root dir rst files to docs dir for github? See here_ for a different solution.
+
+.. _here: https://daler.github.io/sphinxdoc-test/includeme.html
+
+- rst rendering gives different results in github vs locally with sphinx
+
+- Sort out pdf local rendering with rst2pdf, make pdflatex, etc.
+
 PIPELINE PLAN
 #############
 
