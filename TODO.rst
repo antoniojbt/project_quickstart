@@ -67,6 +67,7 @@ TO DO main tasks:
 
 - Project workflow! e.g.::
 	1. run this package to setup folders, github repo structure, code testing, py package files, etc.
+	1a. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
 	2. code and test code with tox, travis and py.test for example
 	3. analyse, re-analyse
 	4. create new scripts, new pipelines, test them
@@ -89,7 +90,13 @@ TO DO main tasks:
 
 .. _here: https://www.cgat.org/downloads/public/cgat/documentation/modules/Requirements.html
 
-- Keep track of installations for Docker
+- Keep track of installations for Docker. Check conda kapsel_ and here_.
+
+.. _kapsel: https://conda.io/docs/kapsel/
+
+.. _here: https://github.com/conda/kapsel
+
+
 - Add a project checklist template (eg with comp bio best practice checklist, conda recipe, zenodo deposit, etc.)
 
 - Add python docs with rst/sphinx and doctests, see sphinx_, quickstart_ and doctests_.
