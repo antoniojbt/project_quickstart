@@ -1,3 +1,6 @@
+#####################
+Getting started notes
+#####################
 
 See also Jeff Knupp's tutorial_ and other similar blogs_.
 

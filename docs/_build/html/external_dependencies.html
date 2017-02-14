@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting started notes &#8212; project_quickstart 0.1.0 documentation</title>
+    <title>External_dependencies &#8212; project_quickstart 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Code documentation" href="code_doc.html" />
-    <link rel="prev" title="project_quickstart" href="README.html" />
+    <link rel="next" title="# Python requirements" href="requirements.html" />
+    <link rel="prev" title="Plan" href="TODO.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -43,9 +43,37 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="getting-started-notes">
-<h1>Getting started notes<a class="headerlink" href="#getting-started-notes" title="Permalink to this headline">¶</a></h1>
-<p>See also Jeff Knupp&#8217;s <a class="reference external" href="https://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/">tutorial</a> and other similar <a class="reference external" href="https://www.pydanny.com/cookie-project-templates-made-easy.html">blogs</a>.</p>
+  <div class="section" id="external-dependencies">
+<h1>External_dependencies<a class="headerlink" href="#external-dependencies" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tool-definitions">
+<h2>Tool definitions<a class="headerlink" href="#tool-definitions" title="Permalink to this headline">¶</a></h2>
+<p>## This file contains tool definitions for external tools.
+## The record name is given by the tool. The following fields
+## are available:</p>
+<p>## executable: executable to test if the tool is available. Available
+##             tools are in the path.
+##
+## version:    options to extract the version string. If missing it is
+##             assumed that a version string is displayed when the tool
+##             is called without arguments</p>
+<p>## regex:      regular expression to extract a version string</p>
+<p>## rpackage:   the tool is an R package. The value indicates the name
+##             (case-sensitive) of the R package
+##
+## External tools</p>
+<hr class="docutils" />
+<p>#plink:
+#    executable: plink
+#    version: &#8211;version
+#    regex: &#8216;^plink v(S+)&#8217;</p>
+<p>## R Packages</p>
+<dl class="docutils">
+<dt>ggplot2:</dt>
+<dd>rpackage: ggplot2</dd>
+<dt>data.table:</dt>
+<dd>rpackage: data.table</dd>
+</dl>
+</div>
 </div>
 
 
@@ -53,19 +81,27 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">External_dependencies</a><ul>
+<li><a class="reference internal" href="#tool-definitions">Tool definitions</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="README.html" title="previous chapter">project_quickstart</a></li>
-      <li>Next: <a href="code_doc.html" title="next chapter">Code documentation</a></li>
+      <li>Previous: <a href="TODO.html" title="previous chapter">Plan</a></li>
+      <li>Next: <a href="requirements.html" title="next chapter"># Python requirements</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/getting_started.rst.txt"
+      <li><a href="_sources/external_dependencies.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -91,7 +127,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="_sources/getting_started.rst.txt"
+      <a href="_sources/external_dependencies.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
