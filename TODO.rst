@@ -1,29 +1,23 @@
-################################
+####
 Plan 
-################################
+####
 
 :Date: 20 January 2017
 :Author: Antonio B 
 
-Current state:
-##############
-
-- The plan is to create xxxx that can be automated using Ruffus and CGAT tools. 
-
-- CGAT, ruffus, drmaa 
-
-- There is a pipeline in progress in the src folder with a dummy report in the report folder (based on CGAT's quickstart pipeline).
+Current state
+#############
 
 - B with T and E
 
-- Wrap pipe quickstart, add R quickstart, report quickstart, standard folder structure, instructions for dependencies, CLI runs, etc
+- Wrap pipe quickstart
 
-Future work:
-############
+Future work
+###########
 
 
-TO DO main tasks:
-#################
+TO DO
+#####
 
 - project_quickstart/scripts/project_quickstart.py basically just copies the contents of project_quickstart/templates/python_packaging.dir/ so as to have all the skeleton files needed for:
 	+ Github repository files (but not .git) like: .gitignore, README, THANKS, TODO, LICENCE, etc.
@@ -34,21 +28,20 @@ TO DO main tasks:
 	+ etc
 	+ Zenodo? See: zenodo_ github guide. It's easy: allow permissions and then with each tag release zenodo archives the repo and gives it a DOI. See also SSI blog_ on zenodo.
 	
-	.. _zenodo: https://guides.github.com/activities/citable-code/
+.. _zenodo: https://guides.github.com/activities/citable-code/
 	
-	.. blog_: https://www.software.ac.uk/blog/2016-09-26-making-code-citable-zenodo-and-github
+.. _blog: https://www.software.ac.uk/blog/2016-09-26-making-code-citable-zenodo-and-github
 	
 	+ conda? See: bioconda_, contributing a recipe_ and guidelines_.
 	
-	.. _bioconda: https://bioconda.github.io/index.html
+.. _bioconda: https://bioconda.github.io/index.html
 	
-	.. _recipe: https://bioconda.github.io/contribute-a-recipe.html
+.. _recipe: https://bioconda.github.io/contribute-a-recipe.html
 	
-	.. _guidelines: https://bioconda.github.io/guidelines.html
+.. _guidelines: https://bioconda.github.io/guidelines.html
 
-- project_quickstart/scripts/script_quickstart.py copies project_quickstart/templates/python_script_template.py
-- project_quickstart/scripts/R_script_quickstart.R copies project_quickstart/templates/R_script_template.R
-- project_quickstart/scripts/folder_structure.py creates a folder structure for a data science project:
+- project_quickstart/scripts/script_quickstart.py copies project_quickstart/templates/template.py or template.R
+- project_quickstart/scripts/project_quickstart.py creates a folder structure with file templates for a data science project:
 	+ data
 	+ code
 	+ results
@@ -58,7 +51,7 @@ TO DO main tasks:
 	
 .. _layout: https://www.cgat.org/downloads/public/cgatpipelines/documentation/Reference.html#term-pipeline-scripts
 
-- rst_report/manuscript.py: create skeleton file template for automatic reporting. See some notes in cgat reports_.
+- See some notes in cgat reports_.
 
 .. _reports: https://www.cgat.org/downloads/public/cgatpipelines/documentation/PipelineReports.html#writingreports
 
@@ -68,13 +61,19 @@ TO DO main tasks:
 - Project workflow! e.g.::
 	1. run this package to setup folders, github repo structure, code testing, py package files, etc.
 	1a. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
-	2. code and test code with tox, travis and py.test for example
-	3. analyse, re-analyse
+    1b. Manually connect GitHub with integrated services (Travis CI, Zenodo,
+    RTD).
+	2. code and test code with tox, travis and py.test
+	3. analyse, ...
 	4. create new scripts, new pipelines, test them
-	5. document code with sphinx autodoc
+	5. document code as you go, update with sphinx autodoc
 	6. generate internal report with plots, text, etc.
-	7. freeze with release tag + zenodo archiving
+	7. freeze with release tag + zenodo archiving and/or tar ball with py sdist
 	8. Repeat cycle
+
+- Mirror local to remote?
+    + Have dedicated test_data dir (to mirror). Inside code_dir in tests dir?
+    + 
 
 - Testing:
 	+ See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
@@ -100,8 +99,9 @@ TO DO main tasks:
 - Add a project checklist template (eg with comp bio best practice checklist, conda recipe, zenodo deposit, etc.)
 
 - Add python docs with rst/sphinx and doctests, see sphinx_, quickstart_ and doctests_.
-- See this tutorial for Sphinx and general python packaging/workflow 
-	https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
+- See this tutorial_ for Sphinx and general python packaging/workflow 
+
+.. _tutorial: https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
 
 .. _sphinx: http://www.sphinx-doc.org/en/stable/
 
@@ -130,6 +130,15 @@ uploading to PyPi
 
 - Sort out pdf local rendering with rst2pdf, make pdflatex, etc.
 
+- Main script works: sort out path finding, --update, --script
+
+-- Sort out: --log, --dry-run, --force, --quiet, --verbose, all these can be
+done with CGAT. See conflict with docopt and parsing.
+
+- Automatically run pipeline_quickstart.py at project creation?
+
+- Clean up templates dir: script names, files to add?, improve templates from
+  proj_quickstart example.
 PIPELINE PLAN
 #############
 
