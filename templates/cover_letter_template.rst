@@ -1,20 +1,22 @@
-.. Have institutional header if possible
+.. Have institutional header if possible, e.g.:
+
+.. image: /path/to/image
 
 .. Editor Name
 .. Editor-in-Chief
 .. journal name
 .. address
 
-.. date
+|date|
 
 
 Dear xxx
 
-RE: SUBMISSION OF XXX (ORIGINAL, REVIEW, ETC) MANUSCRIPT "XXX"
+RE: SUBMISSION OF XXX (ORIGINAL, REVIEW, ETC) MANUSCRIPT |manuscript_title|
 
 .. Title and type of manuscript:
 
-Please find enclosed an xxx (e.g. review, research, case study, etc) manuscript to be considered for publication in xxx Journal entitled "xxx". We would like to have the manuscript considered for publication in your Journal.
+Please find enclosed an xxx (e.g. review, research, case study, etc) manuscript to be considered for publication in xxx Journal.
 
 .. First paragraph:
 - Study background
@@ -39,9 +41,8 @@ Our manuscript complies with xxx journal policy.
 "All authors have approved the manuscript and agree with its submission."
 
 .. Funding and open access research:
-The research has been funded through the MRC, Wellcome Trust, xxx. Its publication must comply with their open access policy.
-In order to ensure compliance, as corresponding author on behalf of all the authors, we will retain the rights to provide a copy of the authors’ final manuscript, including all modifications from the publishing and peer review process, to an open repository database at the time the manuscript is accepted for publication.
-By accepting this manuscript for review, your journal's publisher accepts these terms.
+The research has been funded through the |funding|. Its publication must comply with their open access policy.
+In order to ensure compliance, as corresponding author and on behalf of all the authors, we will retain the rights to provide a copy of the authors’ final manuscript, including all modifications from the publishing and peer review process, to an open repository database at the time the manuscript is accepted for publication. By accepting this manuscript for review, your journal's publisher accepts these terms.
 
 .. Goodbye:
 Thank you for your time and consideration.
@@ -53,9 +54,9 @@ Sincerely,
 -------
 
 .. name:
-Dr. xxx
+Dr. |author_name|
 
-.. post/title
-.. address
-.. email
-.. phone
+|author_post|
+|author_address|
+|author_email|
+|author_phone|
