@@ -38,6 +38,7 @@ Our manuscript complies with xxx journal policy.
 
 .. Include something along:
 "We confirm that this manuscript has not been published elsewhere and is not under consideration by another journal."
+
 "All authors have approved the manuscript and agree with its submission."
 
 .. Funding and open access research:
@@ -57,6 +58,9 @@ Sincerely,
 Dr. |author_name|
 
 |author_post|
+
 |author_address|
+
 |author_email|
+
 |author_phone|
