@@ -1,3 +1,5 @@
+.. Have institutional header if possible
+
 .. Editor Name
 .. Editor-in-Chief
 .. journal name
@@ -10,21 +12,21 @@ Dear xxx
 
 RE: SUBMISSION OF XXX (ORIGINAL, REVIEW, ETC) MANUSCRIPT "XXX"
 
-.. Title, type of manuscript
+.. Title and type of manuscript:
 
 Please find enclosed an xxx (e.g. review, research, case study, etc) manuscript to be considered for publication in xxx Journal entitled "xxx". We would like to have the manuscript considered for publication in your Journal.
 
-.. First paragraph
+.. First paragraph:
 - Study background
 - Question answered
 - Justification
 
-.. Second paragraph
+.. Second paragraph:
 - What was done
 - Main findings
 - Significance
 
-.. Third paragraph
+.. Third paragraph:
 - Why the readers of the journal would be interested
 - One sentence on the importance of the results to the field
 
@@ -48,8 +50,9 @@ Sincerely,
 
 
 
----
-.. name
+-------
+
+.. name:
 Dr. xxx
 
 .. post/title
