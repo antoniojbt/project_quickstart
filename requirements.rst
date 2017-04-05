@@ -6,9 +6,9 @@
 # https://github.com/CGATOxford/CGATPipelines/Pipeline
 
 pep8>=1.4.0
-nose
+nose>=1.3.0
 flake8>=3.0
-distutils
+distutils>=3.5
 docopt==0.6.2
 sphinx>=1.0.5
 
