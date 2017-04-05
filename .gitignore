@@ -16,7 +16,7 @@
 /*.egg-info
 
 # Sphinx:
-_build
+_build*
 _static
 _templates
 
