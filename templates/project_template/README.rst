@@ -17,6 +17,9 @@ Project |project_name|
 .. The following is a modified template from RTD
     http://www.writethedocs.org/guide/writing/beginners-guide-to-docs/#id1
 
+.. For a discussion/approach see 
+    http://tom.preston-werner.com/2010/08/23/readme-driven-development.html
+
 |project_name| will solve your problem of xxx by doing xxx.
 
 
