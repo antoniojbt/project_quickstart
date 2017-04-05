@@ -1,16 +1,61 @@
 .. copy across your travis "build..." logo so that it appears in your Github page
 
-.. .. image:: https://travis-ci.org
-    :target: https://travis-ci.org/
+.. .. image:: https://travis-ci.org/|github_user|/project_|project_name|.svg?branch=master
+    :target: https://travis-ci.org/|github_user|/project_|project_name|
 
 .. do the same for ReadtheDocs image:
 
-.. .. image:: https://readthedocs.org/projects/xxx/badge/?version=latest
+.. .. image:: https://readthedocs.org/projects/project_|project_name|/badge/?version=latest
     :target: http://xxx.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-#############
-Project Noble
-#############
+################################################
+Project |project_name|
+################################################
 
-Various scripts and tools to solve the world's problems
+
+.. The following is a modified template from RTD
+    http://www.writethedocs.org/guide/writing/beginners-guide-to-docs/#id1
+
+|project_name| will solve your problem of xxx by doing xxx.
+
+
+To use
+------
+
+.. code:: 
+    import project
+    # Get your stuff done
+    project.do_stuff()
+
+Features
+--------
+
+- Be awesome
+- Make things faster
+
+Installation
+------------
+
+Install |project_name| by running:
+
+.. code::
+    install project
+
+Contribute
+----------
+
+- Issue Tracker: github.com/|project_name|/|project_name|/issues
+- Source Code: github.com/|project_name|/|project_name|
+
+Support
+-------
+
+If you are having issues, please let us know.
+We have a mailing list located at: |author_email|
+
+License
+-------
+
+The project is licensed under the |license|.
+
