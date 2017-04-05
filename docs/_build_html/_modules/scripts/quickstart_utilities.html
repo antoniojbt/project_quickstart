@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>scripts.quickstart_utilities &#8212; project_quickstart 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scripts.quickstart_utilities</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Utilities for project_quickstart.py</span>
+
+<span class="sd">:Author: Antonio J Berlanga-Taylor</span>
+<span class="sd">:Date:</span>
+
+
+<span class="sd">Boilerplate tools for quickstarting a data analysis project:</span>
+
+<span class="sd">https://github.com/AntonioJBT/project_quickstart</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># Load arguments for docopt from an INI file </span>
+<span class="c1"># Modified from:</span>
+<span class="c1"># https://github.com/docopt/docopt/blob/master/examples/config_file_example.py</span>
+<span class="c1"># See also *which includes reading from json):</span>
+<span class="c1"># http://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python</span>
+<span class="c1"># https://wiki.python.org/moin/ConfigParserExamples</span>
+<span class="c1"># CGAT tools do a better job, using argparser.</span>
+
+
+<div class="viewcode-block" id="load_ini_config"><a class="viewcode-back" href="../../scripts.html#scripts.quickstart_utilities.load_ini_config">[docs]</a><span class="k">def</span> <span class="nf">load_ini_config</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; Loads an *.ini file if present in the current directory and prepares it</span>
+<span class="sd">    for use with docopt&#39;&#39;&#39;</span>
+
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># Python 2</span>
+        <span class="kn">from</span> <span class="nn">ConfigParser</span> <span class="k">import</span> <span class="n">ConfigParser</span>
+        <span class="kn">from</span> <span class="nn">StringIO</span> <span class="k">import</span> <span class="n">StringIO</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Python 3</span>
+        <span class="kn">from</span> <span class="nn">configparser</span> <span class="k">import</span> <span class="n">ConfigParser</span>
+        <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">glob</span>
+
+    <span class="c1"># By using `allow_no_value=True` we are allowed to</span>
+    <span class="c1"># write `--force` instead of `--force=true` below.</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">(</span><span class="n">allow_no_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Check if there&#39;s an INI file present:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.ini&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;No configuration file (e.g. xxx.ini) present in the directory&#39;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.ini&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;&#39; More than one configuration file present</span>
+<span class="s1">        (several files ending in &quot;.ini&quot; files&quot;) present in the directory&#39;)</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">INI_file</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.ini&#39;</span><span class="p">)</span>
+
+    <span class="c1"># ConfigParser requires a file-like object and</span>
+    <span class="c1"># no leading whitespace.</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">INI_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">INI_file</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config_file</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="c1"># ConfigParsers sets keys which have no value</span>
+    <span class="c1"># (like `--force`) to `None`. Thus we</span>
+    <span class="c1"># need to substitute all `None` with `True` for docopt:</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config_file</span><span class="p">)</span>
+
+
+    <span class="n">ini_config</span> <span class="o">=</span> <span class="n">load_ini_config</span><span class="p">()</span>
+
+    <span class="c1"># Arguments take priority over INI, INI takes priority over JSON:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">,</span> <span class="n">ini_config</span>
+
+    <span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">INI config:&#39;</span><span class="p">)</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">ini_config</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Result:&#39;</span><span class="p">)</span>
+
+    <span class="n">pprint</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Antonio J. Berlanga-Taylor.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
