@@ -10,15 +10,9 @@ Welcome to project_quickstart's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   README
+   include_links
    getting_started
    code_doc
-   TODO
-   external_dependencies
-   requirements
-   KNOWN_BUGS
-   THANKS
-
 
 Indices and tables
 ==================

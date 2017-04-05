@@ -1,1 +1,0 @@
-/Users/antoniob/Documents/github.dir/AntonioJBT/project_quickstart/external_dependencies.rst
