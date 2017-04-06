@@ -7,7 +7,7 @@
 
 
 ##################
-project_quickstart
+Project Quickstart
 ##################
 
 ..
