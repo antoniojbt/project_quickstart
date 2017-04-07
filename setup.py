@@ -24,19 +24,39 @@
 from distutils.core import setup
 #from setuptools import setup # Py2
 
+# Set up calling parameters from INI file:
+# Modules with Py2 to 3 conflicts
+try:
+    import configparser
+except ImportError:  # Py2 to Py3
+    import ConfigParser as configparser
 
-setup(name = 'project_quickstart',
-      packages = ['project_quickstart'],
+# Global variable for configuration file ('.ini')
+# allow_no_value addition is from:
+# https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
+# By using `allow_no_value=True` we are allowed to
+# write `--force` instead of `--force=true` below.
+CONFIG = configparser.ConfigParser(allow_no_value = True)
+
+CONFIG.read('project_quickstart.ini')
+for key in CONFIG:
+    print(key, CONFIG[key])
+#################
+
+#################
+# Actual setup.py instructions:
+setup(name = CONFIG['metadata']['project_name'] #'project_quickstart',
+      packages = CONFIG['metadata']['project_name'],
 #      install_requires=[
 #            'cgat',
 #            'CGATPipelines',
 #      ],
-      version = '0.2',
-      url = 'https://github.com/AntonioJBT/project_quickstart/',
-      download_url = 'https://github.com/AntonioJBT/project_quickstart',
-      author = 'Antonio J Berlanga-Taylor',
-      author_email = 'a.berlanga at imperial.ac.uk',
-      license = 'GPL-3.0',
+      version = CONFIG['metadata']['prog_version'],
+      url = CONFIG['metadata']['project_url'],
+      download_url = CONFIG['metadata']['project_url'],
+      author = CONFIG['metadata']['author_name'],
+      author_email = CONFIG['metadata']['author_email'],
+      license = CONFIG['metadata']['license'],
       classifiers = ["Programming Language :: Python", # see https://pypi.python.org/pypi?:action=list_classifiers
                      "Programming Language :: Python :: 3",
                      "Development Status :: 2- Pre-Alpha",
@@ -47,10 +67,8 @@ setup(name = 'project_quickstart',
                      "Topic :: Utilities",
                      "Topic :: Scientific/Engineering :: Bio-Informatics"
                     ],
-      description = 'Data science Python project quickstart',
-      keywords = ['data science', ''],
-      long_description = 'Utility tool to create skeleton structure and file templates for Python based data analysis project'
-     )
+      description = CONFIG['metadata']['project_short_description'],
+      keywords = CONFIG['metadata']['keywords'],
+      long_description = CONFIG['metadata']['long_description']
+      )
 #################
-
-
