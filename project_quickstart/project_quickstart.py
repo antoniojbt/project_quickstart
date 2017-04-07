@@ -111,7 +111,7 @@ Code
 
 ##############################
 # Package module:
-import projectQuickstart
+from project_quickstart import projectQuickstart as projectQuickstart
 
 # Python modules:
 import sys
