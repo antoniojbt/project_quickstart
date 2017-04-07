@@ -11,14 +11,32 @@ https://github.com/AntonioJBT/project_quickstart
 
 '''
 
+# Get locations of source code
+    # os.path.join note: a subsequent argument with an '/' discards anything
+    # before it
+    # For function to search path see: 
+    # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
+    # __init__.py has the getDir() function
+# MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
+
+import os
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+def getDir(path):
+    ''' Get the absolute path for the package directory '''
+    return os.path.join(_ROOT, 'data', path)
+    return os.path.join(_ROOT, f'project_quickstart-{prog_version}', path)
+
+#print(getDir('templates'))
+
+
 # Load arguments for docopt from an INI file 
 # Modified from:
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
-# See also *which includes reading from json):
+# See also (which includes reading from json):
 # http://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python
 # https://wiki.python.org/moin/ConfigParserExamples
 # CGAT tools do a better job, using argparser.
-
 
 def load_ini_config():
     ''' Loads an *.ini file if present in the current directory and prepares it
