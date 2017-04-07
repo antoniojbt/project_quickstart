@@ -190,9 +190,6 @@ for key in CONFIG:
 
 
 ##############################
-# To delete:
-prog_version = '0.2'
-
 def main(options):
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
@@ -548,7 +545,7 @@ def main(options):
 if __name__ == '__main__':
     # if using docopt:
     # it will check all arguments pass, if not exits with 'Usage:':
-    options = docopt.docopt(__doc__, version='{}'.format(prog_version))
+    options = docopt.docopt(__doc__, version = '{}'.format(CONFIG.prog_version))
          # switch to template from INI with t = string.Template('$version') ;
          # t.substitute({'version':0.1})
     # if arguments are valid, run the program:
