@@ -11,6 +11,14 @@
 # See also this example: https://github.com/pypa/sampleproject/blob/master/setup.py
 
 # This may be a better way, based on Py3: http://www.diveintopython3.net/packaging.html
+
+# To package, check setup.py first:
+# python setup.py check
+# Then create a source distribution:
+# python setup.py sdist
+# which will create a dist/ directory and a compressed file inside with your package.
+# For uploading to PyPi see http://www.diveintopython3.net/packaging.html#pypi
+
 #################
 
 from distutils.core import setup
