@@ -32,8 +32,8 @@ setup(name = 'project_quickstart',
 #            'CGATPipelines',
 #      ],
       version = '0.1',
-      url = '',
-      download_url = '',
+      url = 'https://github.com/AntonioJBT/project_quickstart/',
+      download_url = 'https://github.com/AntonioJBT/project_quickstart',
       author = 'Antonio J Berlanga-Taylor',
       author_email = 'a.berlanga at imperial.ac.uk',
       license = 'GPL-3.0',
@@ -48,8 +48,8 @@ setup(name = 'project_quickstart',
                      "Topic :: Scientific/Engineering :: Bio-Informatics"
                     ],
       description = 'Data science Python project quickstart',
-      keywords = ['', ''],
-      long_description = ''
+      keywords = ['data science', ''],
+      long_description = 'Utility tool to create skeleton structure and file templates for Python based data analysis project'
      )
 #################
 
