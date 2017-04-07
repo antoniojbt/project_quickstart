@@ -110,6 +110,10 @@ Code
 '''
 
 ##############################
+# Package module:
+import projectQuickstart
+
+# Python modules:
 import sys
 import re
 import os
@@ -119,6 +123,7 @@ import collections
 import glob
 import string
 
+# Modules with Py2 to 3 conflicts:
 try:
     import configparser
 except ImportError:  # Py2 to Py3
@@ -132,10 +137,6 @@ except ImportError:  # Python 3
 # Modules not in core library:
 # import CGAT.Experiment as E
 import docopt
-
-
-# project_quickstart.py modules:
-# import quickstart_utilities.py as quickUtils
 
 
 # Check configuration and print to standard out
@@ -295,10 +296,9 @@ def main(options):
     # before it
     # For function to search path see: 
     # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
-    # __init__.py has the getDir() function
     # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
-    template_dir = getDir('templates')
+    template_dir = projectQuickstart.getDir('templates')
     project_template = os.path.join(template_dir, 'project_template')
 
     dirs_to_use = [template_dir,
