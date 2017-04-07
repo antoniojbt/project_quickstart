@@ -295,11 +295,8 @@ def main(options):
     # before it
     # For function to search path see: 
     # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
-
-    _ROOT = os.path.abspath(os.path.dirname(__file__))
-    def getDir(path):
-        ''' Search path for the 'xxxx' directory for copying within cwd '''
-        return os.path.join(_ROOT, f'project_quickstart-{prog_version}', path)
+    # __init__.py has the getDir() function
+    # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
     template_dir = getDir('templates')
     project_template = os.path.join(template_dir, 'project_template')
