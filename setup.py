@@ -26,7 +26,7 @@ from distutils.core import setup
 
 
 setup(name = 'project_quickstart',
-      packages = ['project_quickstart', 'scripts'],
+      packages = ['project_quickstart'],
 #      install_requires=[
 #            'cgat',
 #            'CGATPipelines',

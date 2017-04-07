@@ -111,7 +111,7 @@ Code
 
 ##############################
 # Package module:
-from project_quickstart import projectQuickstart as projectQuickstart
+import projectQuickstart as projectQuickstart
 
 # Python modules:
 import sys
@@ -191,7 +191,7 @@ for key in CONFIG:
 
 ##############################
 # To delete:
-prog_version = '0.1'
+prog_version = '0.2'
 
 def main(options):
     ''' with docopt main() expects a dictionary with arguments from docopt()
