@@ -47,7 +47,6 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 .. _Conda: http://conda.pydata.org/docs/#
 
 .. _Docker: https://www.docker.com/
-
 .. _GitHub: https://github.com/
 
 .. _ReadtheDocs: https://readthedocs.org/
@@ -104,7 +103,7 @@ TODO
 From GitHub
 ===========
 
-To download and install from GitHub (you need git installed), at the command line do::
+To download and install from GitHub (you need git installed), at the command line do:
 
 .. code-block:: bash
 
