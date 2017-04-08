@@ -10,59 +10,6 @@
 Project Quickstart
 ##################
 
-..
-    A description of your project
-    Links to the project's ReadTheDocs page
-    A TravisCI button showing the state of the build
-    "Quickstart" documentation (how to quickly install and use your project)
-    A list of non-Python dependencies (if any) and how to install them
-
-.. See example: http://www.writethedocs.org/guide/writing/beginners-guide-to-docs/#id1
-
-..
-   $project
-   ========
-
-   $project will solve your problem of where to start with documentation,
-   by providing a basic explanation of how to do it easily.
-
-   Look how easy it is to use:
-
-    import project
-    # Get your stuff done
-    project.do_stuff()
-
-   Features
-   --------
-
-   - Be awesome
-   - Make things faster
-
-   Installation
-   ------------
-
-   Install $project by running:
-
-    install project
-
-   Contribute
-   ----------
-
-   - Issue Tracker: github.com/$project/$project/issues
-   - Source Code: github.com/$project/$project
-
-   Support
-   -------
-
-   If you are having issues, please let us know.
-   We have a mailing list located at: project@google-groups.com
-
-   License
-   -------
-
-   The project is licensed under the BSD license.
-
-
 In progress...
 
 Boilerplate tools and templates for setting up a data analysis project. The package is setup with: 
@@ -127,6 +74,7 @@ Some of the reasoning:
 
 .. _others: https://github.com/kbroman/broman
 
+
 .. _book: http://r-pkgs.had.co.nz/
 
 .. _ecosystem: http://hadley.nz/
@@ -149,6 +97,8 @@ Also see its data-science_ and reproducibility_ templates, they look good.
 
 To install:
 
+There aren't any external dependencies.
+
 TODO
 
 From GitHub
@@ -156,28 +106,17 @@ From GitHub
 
 To download and install from GitHub (you need git installed), at the command line do::
 
-|    project_quickstart
-|    ├── project_quickstart
-|    │   ├── __init__.py
-|    │   └── scripts and other files
-|    └── setup.py
+.. code-block:: bash
 
-.. code-block::
+   pip install git+git://github.com/AntonioJBT/project_quickstart.git
 
-    $ pip install git+git://github.com/AntonioJBT/project_quickstart.git
+or clone from GitHub (https example, you may need ssh):
 
-..    $ pip install git+git://github.com/myuser/foo.git@v123
-    or
-    $ pip install git+git://github.com/myuser/foo.git@newbranch
+.. code-block:: bash
 
-or clone from GitHub (https example, you may need ssh)::
-
-.. code-block::
-
-    git clone https://github.com/AntonioJBT/project_quickstart.git
+   git clone https://github.com/AntonioJBT/project_quickstart.git
     
-    python setup.py install
-
+   python setup.py install
 
 See stackoverflow_ example and pip docs_ for further help and explanations pip and git installs.
 
@@ -188,20 +127,41 @@ See stackoverflow_ example and pip docs_ for further help and explanations pip a
 pip
 ===
 
-TODO
+.. code-block:: bash
+
+   pip install project_quickstart
 
 Conda
 =====
 
 TODO
 
-
 Usage
 =====
-TODO
 
-.. code-block::
-    
-    project_quickstart.py --help
+Create a project directory skeleton with template files for reports, scripts, etc. Fill out the INI file with your data and update to populate the fields across files:
+
+.. code-block:: python
+
+   python project_quickstart.py --help
+   
+   python project_quickstart.py --name my_super_project
+   
+   python project_quickstart.py --update
+
+This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc. use. 
+
+
+Contribute
+==========
+
+- Issue Tracker: github.com/AntonioJBT/project_quickstart/issues
+- You are more than welcome to fork or submit pull requests.
+
+
+License
+=======
+
+GLP-3
 
 
