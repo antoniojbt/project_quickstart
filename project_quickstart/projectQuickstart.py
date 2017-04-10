@@ -21,7 +21,9 @@ https://github.com/AntonioJBT/project_quickstart
 
 import os
 
-_ROOT = os.path.abspath(os.path.dirname(__file__))
+prog_version = '0.2'
+
+_ROOT = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', '..'))
 def getDir(path):
     ''' Get the absolute path for the package directory '''
     return os.path.join(_ROOT, f'project_quickstart-{prog_version}', path)
