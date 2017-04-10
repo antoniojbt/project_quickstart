@@ -34,8 +34,11 @@ include templates/project_template/project_template/*
 #include install.sh
 
 # Exclude:
-exclude .dir_bash_history
-
+recursive-exclude .dir_bash_history
+#exclude */.dir_bash_history
+exclude dummy_setup.cfg
+#exclude */*/.dir_bash_history
+#exclude */*/.dir_bash_history
 
 # Scripts to include that are named explicitly:
 #include xxx/xxx/xxx.py

@@ -45,7 +45,7 @@ for key in CONFIG:
 
 #################
 # Actual setup.py instructions:
-setup(name = CONFIG['metadata']['project_name'] #'project_quickstart',
+setup(name = CONFIG['metadata']['project_name'], #'project_quickstart',
       packages = CONFIG['metadata']['project_name'],
 #      install_requires=[
 #            'cgat',
