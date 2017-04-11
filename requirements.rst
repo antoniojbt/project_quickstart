@@ -1,6 +1,6 @@
-#####################
-# Python requirements
-#####################
+#######################
+# Python requirements #
+#######################
 
 # CGATPipelines
 # https://github.com/CGATOxford/CGATPipelines/Pipeline

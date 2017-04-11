@@ -61,7 +61,7 @@ Some of the reasoning:
     - Usually a project is built around one data set/experiment/question but even in this case it's easy to see potential gains from automating and packaging.
     - Packaging your project can help with reproducibility, freezing code, version control, collaboration and general mental sanity (while managing a project at least).
     - Later on the code or parts of it could be extracted to work on the general case as a separate entity.
-    - This package is based on Python but the same applies to other languages. See much more eloquent and deeper discussions on writing your projects as packages from R. Flight_, H. Parker_ (also here_), H. Wickham_ and others_ for example. Hadley Wickham has a great ecosystem_ and a book_ on doing the same (and much more) with R_.
+    - This package is based on Python but the same applies to other languages. See discussions on writing your projects as packages in R (R. Flight_, H. Parker_ (also here_), H. Wickham_ and others_ for example). Hadley Wickham has a great ecosystem_ and a book_ on doing the same (and much more) with R_.
     
 .. _Flight: http://rmflight.github.io/posts/2014/07/analyses_as_packages.html
     
@@ -82,6 +82,8 @@ Some of the reasoning:
 
 -----
 
+Other similar packages:
+
 I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
 
 .. _CookieCutter: https://github.com/audreyr/cookiecutter-pypackage
@@ -96,9 +98,12 @@ Also see its data-science_ and reproducibility_ templates, they look good.
 
 To install:
 
-There aren't any external dependencies.
+Dependencies:
 
-TODO
+- Python 3.6
+- See requirements.rst for Python libraries needed
+- None external
+
 
 From GitHub
 ===========
@@ -143,9 +148,9 @@ Create a project directory skeleton with template files for reports, scripts, et
 .. code-block:: python
 
    python project_quickstart.py --help
-   
+
    python project_quickstart.py --name my_super_project
-   
+
    python project_quickstart.py --update
 
 This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc. use. 

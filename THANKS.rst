@@ -1,5 +1,5 @@
 ######
-THANKS
+Thanks
 ######
 
 Andreas Heger and CGAT.

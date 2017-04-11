@@ -1,6 +1,6 @@
-#####################
-External_dependencies
-#####################
+#########################
+# External_dependencies #
+#########################
 
 .. See: https://github.com/CGATOxford/cgat/blob/master/external_dependencies.txt
 
@@ -35,8 +35,8 @@ Tool definitions
 
 ## R Packages
 
-ggplot2:
-    rpackage: ggplot2
+#ggplot2:
+#    rpackage: ggplot2
 
-data.table:
-    rpackage: data.table
+#data.table:
+#    rpackage: data.table
