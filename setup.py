@@ -20,7 +20,6 @@
 # For uploading to PyPi see http://www.diveintopython3.net/packaging.html#pypi
 
 #################
-
 from distutils.core import setup
 #from setuptools import setup # Py2
 
@@ -31,6 +30,7 @@ try:
 except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
 
+
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
@@ -39,14 +39,17 @@ except ImportError:  # Py2 to Py3
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 CONFIG.read('project_quickstart.ini')
+# Print kyes (sections):
 for key in CONFIG:
-    print(key, CONFIG[key])
+    for value in CONFIG[key]:
+        print(key, value, '\n', CONFIG[key][value])
 #################
 
 #################
 # Actual setup.py instructions:
-setup(name = CONFIG['metadata']['project_name'], #'project_quickstart',
-      packages = CONFIG['metadata']['project_name'],
+setup(name = CONFIG['metadata']['project_name'],
+      packages = [CONFIG['metadata']['packages_setup']], # needs to be passed
+                                                         # as list
 #      install_requires=[
 #            'cgat',
 #            'CGATPipelines',

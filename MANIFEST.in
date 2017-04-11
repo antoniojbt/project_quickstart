@@ -34,9 +34,9 @@ include templates/project_template/project_template/*
 #include install.sh
 
 # Exclude:
-recursive-exclude .dir_bash_history
-#exclude */.dir_bash_history
-exclude dummy_setup.cfg
+#recursive-exclude .dir_bash_history
+exclude .dir_bash_history
+exclude */.dir_bash_history
 #exclude */*/.dir_bash_history
 #exclude */*/.dir_bash_history
 
@@ -55,5 +55,3 @@ exclude dummy_setup.cfg
 #include *.h
 #include *.pxd
 #include *.c
-
-

@@ -166,6 +166,17 @@ Contribute
 You are more than welcome to fork or submit pull requests (!).
 
 
+Change log
+==========
+
+v0.3
+- 
+-
+
+v0.2
+- Initial release
+
+
 License
 =======
 

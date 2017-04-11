@@ -1,12 +1,3 @@
-# Probably good to use MAJOR.MINOR.PATCH ?
-
-#    MAJOR version (when you make incompatible API changes), or something arbitrarily import?
-#    MINOR version when you add functionality in a backwards-compatible manner, and
-#    PATCH version when you make backwards-compatible bug fixes.
-
-# http://semver.org/
-
-
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
 try:
@@ -21,9 +12,18 @@ except ImportError:  # Py2 to Py3
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
+# Read INI file:
 CONFIG.read('project_quickstart.ini')
-for key in CONFIG:
-    print(key, CONFIG[key])
 
-__version__ = CONFIG['metadata']['prog_version']
-#'0.2'
+# Print kyes (sections):
+for key in CONFIG:
+    for value in CONFIG[key]:
+        print(key, value, '\n', CONFIG[key][value])
+
+CONFIG['metadata']['project_name']
+#print(CONFIG['metadata']['project_name'])
+my_val = CONFIG['metadata']['project_name']
+#my_val
+#print(my_val)
+print([CONFIG['metadata']['project_name']])
+print([CONFIG['metadata']['packages_setup']])
