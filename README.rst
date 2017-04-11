@@ -161,7 +161,7 @@ Contribute
 
 `Issue Tracker`_
 
-.. _`Issue Tracker`: github.com/AntonioJBT/project_quickstart/issues
+.. _`Issue Tracker`: https://github.com/AntonioJBT/project_quickstart/issues
 
 You are more than welcome to fork or submit pull requests (!).
 
