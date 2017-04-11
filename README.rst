@@ -159,7 +159,9 @@ This will create data, code, manuscript and results directories along with Pytho
 Contribute
 ==========
 
-Issue Tracker: github.com/AntonioJBT/project_quickstart/issues
+`Issue Tracker`_
+
+.. _`Issue Tracker`: github.com/AntonioJBT/project_quickstart/issues
 
 You are more than welcome to fork or submit pull requests (!).
 
