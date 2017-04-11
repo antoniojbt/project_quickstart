@@ -22,8 +22,11 @@ except ImportError:  # Py2 to Py3
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 CONFIG.read('project_quickstart.ini')
-for key in CONFIG:
-    print(key, CONFIG[key])
+
+#for key in CONFIG:
+#    for value in CONFIG[key]:
+#        print(CONFIG[key][value])
 
 __version__ = CONFIG['metadata']['prog_version']
-#'0.2'
+
+print(CONFIG['metadata']['project_name'], 'version', __version__)
