@@ -120,6 +120,8 @@ or clone from GitHub (https example, you may need ssh):
 
    git clone https://github.com/AntonioJBT/project_quickstart.git
     
+   cd project_quickstart
+
    python setup.py install
 
 See stackoverflow_ example and pip docs_ for further help and explanations pip and git installs.
@@ -170,10 +172,11 @@ Change log
 ==========
 
 v0.3
-- 
--
+
+- Updated xxx 
 
 v0.2
+
 - Initial release
 
 

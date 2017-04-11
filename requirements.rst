@@ -2,15 +2,17 @@
 # Python requirements #
 #######################
 
+# Include any non-standard Python libraries here to install automatically
+
 # CGATPipelines
 # https://github.com/CGATOxford/CGATPipelines/Pipeline
 
-pep8>=1.4.0
-nose>=1.3.0
-flake8>=3.0
-distutils>=3.5
+#pep8>=1.4.0
+#nose>=1.3.0
+#flake8>=3.0
+#distutils>=3.5
 docopt==0.6.2
-sphinx>=1.0.5
+#sphinx>=1.0.5
 
 #drmaa>=0.7
 #pandas>=0.12.0
