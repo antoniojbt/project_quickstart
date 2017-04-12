@@ -111,6 +111,8 @@ setup(name = CONFIG['metadata']['project_name'],
           'console_scripts': [
               'project_quickstart.py = project_quickstart.py:main',
               ]},
-      cmdclass = {'install': CustomInstall}
+      cmdclass = {'install': CustomInstall},
+      zip_safe=False,
+      test_suite="tests"
           )
 #################
