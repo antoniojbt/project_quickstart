@@ -111,7 +111,14 @@ Code
 
 ##############################
 # Package module:
+# Relative imports in Py3 need to be explicit
+# http://stackoverflow.com/questions/12172791/changes-in-import-statement-python3
+# But will fail if running the script directly. 
+# If it's from a package it'll work
+# setup.py 'should' take care of things though...
 import projectQuickstart
+# Relative import:
+#from .project_quickstart import projectQuickstart
 
 # Python modules:
 import sys

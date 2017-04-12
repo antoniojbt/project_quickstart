@@ -119,7 +119,7 @@ setup(name = CONFIG['metadata']['project_name'],
       long_description = CONFIG['metadata']['long_description'],
 #      long_description = description,
       include_package_data = True,
-      package_dir = {CONFIG['metadata']['project_name'] : CONFIG['metadata']['project_name']},
+#      package_dir = {CONFIG['metadata']['project_name'] : CONFIG['metadata']['project_name']},
       entry_points = {
           'console_scripts': [
               'project_quickstart.py = project_quickstart.project_quickstart.py:main',
