@@ -11,6 +11,20 @@ https://github.com/AntonioJBT/project_quickstart
 
 '''
 
+import os
+
+# Set up calling parameters from INI file:
+# Modules with Py2 to 3 conflicts
+try:
+    import configparser
+except ImportError:  # Py2 to Py3
+    import ConfigParser as configparser
+
+# Global variable for configuration file ('.ini')
+CONFIG = configparser.ConfigParser(allow_no_value = True)
+
+CONFIG.read('project_quickstart.ini')
+
 # Get locations of source code
     # os.path.join note: a subsequent argument with an '/' discards anything
     # before it
@@ -19,14 +33,10 @@ https://github.com/AntonioJBT/project_quickstart
     # __init__.py has the getDir() function
 # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
-import os
-
-prog_version = '0.2'
-
 _ROOT = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', '..'))
 def getDir(path):
     ''' Get the absolute path for the package directory '''
-    return os.path.join(_ROOT, f'project_quickstart-{prog_version}', path)
+    return os.path.join(_ROOT, CONFIG['metadata']['project_name'], path)
 
 #print(getDir('templates'))
 
@@ -97,6 +107,6 @@ def load_ini_config():
     print('\nResult:')
 
     pprint(result)
-    
+
     return(result)
 

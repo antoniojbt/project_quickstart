@@ -111,7 +111,7 @@ Code
 
 ##############################
 # Package module:
-import projectQuickstart #as projectQuickstart
+import projectQuickstart
 
 # Python modules:
 import sys
@@ -162,7 +162,9 @@ CONFIG.read('project_quickstart.ini')
 # quickUtils.load_ini_config()
 # results = ini_values
 
-#print(.__version__)
+# Test version.py after setup:
+#print('__version__:')
+#print(__version__)
 ##############################
 
 
@@ -171,46 +173,62 @@ def main(options):
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
-    docopt_error_msg = str('Exited due to error. '  # + Options in place:'
+    docopt_error_msg = str('Project Quickstart exited due to an error.'
                            + '\n'
-                          #+  str(docopt.docopt(__doc__))
-                          #+  '\n'
+                           + '''Invalid option or missing argument, try
+                           project_quickstart.py --help'''
+                           + '\n'
+                           + 'Options in place:'
+                           + '\n'
+                           +  str(docopt.docopt(__doc__))
+                           +  '\n'
                            )
 
     try:
-        # Parse arguments, use file docstring as a parameter definition:
-        # These are required, exit with message if not present:
-        #if not options['--project-name']:
-        #    print(docopt_error_msg)
-        #    print(''' Error in  the options given, a project name is required, such
-        #              as "super", which will be appended to "project_".
-        #              Try python project_quickstart.py --help .''')
-        #    sys.exit()
+        # Parse arguments, use file docstring as a parameter definition
+        # These arguments are optional
+        # Standard options (log, verbose, version, quiet, dry-run, force):
+        if not options['--log']:
+            log = str(CONFIG['metadata']['project_name'] + '.log')
+            pass  # TO DO, script log function
+        else:
+            log = str(options["--log"]).strip('[]').strip("''")
+
+        if options['--verbose']:
+            print('Option not in use at the moment')
+            pass  # TO DO
+
+        if options['--version']:
+            print(CONFIG['metadata']['version'])
+
+        if options['--quiet']:
+            print('Option not in use at the moment')
+            pass  # TO DO
+
+        if options['--dry-run']:
+            print('Dry run, only print what folders will be created.')
+            print('Option not in use at the moment')
+            pass  # TO DO
+
+        if options['--force']:
+            print('Force overwriting directories and files')
+            print('Option not in use at the moment')
+            pass  # TO DO
+
+        # Programme specific options
+        # Required:
         if options['--project-name']:
             # py3.6 formatting:
             project_name = str(options["--project-name"]).strip('[]').strip("''")
             project_root = str(f'project_{project_name}')
 
-        # TO DO: add --path ? To avoid problems with searching for the 'templates' folder?
-        # See path search below
-
-        # These arguments are optional:
-        if options['--force']:
-            print('Force overwriting directories and files')
-            print('Option not in use at the moment')
-            pass  # TO DO
-        if not options['--log']:
-    #        log = str(options["--log"]).strip('[]').strip("''")
-            log = str('project_quickstart.log')
-            pass  # TO DO, script log function
-        else:
-            log = str(options["--log"]).strip('[]').strip("''")
+        # Addional/alternative if above not given:
         if options['--update']:
             print(''' After manually editing the ini file run to
                     propagate changes.''')
             print('Option not in use at the moment')
             pass  # TO DO
-        # Is len()> 0 needed? docopt takes care of missing arg? TO DO
+
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
@@ -226,6 +244,7 @@ def main(options):
             print(''' You need to provide a script name. This will be prefixed to
                   ".py" ''')
             sys.exit()
+
         if options['--script-R'] and len(options['--script-R']) > 0:
             print(''' Creating an R script template. A softlink is
                   created in the current working directory and the
@@ -238,18 +257,26 @@ def main(options):
             print(''' You need to provide a script name. This will be prefixed to
                   ".R" ''')
             sys.exit()
-        if options['--dry-run']:
-            print('Dry run, only print what folders will be created.')
-            print('Option not in use at the moment')
-            pass  # TO DO
 
-        print(str('Options in use: ' + '\n'), options, '\n')
+        # Exit if options not given:
+        if (not options['--project-name']
+                and not options['--update']
+                and not options['--script-R']
+                and not options['--script-python']
+                ):
+            print(docopt_error_msg)
+            print(''' Error in  the options given or none supplied.
+                      A project name is required, such as "super",
+                      which will be appended to "project_".
+                      Otherwise you need to use --update, --script-R or
+                      --script-python for example.''')
+            sys.exit()
+
+      #  print(str('Options in use: ' + '\n'), options, '\n')
 
     # Handle exceptions:
     except docopt.DocoptExit:
         print(docopt_error_msg)
-        print(''' Invalid option or missing argument,
-        try project_quickstart.py --help''')
         raise
 
     # Set up default paths, directoy and file names:
@@ -523,7 +550,7 @@ if __name__ == '__main__':
     # if using docopt:
     # it will check all arguments pass, if not exits with 'Usage:':
     options = docopt.docopt(__doc__, version =
-    '{}'.format(CONFIG['metadata']['prog_version']))
+    '{}'.format(CONFIG['metadata']['version']))
          # switch to template from INI with t = string.Template('$version') ;
          # t.substitute({'version':0.1})
     # if arguments are valid, run the program:

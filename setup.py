@@ -105,7 +105,7 @@ setup(name = CONFIG['metadata']['project_name'],
       #[CONFIG['metadata']['packages_setup']], # needs to be passed
                                                          # as list
       install_requires = install_requires,
-      version = CONFIG['metadata']['prog_version'],
+      version = CONFIG['metadata']['version'],
       url = CONFIG['metadata']['project_url'],
       download_url = CONFIG['metadata']['download_url'],
       author = CONFIG['metadata']['author_name'],
