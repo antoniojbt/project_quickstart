@@ -21,9 +21,17 @@
 
 #################
 #from distutils.core import setup
-#from setuptools import setup # Py2
 from setuptools.command.install import install
 from setuptools import setup, find_packages
+
+# Check these from:
+# https://github.com/pyca/cryptography/blob/1.0.1/setup.py
+
+#import pkg_resources
+#from __future__ import absolute_import, division, print_function
+#from distutils.command.build import build
+#from setuptools.command.test import test
+
 import sys
 
 # Set up calling parameters from INI file:
@@ -82,7 +90,7 @@ with open('requirements.rst') as required:
 # Give warning:
 class CustomInstall(install):
     def initialize_options(self):
-        if sys.version < '3':
+        if sys.version < '3.6':
             print(CONFIG['metadata']['project_name'], " requires Python 3.6 or higher.")
             sys.exit(1)
 
@@ -111,7 +119,7 @@ setup(name = CONFIG['metadata']['project_name'],
       long_description = CONFIG['metadata']['long_description'],
 #      long_description = description,
       include_package_data = True,
-#      package_dir = {'' : CONFIG['metadata']['project_name']},
+      package_dir = {CONFIG['metadata']['project_name'] : CONFIG['metadata']['project_name']},
       entry_points = {
           'console_scripts': [
               'project_quickstart.py = project_quickstart.project_quickstart.py:main',

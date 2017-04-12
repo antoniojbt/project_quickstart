@@ -111,14 +111,14 @@ Code
 
 ##############################
 # Package module:
-import projectQuickstart as projectQuickstart
+import projectQuickstart #as projectQuickstart
 
 # Python modules:
 import sys
 import re
 import os
 import shutil
-from shutil import copytree, ignore_patterns
+#from shutil import copytree, ignore_patterns
 import collections
 import glob
 import string
@@ -162,6 +162,7 @@ CONFIG.read('project_quickstart.ini')
 # quickUtils.load_ini_config()
 # results = ini_values
 
+#print(.__version__)
 ##############################
 
 
