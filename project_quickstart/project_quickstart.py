@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
+'''
 
-'''project_quickstart.py - setup a new python based project
-===========================================================
+project_quickstart.py - setup a new python based project
+========================================================
 
 :Author: Antonio Berlanga-Taylor
-:Release: $Id$
+:Release: |date|
 :Date: |today|
 
 
@@ -145,6 +145,10 @@ import docopt
 # Pipeline/Parameters.py
 # https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
 
+# TO DO: (see E.py)
+# if "--help" in sys.argv or "-h" in sys.argv:
+#    TriggeredDefaultFactory.with_default = True
+
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
@@ -152,35 +156,7 @@ import docopt
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-
-'''
-class TriggeredDefaultFactory:
-    with_default = False
-
-    def __call__(self):
-        if TriggeredDefaultFactory.with_default:
-            return str()
-        else:
-            print("Missing argument, see python project_quickstart.py --help")
-            raise KeyError("Missing parameter accessed")
-'''
-
-# Global variable for parameter interpolation in commands
-# This is a dictionary that can be switched between defaultdict
-# and normal dict behaviour.
-#PARAMS = collections.defaultdict(TriggeredDefaultFactory())
-
-# patch - if --help or -h in command line arguments,
-# switch to a default dict to avoid missing paramater
-# failures
-
-# TO DO: (see E.py)
-# if "--help" in sys.argv or "-h" in sys.argv:
-#    TriggeredDefaultFactory.with_default = True
-
 CONFIG.read('project_quickstart.ini')
-for key in CONFIG:
-    print(key, CONFIG[key])
 
 # docopt requires Nones to be passed as False:
 # quickUtils.load_ini_config()

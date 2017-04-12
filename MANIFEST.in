@@ -4,12 +4,22 @@
 #    The .py files needed by the multi-file modules listed in the packages parameter
 #    The individual .py files listed in the py_modules parameter 
 
-# See explanation in: http://www.diveintopython3.net/packaging.html
+# MANIFEST.in commands:
+# https://docs.python.org/3/distutils/sourcedist.html#commands
 
-# Use .add_data_files and .add_data_dir methods in a appropriate
+# See explanation in: http://www.diveintopython3.net/packaging.html
+# Use .add_data_files and .add_data_dir methods in appropriate
 # setup.py files to include non-python files such as documentation,
 # data, etc files to distribution. Avoid using MANIFEST.in for that.
 
+# Use check-manifest to detect errors in setup.py:
+# https://pypi.python.org/pypi/check-manifest
+
+# Except packaging in Python is a massive pain with incomplete and seemingly
+# contradicting docs.
+
+# Include scripts in main directory, package info and INI files:
+include *.py
 include MANIFEST.in
 include project_quickstart.ini
 include LICENSE
@@ -18,24 +28,39 @@ include README.rst
 include KNOWN_BUGS.rst
 include THANKS.rst
 include TODO.rst
+include COPYING
+
+# Include dependency specifications and Docker:
 include external_dependencies.rst
 include requirements.rst
 include Dockerfile
-include COPYING
+
+# Include project documentation:
+recursive-include docs *.html
+recursive-include docs *.rst
+recursive-include docs *.py
+include docs/Makefile
+include docs/make.bat
+prune docs/_build
+
+# Include files for tests:
+include tox.ini 
+include .travis.yml
+include run_travis_tests.sh
+recursive-include tests *
+
+# Include addtional files needed, example data, etc.:
 include templates/*
 include templates/project_template/*
 include templates/project_template/docs/*
 include templates/project_template/scripts/*
 include templates/project_template/tests/*
 include templates/project_template/project_template/*
-#recursive-include templates/ *.R *.rst *.py *.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
-#recursive-include templates/project_template/ *.R *.rst *.py *.ini *.cfg *.sh *txt LICENCE PKG-INFO Dockerfile COPYING *yml *ignore *data *std
 
-#recursive-include docs *.html *.css *.png *.gif
-#include install.sh
-
-# Exclude:
+# Files to exclude:
+exclude .gitignore
 exclude .dir_bash_history
+exclude tests/.dir_bash_history
 exclude templates/.dir_bash_history
 exclude templates/project_template/.dir_bash_history
 exclude templates/project_template/docs/.dir_bash_history
@@ -43,14 +68,7 @@ exclude templates/project_template/scripts/.dir_bash_history
 exclude templates/project_template/tests/.dir_bash_history
 exclude templates/project_template/project_template/.dir_bash_history
 
-# Scripts to include that are named explicitly:
-#include xxx/xxx/xxx.py
-
-# Others to include:
-#include xxx/scripts/__init__.py
-#include xxx/scripts/version.py
-
-# Extensions
+# Extensions to include:
 #include *.pyxbld
 #include *.pyx
 #include *.h

@@ -72,8 +72,11 @@ with open('requirements.rst') as required:
 
 #print(install_requires)
 
-with open('README.rst', 'rt') as readme:
-    description = readme.read()
+# Use README as long description if desired, otherwise get it from INI file (or
+# write it out in setup()):
+
+#with open('README.rst', 'rt') as readme:
+#    description = readme.read()
 
 
 # Give warning:
@@ -90,7 +93,8 @@ class CustomInstall(install):
 #################
 # Actual setup.py instructions:
 setup(name = CONFIG['metadata']['project_name'],
-      packages = [CONFIG['metadata']['packages_setup']], # needs to be passed
+      packages = find_packages(),
+      #[CONFIG['metadata']['packages_setup']], # needs to be passed
                                                          # as list
       install_requires = install_requires,
       version = CONFIG['metadata']['prog_version'],
@@ -104,15 +108,16 @@ setup(name = CONFIG['metadata']['project_name'],
        # gives many errors when registering manually in pip
       description = CONFIG['metadata']['project_short_description'],
       keywords = CONFIG['metadata']['keywords'],
-      #long_description = CONFIG['metadata']['long_description'],
-      long_description = description,
+      long_description = CONFIG['metadata']['long_description'],
+#      long_description = description,
       include_package_data = True,
-      entry_points={
+#      package_dir = {'' : CONFIG['metadata']['project_name']},
+      entry_points = {
           'console_scripts': [
-              'project_quickstart.py = project_quickstart.py:main',
+              'project_quickstart.py = project_quickstart.project_quickstart.py:main',
               ]},
       cmdclass = {'install': CustomInstall},
-      zip_safe=False,
-      test_suite="tests"
+      zip_safe = False,
+      test_suite = "tests"
           )
 #################
