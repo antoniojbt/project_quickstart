@@ -113,19 +113,19 @@ Code
 # Package module:
 # Relative imports in Py3 need to be explicit
 # http://stackoverflow.com/questions/12172791/changes-in-import-statement-python3
-# But will fail if running the script directly. 
+# But will fail if running the script directly.
 # If it's from a package it'll work
 # setup.py 'should' take care of things though...
 import projectQuickstart
 # Relative import:
-#from .project_quickstart import projectQuickstart
+# from .project_quickstart import projectQuickstart
 
 # Python modules:
 import sys
 import re
 import os
 import shutil
-#from shutil import copytree, ignore_patterns
+# from shutil import copytree, ignore_patterns
 import collections
 import glob
 import string
@@ -157,7 +157,8 @@ import docopt
 #    TriggeredDefaultFactory.with_default = True
 
 # Get package source directory in (param path) '
-#src_dir = projectQuickstart.getDir()
+src_dir = projectQuickstart.getDir('..')
+print('Project Quickstart main dir is:', '\n', src_dir)
 
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
@@ -166,15 +167,19 @@ import docopt
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-CONFIG.read('project_quickstart.ini')
+# Get ini file to read values from:
+INI_file = projectQuickstart.getINIdir(src_dir)
+print('Project Quickstart INI file is:', '\n', INI_file)
+
+# Read values from the INI file:
+CONFIG.read(INI_file)
+for key in CONFIG:
+    for value in CONFIG[key]:
+        print(key, value, CONFIG[key][value])
 
 # docopt requires Nones to be passed as False:
 # quickUtils.load_ini_config()
 # results = ini_values
-
-# Test version.py after setup:
-#print('__version__:')
-#print(__version__)
 ##############################
 
 
@@ -183,15 +188,17 @@ def main(options):
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
-    docopt_error_msg = str('Project Quickstart exited due to an error.'
+    docopt_error_msg = str(''' Project Quickstart v{} exited due to an
+            error.''').format(CONFIG['metadata']['version'])
+    docopt_error_msg = str(docopt_error_msg
                            + '\n'
                            + '''Invalid option or missing argument, try
                            project_quickstart.py --help'''
                            + '\n'
                            + 'Options in place:'
                            + '\n'
-                           +  str(docopt.docopt(__doc__))
-                           +  '\n'
+                           + str(docopt.docopt(__doc__))
+                           + '\n'
                            )
 
     try:
@@ -281,8 +288,6 @@ def main(options):
                       Otherwise you need to use --update, --script-R or
                       --script-python for example.''')
             sys.exit()
-
-      #  print(str('Options in use: ' + '\n'), options, '\n')
 
     # Handle exceptions:
     except docopt.DocoptExit:
@@ -559,8 +564,7 @@ def main(options):
 if __name__ == '__main__':
     # if using docopt:
     # it will check all arguments pass, if not exits with 'Usage:':
-    options = docopt.docopt(__doc__, version = 
-            '{}'.format(CONFIG['metadata']['version']))
+    options = docopt.docopt(__doc__)
          # switch to template from INI with t = string.Template('$version') ;
          # t.substitute({'version':0.1})
     # if arguments are valid, run the program:

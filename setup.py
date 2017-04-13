@@ -50,11 +50,11 @@ except ImportError:  # Py2 to Py3
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 CONFIG.read('project_quickstart.ini')
-# Print kyes (sections):
+# Print keys (sections):
 print('Values for setup.py:', '\n')
 for key in CONFIG:
     for value in CONFIG[key]:
-        print(key, value, '\n', CONFIG[key][value])
+        print(key, value, CONFIG[key][value])
 #################
 
 
