@@ -116,7 +116,7 @@ Code
 # But will fail if running the script directly. 
 # If it's from a package it'll work
 # setup.py 'should' take care of things though...
-import project_quickstart.projectQuickstart
+import projectQuickstart
 # Relative import:
 #from .project_quickstart import projectQuickstart
 
@@ -155,6 +155,9 @@ import docopt
 # TO DO: (see E.py)
 # if "--help" in sys.argv or "-h" in sys.argv:
 #    TriggeredDefaultFactory.with_default = True
+
+# Get package source directory in (param path) '
+#src_dir = projectQuickstart.getDir()
 
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
@@ -556,8 +559,8 @@ def main(options):
 if __name__ == '__main__':
     # if using docopt:
     # it will check all arguments pass, if not exits with 'Usage:':
-    options = docopt.docopt(__doc__, version =
-    '{}'.format(CONFIG['metadata']['version']))
+    options = docopt.docopt(__doc__, version = 
+            '{}'.format(CONFIG['metadata']['version']))
          # switch to template from INI with t = string.Template('$version') ;
          # t.substitute({'version':0.1})
     # if arguments are valid, run the program:
