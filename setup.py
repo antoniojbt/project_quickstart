@@ -98,6 +98,22 @@ class CustomInstall(install):
             sys.exit(1)
 
         return install.initialize_options(self)
+
+entry_points = str('{"console_scripts"'
+                  + ' : '
+                  + ' [ '
+                  + '"'
+                  + CONFIG['metadata']['project_name']
+                  + '.py'
+                  + ' = '
+                  + CONFIG['metadata']['project_name']
+                  + '.'
+                  + CONFIG['metadata']['project_name']
+                  + ' : main'
+                  + '" '
+                  + ']}'
+                  )
+print(entry_points)
 #################
 
 
@@ -127,11 +143,11 @@ setup(
                                                          # as list
       install_requires = install_requires,
 #      include_package_data = True,
-#      package_dir = {'' : CONFIG['metadata']['project_name']},
-      entry_points = {
-          'console_scripts': [
-              'project_quickstart.py = project_quickstart.project_quickstart:main',
-              ]},
+      package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
+#      entry_points = entry_points,
+#       entry_points = {'console_scripts': [
+#           'project_quickstart.py = project_quickstart.project_quickstart:main'
+#           ]},
       cmdclass = {'install': CustomInstall},
       zip_safe = False,
       test_suite = "tests"
