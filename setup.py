@@ -91,7 +91,10 @@ with open('requirements.rst') as required:
 class CustomInstall(install):
     def initialize_options(self):
         if sys.version < '3.6':
-            print(CONFIG['metadata']['project_name'], " requires Python 3.6 or higher.")
+            print('Error during installation: ', '\n',
+                    CONFIG['metadata']['project_name'],
+                    ' requires Python 3.6 or higher.',
+                    'Exiting...')
             sys.exit(1)
 
         return install.initialize_options(self)
@@ -99,12 +102,12 @@ class CustomInstall(install):
 
 
 #################
-# Actual setup.py instructions:
-setup(name = CONFIG['metadata']['project_name'],
-      packages = find_packages(),
-      #[CONFIG['metadata']['packages_setup']], # needs to be passed
-                                                         # as list
-      install_requires = install_requires,
+# Actual setup.py instructions
+# Python docs: https://docs.python.org/3.6/distutils/setupscript.html 
+# Tutorial: http://python-packaging.readthedocs.io/en/latest/
+setup(
+      # Package metadata:
+      name = CONFIG['metadata']['project_name'],
       version = CONFIG['metadata']['version'],
       url = CONFIG['metadata']['project_url'],
       download_url = CONFIG['metadata']['download_url'],
@@ -116,10 +119,14 @@ setup(name = CONFIG['metadata']['project_name'],
        # gives many errors when registering manually in pip
       description = CONFIG['metadata']['project_short_description'],
       keywords = CONFIG['metadata']['keywords'],
-      long_description = CONFIG['metadata']['long_description'],
-#      long_description = description,
+      long_description = CONFIG['metadata']['long_description'], #long_description = description,
+      # Package information:
+      packages = find_packages(CONFIG['metadata']['project_name']),
+      #[CONFIG['metadata']['packages_setup']], # needs to be passed
+                                                         # as list
+      install_requires = install_requires,
       include_package_data = True,
-#      package_dir = {CONFIG['metadata']['project_name'] : CONFIG['metadata']['project_name']},
+      package_dir = {'' : CONFIG['metadata']['project_name']},
       entry_points = {
           'console_scripts': [
               'project_quickstart.py = project_quickstart.project_quickstart.py:main',
