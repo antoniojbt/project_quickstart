@@ -121,15 +121,16 @@ setup(
       keywords = CONFIG['metadata']['keywords'],
       long_description = CONFIG['metadata']['long_description'], #long_description = description,
       # Package information:
-      packages = find_packages(CONFIG['metadata']['project_name']),
+#      packages = find_packages(CONFIG['metadata']['project_name']),
+      packages = find_packages(),
       #[CONFIG['metadata']['packages_setup']], # needs to be passed
                                                          # as list
       install_requires = install_requires,
-      include_package_data = True,
-      package_dir = {'' : CONFIG['metadata']['project_name']},
+#      include_package_data = True,
+#      package_dir = {'' : CONFIG['metadata']['project_name']},
       entry_points = {
           'console_scripts': [
-              'project_quickstart.py = project_quickstart.project_quickstart.py:main',
+              'project_quickstart.py = project_quickstart.py:main',
               ]},
       cmdclass = {'install': CustomInstall},
       zip_safe = False,
