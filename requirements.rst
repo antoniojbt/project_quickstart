@@ -18,7 +18,7 @@ docopt==0.6.2
 #pandas>=0.12.0
 #ruffus>=2.6
 
-#setuptools>=1.1
+setuptools>=1.1
 #pyparsing>=1.5.7
 #cython>=0.19
 #numpy>=1.7

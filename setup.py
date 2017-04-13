@@ -22,6 +22,7 @@
 #################
 #from distutils.core import setup
 from setuptools.command.install import install
+import setuptools
 from setuptools import setup, find_packages
 
 # Check these from:
@@ -31,6 +32,12 @@ from setuptools import setup, find_packages
 #from __future__ import absolute_import, division, print_function
 #from distutils.command.build import build
 #from setuptools.command.test import test
+
+from distutils.version import LooseVersion
+if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
+    print ("Version detected:", LooseVersion(setuptools.__version__))
+    raise ImportError("setuptools 1.1 or higher is required")
+
 
 import sys
 
@@ -145,9 +152,9 @@ setup(
 #      include_package_data = True,
       package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
 #      entry_points = entry_points,
-#       entry_points = {'console_scripts': [
-#           'project_quickstart.py = project_quickstart.project_quickstart:main'
-#           ]},
+       entry_points = {'console_scripts': [
+           'project_quickstart.py = project_quickstart.project_quickstart:main'
+           ]},
       cmdclass = {'install': CustomInstall},
       zip_safe = False,
       test_suite = "tests"
