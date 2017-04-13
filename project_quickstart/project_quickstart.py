@@ -116,9 +116,9 @@ Code
 # But will fail if running the script directly. 
 # If it's from a package it'll work
 # setup.py 'should' take care of things though...
-import projectQuickstart
+#import projectQuickstart
 # Relative import:
-#from .project_quickstart import projectQuickstart
+from .project_quickstart import projectQuickstart
 
 # Python modules:
 import sys
