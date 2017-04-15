@@ -1,5 +1,4 @@
 '''
-
 project_quickstart.py - setup a new python based project
 ========================================================
 
@@ -44,31 +43,6 @@ Usage and Options
 Create a new directory, subfolders and files in the current directory that will
 help quickstart your data science project with packaging, testing, scripts and
 other templates.
-
-.. These are using docopt: http://docopt.org/
-.. https://github.com/docopt/docopt
-.. An example for loading arguments from an INI file:
-.. https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
-.. http://docopt.readthedocs.io/en/latest/#help-message-format
-.. Basic reminders for docopt:
-    Use two spaces to separate options with their informal description
-    () are required, [] are optional
-    Default values are specified in the Options section with eg [default:
-    xxx.log]
-
-.. See also Schema for input argument validation, e.g.:
-    https://github.com/docopt/docopt/blob/master/examples/validation_example.py
-
-.. Usage pattern in docopt can't have empty lines and ends with an empty line.
-   The first word after usage\: is interpreted as the program's name (e.g.
-   'python xxx.py' makes it think your programme is called 'python' with
-   option 'xxx.py')
-.. docopt reads multi-line descriptions in Options so 80 character lines can be
-   wrapped.
-.. 'Usage' and 'Options' case insensitive and followed by ':' are recognised by
-   docopt in the docstrings.
-.. docopt
-
 
 Usage:
        project_quickstart.py [--project-name=<project_name> | -n
@@ -235,9 +209,8 @@ def main(options):
         # Programme specific options
         # Required:
         if options['--project-name']:
-            # py3.6 formatting:
             project_name = str(options["--project-name"]).strip('[]').strip("''")
-            project_root = str(f'project_{project_name}')
+            project_root = str('project_{}').format(project_name)
 
         # Addional/alternative if above not given:
         if options['--update']:
@@ -251,10 +224,8 @@ def main(options):
                   created in the current working directory and the
                   actual file in xxx/code/scripts/ ''')
             # py3.5 formatting:
-#            script_name = str('{}.py').format.options['--script-python']
-            # py3.6:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
-            script_name = str(f'{script_name}.py')
+            script_name = str('{}.py').format(script_name)
             print(script_name)
         elif options['--script-python'] and len(options['--script-python']) == 0:
             print(docopt_error_msg)
@@ -267,7 +238,7 @@ def main(options):
                   created in the current working directory and the
                   actual file in xxx/code/scripts/ ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
-            script_name = str(f'{script_name}.R')
+            script_name = str('{}.R').format(script_name)
             print(script_name)
         elif options['--script-R'] and len(options['--script-R']) == 0:
             print(docopt_error_msg)
@@ -301,10 +272,10 @@ def main(options):
         os.makedirs(project_dir)
     else:
         print(docopt_error_msg)
-        print(str(f'''The directory with the name {project_root} already exists.
+        print(str('''The directory with the name {} already exists.
                     Use --force to overwrite.'''
                   + '\n'
-                  ))
+                  ).format(project_root))
         sys.exit()
 
     # Get locations of source code
@@ -325,15 +296,15 @@ def main(options):
     for d in dirs_to_use:
         if not os.path.exists(d):
             print(docopt_error_msg)
-            print(f''' The directory:
-                       {d}
+            print(''' The directory:
+                       {}
                        does not exist.
                        Are the paths correct? Did the programme install in the
                        right location?
                        'bin' dir should be where project_quickstart installed,
                        'templates' and 'project_template' come with this
                        package.
-                   ''' )
+                   ''' ).format(d)
             sys.exit()
 
     # Get the names for the directories to create for the project skeleton:
@@ -355,11 +326,11 @@ def main(options):
     for d in dirnames:
         if os.path.exists(d):
             print(docopt_error_msg)
-            print(f''' The directory:
-                       {dir_path}
+            print(''' The directory:
+                       {}
                        already exists.
                        To overwrite use --force.
-                   ''' )
+                   ''' ).format(dir_path)
             sys.exit()
 
     # If directory paths are OK, continue:
@@ -367,7 +338,7 @@ def main(options):
               + template_dir + '\n'
               + project_template
               + '\n' + '\n'
-              + f'Creating the project structure for {project_name} in:' + '\n'
+              + 'Creating the project structure for {} in:'.fomart(project_name) + '\n'
               + project_dir + '\n')
           )
 
@@ -386,7 +357,8 @@ def main(options):
             os.makedirs(d)
         else:
             print(docopt_error_msg)
-            print(f'The directory {d} already exists, use --force to overwrite.')
+            print('''The directory {} already exists, use --force to
+                    overwrite.''').format(d)
             sys.exit()
 
     # Copy files from template directory:
@@ -442,14 +414,14 @@ def main(options):
                     if old_substring in f:
                         os.rename(os.path.join(d, f),
                                   os.path.join(d, f.replace(old_substring,
-                                        f'{new_substring}'))
+                                        '{}').format(new_substring))
                                   )
 
             for d in dirname:
                 if old_substring in d:
                     os.rename(os.path.join(str(dirpath), d),
                               os.path.join(str(dirpath), d.replace(
-                                  old_substring, f'{new_substring}'))
+                                  old_substring, '{}').format(new_substring))
                               )
     renameTree(project_dir, 'template', project_name)
 

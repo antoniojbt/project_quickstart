@@ -13,6 +13,8 @@
 #distutils>=3.5
 docopt==0.6.2
 #sphinx>=1.0.5
+#check-manifest
+#coverage
 
 #drmaa>=0.7
 #pandas>=0.12.0

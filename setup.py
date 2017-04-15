@@ -1,45 +1,46 @@
-#################
+'''
+setup for |project_name|
 
-# https://python-packaging.readthedocs.io/en/latest/minimal.html
-# For a fuller example see: https://github.com/CGATOxford/UMI-tools/blob/master/setup.py
-# Or: https://github.com/CGATOxford/cgat/blob/master/setup.py
+For example on setting a Python package, see:
+https://packaging.python.org/en/latest/distributing.html
+https://github.com/pypa/sampleproject
 
-# TO DO: update with further options such as include README.rst and others when ready
+For Python 3.5
+Before packaging or installing run:
 
-# TO DO: to add tests see https://python-packaging.readthedocs.io/en/latest/testing.html
+    pip install -U pip twine check-manifest setuptools
 
-# See also this example: https://github.com/pypa/sampleproject/blob/master/setup.py
+TO DO: to add tests see https://python-packaging.readthedocs.io/en/latest/testing.html
 
-# This may be a better way, based on Py3: http://www.diveintopython3.net/packaging.html
+To package, do something like this:
 
-# To package, check setup.py first:
-# python setup.py check
-# Then create a source distribution:
-# python setup.py sdist
-# which will create a dist/ directory and a compressed file inside with your package.
-# For uploading to PyPi see http://www.diveintopython3.net/packaging.html#pypi
+    check-manifest
+    python setup.py check
+    python setup.py sdist bdist_wheels
 
-#################
-#from distutils.core import setup
-from setuptools.command.install import install
-import setuptools
+which will create a dist/ directory and a compressed file inside with your package.
+
+More notes and references in:
+    https://github.com/EpiCompBio/welcome
+
+And in the Python docs.
+Upload to PyPI after this if for general use.
+'''
+
+# Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+# To use a consistent encoding
+from codecs import open
 
-# Check these from:
-# https://github.com/pyca/cryptography/blob/1.0.1/setup.py
-
-#import pkg_resources
-#from __future__ import absolute_import, division, print_function
-#from distutils.command.build import build
-#from setuptools.command.test import test
-
-from distutils.version import LooseVersion
-if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
-    print ("Version detected:", LooseVersion(setuptools.__version__))
-    raise ImportError("setuptools 1.1 or higher is required")
-
+# To run custom install warning use:
+from setuptools.command.install import install
 
 import sys
+import os
+
+# Get location to this file:
+here = os.path.abspath(os.path.dirname(__file__))
+print(here)
 
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
@@ -48,7 +49,6 @@ try:
 except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
 
-
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
@@ -56,7 +56,9 @@ except ImportError:  # Py2 to Py3
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-CONFIG.read('project_quickstart.ini')
+CONFIG.read(os.path.join(here, str('project_quickstart' + '.ini')))
+# str(CONFIG['metadata']['project_name'] + '.ini'))) 
+
 # Print keys (sections):
 print('Values for setup.py:', '\n')
 for key in CONFIG:
@@ -71,6 +73,7 @@ sys.path.insert(0, CONFIG['metadata']['project_name'])
 import version
 
 version = version.__version__
+print(version)
 #################
 
 
@@ -79,28 +82,27 @@ version = version.__version__
 # Get Ptyhon modules required:
 install_requires = []
 
-with open('requirements.rst') as required:
+with open(os.path.join(here, 'requirements.rst'), encoding='utf-8') as required:
     for line in (required):
         if not line.startswith('#') and not line.startswith('\n'):
             line = line.strip()
             install_requires.append(line)
 
-#print(install_requires)
+print(install_requires)
 
 # Use README as long description if desired, otherwise get it from INI file (or
 # write it out in setup()):
 
-#with open('README.rst', 'rt') as readme:
+#with open(os.path.join(here, 'README.rst'), 'rt', encoding='utf-8') as readme:
 #    description = readme.read()
-
 
 # Give warning:
 class CustomInstall(install):
     def initialize_options(self):
-        if sys.version < '3.6':
+        if sys.version < '3.5':
             print('Error during installation: ', '\n',
                     CONFIG['metadata']['project_name'],
-                    ' requires Python 3.6 or higher.',
+                    ' requires Python 3.5 or higher.',
                     'Exiting...')
             sys.exit(1)
 
@@ -146,10 +148,17 @@ setup(
       # Package information:
 #      packages = find_packages(CONFIG['metadata']['project_name']),
       packages = find_packages(),
-      #[CONFIG['metadata']['packages_setup']], # needs to be passed
-                                                         # as list
+      #[CONFIG['metadata']['packages_setup']], # needs to be passed as list
       install_requires = install_requires,
-#      include_package_data = True,
+      # If there are data files to include with installation, specify here
+      # (they should be in the main src dir):
+      # Including them in MANIFEST.in is not favoured.
+#      package_data = {'sample': ['package_data.dat']},
+      # 'package_data' is preferred but if data files are outside the package's
+      # main dir then use:
+      # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
+      # 'data_file' will be installed into '<sys.prefix>/my_data'
+#      data_files=[('my_data', ['data/data_file'])],
       package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
 #      entry_points = entry_points,
        entry_points = {'console_scripts': [
