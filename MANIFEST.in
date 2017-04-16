@@ -18,10 +18,13 @@
 # Except packaging in Python is a massive pain with incomplete and seemingly
 # contradicting docs.
 
+# Include main package and scripts:
+recursive-include project_quickstart *.py
+
 # Include scripts in main directory, package info and INI files:
 include *.py
 include MANIFEST.in
-include project_quickstart.ini
+include *.ini
 include LICENSE
 include INSTALL
 include README.rst
