@@ -4,3 +4,10 @@
 # Otherwise omit __init__.py entirely unless you have sub-packages
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)
+
+import project_quickstart
+
+def main():
+    project_quickstart.main()
+
+main()

@@ -99,7 +99,6 @@ import sys
 import re
 import os
 import shutil
-# from shutil import copytree, ignore_patterns
 import collections
 import glob
 import string
@@ -158,10 +157,11 @@ for key in CONFIG:
 
 
 ##############################
-def main(options):
+def main():
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
+    options = docopt.docopt(__doc__)
     docopt_error_msg = str(''' Project Quickstart v{} exited due to an
             error.''').format(CONFIG['metadata']['version'])
     docopt_error_msg = str(docopt_error_msg
@@ -171,7 +171,7 @@ def main(options):
                            + '\n'
                            + 'Options in place:'
                            + '\n'
-                           + str(docopt.docopt(__doc__))
+                           + str(options)
                            + '\n'
                            )
 
@@ -304,7 +304,7 @@ def main(options):
                        'bin' dir should be where project_quickstart installed,
                        'templates' and 'project_template' come with this
                        package.
-                   ''' ).format(d)
+                   '''.format(d))
             sys.exit()
 
     # Get the names for the directories to create for the project skeleton:
@@ -330,7 +330,7 @@ def main(options):
                        {}
                        already exists.
                        To overwrite use --force.
-                   ''' ).format(dir_path)
+                   '''.format(dir_path))
             sys.exit()
 
     # If directory paths are OK, continue:
@@ -358,7 +358,7 @@ def main(options):
         else:
             print(docopt_error_msg)
             print('''The directory {} already exists, use --force to
-                    overwrite.''').format(d)
+                    overwrite.'''.format(d))
             sys.exit()
 
     # Copy files from template directory:
@@ -535,9 +535,6 @@ def main(options):
 
 if __name__ == '__main__':
     # if using docopt:
-    # it will check all arguments pass, if not exits with 'Usage:':
-    options = docopt.docopt(__doc__)
-         # switch to template from INI with t = string.Template('$version') ;
-         # t.substitute({'version':0.1})
+    # it will check all arguments pass, if not exits with 'Usage
     # if arguments are valid, run the program:
-    sys.exit(main(options))
+    sys.exit(main())

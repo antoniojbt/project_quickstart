@@ -162,7 +162,7 @@ setup(
       package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
 #      entry_points = entry_points,
        entry_points = {'console_scripts': [
-           'project_quickstart.py = project_quickstart.project_quickstart:main'
+           'project_quickstart.py = project_quickstart:main'
            ]},
       cmdclass = {'install': CustomInstall},
       zip_safe = False,
