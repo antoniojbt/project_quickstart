@@ -58,23 +58,21 @@ print(install_requires)
 # Use README as long description if desired, otherwise get it from INI file (or
 # write it out in setup()):
 
-with open(os.path.join(here, 'README.rst'), 'rt', encoding='utf-8') as readme:
+with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
     description = readme.read()
-
-
 
 # Actual setup.py instructions
 # Python docs: https://docs.python.org/3.6/distutils/setupscript.html 
 # Tutorial: http://python-packaging.readthedocs.io/en/latest/
 setup(
       # Package metadata:
-      name = project_quickstart,
-     # version = 0.2.3,
-     # url = CONFIG['metadata']['project_url'],
-     # download_url = CONFIG['metadata']['download_url'],
-     # author = CONFIG['metadata']['author_name'],
-     # author_email = CONFIG['metadata']['author_email'],
-     # license = CONFIG['metadata']['license'],
+      name = 'project_quickstart',
+      version = '0.2.3',
+      url = 'https://github.com/AntonioJBT/project_quickstart',
+      download_url = 'https://github.com/AntonioJBT/project_quickstart',
+      author = 'Antonio J Berlanga-Taylor',
+      author_email = 'a.berlanga@imperial.ac.uk',
+      license = 'GPL-3',
       description = 'xxxxx',
       keywords = 'keywords toott tootr',
       long_description = description,
@@ -82,7 +80,7 @@ setup(
       packages = ['project_quickstart'],
       install_requires = install_requires,
 #      package_dir = {'project_quickstart' : 'project_quickstart'},
-       entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
+      entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
       zip_safe = False,
           )
 #################
