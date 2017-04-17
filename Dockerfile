@@ -54,9 +54,9 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 #########################
 
 RUN git clone https://github.com/AntonioJBT/project_quickstart.git \
-    cd project_quickstart \
-    python setup.py install \
-    cd ..
+    && cd project_quickstart \
+    && python setup.py install \
+    && cd ..
 
 
 #########################
@@ -74,8 +74,9 @@ RUN git clone https://github.com/AntonioJBT/project_quickstart.git \
 # Default action to start in
 ############################
 
-ENTRYPOINT ['project_quickstart']
-CMD ['--help']
+#ENTRYPOINT ['/project_quickstart']
+#CMD echo "Hello world"
+CMD ["/bin/sh"]
 
 # Create a shared folder between docker container and host
 #VOLUME ["/shared/data"]
