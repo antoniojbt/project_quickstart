@@ -114,7 +114,9 @@ def main():
         for dirpath, dirname, filename in os.walk(project_dir):
             for filename in files:
                 os.rename(os.path.join(project_dir, filename),
-                          os.path.join(project_dir, filename.replace('template', {})).format(project_name)
+                          os.path.join(project_dir,
+                              filename.replace('template',
+                                  '{}'.format(project_name))))
 
     # Create links for the manuscript and lab_notebook 
     # templates to go into the 'manuscript' directory:
