@@ -42,6 +42,14 @@ RUN apk update && apk upgrade \
 #    unzip \
 #    git \ # Already in Alpine Python
 
+
+#########################
+# Install Python packages
+#########################
+
+RUN pip install --upgrade pip setuptools \
+    && pip list
+
 #########################
 # Install package to test 
 #########################
@@ -52,12 +60,6 @@ RUN cd home \
     && python setup.py install \
     && cd ..
 
-
-#########################
-# Install Python packages
-#########################
-
-#RUN pip install --upgrade pip
 
 ###############################
 # Install external dependencies
