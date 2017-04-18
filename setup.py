@@ -83,7 +83,7 @@ setup(
       packages = find_packages(),
       install_requires = install_requires,
 #      package_dir = {'project_quickstart' : 'project_quickstart'},
-      entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
+      entry_points = {'console_scripts': [ 'project_quickstart.py = project-quickstart:main' ]},
       zip_safe = False,
           )
 #################
