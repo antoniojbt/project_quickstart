@@ -64,9 +64,12 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 # Actual setup.py instructions
 # Python docs: https://docs.python.org/3.6/distutils/setupscript.html 
 # Tutorial: http://python-packaging.readthedocs.io/en/latest/
+
+print(find_packages())
+
 setup(
       # Package metadata:
-      name = 'project_quickstart',
+      name = 'project-quickstart',
       version = '0.2.3',
       url = 'https://github.com/AntonioJBT/project_quickstart',
       download_url = 'https://github.com/AntonioJBT/project_quickstart',
@@ -77,10 +80,10 @@ setup(
       keywords = 'keywords toott tootr',
       long_description = description,
       # Package information:
-#      packages = ['project_quickstart'],
-      install_requires = install_requires
+      packages = find_packages(),
+      install_requires = install_requires,
 #      package_dir = {'project_quickstart' : 'project_quickstart'},
-#      entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
-#      zip_safe = False,
+      entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
+      zip_safe = False,
           )
 #################
