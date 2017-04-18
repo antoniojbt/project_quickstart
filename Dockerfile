@@ -10,7 +10,7 @@
 
 # FROM python:3-onbuild 
 # FROM ubuntu:17.04
-# 
+
 FROM jfloff/alpine-python
 # https://github.com/jfloff/alpine-python
 # This is a minimal Python 3 image that can start from python or bash
@@ -30,24 +30,17 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 #########################
 
 # Install system dependencies
-#RUN apt-get update && apt-get install -y \
+# For Alpine see:
+# https://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management
+RUN apk update && apk upgrade \
+    && apk add \
+    vim \
+    sudo
+
 #    wget \
 #    bzip2 \
-#    fixincludes \
 #    unzip \
-#    git \
-#    vim \
-#    wget
-
-#	apt-transport-https \
-#	curl \
-#	graphviz \
-# 	libxml2-dev \
-# 	libcurl4-openssl-dev \
-#	python-pip \
-#	software-properties-common \ 
-#	sudo \
-
+#    git \ # Already in Alpine Python
 
 #########################
 # Install package to test 
@@ -74,10 +67,11 @@ RUN cd home \
 ############################
 # Default action to start in
 ############################
-
-#ENTRYPOINT ['/project_quickstart']
+# Only one CMD is read (if several only the last one is executed)
+#ENTRYPOINT ['/xxx']
 #CMD echo "Hello world"
-CMD ["/bin/sh"]
+CMD project_quickstart.py
+#CMD ["/bin/sh"]
 
 # Create a shared folder between docker container and host
 #VOLUME ["/shared/data"]
