@@ -5,9 +5,5 @@
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
-#import project_quickstart
+from .project_quickstart import import project_quickstart
 
-#def main():
-#    project_quickstart.main()
-
-#main()
