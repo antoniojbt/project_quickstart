@@ -84,16 +84,6 @@ Code
 '''
 
 ##############################
-# Package module:
-# Relative imports in Py3 need to be explicit
-# http://stackoverflow.com/questions/12172791/changes-in-import-statement-python3
-# But will fail if running the script directly.
-# If it's from a package it'll work
-# setup.py 'should' take care of things though...
-import projectQuickstart
-# Relative import:
-# from .project_quickstart import projectQuickstart
-
 # Python modules:
 import sys
 import re
@@ -118,16 +108,15 @@ except ImportError:  # Python 3
 # import CGAT.Experiment as E
 import docopt
 
+# Package module:
+import projectQuickstart
 
 # Check configuration and print to standard out
 # See:
 # https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/
 # Pipeline/Parameters.py
 # https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
-
 # TO DO: (see E.py)
-# if "--help" in sys.argv or "-h" in sys.argv:
-#    TriggeredDefaultFactory.with_default = True
 
 # Get package source directory in (param path) '
 src_dir = projectQuickstart.getDir('..')

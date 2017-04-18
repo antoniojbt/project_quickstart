@@ -75,27 +75,8 @@ except ImportError: # Py2 to Py3
 # Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser()
 
-class TriggeredDefaultFactory:
-    with_default = False
-
-    def __call__(self):
-        if TriggeredDefaultFactory.with_default:
-            return str()
-        else:
-            raise KeyError("missing parameter accessed")
-
-# Global variable for parameter interpolation in commands
-# This is a dictionary that can be switched between defaultdict
-# and normal dict behaviour.
-PARAMS = collections.defaultdict(TriggeredDefaultFactory())
-
-# patch - if --help or -h in command line arguments,
-# switch to a default dict to avoid missing paramater
-# failures
 
 # TO DO: (see E.py)
-#if "--help" in sys.argv or "-h" in sys.argv:
-#    TriggeredDefaultFactory.with_default = True
 
 CONFIG.read('project_quickstart.ini')
 for key in CONFIG:
@@ -105,8 +86,8 @@ for key in CONFIG:
 
 ##############################
 def main():
-
-
+    ''' Create a Python or R script template
+    '''
     # Copy files from template directory:
     def copyTemplate(source_dir, project_dir):
         '''
@@ -115,12 +96,13 @@ def main():
         The intention is to use the 'code' dir as a GitHub/packageable directory
         '''
         copy_from = project_template
-        copy_to = os.path.join(project_dir, '/code')
+        copy_to = os.path.join(project_dir, 'code')
 
         if os.path.exists(copy_to) and not options['--force']:
             raise OSError(
                 '''file {} already exists - not overwriting, see --help or use --force
                 to overwrite.'''.format(project_name)
+                         )
 
         shutil.copytree(copy_from, copy_to) # https://docs.python.org/3/library/shutil.html
 
