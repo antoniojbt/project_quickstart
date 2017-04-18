@@ -70,8 +70,8 @@ RUN cd home \
 # Only one CMD is read (if several only the last one is executed)
 #ENTRYPOINT ['/xxx']
 #CMD echo "Hello world"
-CMD project_quickstart.py
-#CMD ["/bin/sh"]
+#CMD project_quickstart.py
+CMD ["/bin/sh"]
 
 # Create a shared folder between docker container and host
 #VOLUME ["/shared/data"]
