@@ -3,14 +3,14 @@
 
 :Author: Antonio Berlanga-Taylor
 :Release:
-:Date: 
+:Date:
 
 Purpose
 -------
-This script creates a 
-The main idea is to 
-We've additionally put 
-Once you've quickstarted your 
+This script creates a
+The main idea is to
+We've additionally put
+Once you've quickstarted your
 
 For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
@@ -18,7 +18,7 @@ https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickst
 
 Usage and Options
 =================
-Quickstart a script 
+Quickstart a script
 .. These are using docopt: http://docopt.org/
 .. https://github.com/docopt/docopt
 .. An example for loading arguments from an INI file: https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
@@ -29,14 +29,14 @@ Usage:
 to create a script template.
 
     script_quickstart.py (--script_name | -n) <script_name>
-    script_quickstart.py (--language | -lang) <python | R>    
+    script_quickstart.py (--language | -lang) <python | R>
     script_quickstart.py [-f | --force]
     script_quickstart.py -h | --help
     script_quickstart.py --version
     script_quickstart.py --quiet
     script_quickstart.py --verbose
     script_quickstart.py [-L | --log] <project_quickstart.log>
-    
+
 Options:
     -lang --language    R or Python templates available
     -f --force   Take care, forces to overwrite files and directories.
@@ -50,7 +50,7 @@ Documentation
 .. todo::
   Add docs
   New string formatting https://pyformat.info/ '{} {}'.format('one', 'two')
-  
+
 Code
 ----
 '''
@@ -102,10 +102,10 @@ for key in CONFIG:
     print(key, CONFIG[key])
 ##############################
 
-    
+
 ##############################
 def main():
-    
+
 
     # Copy files from template directory:
     def copyTemplate(source_dir, project_dir):
@@ -116,13 +116,13 @@ def main():
         '''
         copy_from = project_template
         copy_to = os.path.join(project_dir, '/code')
-        
+
         if os.path.exists(copy_to) and not options['--force']:
             raise OSError(
-                '''file {} already exists - not overwriting, see --help or use --force 
+                '''file {} already exists - not overwriting, see --help or use --force
                 to overwrite.'''.format(project_name)
 
-        shutil.copytree(copy_from, copyt_to) # https://docs.python.org/3/library/shutil.html
+        shutil.copytree(copy_from, copy_to) # https://docs.python.org/3/library/shutil.html
 
 
     # Replace all instances of template with 'name' from project_'name' as
@@ -131,12 +131,12 @@ def main():
         ''' rename 'template' to 'project' from template file names '''
         for dirpath, dirname, filename in os.walk(project_dir):
             for filename in files:
-                os.rename(os.path.join(project_dir, filename), 
+                os.rename(os.path.join(project_dir, filename),
                           os.path.join(project_dir, filename.replace('template', {})).format(project_name)
 
     # Create links for the manuscript and lab_notebook 
     # templates to go into the 'manuscript' directory:
-    for template_dir, project_dir in (("manuscript_template.rst", "lab_notebook_template.rst"), 
+    for template_dir, project_dir in (("manuscript_template.rst", "lab_notebook_template.rst"),
                                       ("manuscript_template.rst", "lab_notebook_template.rst")):
         d = os.path.join("", project_dir)
         if os.path.exists(d) and options['--force']:
@@ -145,13 +145,13 @@ def main():
 
     # Print a nice welcome message (if successful):
     print(""" Done, welcome to your {1}!
-    
-    Remember to 
-    
+
+    Remember to
+
     Feel free to raise issues, fork or contribute at:
-    
+
     https://github.com/
-    
+
     Have fun!
     """.format(1, 2, 3, )
          )
