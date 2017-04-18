@@ -285,7 +285,7 @@ def main():
     # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
     # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
-    template_dir = projectQuickstart.getDir('templates')
+    template_dir = projectQuickstart.getDir('../templates')
     project_template = os.path.join(template_dir, 'project_template')
 
     dirs_to_use = [template_dir,
@@ -338,7 +338,7 @@ def main():
               + template_dir + '\n'
               + project_template
               + '\n' + '\n'
-              + 'Creating the project structure for {} in:'.fomart(project_name) + '\n'
+              + 'Creating the project structure for {} in:'.format(project_name) + '\n'
               + project_dir + '\n')
           )
 
@@ -380,7 +380,7 @@ def main():
                           )
             sys.exit()
         else:
-            shutil.copytree(src, dst, ignore = ignore_patterns('.dir_bash*'))
+            shutil.copytree(src, dst, ignore = shutil.ignore_patterns('.dir_bash*'))
 
     projectTemplate(project_template, code_dir)
 
@@ -532,6 +532,8 @@ def main():
                results_dir
                )
     ))
+
+    return
 
 if __name__ == '__main__':
     # if using docopt:

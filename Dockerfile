@@ -53,7 +53,8 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 # Install package to test 
 #########################
 
-RUN git clone https://github.com/AntonioJBT/project_quickstart.git \
+RUN cd home \
+    && git clone https://github.com/AntonioJBT/project_quickstart.git \
     && cd project_quickstart \
     && python setup.py install \
     && cd ..
