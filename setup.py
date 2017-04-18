@@ -77,10 +77,10 @@ setup(
       keywords = 'keywords toott tootr',
       long_description = description,
       # Package information:
-      packages = ['project_quickstart'],
-      install_requires = install_requires,
+#      packages = ['project_quickstart'],
+      install_requires = install_requires
 #      package_dir = {'project_quickstart' : 'project_quickstart'},
-      entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
-      zip_safe = False,
+#      entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main' ]},
+#      zip_safe = False,
           )
 #################
