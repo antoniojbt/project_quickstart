@@ -535,6 +535,10 @@ def main():
 
     return
 
+def doSuperTest():
+    print('doSuperTest works : (')
+    return
+
 if __name__ == '__main__':
     # if using docopt:
     # it will check all arguments pass, if not exits with 'Usage
