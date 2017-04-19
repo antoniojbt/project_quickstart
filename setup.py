@@ -145,6 +145,7 @@ setup(
       # Package information:
       packages = find_packages(),
       install_requires = install_requires,
+      include_package_data = True,
       # If there are data files to include with installation, specify here
       # (they should be in the main src dir):
       # Including them in MANIFEST.in is not favoured.
@@ -153,7 +154,7 @@ setup(
       # main dir then use:
       # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
       # 'data_file' will be installed into '<sys.prefix>/my_data'
-      data_files=[('templates', ['templates/*', 'templates/*/*'])],
+#      data_files=[('templates', ['templates/*', 'templates/*/*'])],
       #package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
       scripts = [str(CONFIG['metadata']['project_name'] + '/main.py')],
       #entry_points = {'console_scripts': ['project_quickstart.py = project_quickstart.project_quickstart:main']},
