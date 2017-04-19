@@ -34,8 +34,8 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 # https://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management
 RUN apk update && apk upgrade \
     && apk add \
-    vim \
     sudo
+#    vim \
 
 #    wget \
 #    bzip2 \
@@ -47,7 +47,7 @@ RUN apk update && apk upgrade \
 # Install Python packages
 #########################
 
-RUN pip install --upgrade pip setuptools \
+RUN pip install --upgrade pip setuptools future \
     && pip list
 
 #########################
