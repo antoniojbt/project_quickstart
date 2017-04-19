@@ -54,7 +54,13 @@ Documentation
 Code
 ----
 '''
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
 ##############################
+from future import standard_library
+standard_library.install_aliases()
 import sys
 import re
 import os
@@ -66,7 +72,7 @@ from docopt import docopt
 try:
     import configparser
 except ImportError: # Py2 to Py3
-    import ConfigParser as configparser
+    import configparser as configparser
 
 # Check configuration and print to standard out
 # See https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/Pipeline/Parameters.py

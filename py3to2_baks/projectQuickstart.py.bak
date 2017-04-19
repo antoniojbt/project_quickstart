@@ -10,13 +10,7 @@ Boilerplate tools for quickstarting a data analysis project:
 https://github.com/AntonioJBT/project_quickstart
 
 '''
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
 #################
-from future import standard_library
-standard_library.install_aliases()
 import os
 import sys
 
@@ -25,7 +19,7 @@ import sys
 try:
     import configparser
 except ImportError:  # Py2 to Py3
-    import configparser as configparser
+    import ConfigParser as configparser
 # Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 #################

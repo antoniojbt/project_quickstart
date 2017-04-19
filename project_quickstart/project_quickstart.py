@@ -82,9 +82,17 @@ Documentation
 Code
 ====
 '''
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
 
 ##############################
 # Python modules:
+from builtins import map
+from builtins import str
+from future import standard_library
+standard_library.install_aliases()
 import sys
 import re
 import os
@@ -97,10 +105,10 @@ import string
 try:
     import configparser
 except ImportError:  # Py2 to Py3
-    import ConfigParser as configparser
+    import configparser as configparser
 
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:  # Python 3
     from io import StringIO
 
@@ -255,7 +263,7 @@ def main():
         raise
 
     # Set up default paths, directoy and file names:
-    project_dir = os.path.join(os.getcwd(), project_root)
+    project_dir = os.path.join(os.getcwdu(), project_root)
 
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
@@ -436,7 +444,7 @@ def main():
                 shutil.copy2(copy_from, copy_to)
                 #os.rename(os.path.join(copy_to, script_template_py),
                 #          filename.replace('template', {})).format(script_name)
-                os.symlink(copy_to, os.getcwd())
+                os.symlink(copy_to, os.getcwdu())
 
         elif options['--script-R']:
             copy_to = os.path.join(code_dir, 'scripts', str(script_name + '.R'))
@@ -452,7 +460,7 @@ def main():
                # os.rename(os.path.join(copy_to, script_template_R),
                #           filename.replace('template',
                #                            {})).format(script_name)
-                os.symlink(copy_to, os.getcwd())
+                os.symlink(copy_to, os.getcwdu())
 
         else:
             print(docopt_error_msg)

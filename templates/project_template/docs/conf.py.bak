@@ -7,12 +7,6 @@
 # With its example: http://www.sphinx-doc.org/en/1.5.1/config.html#example-of-configuration-file
 
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-from future import standard_library
-standard_library.install_aliases()
 import sys, os
 
 sys.path.insert(0, os.path.abspath('extensions'))

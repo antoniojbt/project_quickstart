@@ -1,7 +1,3 @@
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
 # https://python-packaging.readthedocs.io/en/latest/minimal.html
 # For a fuller example see: https://github.com/CGATOxford/UMI-tools/blob/master/setup.py
 # Or: https://github.com/CGATOxford/cgat/blob/master/setup.py
@@ -14,8 +10,6 @@ from __future__ import absolute_import
 
 # TO DO: pass variable names for project and author when executing project_quickstart.py
 
-from future import standard_library
-standard_library.install_aliases()
 from setuptools import setup
 
 setup(name='iExplore_iAnswer_super_Project',
