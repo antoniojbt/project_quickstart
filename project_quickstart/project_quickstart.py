@@ -109,7 +109,7 @@ except ImportError:  # Python 3
 import docopt
 
 # Package module:
-import project_quickstart.projectQuickstart
+import project_quickstart.projectQuickstart as projectQuickstart
 
 # Check configuration and print to standard out
 # See:
