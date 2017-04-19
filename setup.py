@@ -107,10 +107,10 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 # Give warning:
 class CustomInstall(install):
     def initialize_options(self):
-        if sys.version < '3.5':
+        if sys.version < '3':
             print('Error during installation: ', '\n',
                     CONFIG['metadata']['project_name'],
-                    ' requires Python 3.5 or higher.',
+                    ' requires Python 3x.',
                     'Exiting...')
             sys.exit(1)
 
@@ -153,7 +153,7 @@ setup(
       # main dir then use:
       # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
       # 'data_file' will be installed into '<sys.prefix>/my_data'
-#      data_files=[('my_data', ['data/data_file'])],
+      data_files=[('templates', ['templates/*', 'templates/*/*'])],
       #package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
       scripts = [str(CONFIG['metadata']['project_name'] + '/main.py')],
       #entry_points = {'console_scripts': ['project_quickstart.py = project_quickstart.project_quickstart:main']},
