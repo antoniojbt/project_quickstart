@@ -93,7 +93,7 @@ print(install_requires)
 # Use README as long description if desired, otherwise get it from INI file (or
 # write it out in setup()):
 
-with open(os.path.join(here, 'README.rst'), 'rt', encoding='utf-8') as readme:
+with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
     description = readme.read()
 
 # Give warning:
@@ -147,9 +147,8 @@ setup(
       # 'data_file' will be installed into '<sys.prefix>/my_data'
 #      data_files=[('my_data', ['data/data_file'])],
       #package_dir = {CONFIG['metadata']['project_name']: CONFIG['metadata']['project_name']},
-      scripts = [str(CONFIG['metadata']['project_name'] + '/main.py')]
-      #entry_points = {'console_scripts': [ 'project_quickstart.py = project_quickstart:main'
-           ]},
+      scripts = [str(CONFIG['metadata']['project_name'] + '/main.py')],
+      #entry_points = {'console_scripts': ['project_quickstart.py = project_quickstart:main']},
       cmdclass = {'install': CustomInstall},
       zip_safe = False,
       #test_suite = "tests"
