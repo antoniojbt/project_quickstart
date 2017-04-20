@@ -164,7 +164,7 @@ def package_files(directory):
             paths.append(os.path.join('..', path, filename))
     return paths
 
-extra_files = package_files(os.path.join(here, 'templates')
+extra_files = package_files(os.path.join(here, 'templates'))
 
 #################
 
@@ -172,8 +172,7 @@ extra_files = package_files(os.path.join(here, 'templates')
 #################
 # Run actual setup:
 
-setup(
-        # Package information:
+setup(  # Package information:
         name = CONFIG['metadata']['project_name'],
         version = CONFIG['metadata']['version'],
         url = CONFIG['metadata']['project_url'],
