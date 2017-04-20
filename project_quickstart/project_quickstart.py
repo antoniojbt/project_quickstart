@@ -1,5 +1,5 @@
 '''
-project_quickstart.py - setup a new python based project
+project_quickstart - setup a new python based project
 ========================================================
 
 :Author: Antonio Berlanga-Taylor
@@ -45,18 +45,18 @@ help quickstart your data science project with packaging, testing, scripts and
 other templates.
 
 Usage:
-       project_quickstart.py [--project-name=<project_name> | -n
+       project_quickstart [--project-name=<project_name> | -n
                               <project_name>] ...
-       project_quickstart.py [--update | -u]
-       project_quickstart.py [--script-python=<script_name>]
-       project_quickstart.py [--script-R=<script_name>]
-       project_quickstart.py [-f | --force]
-       project_quickstart.py [-h | --help]
-       project_quickstart.py [--version]
-       project_quickstart.py [--quiet]
-       project_quickstart.py [--verbose]
-       project_quickstart.py [--log=<log_file> | -L <log_file>]
-       project_quickstart.py [--dry-run]
+       project_quickstart [--update | -u]
+       project_quickstart [--script-python=<script_name>]
+       project_quickstart [--script-R=<script_name>]
+       project_quickstart [-f | --force]
+       project_quickstart [-h | --help]
+       project_quickstart [--version]
+       project_quickstart [--quiet]
+       project_quickstart [--verbose]
+       project_quickstart [--log=<log_file> | -L <log_file>]
+       project_quickstart [--dry-run]
 
 Options:
     --project-name=DIR -n DIR     Starts a new project, 'project_' is prefixed.
@@ -74,25 +74,22 @@ Options:
 Documentation
 =============
 
-.. todo::
-
-  Add docs
+  Add docs page
   Add tree structure
 
-Code
-====
 '''
+##############################
+# Py3 to 2 pasteurize:
 from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import division
 from __future__ import absolute_import
 
-##############################
-# Python modules:
 from builtins import map
 from builtins import str
 from future import standard_library
 standard_library.install_aliases()
+# Standard Python modules:
 import sys
 import re
 import os
@@ -113,22 +110,16 @@ except ImportError:  # Python 3
     from io import StringIO
 
 # Modules not in core library:
-# import CGAT.Experiment as E
 import docopt
 
 # Package module:
 import project_quickstart.projectQuickstart as projectQuickstart
 
-# Check configuration and print to standard out
-# See:
-# https://github.com/CGATOxford/CGATPipelines/blob/master/CGATPipelines/
-# Pipeline/Parameters.py
-# https://github.com/CGATOxford/cgat/blob/master/CGAT/Experiment.py
-# TO DO: (see E.py)
-
 # Get package source directory in (param path) '
 src_dir = projectQuickstart.getDir('..')
-print('Project Quickstart main dir is:', '\n', src_dir)
+
+# For debugging:
+#print('project_quickstart package directory is:', '\n', src_dir)
 
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
@@ -137,24 +128,6 @@ print('Project Quickstart main dir is:', '\n', src_dir)
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-# Get ini file to read values from:
-INI_file = projectQuickstart.getINIdir(src_dir)
-
-if os.path.isfile(INI_file):
-    print('Project Quickstart INI file is:', '\n', INI_file)
-
-else:
-    print('Using default configuration.')
-
-# Read values from the INI file:
-CONFIG.read(INI_file)
-for key in CONFIG:
-    for value in CONFIG[key]:
-        print(key, value, CONFIG[key][value])
-
-# docopt requires Nones to be passed as False:
-# quickUtils.load_ini_config()
-# results = ini_values
 ##############################
 
 
@@ -164,12 +137,13 @@ def main():
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
     options = docopt.docopt(__doc__)
-    docopt_error_msg = str(''' Project Quickstart v{} exited due to an
-            error.''').format(CONFIG['metadata']['version'])
+    welcome_msg = str('Welcome from project_quickstart (!)' + '\n')
+    print(welcome_msg)
+    docopt_error_msg = str('project_quickstart exited due to an error:')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
                            + '''Invalid option or missing argument, try
-                           project_quickstart.py --help'''
+                           project_quickstart --help'''
                            + '\n'
                            + 'Options in place:'
                            + '\n'
@@ -179,6 +153,20 @@ def main():
 
     try:
         # Parse arguments, use file docstring as a parameter definition
+        # Get ini file to read values from:                                                   
+        INI_file = projectQuickstart.getINIdir()                                               
+
+        if os.path.isfile(INI_file):                                                           
+            print('There is an INI configuration file in:', '\n', INI_file, '\n')              
+            # Read values from the INI file:                                                   
+            CONFIG.read(INI_file)                                                              
+            for key in CONFIG:                                                                                                
+                for value in CONFIG[key]:                                                      
+                    print(key, value, CONFIG[key][value])                                      
+                                                                                       
+        else:                                                                                  
+            print('Using default configuration.', '\n')        
+
         # These arguments are optional
         # Standard options (log, verbose, version, quiet, dry-run, force):
         if not options['--log']:
@@ -268,7 +256,7 @@ def main():
         raise
 
     # Set up default paths, directoy and file names:
-    project_dir = os.path.join(os.getcwdu(), project_root)
+    project_dir = os.path.join(os.getcwd(), project_root)
 
     if not os.path.exists(project_dir):
         os.makedirs(project_dir)
@@ -485,7 +473,7 @@ def main():
     Files have been copied 'as is'. You can edit the configuration file
     ({0}.ini, for python packaging) and run:
 
-    python project_quickstart.py --update
+    python project_quickstart --update
 
     to update files with your chosen parameters (note that some files will get
     overwritten).
