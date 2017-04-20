@@ -32,18 +32,18 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 
 ################# 
-_ROOT = os.path.abspath(os.path.dirname(__file__))
-def getINIdir(path = _ROOT):
+#_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))
+cwd = os.getcwd()
+def getINIdir(path = cwd):
     ''' Search for an INI file, default is where this script is executed from '''
-    f_count = 0
+    if_count = 0
     for f in os.listdir(path):
         if (f.endswith('.ini') and not f.startswith('tox')):
             f_count += 1
             INI_file = f
     if (f_count > 1 or f_count == 0):
-        print('You have no "xxx.ini" or more than one "xxx.ini" file ',
+        print('You have no project ".ini" file or more than one ',
                 'in the directory:', '\n', path)
-        sys.exit()
 
     INI_file_dir = os.path.abspath(os.path.join(path, INI_file))
 

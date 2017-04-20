@@ -139,7 +139,12 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 # Get ini file to read values from:
 INI_file = projectQuickstart.getINIdir(src_dir)
-print('Project Quickstart INI file is:', '\n', INI_file)
+
+if os.path.isfile(INI_file):
+    print('Project Quickstart INI file is:', '\n', INI_file)
+
+else:
+    print('Using default configuration.')
 
 # Read values from the INI file:
 CONFIG.read(INI_file)

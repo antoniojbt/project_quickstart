@@ -60,6 +60,9 @@ Options
 # OOP
 # regex
 
+import sys
+import os
+import docopt
 
 # Basic function structure:
 def my_func():
@@ -71,7 +74,7 @@ def my_func():
     assert True == True
 
     # do something
-    
+
     return
 
 # Handle errors:
@@ -81,11 +84,11 @@ except TypeError: #some error to catch
     print('Wrong type of variable') #some helpful message or other option
     raise # Raise the systeme error anyway
 except: # 'except:' by itself will catch everything, potentially disastrous
-    print "Unexpected error:", sys.exc_info()[0]
+    print("Unexpected error:", sys.exc_info()[0])
     raise # even if caught raise the error
 finally:
     print('Did this work?')#do this regardless of the above, also dangerous
-    
+
 
 # Else/if basic structure:
 x = 5
@@ -108,12 +111,12 @@ class SuperHero:
       self.name = name
       self.power = power
       SuperHero.SuperSaves += 1
-   
+
    def displaySaves(self):
-     print "Total SuperHero saves %d" % SuperHero.SuperSaves
+     print("Total SuperHero saves %d" % SuperHero.SuperSaves)
 
    def displaySuperHero(self):
-      print "Name : ", self.name,  ", power: ", self.power
+      print("Name : ", self.name,  ", power: ", self.power)
 
 # First object in class:
 super1 = SuperHero("SuperWoman", 'Strong')
@@ -123,7 +126,7 @@ super2 = SuperHero("AveJoe", 'Common Sense')
 # Check the Attributes:
 super1.displaySuperHero()
 super2.displaySuperHero()
-print "Total SuperHero saves %d" % SuperHero.SuperSaves
+print("Total SuperHero saves %d" % SuperHero.SuperSaves)
 
 ##############
 
@@ -181,7 +184,7 @@ def main(argv=None):
 #    del sys.argv[0]
 #    module.main(sys.argv)
 
-    
+
 # Finish and exit with docopt arguments:
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='xxx 0.1')
