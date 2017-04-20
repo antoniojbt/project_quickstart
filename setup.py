@@ -56,11 +56,11 @@ from setuptools import setup, find_packages
 # To run custom install warning use:
 from setuptools.command.install import install
 
-from distutils.version import LooseVersion
-if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
-    print ("Version detected:", LooseVersion(setuptools.__version__))
-    raise ImportError(
-        "Setuptools 1.1 or higher is required")
+#from distutils.version import LooseVersion
+#if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
+#    print ("Version detected:", LooseVersion(setuptools.__version__))
+#    raise ImportError(
+#        "Setuptools 1.1 or higher is required")
 
 # Get location to this file:
 here = os.path.abspath(os.path.dirname(__file__))
@@ -110,18 +110,36 @@ if (major == 2 and minor1 < 7) or major < 2:
     raise SystemExit("""project_quickstart requires Python 2.7 or later.""")
 
 # Dependencies for installation process:
-install_requires = [
-        "future",
-        "six",
-        "docopt"]
+#install_requires = [
+#        "future",
+#        "six",
+#        "docopt"]
+
+# Get Ptyhon modules required:
+install_requires = []
+
+with open(os.path.join(here, 'requirements.rst'), encoding='utf-8') as required:
+    for line in (required):
+        if not line.startswith('#') and not line.startswith('\n'):
+            line = line.strip()
+            install_requires.append(line)
+
+print(install_requires)
+
+# Use README as long description if desired, otherwise get it from INI file (or
+# write it out in setup()):
+
+with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
+    description = readme.read()
+
 #################
 
 
 
 #################
 # Define project specific elements:
-project_quickstart_packages = [CONFIG['metadata']['project_name']]
-project_quickstart_package_dirs = {'project_quickstart': 'project_quickstart'}
+packages = [CONFIG['metadata']['project_name']]
+package_dirs = {'project_quickstart': 'project_quickstart'}
 
 
 # Classifiers:
@@ -153,17 +171,17 @@ setup(
         author_email = CONFIG['metadata']['author_email'],
         license = CONFIG['metadata']['license'],
         description = CONFIG['metadata']['project_short_description'],
-        platforms = ["any"],
+        platforms = ['any'],
         keywords = CONFIG['metadata']['keywords'],
-        long_description = 'xxxx', #description,
+        long_description = description,
         classifiers = list(filter(None, classifiers.split("\n"))),
         # Package contents:
-        packages = project_quickstart_packages,
-        package_dir = project_quickstart_package_dirs,
+        packages = packages,
+        package_dir = package_dirs,
         include_package_data = True,
         # Dependencies:
         install_requires = install_requires,
-        entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main']
+        entry_points={ 'console_scripts': ['project_quickstart.py = project_quickstart.project_quickstart:main']
             },
         # Other options:
         zip_safe = False,
