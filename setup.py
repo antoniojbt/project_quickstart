@@ -132,13 +132,13 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 
 #################
 # Define project specific elements:
-packages = list(CONFIG['metadata']['project_name'])
+packages = [CONFIG['metadata']['project_name']]
+
 package_dirs = {'project_quickstart': 'project_quickstart'}
 
-
-# Classifiers:
 classifiers = CONFIG['metadata']['classifiers']
 
+platforms = [CONFIG['metadata']['platforms']]
 #################
 
 
@@ -155,7 +155,7 @@ setup(
         author_email = CONFIG['metadata']['author_email'],
         license = CONFIG['metadata']['license'],
         description = CONFIG['metadata']['project_short_description'],
-        platforms = ['any'],
+        platforms = platforms,
         keywords = CONFIG['metadata']['keywords'],
         long_description = description,
         classifiers = list(filter(None, classifiers.split("\n"))),
