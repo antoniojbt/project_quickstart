@@ -109,12 +109,6 @@ major, minor1, minor2, s, tmp = sys.version_info
 if (major == 2 and minor1 < 7) or major < 2:
     raise SystemExit("""project_quickstart requires Python 2.7 or later.""")
 
-# Dependencies for installation process:
-#install_requires = [
-#        "future",
-#        "six",
-#        "docopt"]
-
 # Get Ptyhon modules required:
 install_requires = []
 
@@ -143,18 +137,8 @@ package_dirs = {'project_quickstart': 'project_quickstart'}
 
 
 # Classifiers:
-classifiers = """
-Development Status :: 3 - Alpha
-Intended Audience :: Science/Research
-Intended Audience :: Developers
-License :: OSI Approved
-Programming Language :: Python
-Topic :: Software Development
-Topic :: Scientific/Engineering
-Operating System :: POSIX
-Operating System :: Unix
-Operating System :: MacOS
-"""
+classifiers = [CONFIG['metadata']['classifiers']]
+
 #################
 
 
@@ -181,8 +165,7 @@ setup(
         include_package_data = True,
         # Dependencies:
         install_requires = install_requires,
-        entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main']
-            },
+        entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main'] },
         # Other options:
         zip_safe = False,
         )
