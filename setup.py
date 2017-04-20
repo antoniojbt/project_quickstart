@@ -132,12 +132,12 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 
 #################
 # Define project specific elements:
-packages = [CONFIG['metadata']['project_name']]
+packages = CONFIG['metadata']['project_name']
 package_dirs = {'project_quickstart': 'project_quickstart'}
 
 
 # Classifiers:
-classifiers = [CONFIG['metadata']['classifiers']]
+classifiers = CONFIG['metadata']['classifiers'])
 
 #################
 
@@ -160,7 +160,7 @@ setup(
         long_description = description,
         classifiers = list(filter(None, classifiers.split("\n"))),
         # Package contents:
-        packages = packages,
+        packages = list(packages),
         package_dir = package_dirs,
         include_package_data = True,
         # Dependencies:
