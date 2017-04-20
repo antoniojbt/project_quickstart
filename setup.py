@@ -56,11 +56,11 @@ from setuptools import setup, find_packages
 # To run custom install warning use:
 from setuptools.command.install import install
 
-#from distutils.version import LooseVersion
-#if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
-#    print ("Version detected:", LooseVersion(setuptools.__version__))
-#    raise ImportError(
-#        "Setuptools 1.1 or higher is required")
+from distutils.version import LooseVersion
+if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
+    print ("Version detected:", LooseVersion(setuptools.__version__))
+    raise ImportError(
+        "Setuptools 1.1 or higher is required")
 
 # Get location to this file:
 here = os.path.abspath(os.path.dirname(__file__))
@@ -181,7 +181,7 @@ setup(
         include_package_data = True,
         # Dependencies:
         install_requires = install_requires,
-        entry_points={ 'console_scripts': ['project_quickstart.py = project_quickstart.project_quickstart:main']
+        entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main']
             },
         # Other options:
         zip_safe = False,
