@@ -120,7 +120,7 @@ install_requires = [
 
 #################
 # Define project specific elements:
-project_quickstart_packages = ["project_quickstart"]
+project_quickstart_packages = [CONFIG['metadata']['project_name']]
 project_quickstart_package_dirs = {'project_quickstart': 'project_quickstart'}
 
 
@@ -145,28 +145,27 @@ Operating System :: MacOS
 
 setup(
         # Package information:
-    name = 'project_quickstart',
-    version = version,
-    description = 'Boilerplate tools to quickly create a data science project skeleton',
-    author = 'Antonio J Berlanga Taylor',
-    author_email = 'a.berlanga@imperial.ac.uk',
-    license = "GPL-3",
-    platforms = ["any"],
-    keywords = "computational genomics",
-    long_description = 'project_quickstart',
-    classifiers = list(filter(None, classifiers.split("\n"))),
-    url = "https://github.com/AntonioJBT/project_quickstart",
-    download_url = "https://github.com/AntonioJBT/project_quickstart",
-    # Package contents:
-    packages = project_quickstart_packages,
-    package_dir = project_quickstart_package_dirs,
-    include_package_data = True,
-    # Dependencies:
-    install_requires = install_requires,
-    entry_points={
-        'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main']
-    },
-    # Other options:
-    zip_safe = False,
-    )
+        name = CONFIG['metadata']['project_name'],
+        version = CONFIG['metadata']['version'],
+        url = CONFIG['metadata']['project_url'],
+        download_url = CONFIG['metadata']['download_url'],
+        author = CONFIG['metadata']['author_name'],
+        author_email = CONFIG['metadata']['author_email'],
+        license = CONFIG['metadata']['license'],
+        description = CONFIG['metadata']['project_short_description'],
+        platforms = ["any"],
+        keywords = CONFIG['metadata']['keywords'],
+        long_description = 'xxxx', #description,
+        classifiers = list(filter(None, classifiers.split("\n"))),
+        # Package contents:
+        packages = project_quickstart_packages,
+        package_dir = project_quickstart_package_dirs,
+        include_package_data = True,
+        # Dependencies:
+        install_requires = install_requires,
+        entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main']
+            },
+        # Other options:
+        zip_safe = False,
+        )
 #################
