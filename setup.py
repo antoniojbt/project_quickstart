@@ -1,9 +1,12 @@
 '''
 setup for |project_name|
 
+Python packaging can become a nightmare, check the following for reference:
 For example on setting a Python package, see:
 https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
+https://python-packaging.readthedocs.io/en/latest/index.html
+http://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/index.html
 
 For Python 3.5
 Before packaging or installing run:
@@ -132,13 +135,37 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 
 #################
 # Define project specific elements:
+# find_packages() from setuptools makes it easier, can use INI or directly type
+# in though:
 #packages = [CONFIG['metadata']['project_name']]
 
-#package_dirs = {'project_quickstart': 'project_quickstart'}
+# If the packaging directory structure is not the conventional on it needs to be specified with package_dir. See:
+# https://docs.python.org/3.6/distutils/setupscript.html
+#package_dir = {'project_quickstart': 'project_quickstart'}
 
 classifiers = CONFIG['metadata']['classifiers']
 
 platforms = [CONFIG['metadata']['platforms']]
+
+
+# Include addtional data files that are outside of the src dir:
+# See: https://docs.python.org/3.6/distutils/setupscript.html#installing-package-data
+#data_files = []
+#directories = glob.glob('templates/*/')
+#for directory in directories:
+#    files = glob.glob(directory+'*')
+#    data_files.append((directory, files))
+# then pass data_files to setup()
+
+def package_files(directory):
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+    return paths
+
+extra_files = package_files(os.path.join(here, 'templates')
+
 #################
 
 
@@ -161,8 +188,11 @@ setup(
         classifiers = list(filter(None, classifiers.split("\n"))),
         # Package contents:
         packages = find_packages(),
-        #package_dir = package_dirs,
+        #package_dir = package_dir,
         include_package_data = True,
+        #data_files = [('templates', [glob.glob('templates/*'))], ('templates',
+        #    [glob.glob('templates/*/*')])],
+        package_data={'': extra_files},
         # Dependencies:
         install_requires = install_requires,
         entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main'] },
