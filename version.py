@@ -21,18 +21,9 @@ except ImportError:  # Py2 to Py3
     import Configparser as configparser
 
 # Global variable for configuration file ('.ini')
-# allow_no_value addition is from:
-# https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
-# By using `allow_no_value=True` we are allowed to
-# write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-CONFIG.read(str(CONFIG['metadata']['project_name'] + '.ini'))
-    #'project_quickstart.ini')
-
-#for key in CONFIG:
-#    for value in CONFIG[key]:
-#        print(CONFIG[key][value])
+CONFIG.read('project_quickstart.ini')
 
 __version__ = CONFIG['metadata']['version']
 

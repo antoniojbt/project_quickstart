@@ -97,9 +97,15 @@ for key in CONFIG:
 #################
 # Get version:
 sys.path.insert(0, CONFIG['metadata']['project_name'])
-import version
+#import version
 
-version = version.__version__
+#version = version.__version__
+
+# https://packaging.python.org/single_source_version/
+version = execfile(str(CONFIG['metadata']['project_name'] + 'version.py'))
+# now we have a `__version__` variable
+# later on use: __version__
+
 #################
 
 
@@ -174,7 +180,7 @@ extra_files = package_files(os.path.join(here, 'templates'))
 
 setup(  # Package information:
         name = CONFIG['metadata']['project_name'],
-        version = CONFIG['metadata']['version'],
+        version = version, #CONFIG['metadata']['version'],
         url = CONFIG['metadata']['project_url'],
         download_url = CONFIG['metadata']['download_url'],
         author = CONFIG['metadata']['author_name'],

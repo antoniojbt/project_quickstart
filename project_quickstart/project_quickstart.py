@@ -59,7 +59,7 @@ Usage:
        project_quickstart [--dry-run]
 
 Options:
-    --project-name=DIR -n DIR     Starts a new project, 'project_' is prefixed.
+    --project-name=DIR -n DIR     Creates a project skeleton
     --update -u                   Propagate changes made in project_quickstart.ini
     --script-python=FILE          Create a python script template, '.py' is appended.
     --script-R=FILE               Create an R script template, '.R' is appended.
@@ -212,7 +212,7 @@ def main():
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
-                  actual file in xxx/code/scripts/ ''')
+                  actual file in new_project/code/scripts/ ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
             script_name = str('{}.py').format(script_name)
@@ -226,7 +226,7 @@ def main():
         if options['--script-R'] and len(options['--script-R']) > 0:
             print(''' Creating an R script template. A softlink is
                   created in the current working directory and the
-                  actual file in xxx/code/scripts/ ''')
+                  actual file in new_project/code/scripts/ ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
             print(script_name)
@@ -291,7 +291,7 @@ def main():
                        does not exist.
                        Are the paths correct? Did the programme install in the
                        right location?
-                       'bin' dir should be where project_quickstart installed,
+                       'bin' or equivalent dir should be where project_quickstart installed,
                        'templates' and 'project_template' come with this
                        package.
                    '''.format(d))
@@ -370,7 +370,9 @@ def main():
                           )
             sys.exit()
         else:
-            shutil.copytree(src, dst, ignore = shutil.ignore_patterns('.dir_bash*'))
+            shutil.copytree(src, dst, ignore =
+                    shutil.ignore_patterns('.dir_bash*,', '__pycache__*',
+                        '*.bak'))
 
     projectTemplate(project_template, code_dir)
 
@@ -391,11 +393,12 @@ def main():
     copySingleFiles(template_dir, os.path.join(code_dir, 'scripts'), r'.R',
                     r'.py')
 
-    # Replace all instances of template with 'name' from project_'name' as
+    # Replace all instances of template with 'name' from project_name as
     # specified in options:
     def renameTree(full_path, old_substring, new_substring):
         '''
-        rename 'template' to 'project' from template file names
+        rename 'template' and 'project_template' strings to name given for new
+        project
         '''
         for dirpath, dirname, filename in os.walk(full_path):
             for d in dirname:
@@ -413,6 +416,7 @@ def main():
                               os.path.join(str(dirpath), d.replace(
                                   old_substring, '{}').format(new_substring))
                               )
+    renameTree(project_dir, 'project_template', project_name)
     renameTree(project_dir, 'template', project_name)
 
 # TO DO: how to find the data python package file? See above, check CGAT
