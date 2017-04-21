@@ -102,9 +102,10 @@ sys.path.insert(0, CONFIG['metadata']['project_name'])
 #version = version.__version__
 
 # https://packaging.python.org/single_source_version/
-version = execfile(str(CONFIG['metadata']['project_name'] + 'version.py'))
-# now we have a `__version__` variable
-# later on use: __version__
+version = {}
+with open(str(CONFIG['metadata']['project_name'] + 'version.py')) as fp:
+    exec(fp.read(), version)
+# later on use: version['__version__']
 
 #################
 
