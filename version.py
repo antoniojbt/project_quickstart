@@ -27,7 +27,8 @@ except ImportError:  # Py2 to Py3
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-CONFIG.read('project_quickstart.ini')
+CONFIG.read(str(CONFIG['metadata']['project_name'] + '.ini'))
+    #'project_quickstart.ini')
 
 #for key in CONFIG:
 #    for value in CONFIG[key]:
