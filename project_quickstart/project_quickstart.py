@@ -1,6 +1,6 @@
 '''
 project_quickstart - setup a new python based project
-========================================================
+=====================================================
 
 :Author: Antonio Berlanga-Taylor
 :Release: |date|
@@ -154,18 +154,18 @@ def main():
     try:
         # Parse arguments, use file docstring as a parameter definition
         # Get ini file to read values from:                                                   
-        INI_file = projectQuickstart.getINIdir()                                               
+        INI_file = projectQuickstart.getINIdir()
 
-        if os.path.isfile(INI_file):                                                           
-            print('There is an INI configuration file in:', '\n', INI_file, '\n')              
+        if os.path.isfile(INI_file):
+            print('There is an INI configuration file in:', '\n', INI_file, '\n')
             # Read values from the INI file:                                                   
-            CONFIG.read(INI_file)                                                              
-            for key in CONFIG:                                                                                                
-                for value in CONFIG[key]:                                                      
-                    print(key, value, CONFIG[key][value])                                      
-                                                                                       
-        else:                                                                                  
-            print('Using default configuration.', '\n')        
+            CONFIG.read(INI_file)
+            for key in CONFIG:
+                for value in CONFIG[key]:
+                    print(key, value, CONFIG[key][value])
+
+        else:
+            print('Using default configuration.', '\n')
 
         # These arguments are optional
         # Standard options (log, verbose, version, quiet, dry-run, force):
@@ -200,7 +200,7 @@ def main():
         # Required:
         if options['--project-name']:
             project_name = str(options["--project-name"]).strip('[]').strip("''")
-            project_root = str('project_{}').format(project_name)
+            project_root = str('{}').format(project_name)
 
         # Addional/alternative if above not given:
         if options['--update']:
@@ -212,7 +212,7 @@ def main():
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
-                  actual file in new_project/code/scripts/ ''')
+                  actual file in new_project/code/new_project/ ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
             script_name = str('{}.py').format(script_name)
@@ -226,7 +226,7 @@ def main():
         if options['--script-R'] and len(options['--script-R']) > 0:
             print(''' Creating an R script template. A softlink is
                   created in the current working directory and the
-                  actual file in new_project/code/scripts/ ''')
+                  actual file in new_project/code/new_project/ ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
             print(script_name)
@@ -244,10 +244,9 @@ def main():
                 ):
             print(docopt_error_msg)
             print(''' Error in  the options given or none supplied.
-                      A project name is required, such as "super",
-                      which will be appended to "project_".
-                      Otherwise you need to use --update, --script-R or
-                      --script-python for example.''')
+                      A project name is required. Otherwise you need
+                      to use --update, --script-R or --script-python
+                      for example.''')
             sys.exit()
 
     # Handle exceptions:
@@ -302,8 +301,8 @@ def main():
     code_dir = os.path.join(project_dir, 'code')
     data_dir = os.path.join(project_dir, 'data')
     results_dir = os.path.join(project_dir, 'results_1')
-    script_template_py = str('python_script_template.py')
-    script_template_R = str('R_script_template.R')
+    script_template_py = str('template.py')
+    script_template_R = str('template.R')
 
     dirnames = [manuscript_dir,
                # code_dir, # leave out as shutil.copytree needs to create the
@@ -380,7 +379,8 @@ def main():
     def copySingleFiles(src, dst, string1, string2):
         '''
         Copy the manuscript and lab_notebook templates
-        to the 'manuscript' directory.
+        to the 'manuscript' directory and put an initial copy of script
+        templates in the project_name/code directory.
         '''
         files = []
         for f in os.listdir(src):
@@ -390,7 +390,7 @@ def main():
             shutil.copy2(os.path.join(src,f), dst)
 
     copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst')
-    copySingleFiles(template_dir, os.path.join(code_dir, 'scripts'), r'.R',
+    copySingleFiles(template_dir, os.path.join(code_dir, project_root), r'.R',
                     r'.py')
 
     # Replace all instances of template with 'name' from project_name as
@@ -441,10 +441,10 @@ def main():
                 shutil.copy2(copy_from, copy_to)
                 #os.rename(os.path.join(copy_to, script_template_py),
                 #          filename.replace('template', {})).format(script_name)
-                os.symlink(copy_to, os.getcwdu())
+                os.symlink(copy_to, os.getcwd())
 
         elif options['--script-R']:
-            copy_to = os.path.join(code_dir, 'scripts', str(script_name + '.R'))
+            copy_to = os.path.join(code_dir, project_root, str(script_name + '.R'))
             if os.path.exists(copy_to) and not options['--force']:
                 print(docopt_error_msg)
                 raise OSError(''' File {} already exists - not overwriting,
@@ -457,7 +457,7 @@ def main():
                # os.rename(os.path.join(copy_to, script_template_R),
                #           filename.replace('template',
                #                            {})).format(script_name)
-                os.symlink(copy_to, os.getcwdu())
+                os.symlink(copy_to, os.getcwd())
 
         else:
             print(docopt_error_msg)
@@ -468,7 +468,7 @@ def main():
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
-    print(str( '\n' + '\n' + '\n' +
+    print(str( '\n' +
                """ Done, welcome to {0}!
 
     The folder structure and files have been successfully copied to
@@ -479,7 +479,7 @@ def main():
 
     python project_quickstart --update
 
-    to update files with your chosen parameters (note that some files will get
+    to update files with your chosen parameters (note that some files can get
     overwritten).
 
     The folder structure is
@@ -495,22 +495,20 @@ def main():
     if needed.
 
     Script templates are in
-    {3}/scripts/
+    {0}/{3}/{0}/
 
-    You can put scripts and modules here.
-
-    and pipelines (eg Ruffus/CGAT or others) in
-    {3}/{0}
-    for example.
+    The structure follows Python packaging conventions to some extent.
+    You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
+    in here for example.
 
     You can work and save results in
     {6}
 
-    Sphinx can be used to render your rst documents in
+    Install Sphinx to render your rst documents in
     {4}
 
     Basic rst template files have been generated already.
-    Use sphinxqhickstart if you want a more complete skeleton.
+    Install and use sphinxqhickstart if you want a more complete skeleton.
 
     Feel free to raise issues, fork or contribute at:
 
@@ -527,10 +525,6 @@ def main():
                )
     ))
 
-    return
-
-def doSuperTest():
-    print('doSuperTest works : (')
     return
 
 if __name__ == '__main__':

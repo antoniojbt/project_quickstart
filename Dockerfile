@@ -34,6 +34,7 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 # https://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management
 RUN apk update && apk upgrade \
     && apk add \
+    tree \
     sudo
 #    vim \
 
