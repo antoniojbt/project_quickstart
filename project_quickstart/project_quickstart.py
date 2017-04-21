@@ -11,11 +11,13 @@ Purpose
 =======
 
 This script creates a python data science project template. The main idea is
-to
-be able to easily turn a project into a package with software testing, version
-control, reporting, docs, etc. It has:
+to be able to easily turn a project into a package with software testing, version
+control, reporting, docs, etc. The package can be kept private, made public,
+etc. Even if the code is project specific it can still be versioned, frozen and
+archived for reproducibility purposes later on. This tool has the following in
+mind:
 
-    Reproducibility concepts in mind
+    Reproducibility concepts and best practice
     Ruffus as a pipeline tool and CGAT tools for support
     Python programming and packaging
     restructuredText and Sphinx for reporting
@@ -25,16 +27,19 @@ control, reporting, docs, etc. It has:
 
 I've additionally put some basic instructions/reminders to link GitHub with:
 
-    ReadtheDocs
+    ReadtheDocs (to easily render your documentation online)
     Zenodo (for archiving your code and generating a DOI)
-    Travis CI.
+    Travis CI (to integratecode testing)
 
-Once you've quickstarted your project you can run script_quickstart.py to
-quickly create a Python or R script template.
+Once you've quickstarted your project you can run run the --script options to
+create python and R script templates.
 
 For a pipeline quickstart based on a Ruffus and CGAT framework see also:
 https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 (on which this code is based on)
+
+You will need to install other software (e.g. R, Ruffus, Sphinx, etc.) to make
+full use depending on your preferences.
 
 
 Usage and Options
@@ -74,8 +79,9 @@ Options:
 Documentation
 =============
 
-  Add docs page
-  Add tree structure
+  For more information see:
+
+      https://github.com/AntonioJBT/project_quickstart
 
 '''
 ##############################
@@ -114,6 +120,9 @@ import docopt
 
 # Package module:
 import project_quickstart.projectQuickstart as projectQuickstart
+import version
+
+version = version.__version__
 
 # Get package source directory in (param path) '
 src_dir = projectQuickstart.getDir('..')
@@ -136,14 +145,13 @@ def main():
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
-    options = docopt.docopt(__doc__)
-    welcome_msg = str('Welcome from project_quickstart (!)' + '\n')
+    options = docopt.docopt(__doc__, version = version)
+    welcome_msg = str('Welcome to project_quickstart (!)' + '\n')
     print(welcome_msg)
     docopt_error_msg = str('project_quickstart exited due to an error:')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
-                           + '''Invalid option or missing argument, try
-                           project_quickstart --help'''
+                           + 'Try project_quickstart --help'
                            + '\n'
                            + 'Options in place:'
                            + '\n'
@@ -153,20 +161,6 @@ def main():
 
     try:
         # Parse arguments, use file docstring as a parameter definition
-        # Get ini file to read values from:                                                   
-        INI_file = projectQuickstart.getINIdir()
-
-        if os.path.isfile(INI_file):
-            print('There is an INI configuration file in:', '\n', INI_file, '\n')
-            # Read values from the INI file:                                                   
-            CONFIG.read(INI_file)
-            for key in CONFIG:
-                for value in CONFIG[key]:
-                    print(key, value, CONFIG[key][value])
-
-        else:
-            print('Using default configuration.', '\n')
-
         # These arguments are optional
         # Standard options (log, verbose, version, quiet, dry-run, force):
         if not options['--log']:
@@ -179,8 +173,8 @@ def main():
             print('Option not in use at the moment')
             pass  # TO DO
 
-        if options['--version']:
-            print(CONFIG['metadata']['version'])
+#        if options['--version']:
+#            print(version) #CONFIG['metadata']['version']
 
         if options['--quiet']:
             print('Option not in use at the moment')
@@ -204,10 +198,23 @@ def main():
 
         # Addional/alternative if above not given:
         if options['--update']:
-            print(''' After manually editing the ini file run to
-                    propagate changes.''')
             print('Option not in use at the moment')
-            pass  # TO DO
+            # Get ini file to read values from:                                                   
+            INI_file = projectQuickstart.getINIdir()
+
+            if os.path.isfile(INI_file):
+                print('There is an INI configuration file in:', '\n', INI_file, '\n')
+                # Read values from the INI file:                                                   
+                CONFIG.read(INI_file)
+                for key in CONFIG:
+                    for value in CONFIG[key]:
+                        print(key, value, CONFIG[key][value])
+
+            else:
+                print('After manually editing the ini file run --update ',
+                      'to propagate the changes.')
+                sys.exit()
+                # TO DO
 
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Creating a Python script template. A softlink is
@@ -243,10 +250,11 @@ def main():
                 and not options['--script-python']
                 ):
             print(docopt_error_msg)
-            print(''' Error in  the options given or none supplied.
-                      A project name is required. Otherwise you need
-                      to use --update, --script-R or --script-python
-                      for example.''')
+            print('Error in  the options given or none supplied.',
+                  '\n',
+                  'A project name is required. ',
+                  'Otherwise you need to use --update, ',
+                  '--script-R or --script-python for example.')
             sys.exit()
 
     # Handle exceptions:
@@ -472,7 +480,7 @@ def main():
                """ Done, welcome to {0}!
 
     The folder structure and files have been successfully copied to
-    {1}
+    {1}/
 
     Files have been copied 'as is'. You can edit the configuration file
     ({0}.ini, for python packaging) and run:
@@ -483,29 +491,28 @@ def main():
     overwritten).
 
     The folder structure is
-    {2}
+    {2}/
 
     Remember to back up code, data and manuscript directories (or your equivalent).
 
     The directory
-    {3}
+    {3}/
     can be uploaded to a version control system for example
     (file templates are for GitHub). Link to Travis CI, Zenodo and
     ReadtheDocs (notes and reminders within the files copied over)
-    if needed.
 
     Script templates are in
-    {0}/{3}/{0}/
+    {3}/{0}/
 
-    The structure follows Python packaging conventions to some extent.
+    The structure largely follows Python packaging conventions.
     You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
-    in here for example.
+    in here.
 
     You can work and save results in
-    {6}
+    {6}/
 
     Install Sphinx to render your rst documents in
-    {4}
+    {4}/
 
     Basic rst template files have been generated already.
     Install and use sphinxqhickstart if you want a more complete skeleton.

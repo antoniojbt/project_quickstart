@@ -15,16 +15,18 @@ from __future__ import absolute_import
 # Modules with Py2 to 3 conflicts
 from future import standard_library
 standard_library.install_aliases()
-try:
-    import configparser
-except ImportError:  # Py2 to Py3
-    import Configparser as configparser
+
+#try:
+#    import configparser
+#except ImportError:  # Py2 to Py3
+#    import Configparser as configparser
 
 # Global variable for configuration file ('.ini')
-CONFIG = configparser.ConfigParser(allow_no_value = True)
+#CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-CONFIG.read('project_quickstart.ini')
+#CONFIG.read('project_quickstart.ini')
 
-__version__ = CONFIG['metadata']['version']
+#__version__ = CONFIG['metadata']['version']
+__version__ = '0.2.3'
 
 #print(CONFIG['metadata']['project_name'], 'version', __version__)
