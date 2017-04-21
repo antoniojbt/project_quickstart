@@ -146,9 +146,10 @@ def main():
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
     options = docopt.docopt(__doc__, version = version)
-    welcome_msg = str('Welcome to project_quickstart (!)' + '\n')
+    welcome_msg = str('Welcome to project_quickstart version {} (!).' +
+            '\n').format(version)
     print(welcome_msg)
-    docopt_error_msg = str('project_quickstart exited due to an error:')
+    docopt_error_msg = str('project_quickstart exited due to an error:' + '\n')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
                            + 'Try project_quickstart --help'
@@ -162,6 +163,8 @@ def main():
     try:
         # Parse arguments, use file docstring as a parameter definition
         # These arguments are optional
+        # help and version are handled automatically by docopt if set in
+        # options above.
         # Standard options (log, verbose, version, quiet, dry-run, force):
         if not options['--log']:
             log = str(CONFIG['metadata']['project_name'] + '.log')
@@ -172,9 +175,6 @@ def main():
         if options['--verbose']:
             print('Option not in use at the moment')
             pass  # TO DO
-
-#        if options['--version']:
-#            print(version) #CONFIG['metadata']['version']
 
         if options['--quiet']:
             print('Option not in use at the moment')
@@ -398,8 +398,13 @@ def main():
             shutil.copy2(os.path.join(src,f), dst)
 
     copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst')
-    copySingleFiles(template_dir, os.path.join(code_dir, project_root), r'.R',
-                    r'.py')
+    copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'), r'.R',
+                    r'.py') # 'project_template' here refers to
+                            #'project_quickstart/templates/project_template'
+                            # directory which will become the user's
+                            # new_project/code/new_project directory
+                            # where scripts can go in
+                            # The code dir can be renamed when uploading
 
     # Replace all instances of template with 'name' from project_name as
     # specified in options:
@@ -480,7 +485,7 @@ def main():
                """ Done, welcome to {0}!
 
     The folder structure and files have been successfully copied to
-    {1}/
+    {1}
 
     Files have been copied 'as is'. You can edit the configuration file
     ({0}.ini, for python packaging) and run:
@@ -491,31 +496,32 @@ def main():
     overwritten).
 
     The folder structure is
-    {2}/
+    {2}
 
-    Remember to back up code, data and manuscript directories (or your equivalent).
+    Remember to back up code, data and manuscript directories (or your
+    equivalents).
 
     The directory
-    {3}/
-    can be uploaded to a version control system for example
-    (file templates are for GitHub). Link to Travis CI, Zenodo and
-    ReadtheDocs (notes and reminders within the files copied over)
+    {3}
+    can be uploaded to a version control system (file templates are for GitHub).
+    You could link it to Travis CI, Zenodo and ReadtheDocs.
+    Notes and reminders within the files copied over.
 
     Script templates are in
-    {3}/{0}/
+    {3}/{0}
 
     The structure largely follows Python packaging conventions.
     You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
     in here.
 
     You can work and save results in
-    {6}/
+    {6}
 
     Install Sphinx to render your rst documents in
-    {4}/
+    {4}
 
     Basic rst template files have been generated already.
-    Install and use sphinxqhickstart if you want a more complete skeleton.
+    Install and use sphinx-quickstart if you want a more complete skeleton.
 
     Feel free to raise issues, fork or contribute at:
 
