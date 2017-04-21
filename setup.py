@@ -96,7 +96,11 @@ for key in CONFIG:
 
 #################
 # Get version:
-sys.path.insert(0, here)
+#sys.path.insert(0, here)
+src_dir = str(CONFIG['metadata']['project_name'] + '/' + CONFIG['metadata']['project_name'])
+sys.path.insert(0, src_dir)
+print(src_dir)
+
 import version
 
 version = version.__version__
