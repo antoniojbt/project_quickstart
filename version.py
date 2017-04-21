@@ -27,4 +27,4 @@ CONFIG.read('project_quickstart.ini')
 
 __version__ = CONFIG['metadata']['version']
 
-print(CONFIG['metadata']['project_name'], 'version', __version__)
+#print(CONFIG['metadata']['project_name'], 'version', __version__)
