@@ -120,7 +120,7 @@ import docopt
 
 # Package module:
 import project_quickstart.projectQuickstart as projectQuickstart
-import version
+import project_quickstart.version as version
 
 version = version.__version__
 
