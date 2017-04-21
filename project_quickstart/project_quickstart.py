@@ -146,14 +146,14 @@ def main():
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
     options = docopt.docopt(__doc__, version = version)
-    welcome_msg = str('Welcome to project_quickstart version {} (!).' +
+    welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).' +
             '\n').format(version)
     print(welcome_msg)
-    docopt_error_msg = str('project_quickstart exited due to an error:' + '\n')
+    docopt_error_msg = str('project_quickstart exited due to an error.' + '\n')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
                            + 'Try project_quickstart --help'
-                           + '\n'
+                           + '\n' + '\n'
                            + 'Options in place:'
                            + '\n'
                            + str(options)
@@ -252,8 +252,8 @@ def main():
             print(docopt_error_msg)
             print('Error in  the options given or none supplied.',
                   '\n',
-                  'A project name is required. ',
-                  'Otherwise you need to use --update, ',
+                  'A project name is required.',
+                  'Otherwise you need to use --update,',
                   '--script-R or --script-python for example.')
             sys.exit()
 
@@ -398,8 +398,9 @@ def main():
             shutil.copy2(os.path.join(src,f), dst)
 
     copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst')
-    copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'), r'.R',
-                    r'.py') # 'project_template' here refers to
+    copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'),
+                    r'.R', r'.py')
+                            # 'project_template' here refers to
                             #'project_quickstart/templates/project_template'
                             # directory which will become the user's
                             # new_project/code/new_project directory
@@ -504,8 +505,10 @@ def main():
     The directory
     {3}
     can be uploaded to a version control system (file templates are for GitHub).
-    You could link it to Travis CI, Zenodo and ReadtheDocs.
-    Notes and reminders within the files copied over.
+    You could link it to Travis CI, Zenodo and ReadtheDocs for example.
+    There are some notes and reminders within the files copied over.
+    You may want to change the name 'code' to something more suitable when
+    uploading, freezing, packaging, etc.
 
     Script templates are in
     {3}/{0}

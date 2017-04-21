@@ -1,0 +1,4 @@
+You can delete this file.
+It's purpose was to make sure an empty directoy got copied across when
+uploading to GitHub and installing the source package.
+
