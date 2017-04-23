@@ -12,10 +12,31 @@ Purpose
 
 This script creates a python data science project template. The main idea is
 to be able to easily turn a project into a package with software testing, version
-control, reporting, docs, etc.
+control, reporting, docs, etc. The package can be kept private, made public,
+etc. Even if the code is project specific it can still be versioned, frozen and
+archived for reproducibility purposes later on. This tool has the following in
+mind:
+
+    Reproducibility concepts and best practice
+    Ruffus as a pipeline tool and CGAT tools for support
+    Python programming and packaging
+    restructuredText and Sphinx for reporting
+    Travis and tox for testing
+    Conda and Docker for management and development
+    GitHub for version control
+
+I've additionally put some basic instructions/reminders to link GitHub with:
+
+    ReadtheDocs (to easily render your documentation online)
+    Zenodo (for archiving your code and generating a DOI)
+    Travis CI (to integratecode testing)
 
 Once you've quickstarted your project you can run run the --script options to
 create python and R script templates.
+
+For a pipeline quickstart based on a Ruffus and CGAT framework see also:
+https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
+(on which this code is based on)
 
 You will need to install other software (e.g. R, Ruffus, Sphinx, etc.) to make
 full use depending on your preferences.
@@ -31,20 +52,28 @@ other templates.
 Usage:
        project_quickstart [--project-name=<project_name> | -n
                               <project_name>] ...
+       project_quickstart [--update | -u]
        project_quickstart [--script-python=<script_name>]
        project_quickstart [--script-R=<script_name>]
        project_quickstart [-f | --force]
        project_quickstart [-h | --help]
        project_quickstart [--version]
+       project_quickstart [--quiet]
+       project_quickstart [--verbose]
+       project_quickstart [--log=<log_file> | -L <log_file>]
        project_quickstart [--dry-run]
 
 Options:
     --project-name=DIR -n DIR     Creates a project skeleton
+    --update -u                   Propagate changes made in project_quickstart.ini
     --script-python=FILE          Create a python script template, '.py' is appended.
     --script-R=FILE               Create an R script template, '.R' is appended.
     -f --force                    Take care, forces to overwrite files and directories.
     -h --help                     Show this screen.
     --version                     Show version.
+    --quiet                       Print less text.
+    --verbose                     Print more text.
+    -L FILE --log=FILE            Log file name. [default: project_quickstart.log]
     --dry-run                     Print to screen only.
 
 Documentation
@@ -137,6 +166,20 @@ def main():
         # help and version are handled automatically by docopt if set in
         # options above.
         # Standard options (log, verbose, version, quiet, dry-run, force):
+        if not options['--log']:
+            log = str(CONFIG['metadata']['project_name'] + '.log')
+            pass  # TO DO, script log function
+        else:
+            log = str(options["--log"]).strip('[]').strip("''")
+
+        if options['--verbose']:
+            print('Option not in use at the moment')
+            pass  # TO DO
+
+        if options['--quiet']:
+            print('Option not in use at the moment')
+            pass  # TO DO
+
         if options['--dry-run']:
             print('Dry run, only print what folders will be created.')
             print('Option not in use at the moment')
@@ -154,6 +197,25 @@ def main():
             project_root = str('{}').format(project_name)
 
         # Addional/alternative if above not given:
+        if options['--update']:
+            print('Option not in use at the moment')
+            # Get ini file to read values from:                                                   
+            INI_file = projectQuickstart.getINIdir()
+
+            if os.path.isfile(INI_file):
+                print('There is an INI configuration file in:', '\n', INI_file, '\n')
+                # Read values from the INI file:                                                   
+                CONFIG.read(INI_file)
+                for key in CONFIG:
+                    for value in CONFIG[key]:
+                        print(key, value, CONFIG[key][value])
+
+            else:
+                print('After manually editing the ini file run --update ',
+                      'to propagate the changes.')
+                sys.exit()
+                # TO DO
+
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Creating a Python script template. A softlink is
                   created in the current working directory and the
@@ -183,6 +245,7 @@ def main():
 
         # Exit if options not given:
         if (not options['--project-name']
+                and not options['--update']
                 and not options['--script-R']
                 and not options['--script-python']
                 ):
@@ -190,8 +253,8 @@ def main():
             print('Error in  the options given or none supplied.',
                   '\n',
                   'A project name is required.',
-                  'Otherwise you need to use,',
-                  '--script-R or --script-python.')
+                  'Otherwise you need to use --update,',
+                  '--script-R or --script-python for example.')
             sys.exit()
 
     # Handle exceptions:
@@ -370,7 +433,8 @@ def main():
     renameTree(project_dir, 'project_template', project_name)
     renameTree(project_dir, 'template', project_name)
 
-
+# TO DO: how to find the data python package file? See above, check CGAT
+# example.
     def scriptTemplate():
         ''' Copy script templates and rename
             them according to option given
@@ -423,6 +487,14 @@ def main():
 
     The folder structure and files have been successfully copied to
     {1}
+
+    Files have been copied 'as is'. You can edit the configuration file
+    ({0}.ini, for python packaging) and run:
+
+    python project_quickstart --update
+
+    to update files with your chosen parameters (note that some files can get
+    overwritten).
 
     The folder structure is
     {2}
