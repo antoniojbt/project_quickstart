@@ -5,6 +5,4 @@
 .. include:: ../README.rst
 .. include:: ../THANKS.rst
 .. include:: ../TODO.rst
-.. include:: ../external_dependencies.rst
-.. include:: ../requirements.rst
 .. include:: ../KNOWN_BUGS.rst

@@ -5,6 +5,5 @@ project_quickstart
    :maxdepth: 4
 
    project_quickstart
-   scripts
    setup
    version

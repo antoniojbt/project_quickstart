@@ -1,22 +1,22 @@
-scripts package
-===============
+project_quickstart package
+==========================
 
 Submodules
 ----------
 
-scripts.quickstart_utilities module
------------------------------------
+project_quickstart.projectQuickstart module
+-------------------------------------------
 
-.. automodule:: scripts.quickstart_utilities
+.. automodule:: project_quickstart.projectQuickstart
     :members:
     :undoc-members:
     :show-inheritance:
 
 
-Module contents
----------------
+project_quickstart..version
+---------------------------
 
-.. automodule:: scripts
+.. automodule:: version
     :members:
     :undoc-members:
     :show-inheritance:
