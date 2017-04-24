@@ -153,13 +153,30 @@ def main():
             project_name = str(options["--project-name"]).strip('[]').strip("''")
             project_root = str('{}').format(project_name)
 
+            # Set up default paths, directoy and file names:                                   
+            project_dir = os.path.join(os.getcwd(), project_root)                                                                                
+            
+            if not os.path.exists(project_dir): 
+                os.makedirs(project_dir) 
+            
+            else: 
+                print(docopt_error_msg) 
+                print(str('''The directory with the name {} already exists. 
+                            Use --force to overwrite.''' 
+                            + '\n' 
+                            ).format(project_root)) 
+                sys.exit() 
+
         # Addional/alternative if above not given:
+        script_template_py = str('template.py') 
+        script_template_R = str('template.R')
+        
         if options['--script-python'] and len(options['--script-python']) > 0:
-            print(''' Copies a Python script template in the current working directory. ''')
+            print(''' Copying a Python script template into the current working directory. ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
             script_name = str('{}.py').format(script_name)
-            print(script_name)
+
         elif options['--script-python'] and len(options['--script-python']) == 0:
             print(docopt_error_msg)
             print(''' You need to provide a script name. This will be prefixed to
@@ -167,10 +184,10 @@ def main():
             sys.exit()
 
         if options['--script-R'] and len(options['--script-R']) > 0:
-            print(''' Copies an R script template in the current working directory. ''')
+            print(''' Copying an R script template into the current working directory. ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
-            print(script_name)
+
         elif options['--script-R'] and len(options['--script-R']) == 0:
             print(docopt_error_msg)
             print(''' You need to provide a script name. This will be prefixed to
@@ -195,19 +212,6 @@ def main():
         print(docopt_error_msg)
         raise
 
-    # Set up default paths, directoy and file names:
-    project_dir = os.path.join(os.getcwd(), project_root)
-
-    if not os.path.exists(project_dir):
-        os.makedirs(project_dir)
-    else:
-        print(docopt_error_msg)
-        print(str('''The directory with the name {} already exists.
-                    Use --force to overwrite.'''
-                  + '\n'
-                  ).format(project_root))
-        sys.exit()
-
     # Get locations of source code
     # os.path.join note: a subsequent argument with an '/' discards anything
     # before it
@@ -215,81 +219,84 @@ def main():
     # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
     # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
-    template_dir = projectQuickstart.getDir('../templates')
+    template_dir = projectQuickstart.getDir('../templates') 
     project_template = os.path.join(template_dir, 'project_template')
 
-    dirs_to_use = [template_dir,
-                   project_template
-                   ]
+    def createProject():
+        if options['--project-name']:
 
-    # Sanity check:
-    for d in dirs_to_use:
-        if not os.path.exists(d):
-            print(docopt_error_msg)
-            print(''' The directory:
-                       {}
-                       does not exist.
-                       Are the paths correct? Did the programme install in the
-                       right location?
-                       'bin' or equivalent dir should be where project_quickstart installed,
-                       'templates' and 'project_template' come with this
-                       package.
-                   '''.format(d))
-            sys.exit()
+            dirs_to_use = [template_dir,
+                           project_template
+                          ]
 
-    # Get the names for the directories to create for the project skeleton:
-    manuscript_dir = os.path.join(project_dir, 'manuscript')
-    code_dir = os.path.join(project_dir, 'code')
-    data_dir = os.path.join(project_dir, 'data')
-    results_dir = os.path.join(project_dir, 'results_1')
-    script_template_py = str('template.py')
-    script_template_R = str('template.R')
+        # Sanity check:
+            for d in dirs_to_use:
+                if not os.path.exists(d):
+                    print(docopt_error_msg)
+                    print(''' The directory:
+                               {}
+                               does not exist.
+                               Are the paths correct? Did the programme install in the
+                               right location?
+                               'bin' or equivalent dir should be where project_quickstart installed,
+                               'templates' and 'project_template' come with this
+                               package.
+                          '''.format(d))
+                    sys.exit()
 
-    dirnames = [manuscript_dir,
-               # code_dir, # leave out as shutil.copytree needs to create the
-               # shutit root dir, otherwise files are not copied
-                data_dir,
-                results_dir
-                ]
+        # Get the names for the directories to create for the project skeleton:
+        manuscript_dir = os.path.join(project_dir, 'manuscript')
+        code_dir = os.path.join(project_dir, 'code')
+        data_dir = os.path.join(project_dir, 'data')
+        results_dir = os.path.join(project_dir, 'results_1')
 
-    # Sanity check:
-    for d in dirnames:
-        if os.path.exists(d):
-            print(docopt_error_msg)
-            print(''' The directory:
-                       {}
-                       already exists.
-                       To overwrite use --force.
-                   '''.format(dir_path))
-            sys.exit()
+        dirnames = [manuscript_dir,
+                   # code_dir, # leave out as shutil.copytree needs to create the
+                   # shutil root dir, otherwise files are not copied
+                    data_dir,
+                    results_dir
+                    ]
 
-    # If directory paths are OK, continue:
-    print(str('Paths in use:' + '\n'
-              + template_dir + '\n'
-              + project_template
-              + '\n' + '\n'
-              + 'Creating the project structure for {} in:'.format(project_name) + '\n'
-              + project_dir + '\n')
-          )
+        # Sanity check:
+        for d in dirnames:
+            if os.path.exists(d):
+                print(docopt_error_msg)
+                print(''' The directory:
+                           {}
+                           already exists.
+                           To overwrite use --force.
+                      '''.format(d))
+                sys.exit()
 
-    # Create directories:
-    # TO DO: pass these from ini file
-    # Add hardcoded directories first for now:
-    dirnames.extend(["{}/raw".format(data_dir)])
-    dirnames.extend(["{}/processed".format(data_dir)])
-    dirnames.extend(["{}/external".format(data_dir)])
+        # If directory paths are OK, continue:
+        print(str('Paths in use:' + '\n'
+                  + template_dir + '\n'
+                  + project_template
+                  + '\n' + '\n'
+                  + 'Creating the project structure for {} in:'.format(project_name) + '\n'
+                  + project_dir + '\n')
+              )
 
-    tree_dir = []
-    for d in map(str, dirnames):
-        tree_dir = [d for d in list(dirnames)]
+        # Create directories:
+        # TO DO: pass these from ini file
+        # Add hardcoded directories first for now:
+        dirnames.extend(["{}/raw".format(data_dir)])
+        dirnames.extend(["{}/processed".format(data_dir)])
+        dirnames.extend(["{}/external".format(data_dir)])
 
-        if not os.path.exists(d):
-            os.makedirs(d)
-        else:
-            print(docopt_error_msg)
-            print('''The directory {} already exists, use --force to
-                    overwrite.'''.format(d))
-            sys.exit()
+        tree_dir = []
+        for d in map(str, dirnames):
+            tree_dir = [d for d in list(dirnames)]
+
+            if not os.path.exists(d):
+                os.makedirs(d)
+            else:
+                print(docopt_error_msg)
+                print('''The directory {} already exists, use --force to
+                        overwrite.'''.format(d))
+                sys.exit()
+
+        return(code_dir, manuscript_dir, data_dir, results_dir, tree_dir)
 
     # Copy files from template directory:
     # TO DO: 'code' dir is hard coded, change to ini parameter later
@@ -312,9 +319,7 @@ def main():
         else:
             shutil.copytree(src, dst, ignore =
                     shutil.ignore_patterns('.dir_bash*,', '__pycache__*',
-                        '*.bak'))
-
-    projectTemplate(project_template, code_dir)
+                        '*.bak', 'dummy_holder*'))
 
     # Copy across individual files outside of the 'templates' dir:
     def copySingleFiles(src, dst, string1, string2):
@@ -329,16 +334,6 @@ def main():
                 files.extend([f])
         for f in map(str, files):
             shutil.copy2(os.path.join(src,f), dst)
-
-    copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst')
-    copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'),
-                    r'.R', r'.py')
-                            # 'project_template' here refers to
-                            #'project_quickstart/templates/project_template'
-                            # directory which will become the user's
-                            # new_project/code/new_project directory
-                            # where scripts can go in
-                            # The code dir can be renamed when uploading
 
     # Replace all instances of template with 'name' from project_name as
     # specified in options:
@@ -363,19 +358,16 @@ def main():
                               os.path.join(str(dirpath), d.replace(
                                   old_substring, '{}').format(new_substring))
                               )
-    renameTree(project_dir, 'project_template', project_name)
-    renameTree(project_dir, 'template', project_name)
 
-
+    # Make single copies of script templates as standalone function:
     def scriptTemplate():
         ''' Copy script templates and rename
             them according to option given.
         '''
-        # code_dir = getDir('code')
-        # print(code_dir)
+        cwd = os.getcwd()
+
         if options['--script-python']:
-           # copy_to = os.path.join(code_dir, 'scripts', str(script_name + '.py'))
-            copy_to = os.path.join(os.path.dirname(), str(script_name + '.py'))
+            copy_to = os.path.join(cwd, script_name)
             if os.path.exists(copy_to) and not options['--force']:
                 print(docopt_error_msg)
                 raise OSError(''' File {} already exists - not overwriting,
@@ -385,12 +377,10 @@ def main():
             else:
                 copy_from = os.path.join(template_dir, script_template_py)
                 shutil.copy2(copy_from, copy_to)
-                # os.rename(os.path.join(copy_to, script_template_py),
-                #          filename.replace('template', {})).format(script_name)
-                # os.symlink(copy_to, os.getcwd())
+                print(copy_to)
 
         elif options['--script-R']:
-            copy_to = os.path.join(os.path.dirname(), str(script_name + '.R'))
+            copy_to = os.path.join(cwd, script_name)
             if os.path.exists(copy_to) and not options['--force']:
                 print(docopt_error_msg)
                 raise OSError(''' File {} already exists - not overwriting,
@@ -400,70 +390,87 @@ def main():
             else:
                 copy_from = os.path.join(template_dir, script_template_R)
                 shutil.copy2(copy_from, copy_to)
-               # os.rename(os.path.join(copy_to, script_template_R),
-               #           filename.replace('template',
-               #                            {})).format(script_name)
-               # os.symlink(copy_to, os.getcwd())
-
+                print(copy_to)
         else:
             print(docopt_error_msg)
-            raise ValueError(''' Bad arguments/options used for script template,
-            try --help''')
+            raise ValueError(''' Bad arguments/options used for script template, try --help''')
 
-    if options['--script-python'] or options['--script-R']:
+
+    # Call functions:
+    if options['--project-name']: 
+        code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject() 
+        projectTemplate(project_template, code_dir)
+        copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst') 
+        copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'), 
+                        r'.R', r'.py') 
+                                # 'project_template' here refers to                                        
+                                #'project_quickstart/templates/project_template' 
+                                # directory which will become the user's 
+                                # new_project/code/new_project directory 
+                                # where scripts can go in 
+                                # The code dir can be renamed when uploading 
+        renameTree(project_dir, 'project_template', project_name) 
+        renameTree(project_dir, 'template', project_name) 
+
+    # Create a script template copy:
+    if options['--script-python'] or options['--script-R'] and not options['--project-name']:
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
-    print(str( '\n' +
-               """ Done, welcome to {0}!
+    if options['--project-name']:
+        end_msg = str( '\n' +
+                   """ Done, welcome to {0}!
 
-    The folder structure and files have been successfully copied to
-    {1}
+        The folder structure and files have been successfully copied to
+        {1}
 
-    The folder structure is
-    {2}
+        The folder structure is
+        {2}
 
-    Remember to back up code, data and manuscript directories (or your
-    equivalents).
+        Remember to back up code, data and manuscript directories (or your
+        equivalents).
 
-    The directory
-    {3}
-    can be uploaded to a version control system (file templates are for GitHub).
-    You could link it to Travis CI, Zenodo and ReadtheDocs for example.
-    There are some notes and reminders within the files copied over.
-    You may want to change the name 'code' to something more suitable when
-    uploading, freezing, packaging, etc.
+        The directory
+        {3}
+        can be uploaded to a version control system (file templates are for GitHub).
+        You could link it to Travis CI, Zenodo and ReadtheDocs for example.
+        There are some notes and reminders within the files copied over.
+        You may want to change the name 'code' to something more suitable when
+        uploading, freezing, packaging, etc.
 
-    Script templates are in
-    {3}/{0}
+        Script templates are in
+        {3}/{0}
 
-    The structure largely follows Python packaging conventions.
-    You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
-    in here.
+        The structure largely follows Python packaging conventions.
+        You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
+        in here.
 
-    You can work and save results in
-    {6}
+        You can work and save results in
+        {6}
 
-    Install Sphinx to render your rst documents in
-    {4}
+        Install Sphinx to render your rst documents in
+        {4}
 
-    Basic rst template files have been generated already.
-    Install and use sphinx-quickstart if you want a more complete skeleton.
+        Basic rst template files have been generated already.
+        Install and use sphinx-quickstart if you want a more complete skeleton.
 
-    Feel free to raise issues, fork or contribute at:
+        Feel free to raise issues, fork or contribute at:
 
-    https://github.com/AntonioJBT/project_quickstart
+        https://github.com/AntonioJBT/project_quickstart
 
-    Have fun!
-    """.format(project_root,
-               project_dir,
-               tree_dir,
-               code_dir,
-               manuscript_dir,
-               data_dir,
-               results_dir
-               )
-    ))
+        Have fun!
+
+        """.format(project_root,
+                   project_dir,
+                   tree_dir,
+                   code_dir,
+                   manuscript_dir,
+                   data_dir,
+                   results_dir
+                   )
+        )
+
+        print(end_msg)
 
     return
 
