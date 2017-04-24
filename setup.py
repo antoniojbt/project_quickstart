@@ -74,7 +74,7 @@ print(here)
 try:
     import configparser
 except ImportError:  # Py2 to Py3
-    import configparser as configparser
+    import ConfigParser as configparser
 
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:

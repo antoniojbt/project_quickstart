@@ -79,7 +79,7 @@ import string
 try:
     import configparser
 except ImportError:  # Py2 to Py3
-    import configparser as configparser
+    import ConfigParser as configparser
 
 try:
     from io import StringIO

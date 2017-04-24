@@ -25,7 +25,7 @@ import sys
 try:
     import configparser
 except ImportError:  # Py2 to Py3
-    import configparser as configparser
+    import ConfigParser as configparser
 # Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 #################
@@ -46,7 +46,7 @@ def getINIdir(path = cwd):
         INI_file = os.path.abspath(path)
         print('You have no project configuration (".ini") file or more than one',
               'in the directory:', '\n', path)
-    
+
     return(INI_file)
 ################# 
 
