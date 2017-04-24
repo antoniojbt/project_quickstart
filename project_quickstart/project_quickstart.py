@@ -155,9 +155,7 @@ def main():
 
         # Addional/alternative if above not given:
         if options['--script-python'] and len(options['--script-python']) > 0:
-            print(''' Creating a Python script template. A softlink is
-                  created in the current working directory and the
-                  actual file in new_project/code/new_project/ ''')
+            print(''' Copies a Python script template in the current working directory. ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
             script_name = str('{}.py').format(script_name)
@@ -169,9 +167,7 @@ def main():
             sys.exit()
 
         if options['--script-R'] and len(options['--script-R']) > 0:
-            print(''' Creating an R script template. A softlink is
-                  created in the current working directory and the
-                  actual file in new_project/code/new_project/ ''')
+            print(''' Copies an R script template in the current working directory. ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
             print(script_name)
@@ -296,13 +292,13 @@ def main():
             sys.exit()
 
     # Copy files from template directory:
+    # TO DO: 'code' dir is hard coded, change to ini parameter later
+    # The intention is to use the 'code' dir as a
+    # GitHub/packageable directory
     def projectTemplate(src, dst):
         '''
         Copy across project template files for
         a Python/GitHub/etc setup.
-        TO DO: 'code' dir is hard coded, change to ini parameter later
-        The intention is to use the 'code' dir as a
-        GitHub/packageable directory
         '''
         if os.path.exists(dst) and not options['--force']:
             print(docopt_error_msg)
@@ -348,8 +344,8 @@ def main():
     # specified in options:
     def renameTree(full_path, old_substring, new_substring):
         '''
-        rename 'template' and 'project_template' strings to name given for new
-        project
+        Rename 'template' and 'project_template' strings to name given for new
+        project.
         '''
         for dirpath, dirname, filename in os.walk(full_path):
             for d in dirname:
@@ -373,10 +369,10 @@ def main():
 
     def scriptTemplate():
         ''' Copy script templates and rename
-            them according to option given
+            them according to option given.
         '''
-        code_dir = getDir('code')
-        print(code_dir)
+        # code_dir = getDir('code')
+        # print(code_dir)
         if options['--script-python']:
            # copy_to = os.path.join(code_dir, 'scripts', str(script_name + '.py'))
             copy_to = os.path.join(os.path.dirname(), str(script_name + '.py'))
@@ -389,12 +385,12 @@ def main():
             else:
                 copy_from = os.path.join(template_dir, script_template_py)
                 shutil.copy2(copy_from, copy_to)
-                #os.rename(os.path.join(copy_to, script_template_py),
+                # os.rename(os.path.join(copy_to, script_template_py),
                 #          filename.replace('template', {})).format(script_name)
-                os.symlink(copy_to, os.getcwd())
+                # os.symlink(copy_to, os.getcwd())
 
         elif options['--script-R']:
-            copy_to = os.path.join(code_dir, project_root, str(script_name + '.R'))
+            copy_to = os.path.join(os.path.dirname(), str(script_name + '.R'))
             if os.path.exists(copy_to) and not options['--force']:
                 print(docopt_error_msg)
                 raise OSError(''' File {} already exists - not overwriting,
@@ -407,7 +403,7 @@ def main():
                # os.rename(os.path.join(copy_to, script_template_R),
                #           filename.replace('template',
                #                            {})).format(script_name)
-                os.symlink(copy_to, os.getcwd())
+               # os.symlink(copy_to, os.getcwd())
 
         else:
             print(docopt_error_msg)
