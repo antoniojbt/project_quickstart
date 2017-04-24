@@ -1,50 +1,51 @@
 '''
-xxx.py - for xxx
-================
+script_name
+===========
 
-
-:Author: 
-:Release: $Id$
+:Author: |author_name|
+:Release: |version|
 :Date: |today|
-:Tags: Computational pipelines
+
 
 Purpose
 =======
 
-Methods
-=======
-
-Usage
-=====
-
-To use type::
-
-    xxx.py [options] [arguments]
-
-    xxx.py --help
+|description|
 
 
-docopt
-======
-https://github.com/docopt/docopt
-https://github.com/docopt/docopt/blob/master/examples/options_example.py
-https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
+Usage and options
+=================
 
-Usage: my_program.py [-hso FILE] [--quiet | --verbose] [INPUT ...]
+These are based on docopt_, see examples_.
 
--h --help    show this
--s --sorted  sorted output
--o FILE      specify output file [default: ./test.txt]
---quiet      print less text
---verbose    print more text
+.. _docopt: https://github.com/docopt/docopt
+
+.. _examples: https://github.com/docopt/docopt/blob/master/examples/options_example.py
 
 
-Options
-=======
+Usage:
+       script_name [--main-method]
+       script_name [-I FILE]
+       script_name [-O FILE]
+       script_name [-h | --help]
+       script_name [-V | --version]
+       script_name [-f --force]
+       script_name [-L | --log]
 
--I    input file name.
--S    output file name.
--L    log file name.
+Options:
+    -I             Input file name.
+    -O             Output file name.
+    -h --help      Show this screen
+    -V --version   Show version
+    -f --force     Force overwrite
+    -L --log       Log file name.
+
+Documentation
+=============
+
+    For more information see:
+
+        |url|
 
 '''
 ##############
