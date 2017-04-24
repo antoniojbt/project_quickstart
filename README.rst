@@ -10,10 +10,16 @@
 Project Quickstart
 ##################
 
-Boilerplate tools and templates for setting up a data analysis project. The package is setup with: 
+Boilerplate tools and templates for setting up a data analysis project.
 
-- reproducibility concepts in mind
-- Ruffus_ as a pipeline tool and CGAT_ tools for support 
+Create a new directory, subfolders and files that will help quickstart your data science project with packaging, testing, scripts, reporting and other templates.
+
+Even if the code is project specific it can still be versioned, frozen and archived for reproducibility purposes later on.
+
+This tool was produced with the following in mind:
+
+- Reproducibility concepts and best practice implementation
+- Use of Ruffus_ as a pipeline tool and CGAT_ tools for support 
 - Python_ programming and packaging_
 - restructuredText_ and Sphinx_ for reporting
 - Travis_ and tox_ for testing
@@ -22,9 +28,9 @@ Boilerplate tools and templates for setting up a data analysis project. The pack
 
 I've additionally put some basic instructions/reminders to link GitHub with:
 
-- ReadtheDocs_
+- ReadtheDocs_ (to easily render your documentation online)
 - Zenodo_ (for archiving your code and generating a DOI)
-- Travis CI.
+- Travis CI (to integrate code testing)
 
 .. _Ruffus: http://www.ruffus.org.uk/
 
@@ -50,6 +56,13 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 .. _ReadtheDocs: https://readthedocs.org/
 
 .. _Zenodo: https://guides.github.com/activities/citable-code/
+
+
+For a pipeline quickstart based on a Ruffus and CGAT framework see:
+
+https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
+
+You will need to install other software (e.g. R, Ruffus, Sphinx, etc.) to make full use depending on your preferences.
 
 -----
 
@@ -143,21 +156,21 @@ TODO
 Usage
 =====
 
-Create a project directory skeleton with template files for reports, scripts, etc. Fill out the INI file with your data and update to populate the fields across files:
+Create a project directory skeleton:
 
 .. code-block:: python
 
    python project_quickstart.py --help
 
    python project_quickstart.py -n my_super_project
-   
+
    python project_quickstart.py --script-R my_super_script # which will create an R script template called my_super_script.R
-   
+
    python project_quickstart.py --script-python my_super_script # which will create a Python script template called my_super_script.py
 
 This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
 
-The --script options will create templates in the current working directory. 
+The --script options will create additional copies of script template in the current working directory. 
 
 Contribute
 ==========
