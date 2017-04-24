@@ -13,3 +13,10 @@
 .. |more text| replace:: several other things as well
 
 .. |here| replace:: bla bla bla
+
+
+.. |manuscript_title| replace::
+.. |funding| replace::
+.. |author post| replace::
+.. |author address| replace::
+.. |author phone| replace::
