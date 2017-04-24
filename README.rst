@@ -10,8 +10,6 @@
 Project Quickstart
 ##################
 
-In progress...
-
 Boilerplate tools and templates for setting up a data analysis project. The package is setup with: 
 
 - reproducibility concepts in mind
@@ -100,7 +98,7 @@ To install:
 
 Dependencies:
 
-- Python 3.6
+- Python 3.5
 - See requirements.rst for Python libraries needed
 - None external
 
@@ -151,12 +149,15 @@ Create a project directory skeleton with template files for reports, scripts, et
 
    python project_quickstart.py --help
 
-   python project_quickstart.py --name my_super_project
+   python project_quickstart.py -n my_super_project
+   
+   python project_quickstart.py --script-R my_super_script # which will create an R script template called my_super_script.R
+   
+   python project_quickstart.py --script-python my_super_script # which will create a Python script template called my_super_script.py
 
-   python project_quickstart.py --update
+This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
 
-This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc. use. 
-
+The --script options will create templates in the current working directory. 
 
 Contribute
 ==========
@@ -171,10 +172,6 @@ You are more than welcome to fork or submit pull requests (!).
 Change log
 ==========
 
-v0.3
-
-- Updated xxx 
-
 v0.2
 
 - Initial release
@@ -184,5 +181,3 @@ License
 =======
 
 GPL-3
-
-
