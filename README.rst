@@ -58,9 +58,9 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 .. _Zenodo: https://guides.github.com/activities/citable-code/
 
 
-For a pipeline quickstart based on a Ruffus and CGAT framework see:
+You can later on build computational pipelines using for example a pipeline quickstart tool based on a `Ruffus and CGAT framework`_.
 
-https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
+.. _`Ruffus and CGAT framework`: https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 
 You will need to install other software (e.g. R, Ruffus, Sphinx, etc.) to make full use depending on your preferences.
 
@@ -156,21 +156,21 @@ TODO
 Usage
 =====
 
-Create a project directory skeleton:
+Create a project directory skeleton. From the command line do:
 
-.. code-block:: python
+.. code-block:: bash
 
-   python project_quickstart.py --help
+   project_quickstart --help
 
-   python project_quickstart.py -n my_super_project
+   project_quickstart -n my_super_project
 
-   python project_quickstart.py --script-R my_super_script # which will create an R script template called my_super_script.R
+   project_quickstart --script-R my_super_script # which will create an R script template called my_super_script.R
 
-   python project_quickstart.py --script-python my_super_script # which will create a Python script template called my_super_script.py
+   project_quickstart --script-python my_super_script # which will create a Python script template called my_super_script.py
 
 This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
 
-The --script options will create additional copies of script template in the current working directory. 
+The --script options will create additional copies of script templates in the current working directory. 
 
 Contribute
 ==========
