@@ -157,7 +157,7 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 # https://docs.python.org/3.6/distutils/setupscript.html
 #package_dir = {'project_quickstart': 'project_quickstart'}
 
-classifiers = CONFIG['metadata']['classifiers']
+#classifiers = CONFIG['metadata']['classifiers']
 
 platforms = [CONFIG['metadata']['platforms']]
 
