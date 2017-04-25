@@ -11,7 +11,6 @@ Welcome to Project Quickstart's documentation!
    :caption: Contents:
 
    include_links
-   getting_started
    code_doc
 
 Indices and tables
