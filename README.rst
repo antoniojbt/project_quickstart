@@ -105,11 +105,16 @@ Also see its data-science_ and reproducibility_ templates, they look good.
 
 .. _data-science: https://github.com/drivendata/cookiecutter-data-science
 
------
 
-To install:
+Installation
+############
 
-Dependencies:
+I've tested on MAC OS X and Linux. Untested in Windows and Python 2.7. 
+
+Please raise an issue if you have problems.
+
+Dependencies
+============
 
 - Python 3.5
 - See requirements.rst for Python libraries needed
