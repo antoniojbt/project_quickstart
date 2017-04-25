@@ -12,19 +12,19 @@ project_quickstart.project_quickstart module
     :undoc-members:
     :show-inheritance:
 
-project_quickstart.script_quickstart module
+
+project_quickstart.projectQuickstart module
 -------------------------------------------
 
-.. automodule:: project_quickstart.script_quickstart
+.. automodule:: project_quickstart.projectQuickstart
     :members:
     :undoc-members:
     :show-inheritance:
 
+project_quickstart.version module
+---------------------------------
 
-Module contents
----------------
-
-.. automodule:: project_quickstart
+.. automodule:: project_quickstart.version
     :members:
     :undoc-members:
     :show-inheritance:
