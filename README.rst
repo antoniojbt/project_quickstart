@@ -158,8 +158,9 @@ Conda
 
 TODO
 
+
 Usage
-=====
+#####
 
 Create a project directory skeleton. From the command line do:
 
@@ -178,7 +179,7 @@ This will create data, code, manuscript and results directories along with Pytho
 The --script options will create additional copies of script templates in the current working directory. 
 
 Contribute
-==========
+##########
 
 `Issue Tracker`_
 
@@ -188,7 +189,7 @@ You are more than welcome to fork or submit pull requests (!).
 
 
 Change log
-==========
+##########
 
 v0.2
 
@@ -196,7 +197,7 @@ v0.2
 
 
 License
-=======
+#######
 
 GPL-3
 
@@ -207,16 +208,18 @@ More details and suggestions
 Project workflow suggestions
 ============================
 
-1. Run this package to setup folders, github repo structure, code testing, py package files, etc.
-1a. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
-1b. Manually connect GitHub with integrated services (Travis CI, Zenodo, RTD).
-2. Code and test code with tox, travis and py.test
-3. Analyse, ...
-4. Create new scripts, new pipelines, test them
-5. Document code as you go, update with sphinx autodoc
-6. Generate internal report with plots, text, etc.
-7. Freeze with release tag + zenodo archiving and/or tar ball with py sdist
-8. Repeat cycle
+#. Run this package to setup folders, github repo structure, code testing, py package files, etc.
+#. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
+#. Manually connect GitHub with integrated services (Travis CI, Zenodo, RTD).
+#. Code and test code with tox, travis and py.test
+#. Analyse, ...
+#. Create new scripts, new pipelines, test them
+#. Document code as you go, update with sphinx autodoc
+#. Generate internal report with plots, text, etc.
+#. Freeze with release tag + zenodo archiving and/or tar ball with py sdist
+#. Repeat cycle
+
+-----
 
 General notes
 =============
@@ -231,8 +234,6 @@ project_quickstart.py creates a folder structure with file templates for:
 See this layout_ for one explanation on organising Python projects
 
 .. _layout: https://www.cgat.org/downloads/public/cgatpipelines/documentation/Reference.html#term-pipeline-scripts
-
------
 
 project_quickstart.py copies the contents of project_quickstart/templates/project_template/ so as to have all the skeleton files needed for:
 
@@ -252,6 +253,8 @@ These go into the code directory.
 
 Make additional script template copies with project_quickstart.py (located in project_quickstart/templates/project_template/).
 
+-----
+
 Testing
 =======
 
@@ -260,6 +263,8 @@ Testing
 - See CGAT docs for an explanation on testing_.
 	
 .. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
+
+-----
 
 Documentation
 =============
@@ -274,9 +279,9 @@ See some notes in CGAT reports_.
 
 .. _reports: https://www.cgat.org/downloads/public/cgatpipelines/documentation/PipelineReports.html#writingreports
 
-	+ Add Python docs with rst, Sphinx_, quickstart_
-	+ Check doctests_
-	+ See this tutorial_ for Sphinx and general python packaging/workflow
+- Add Python docs with rst, Sphinx_, quickstart_
+- Check doctests_
+- See this tutorial_ for Sphinx and general python packaging/workflow
 
 .. _tutorial: https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
 
@@ -289,6 +294,8 @@ See some notes in CGAT reports_.
 Try to follow Python style guides. See projects where these have been slightly adapted as an example (CGAT style_).
 
 .. _style: https://www.cgat.org/downloads/public/cgat/documentation/styleguide.html#styleguide
+
+-----
 
 Computing environment and archiving
 ===================================
@@ -305,6 +312,7 @@ See bioconda_, contributing a recipe_ and guidelines_ to help manage the project
 
 If your code is useful to others, you can make it available with PyPI, create a Dockerfile and/or Conda recipe.
 
+-----
 
 .. note::
 	
