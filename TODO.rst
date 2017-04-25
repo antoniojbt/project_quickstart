@@ -1,20 +1,11 @@
-####
-Plan 
-####
+############
+Things to do
+############
 
 :Date: 25 April 2017
 
-Current state
-#############
-
-- B with T and E
 
 - Wrap pipe quickstart
-
-
-TO DO
-#####
-
 - Setup Tox properly
 - Travis needs tests
 - Correct pep8 and flake8 errors
