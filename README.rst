@@ -201,98 +201,114 @@ License
 GPL-3
 
 
-More details and some thoughts
-##############################
+More details and suggestions
+############################
 
-- project_quickstart/project_quickstart.py creates a folder structure with file templates for a data science project:
-	+ data
-	+ code
-	+ results
-	+ manuscript
-	+ See this layout_ explanation
+Project workflow suggestions
+============================
 
-- project_quickstart/project_quickstart.py copies the contents of project_quickstart/templates/project_template/ so as to have all the skeleton files needed for:
-	+ Github repository files (but not .git) like: .gitignore, README, THANKS, TODO, LICENCE, etc.
-	+ Travis testing files, tests dir with skeleton files
-	+ Tox python testing
-	+ Python packaging files
-	+ Dockerfile
-	+ etc
-	+ Zenodo, see Zenodo_ GitHub guide. Allow permissions and then with each tag release Zenodo archives the repo and gives it a DOI. See also SSI blog_ on Zenodo.
+1. Run this package to setup folders, github repo structure, code testing, py package files, etc.
+1a. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
+1b. Manually connect GitHub with integrated services (Travis CI, Zenodo, RTD).
+2. Code and test code with tox, travis and py.test
+3. Analyse, ...
+4. Create new scripts, new pipelines, test them
+5. Document code as you go, update with sphinx autodoc
+6. Generate internal report with plots, text, etc.
+7. Freeze with release tag + zenodo archiving and/or tar ball with py sdist
+8. Repeat cycle
+
+General notes
+=============
+
+project_quickstart.py creates a folder structure with file templates for:
+
+- data
+- code
+- results
+- manuscript (reports, general documents, references, etc.)
+
+See this layout_ for one explanation on organising Python projects
+
+.. _layout: https://www.cgat.org/downloads/public/cgatpipelines/documentation/Reference.html#term-pipeline-scripts
+
+-----
+
+project_quickstart.py copies the contents of project_quickstart/templates/project_template/ so as to have all the skeleton files needed for:
+
+- Github repository files (but not .git) like: .gitignore, README, THANKS, TODO, LICENCE, etc.
+- Travis testing files, tests dir with skeleton files
+- Tox python testing
+- Python packaging files
+- Dockerfile
+- etc
+- Zenodo, see Zenodo_ GitHub guide. Allow permissions and then with each tag release Zenodo archives the repo and gives it a DOI. See also SSI blog_ on Zenodo.
 
 These go into the code directory.
 
 .. _Zenodo: https://guides.github.com/activities/citable-code/
 	
 .. _blog: https://www.software.ac.uk/blog/2016-09-26-making-code-citable-zenodo-and-github
+
+Make additional script template copies with project_quickstart.py (located in project_quickstart/templates/project_template/).
+
+Testing
+=======
+
+- See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
+- Check travis setup, add pep8 and flake8 to improve your code.
+- See CGAT docs for an explanation on testing_.
 	
-	+ conda? See: bioconda_, contributing a recipe_ and guidelines_.
-	
+.. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
+
+Documentation
+=============
+
+After setting up a project, edit the INI and rst files so that variables that get repeated (such as project name, author, date, etc.) are automatically passed to the various files that need them (setup.py, Dockerfile, manuscript_template, etc.). These will get substituted when running python setup.py or rendering rst documents for instance.
+
+Different renderers can give slightly different results (e.g. GitHub, RTD, Sphinx, rst2pdf, etc.)
+
+rst2pdf can substitute rst variables but pandoc doesn't seem to do it properly.
+
+See some notes in CGAT reports_.
+
+.. _reports: https://www.cgat.org/downloads/public/cgatpipelines/documentation/PipelineReports.html#writingreports
+
+	+ Add Python docs with rst, Sphinx_, quickstart_
+	+ Check doctests_
+	+ See this tutorial_ for Sphinx and general python packaging/workflow
+
+.. _tutorial: https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
+
+.. _Sphinx: http://www.sphinx-doc.org/en/stable/
+
+.. _quickstart: http://thomas-cokelaer.info/tutorials/sphinx/quickstart.html
+
+.. _doctests: http://thomas-cokelaer.info/tutorials/sphinx/doctest.html
+
+Try to follow Python style guides. See projects where these have been slightly adapted as an example (CGAT style_).
+
+.. _style: https://www.cgat.org/downloads/public/cgat/documentation/styleguide.html#styleguide
+
+Computing environment and archiving
+===================================
+
+Use releases as code freezes. These can be pubilc, remote, local, private, etc.
+
+See bioconda_, contributing a recipe_ and guidelines_ to help manage the project's dependencies and computational environment.
+
 .. _bioconda: https://bioconda.github.io/index.html
 	
 .. _recipe: https://bioconda.github.io/contribute-a-recipe.html
 	
 .. _guidelines: https://bioconda.github.io/guidelines.html
 
-- project_quickstart/project_quickstart.py copies project_quickstart/templates/template.py or template.R
+If your code is useful to others, you can make it available with PyPI, create a Dockerfile and/or Conda recipe.
+
+
+.. note::
 	
-.. _layout: https://www.cgat.org/downloads/public/cgatpipelines/documentation/Reference.html#term-pipeline-scripts
-
-- See some notes in cgat reports_.
-
-.. _reports: https://www.cgat.org/downloads/public/cgatpipelines/documentation/PipelineReports.html#writingreports
-
-- Pass variables such as project name, author, date, etc. automatically to the various files that need them (setup.py, Dockerfile, manuscript_template, ... ). These will get passed when running python setup.py or rendering rst documents.
-
-- Project workflow suggestions:
+	Many links are tutorials I've come across, if you know of other good ones please share them.
 	
-	1. Run this package to setup folders, github repo structure, code testing, py package files, etc.
-	1a. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
-	1b. Manually connect GitHub with integrated services (Travis CI, Zenodo,
-    RTD).
-	2. Code and test code with tox, travis and py.test
-	3. Analyse, ...
-	4. Create new scripts, new pipelines, test them
-	5. Document code as you go, update with sphinx autodoc
-	6. Generate internal report with plots, text, etc.
-	7. Freeze with release tag + zenodo archiving and/or tar ball with py sdist
-	8. Repeat cycle
-
-Different renderers can give slightly different results (e.g. GitHub, RTD, Sphinx, rst2pdf, etc.)
-
-rst2pdf can substitute rst variables but pandoc doesn't seem to do it properly.
-
-- Testing:
-
-	+ See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
-	+ Check travis setup, is pep8 running? flake8 gives errors and log at travis
-	+ See CGAT docs for testing_
+	Feel free to fork, raise issues and send pull requests.
 	
-.. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
-
-- Documentation:
-
-	+ Add Python docs with rst/sphinx and doctests, see sphinx_, quickstart_ and doctests_.
-	+ See this tutorial_ for Sphinx and general python packaging/workflow
-
-.. _tutorial: https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
-
-.. _sphinx: http://www.sphinx-doc.org/en/stable/
-
-.. _quickstart: http://thomas-cokelaer.info/tutorials/sphinx/quickstart.html
-
-.. _doctests: http://thomas-cokelaer.info/tutorials/sphinx/doctest.html
-
-- Check PyPi as a repository for pip install and conda recipe. Check python's cheesecake for sanity checking before uploading to PyPi.
-
-- Use releases as code freezes
-
-- Try to follow Python style guides. See projects where these have been slightly adapted as an example (CGAT style_).
-
-.. _style: https://www.cgat.org/downloads/public/cgat/documentation/styleguide.html#styleguide
-
-
-
-
-
-
