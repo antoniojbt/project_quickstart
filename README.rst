@@ -318,5 +318,7 @@ If your code is useful to others, you can make it available with PyPI, create a 
 	
 	Many links are tutorials I've come across, if you know of other good ones please share them.
 	
+	Make sure to check the official sites and follow their tutorials for each of the tools as a primary source however.
+	
 	Feel free to fork, raise issues and send pull requests.
 	
