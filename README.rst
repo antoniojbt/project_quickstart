@@ -282,6 +282,7 @@ See some notes in CGAT reports_.
 - Add Python docs with rst, Sphinx_, quickstart_
 - Check doctests_
 - See this tutorial_ for Sphinx and general python packaging/workflow
+- See also `Jeff Knupp's tutorial`_ and other `similar blogs`_ on Python packaging.
 
 .. _tutorial: https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
 
@@ -290,6 +291,11 @@ See some notes in CGAT reports_.
 .. _quickstart: http://thomas-cokelaer.info/tutorials/sphinx/quickstart.html
 
 .. _doctests: http://thomas-cokelaer.info/tutorials/sphinx/doctest.html
+
+.. _`Jeff Knupp's tutorial`: https://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
+
+.. _`similar blogs`: https://www.pydanny.com/cookie-project-templates-made-easy.html
+
 
 Try to follow Python style guides. See projects where these have been slightly adapted as an example (CGAT style_).
 
