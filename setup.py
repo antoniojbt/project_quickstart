@@ -140,9 +140,11 @@ print(install_requires)
 # Use README as long description if desired, otherwise get it from INI file (or
 # write it out in setup()):
 
-with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
-    description = readme.read()
+#with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
+#    description = readme.read()
 
+# PyPI doesn't render an rst README though, so maybe just leave a long
+# description or the url.
 #################
 
 
@@ -158,9 +160,6 @@ with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 #package_dir = {'project_quickstart': 'project_quickstart'}
 
 classifiers = CONFIG['metadata']['classifiers']
-
-platforms = [CONFIG['metadata']['platforms']]
-
 
 # Include addtional data files that are outside of the src dir:
 # See: https://docs.python.org/3.6/distutils/setupscript.html#installing-package-data
@@ -194,10 +193,10 @@ setup(  # Package information:
         author = CONFIG['metadata']['author_name'],
         author_email = CONFIG['metadata']['author_email'],
         license = CONFIG['metadata']['license'],
-        description = CONFIG['metadata']['project_short_description'],
-        platforms = platforms,
+        description = CONFIG['metadata']['short_description'],
+        platforms = [CONFIG['metadata']['platforms']],
         keywords = CONFIG['metadata']['keywords'],
-        long_description = description,
+        long_description = CONFIG['metadata']['long_description'],
         classifiers = list(filter(None, classifiers.split("\n"))),
         # Package contents:
         packages = find_packages(),
