@@ -106,14 +106,6 @@ import version
 
 version = version.set_version()
 print(version)
-# https://packaging.python.org/single_source_version/
-#version = {}
-#with open('version.py') as fp:
-#    exec(fp.read(), version) # The result assigns a global variable (which must
-                             # be a dictionary).
-
-# later on use: version['__version__']
-
 #################
 
 
