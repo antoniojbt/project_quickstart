@@ -5,6 +5,9 @@
    :target: http://project-quickstart.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
+.. image:: https://zenodo.org/badge/79537885.svg
+   :target: https://zenodo.org/badge/latestdoi/79537885
+
 
 ##################
 Project Quickstart
