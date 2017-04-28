@@ -178,6 +178,15 @@ This will create data, code, manuscript and results directories along with Pytho
 
 The --script options will create additional copies of script templates in the current working directory. 
 
+Citation
+########
+
+If you use this package please cite it (!):
+
+.. image:: https://zenodo.org/badge/79537885.svg
+   :target: https://zenodo.org/badge/latestdoi/79537885
+   
+
 Contribute
 ##########
 
