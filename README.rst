@@ -10,7 +10,7 @@
 
 
 ##################
-Project Quickstart
+project_quickstart
 ##################
 
 Boilerplate tools and templates for setting up a data analysis project.
@@ -224,7 +224,7 @@ Project workflow suggestions
 #. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
 #. Manually connect GitHub with integrated services (Travis CI, Zenodo, RTD).
 #. Code and test code with tox, travis and py.test
-#. Analyse, ...
+#. Analyse
 #. Create new scripts, new pipelines, test them
 #. Document code as you go, update with sphinx autodoc
 #. Generate internal report with plots, text, etc.
