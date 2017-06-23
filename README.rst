@@ -278,6 +278,29 @@ Testing
 
 -----
 
+Upload code to GitHub
+=====================
+
+To create a repository after having already created files do the following:
+
+	Manually create a blank (no files at all) repository online in your GitHub account
+
+In your local machine, under my_project_xxx/code/ do:
+
+.. code-block:: bash
+
+	git init
+	git add *
+	git commit -am 'great message'
+	git remote add origin https://github.com/user_xxx/my_project_xxx.git
+	git push -u origin master
+
+	# To copy on any other machine simply run:
+	
+	git clone https://github.com/user_xxx/my_project_xxx.git
+
+-----
+
 Documentation
 =============
 
@@ -315,10 +338,33 @@ Try to follow Python style guides. See projects where these have been slightly a
 
 -----
 
-Computing environment and archiving
+Archiving and computing environment
 ===================================
 
-Use releases as code freezes. These can be pubilc, remote, local, private, etc.
+You can use releases as code freezes. These can be public, remote, local, private, etc.
+
+For example, you can greate tags for commits on GitHub, these create compressed files with versioning. See `git tagging`_ on how to do this.
+
+.. _`git tagging`: https://git-scm.com/book/en/v2/Git-Basics-Tagging
+
+For example, if you want to tag and version a previous commit, do the following:
+
+.. code-block:: bash
+
+	# Check the tag history:
+	git tag
+
+	# Check the commit log and copy the commit reference:
+	git log --pretty=oneline
+
+	# Create a tag, give it a version, internal message and point it to the commit you want to tag:
+	git tag -a v0.1 -m "code freeze for draft 1, 23 June 2017" 7c3c7b76e4e3b47016b4f899c3aa093a44c5e053
+
+	# Push the tag 
+	# By default, the git push command doesn’t transfer tags to remote servers, so run:
+	git push origin v0.1
+
+-----
 
 See bioconda_, contributing a recipe_ and guidelines_ to help manage the project's dependencies and computational environment.
 
