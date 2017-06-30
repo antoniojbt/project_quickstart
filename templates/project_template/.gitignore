@@ -1,15 +1,37 @@
-# Ignore:
+# Mac OS X and others:
 *.tar
 *.gz
 .dir_bash_history
 *.dir_bash_history
 .DS_Store
+.ipynb_checkpoints
+
+# Vim:
+*~
+*.swp
 
 # Compiled python modules:
 *.pyc
 
-# Setuptools distribution folder:
-/dist/
+# Ptyhon packaging, setuptools, eggs, etc.:
+MANIFEST
+PKG-INFO
+*.egg-info
+__pycache__
+*.egg
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
 
-# Python egg metadata, regenerated from source files by setuptools:
-/*.egg-info
+# Sphinx:
+docs/_build
+docs/_static
+docs/_templates

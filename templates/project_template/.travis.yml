@@ -32,7 +32,11 @@ language: python
 
 ################
 # Install dependencies:
-install: "pip install -r requirements.txt"
+install: 
+    - "pip install -r requirements.txt" # --use-mirrors errors in Py3.5
+    - "pip install coverage" # coveralls.io continuously monitors test case coverage
+    - "pip install coveralls"
+
 ################
 
 ################
@@ -73,11 +77,13 @@ matrix:
 
 # command to run tests
 # TO DO: this is not working, check nosetests, cgat test_style.py script, etc.:
-script: sh run_travis_tests.sh
+script: 
+  - "sh run_travis_tests.sh"
+  - "coverage run --source=project_quickstart setup.py test"
 
 # TO DO: This doesn't work:
 after_success:
-- codecov
+    coveralls
 ################
 
 # From https://github.com/johnmyleswhite/ProjectTemplate/blob/master/.travis.yml

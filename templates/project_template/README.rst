@@ -1,16 +1,20 @@
 .. copy across your travis "build..." logo so that it appears in your Github page
 
-.. .. image:: https://travis-ci.org/|github_user|/project_|project_name|.svg?branch=master
-    :target: https://travis-ci.org/|github_user|/project_|project_name|
+.. .. image:: https://travis-ci.org/|github_user|/|project_name|.svg?branch=master
+    :target: https://travis-ci.org/|github_user|/|project_name|
 
 .. do the same for ReadtheDocs image:
 
-.. .. image:: https://readthedocs.org/projects/project_|project_name|/badge/?version=latest
-    :target: http://xxx.readthedocs.io/en/latest/?badge=latest
+.. .. image:: https://readthedocs.org/projects/|project_name|/badge/?version=latest
+    :target: http://|project_name|.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. Zenodo gives a number instead, this needs to be put in manually here:
+.. image:: https://zenodo.org/badge/#######.svg
+    :target: https://zenodo.org/badge/latestdoi/#####
+
 ################################################
-Project |project_name|
+|project_name|
 ################################################
 
 
@@ -34,8 +38,8 @@ To use
 Features
 --------
 
-- Be awesome
-- Make things faster
+- Something really useful
+- Makes things faster
 
 Installation
 ------------
@@ -43,6 +47,7 @@ Installation
 Install |project_name| by running:
 
 .. code::
+    
     install project
 
 Contribute
