@@ -10,12 +10,12 @@ project_quickstart - setup a new python based project
 Purpose
 =======
 
-This script creates a python data science project template. The main idea is
+This script creates a python data science project template. The idea is
 to be able to easily turn a project into a package with software testing, version
 control, reporting, docs, etc.
 
-Once you've quickstarted your project you can run run the --script options to
-create python and R script templates.
+Once you've quickstarted your project you can run the --script options to
+create python and R script templates or a Ruffus/CGAT pipeline template.
 
 You will need to install other software (e.g. R, Ruffus, Sphinx, etc.) to make
 full use depending on your preferences.
@@ -33,6 +33,7 @@ Usage:
                               <project_name>] ...
        project_quickstart [--script-python=<script_name>]
        project_quickstart [--script-R=<script_name>]
+       project_quickstart [--script-pipeline=<pipeline_name>]
        project_quickstart [-f | --force]
        project_quickstart [-h | --help]
        project_quickstart [--version]
@@ -42,6 +43,7 @@ Options:
     --project-name=DIR -n DIR     Creates a project skeleton
     --script-python=FILE          Create a python script template, '.py' is appended.
     --script-R=FILE               Create an R script template, '.R' is appended.
+    --script-pipeline=FILE        Create a Ruffus/CGAT pipeline template, 'pipeline_FILE.py' is created.
     -f --force                    Take care, forces to overwrite files and directories.
     -h --help                     Show this screen.
     --version                     Show version.
@@ -170,7 +172,8 @@ def main():
         # Addional/alternative if above not given:
         script_template_py = str('template.py') 
         script_template_R = str('template.R')
-        
+        script_template_pipeline = str('pipeline_template.py')
+
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Copying a Python script template into the current working directory. ''')
             # py3.5 formatting:
@@ -194,17 +197,28 @@ def main():
                   ".R" ''')
             sys.exit()
 
+        if options['--script-pipeline'] and len(options['--script-pipeline']) > 0:
+            print(''' Copying a pipeline template into the current working directory. ''')
+            script_name = str(options["--script-pipeline"]).strip('[]').strip("''")
+            script_name = str('pipeline_{}.py').format(script_name)
+
+        elif options['--script-pipeline'] and len(options['--script-pipeline']) == 0:
+            print(docopt_error_msg)
+            print(''' You need to provide a pipeline name to generate "pipeline_NAME.py" ''')
+            sys.exit()
+
         # Exit if options not given:
         if (not options['--project-name']
                 and not options['--script-R']
                 and not options['--script-python']
+                and not options['--script-pipeline']            
                 ):
             print(docopt_error_msg)
             print('Error in  the options given or none supplied.',
                   '\n',
                   'A project name is required.',
                   'Otherwise you need to use,',
-                  '--script-R or --script-python.')
+                  '--script-R, --script-python or --script-pipeline.')
             sys.exit()
 
     # Handle exceptions:
@@ -391,6 +405,20 @@ def main():
                 copy_from = os.path.join(template_dir, script_template_R)
                 shutil.copy2(copy_from, copy_to)
                 print(copy_to)
+
+        elif options['--script-pipeline']:
+            copy_to = os.path.join(cwd, script_name)
+            if os.path.exists(copy_to) and not options['--force']:
+                print(docopt_error_msg)
+                raise OSError(''' File {} already exists - not overwriting,
+                              see --help or use --force to overwrite.
+                              '''.format(script_name)
+                              )
+            else:
+                copy_from = os.path.join(template_dir, script_template_pipeline)
+                shutil.copy2(copy_from, copy_to)
+                print(copy_to)
+
         else:
             print(docopt_error_msg)
             raise ValueError(''' Bad arguments/options used for script template, try --help''')
@@ -413,7 +441,7 @@ def main():
         renameTree(project_dir, 'template', project_name) 
 
     # Create a script template copy:
-    if options['--script-python'] or options['--script-R'] and not options['--project-name']:
+    if options['--script-python'] or options['--script-R'] or options['--script-pipeline'] and not options['--project-name']:
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
