@@ -173,6 +173,7 @@ def main():
         script_template_py = str('template.py') 
         script_template_R = str('template.R')
         script_template_pipeline = str('pipeline_template.py')
+        script_template_pipeline_INI = str('pipeline_template.ini')
 
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(''' Copying a Python script template into the current working directory. ''')
@@ -201,6 +202,8 @@ def main():
             print(''' Copying a pipeline template into the current working directory. ''')
             script_name = str(options["--script-pipeline"]).strip('[]').strip("''")
             script_name = str('pipeline_{}.py').format(script_name)
+            script_INI = str(options["--script-pipeline"]).strip('[]').strip("''")
+            script_INI = str('pipeline_{}.ini').format(script_name)
 
         elif options['--script-pipeline'] and len(options['--script-pipeline']) == 0:
             print(docopt_error_msg)
@@ -418,6 +421,9 @@ def main():
                 copy_from = os.path.join(template_dir, script_template_pipeline)
                 shutil.copy2(copy_from, copy_to)
                 print(copy_to)
+                copy_from = os.path.join(template_dir, script_template_pipeline_INI)
+                shutil.copy2(copy_from, copy_to)
+                print(copy_to)
 
         else:
             print(docopt_error_msg)
@@ -430,7 +436,7 @@ def main():
         projectTemplate(project_template, code_dir)
         copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst') 
         copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'), 
-                        r'.R', r'.py') 
+                        r'.R', r'.py', r'.ini') 
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
