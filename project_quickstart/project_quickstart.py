@@ -339,7 +339,7 @@ def main():
                         '*.bak', 'dummy_holder*'))
 
     # Copy across individual files outside of the 'templates' dir:
-    def copySingleFiles(src, dst, string1, string2):
+    def copySingleFiles(src, dst, string1, string2, string3):
         '''
         Copy the manuscript and lab_notebook templates
         to the 'manuscript' directory and put an initial copy of script
@@ -347,7 +347,7 @@ def main():
         '''
         files = []
         for f in os.listdir(src):
-            if string1 in f or string2 in f:
+            if string1 in f or string2 or string3 in f:
                 files.extend([f])
         for f in map(str, files):
             shutil.copy2(os.path.join(src,f), dst)
