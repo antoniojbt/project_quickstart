@@ -1,10 +1,3 @@
-##############################################################################
-#
-#   This is a simplified version of the pipeline templates and scripts written
-#   by Andreas Heger
-#   https://github.com/CGATOxford/CGATPipelines 
-#
-###############################################################################
 """===========================
 Pipeline template
 ===========================
