@@ -203,7 +203,7 @@ def main():
             script_name = str(options["--script-pipeline"]).strip('[]').strip("''")
             script_name = str('pipeline_{}.py').format(script_name)
             script_INI = str(options["--script-pipeline"]).strip('[]').strip("''")
-            script_INI = str('pipeline_{}.ini').format(script_name)
+            script_INI = str('pipeline_{}.ini').format(script_INI)
 
         elif options['--script-pipeline'] and len(options['--script-pipeline']) == 0:
             print(docopt_error_msg)
@@ -339,7 +339,7 @@ def main():
                         '*.bak', 'dummy_holder*'))
 
     # Copy across individual files outside of the 'templates' dir:
-    def copySingleFiles(src, dst, string1, string2, string3):
+    def copySingleFiles(src, dst, *args):
         '''
         Copy the manuscript and lab_notebook templates
         to the 'manuscript' directory and put an initial copy of script
@@ -347,8 +347,9 @@ def main():
         '''
         files = []
         for f in os.listdir(src):
-            if string1 in f or string2 or string3 in f:
-                files.extend([f])
+            for arg in args:
+                if arg in f:
+                    files.extend([f])
         for f in map(str, files):
             shutil.copy2(os.path.join(src,f), dst)
 
@@ -431,12 +432,12 @@ def main():
 
 
     # Call functions:
-    if options['--project-name']: 
-        code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject() 
+    if options['--project-name']:
+        code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(project_template, code_dir)
-        copySingleFiles(template_dir, manuscript_dir, 'rst', 'rst') 
-        copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'), 
-                        r'.R', r'.py', r'.ini') 
+        copySingleFiles(template_dir, manuscript_dir, 'rst')
+        copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'),
+                        r'.R', r'.py', r'.ini')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
