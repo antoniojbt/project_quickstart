@@ -411,19 +411,19 @@ def main():
 
         elif options['--script-pipeline']:
             copy_to = os.path.join(cwd, script_name)
-            if os.path.exists(copy_to) and not options['--force']:
+            copy_to_2 = os.path.join(cwd, script_INI)
+            if os.path.exists(copy_to) or os.path.exists(copy_to_2) and not options['--force']:
                 print(docopt_error_msg)
-                raise OSError(''' File {} already exists - not overwriting,
+                raise OSError(''' File {} and/or {} already exist - not overwriting,
                               see --help or use --force to overwrite.
-                              '''.format(script_name)
+                              '''.format(script_name, script_INI)
                               )
             else:
                 copy_from = os.path.join(template_dir, script_template_pipeline)
                 shutil.copy2(copy_from, copy_to)
-                print(copy_to)
                 copy_from = os.path.join(template_dir, script_template_pipeline_INI)
-                shutil.copy2(copy_from, copy_to)
-                print(copy_to)
+                shutil.copy2(copy_from, copy_to_2)
+                print('Creating:', '\n', copy_to, '\n', copy_to_2)
 
         else:
             print(docopt_error_msg)
