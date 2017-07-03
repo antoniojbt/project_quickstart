@@ -203,6 +203,13 @@ You are more than welcome to fork or submit pull requests (!).
 Change log
 ##########
 
+v0.3 (future)
+
+- updated templates
+- added rsync example command and instructions for remote copies
+- added Ruffus/CGAT simplified pipeline template script
+
+
 v0.2
 
 - Initial release
