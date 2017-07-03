@@ -262,10 +262,10 @@ def main():
                     sys.exit()
 
         # Get the names for the directories to create for the project skeleton:
-        manuscript_dir = os.path.join(project_dir, 'manuscript')
+        manuscript_dir = os.path.join(project_dir, 'documents_and_manuscript')
         code_dir = os.path.join(project_dir, 'code')
         data_dir = os.path.join(project_dir, 'data')
-        results_dir = os.path.join(project_dir, 'results_1')
+        results_dir = os.path.join(project_dir, 'results')
 
         dirnames = [manuscript_dir,
                    # code_dir, # leave out as shutil.copytree needs to create the
