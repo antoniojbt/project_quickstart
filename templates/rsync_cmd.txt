@@ -1,9 +1,10 @@
 ##########
-# Example command:
-rsync -vvazPuiL --exclude-from='rsync_cmd.rst' project_name host_server:remote_url
+# If you're making copies from a local machine to a remote server you can use
+rsync, run e.g.:
+#rsync --dry-run -vvazPuiL --exclude-from='rsync_cmd.txt' project_name host_server:remote_url
+#rsync -vvazPuiL --exclude-from='rsync_cmd.txt' /full/path/to/project_name host_server:remote_url
 
 # Specify full path names carefully: remote_url should end in "/", e.g. /ifs/projects/proj_YYY/
-
 
 # Explanation of some options for rsync:
 
