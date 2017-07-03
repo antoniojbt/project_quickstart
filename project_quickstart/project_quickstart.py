@@ -156,21 +156,21 @@ def main():
             project_root = str('{}').format(project_name)
 
             # Set up default paths, directoy and file names:                                   
-            project_dir = os.path.join(os.getcwd(), project_root)                                                                                
-            
-            if not os.path.exists(project_dir): 
-                os.makedirs(project_dir) 
-            
-            else: 
-                print(docopt_error_msg) 
-                print(str('''The directory with the name {} already exists. 
-                            Use --force to overwrite.''' 
-                            + '\n' 
-                            ).format(project_root)) 
-                sys.exit() 
+            project_dir = os.path.join(os.getcwd(), project_root)
+
+            if not os.path.exists(project_dir):
+                os.makedirs(project_dir)
+
+            else:
+                print(docopt_error_msg)
+                print(str('''The directory with the name {} already exists.
+                            Use --force to overwrite.'''
+                            + '\n'
+                            ).format(project_root))
+                sys.exit()
 
         # Addional/alternative if above not given:
-        script_template_py = str('template.py') 
+        script_template_py = str('template.py')
         script_template_R = str('template.R')
         script_template_pipeline = str('pipeline_template.py')
         script_template_pipeline_INI = str('pipeline_template.ini')
@@ -214,7 +214,7 @@ def main():
         if (not options['--project-name']
                 and not options['--script-R']
                 and not options['--script-python']
-                and not options['--script-pipeline']            
+                and not options['--script-pipeline']
                 ):
             print(docopt_error_msg)
             print('Error in  the options given or none supplied.',
@@ -236,7 +236,7 @@ def main():
     # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
     # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
-    template_dir = projectQuickstart.getDir('../templates') 
+    template_dir = projectQuickstart.getDir('../templates')
     project_template = os.path.join(template_dir, 'project_template')
 
     def createProject():
@@ -444,8 +444,11 @@ def main():
                                 # new_project/code/new_project directory 
                                 # where scripts can go in 
                                 # The code dir can be renamed when uploading 
-        renameTree(project_dir, 'project_template', project_name) 
-        renameTree(project_dir, 'template', project_name) 
+
+        # Add any additional files, like rsync command example:
+        copySingleFiles(template_dir, project_dir, r'rsync_cmd')
+        renameTree(project_dir, 'project_template', project_name)
+        renameTree(project_dir, 'template', project_name)
 
     # Create a script template copy:
     if options['--script-python'] or options['--script-R'] or options['--script-pipeline'] and not options['--project-name']:
