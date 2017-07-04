@@ -20,3 +20,11 @@ project_quickstart.version
     :members:
     :undoc-members:
     :show-inheritance:
+
+project_quickstart.setup
+------------------------
+
+.. automodule:: setup
+    :members:
+    :undoc-members:
+    :show-inheritance:
