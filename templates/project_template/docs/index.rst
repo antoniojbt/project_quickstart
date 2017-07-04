@@ -1,10 +1,20 @@
-.. 
-  This is the master file for sphinx where multiple files can be pulled together, 
-  especially for the auto-generation of Python documentation for a package.
+.. project_quickstart documentation master file, created by
+   sphinx-quickstart on Tue Feb 14 09:19:16 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
+Welcome to Project Quickstart's documentation!
+==============================================
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
-   intro
-   tutorial
+   include_links
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
