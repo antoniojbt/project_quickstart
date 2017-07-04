@@ -16,13 +16,13 @@ project_quickstart.projectQuickstart module
 project_quickstart.version
 --------------------------
 
-.. automodule:: version
+.. automodule:: project_quickstart.version
     :members:
     :undoc-members:
     :show-inheritance:
 
-project_quickstart.setup
-------------------------
+.setup
+------
 
 .. automodule:: setup
     :members:
