@@ -1,9 +1,9 @@
-project_quickstart
-==================
+|project_name|
+==========================
 
 .. toctree::
    :maxdepth: 4
 
-   project_quickstart
+   |project_name|
    setup
    version

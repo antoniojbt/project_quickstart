@@ -1,10 +1,9 @@
-.. project_quickstart documentation master file, created by
-   sphinx-quickstart on Tue Feb 14 09:19:16 2017.
+.. This file is a copy and was not created by sphinx-quickstart.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Project Quickstart's documentation!
-==============================================
+Welcome to |project_name|'s documentation!
+======================================================
 
 .. toctree::
    :maxdepth: 2

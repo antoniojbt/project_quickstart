@@ -6,4 +6,4 @@
 .. include:: ../THANKS.rst
 .. include:: ../TODO.rst
 .. include:: ../KNOWN_BUGS.rst
-.. include:: project_quickstart.rst
+.. include:: scripts.rst
