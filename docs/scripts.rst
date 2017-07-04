@@ -13,8 +13,8 @@ project_quickstart.projectQuickstart module
     :show-inheritance:
 
 
-project_quickstart..version
----------------------------
+project_quickstart.version
+--------------------------
 
 .. automodule:: version
     :members:
