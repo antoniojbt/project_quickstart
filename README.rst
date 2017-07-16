@@ -184,7 +184,7 @@ The --script options will create additional copies of script templates in the cu
 Citation
 ########
 
-If you use this package please cite it (!):
+This is a simple utility tool but if you find a way to cite it please do so (!):
 
 .. image:: https://zenodo.org/badge/79537885.svg
    :target: https://zenodo.org/badge/latestdoi/79537885
