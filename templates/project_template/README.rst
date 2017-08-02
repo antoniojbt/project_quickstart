@@ -24,13 +24,17 @@
 .. For a discussion/approach see 
     http://tom.preston-werner.com/2010/08/23/readme-driven-development.html
 
-|project_name| will solve your problem of xxx by doing xxx.
+|short_description|
+
+
+|long_description|
 
 
 To use
 ------
 
 .. code:: 
+
     import project
     # Get your stuff done
     project.do_stuff()
