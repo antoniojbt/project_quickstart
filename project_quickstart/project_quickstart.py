@@ -238,12 +238,16 @@ def main():
 
     template_dir = projectQuickstart.getDir('../templates')
     project_template = os.path.join(template_dir, 'project_template')
+    report_templates = os.path.join(template_dir, 'report_templates')
+    script_templates = os.path.join(template_dir, 'script_templates')
 
     def createProject():
         if options['--project-name']:
 
             dirs_to_use = [template_dir,
-                           project_template
+                           project_template,
+                           report_tempaltes,
+                           script_templates
                           ]
 
         # Sanity check:
@@ -393,7 +397,7 @@ def main():
                               '''.format(script_name)
                               )
             else:
-                copy_from = os.path.join(template_dir, script_template_py)
+                copy_from = os.path.join(script_templates, script_template_py)
                 shutil.copy2(copy_from, copy_to)
                 print(copy_to)
 
@@ -406,7 +410,7 @@ def main():
                               '''.format(script_name)
                               )
             else:
-                copy_from = os.path.join(template_dir, script_template_R)
+                copy_from = os.path.join(script_templates, script_template_R)
                 shutil.copy2(copy_from, copy_to)
                 print(copy_to)
 
@@ -420,9 +424,9 @@ def main():
                               '''.format(script_name, script_INI)
                               )
             else:
-                copy_from = os.path.join(template_dir, script_template_pipeline)
+                copy_from = os.path.join(script_templates, script_template_pipeline)
                 shutil.copy2(copy_from, copy_to)
-                copy_from = os.path.join(template_dir, script_template_pipeline_INI)
+                copy_from = os.path.join(script_templates, script_template_pipeline_INI)
                 shutil.copy2(copy_from, copy_to_2)
                 print('Creating:', '\n', copy_to, '\n', copy_to_2)
 
@@ -435,9 +439,9 @@ def main():
     if options['--project-name']:
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(project_template, code_dir)
-        copySingleFiles(template_dir, manuscript_dir, 'rst')
-        copySingleFiles(template_dir, os.path.join(code_dir, 'project_template'),
-                        r'.R', r'.py', r'.ini')
+        copySingleFiles(report_templates, manuscript_dir, r'(*)')
+        copySingleFiles(script_templates, os.path.join(code_dir, 'project_template'),
+                        r'(*)')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
@@ -447,6 +451,8 @@ def main():
 
         # Add any additional files, like rsync command example:
         copySingleFiles(template_dir, project_dir, r'rsync_cmd')
+        copySingleFiles(template_dir, project_dir, r'TO_DO')
+        copySingleFiles(template_dir, project_dir, r'README')
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)
 
