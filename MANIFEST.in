@@ -59,6 +59,12 @@ include templates/project_template/docs/*
 include templates/project_template/scripts/*
 include templates/project_template/tests/*
 include templates/project_template/project_template/*
+recursive-include templates *.R
+recursive-include templates *.bat
+recursive-include templates *.ini
+recursive-include templates *.py
+recursive-include templates *.rst
+recursive-include templates Makefile
 
 # Files to exclude:
 exclude .gitignore
