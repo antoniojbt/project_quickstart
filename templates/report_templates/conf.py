@@ -62,12 +62,14 @@ for f in os.listdir('.'):
         ini_file = f
         print(f)
     else:
-        sys.exit('''No ini file found, please create one, manually edit or
+        msg = str('''No ini file found, please create one, manually edit or
                 regenerate the conf.py file''')
+        sys.exit(msg)
 if count > 1:
-    sys.exit('''Error, you have more than one ini file, you will need to
-              edit conf.py manually or create a new one to generate the
-              documentation or report''')
+    msg = str('''Error, you have more than one ini file, you will need to
+                 edit conf.py manually or create a new one to generate the
+                 documentation or report''')
+    sys.exit(msg)
 else:
     ini_file = f
 
@@ -183,7 +185,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = |project_name|'doc'
+htmlhelp_basename = str(CONFIG['metadata']['project_name'] + '.doc')
 
 
 # -- Options for LaTeX output ---------------------------------------------
