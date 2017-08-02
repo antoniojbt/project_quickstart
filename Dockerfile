@@ -55,7 +55,7 @@ RUN pip install --upgrade pip setuptools future \
 # Install package to test 
 #########################
 
-RUN cd home \
+RUN cd /home \
     && git clone https://github.com/AntonioJBT/project_quickstart.git \
     && cd project_quickstart \
     && python setup.py install \

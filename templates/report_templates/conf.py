@@ -57,17 +57,17 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 count = 0
 for f in os.listdir('.'):
-    if fnmatch.fnmatch(f, '*.ini'):
+    if fnmatch.fnmatch(f, r'(*)\.ini'):
         count += 1
         ini_file = f
         print(f)
     else:
-        sys.exit('No ini file found, please create one, manually edit or
-                regenerate the conf.py file')
+        sys.exit('''No ini file found, please create one, manually edit or
+                regenerate the conf.py file''')
 if count > 1:
-    sys.exit('Error, you have more than one ini file, you will need to
+    sys.exit('''Error, you have more than one ini file, you will need to
               edit conf.py manually or create a new one to generate the
-              documentation or report')
+              documentation or report''')
 else:
     ini_file = f
 
