@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 ###################################################
-# NOTE! #
+# WARNING
 # project documentation build configuration file
 # This file is a template copy
 # Run sphinx-quickstart to start from scratch
