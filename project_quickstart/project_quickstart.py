@@ -442,7 +442,7 @@ def main():
         copySingleFiles(report_templates, manuscript_dir, r'rst')
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        r'py', r'R', r'template', r'ini')
+                        r'py', r'R', r'ini')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
