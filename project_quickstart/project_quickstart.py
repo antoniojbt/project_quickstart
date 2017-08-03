@@ -246,7 +246,7 @@ def main():
 
             dirs_to_use = [template_dir,
                            project_template,
-                           report_tempaltes,
+                           report_templates,
                            script_templates
                           ]
 
