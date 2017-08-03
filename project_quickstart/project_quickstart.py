@@ -440,7 +440,7 @@ def main():
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(project_template, code_dir)
         copySingleFiles(report_templates, manuscript_dir, r'rst')
-        copySingleFiles(script_templates, code_dir, r'py', r'R', r'ini', r'template')
+        copySingleFiles(script_templates, code_dir, r'.py', r'.R', r'.ini', r'template')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
