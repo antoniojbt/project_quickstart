@@ -141,7 +141,7 @@ print(version)
 major, minor1, minor2, s, tmp = sys.version_info
 
 if (major == 2 and minor1 < 7) or major < 2:
-    raise SystemExit("""project_quickstart requires Python 2.7 or later.""")
+    raise SystemExit("""Python 2.7 or later required, exiting.""")
 
 # Get Ptyhon modules required:
 install_requires = []
@@ -196,6 +196,10 @@ def package_files(directory):
 
 extra_files = package_files(os.path.join(here, 'templates'))
 
+
+# Set up entry point for command line use:
+# TO DO:
+#entry_points = {'console_scripts': ['my_cmd = my_project.my_project:main'] }
 #################
 
 
@@ -221,10 +225,10 @@ setup(  # Package information:
         include_package_data = True,
         #data_files = [('templates', [glob.glob('templates/*'))], ('templates',
         #    [glob.glob('templates/*/*')])],
-        package_data={'': extra_files},
+        package_data = {'': extra_files},
         # Dependencies:
         install_requires = install_requires,
-        entry_points={ 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main'] },
+        entry_points = { 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main'] },
         # Other options:
         zip_safe = False,
         )
