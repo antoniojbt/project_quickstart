@@ -162,9 +162,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = str(CONFIG['metadata']['project_name'])
-copyright = str(CONFIG['metadata']['license_year'] + CONFIG['metadata']['author_name'])
-author = str(CONFIG['metadata']['author_name'])
+project = CONFIG['metadata']['project_name']
+copyright = str(CONFIG['metadata']['license_year'] + ', ' + CONFIG['metadata']['author_name'])
+author = CONFIG['metadata']['author_name']
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
