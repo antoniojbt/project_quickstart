@@ -368,7 +368,7 @@ For example, if you want to tag and version a previous commit, do the following:
 	git tag -a v0.1 -m "code freeze for draft 1, 23 June 2017" 7c3c7b76e4e3b47016b4f899c3aa093a44c5e053
 
 	# Push the tag 
-	# By default, the git push command doesn’t transfer tags to remote servers, so run:
+	# By default, the git push command does not transfer tags to remote servers, so run:
 	git push origin v0.1
 
 -----

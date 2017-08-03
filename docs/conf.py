@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+####!/usr/bin/python3
+# -*- coding: utf-8 -*- 
 '''
 ###################################################
 # WARNING
@@ -36,13 +37,13 @@ standard_library.install_aliases()
 import os
 import sys
 
-# Set up calling parameters from INI file: 
-# Modules with Py2 to 3 conflicts 
+# Set up calling parameters from INI file:
+# Modules with Py2 to 3 conflicts
 try:
     import configparser
-except ImportError:  # Py2 to Py3 
+except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
-# Global variable for configuration file ('.ini'): 
+# Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 #################
 
@@ -122,6 +123,7 @@ def getVersionDir():
     return(version)
 
 version = str(getVersionDir())
+print(version)
 #################
 
 
@@ -160,9 +162,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = CONFIG['metadata']['project_name']
-copyright = CONFIG['metadata']['license_year'], CONFIG['metadata']['author_name']
-author = CONFIG['metadata']['author_name']
+project = str(CONFIG['metadata']['project_name'])
+copyright = str(CONFIG['metadata']['license_year'] + CONFIG['metadata']['author_name'])
+author = str(CONFIG['metadata']['author_name'])
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -222,11 +224,11 @@ htmlhelp_basename = str(CONFIG['metadata']['project_name'] + '.doc')
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
-    # 'papersize': 'letterpaper',
+    'papersize': 'a4paper',
 
     # The font size ('10pt', '11pt' or '12pt').
     #
-    # 'pointsize': '10pt',
+    'pointsize': '12pt',
 
     # Additional stuff for the LaTeX preamble.
     #
@@ -234,7 +236,7 @@ latex_elements = {
 
     # Latex figure (float) alignment
     #
-    # 'figure_align': 'htbp',
+    'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -243,7 +245,7 @@ latex_elements = {
 latex_documents = [(master_doc,
                     str(CONFIG['metadata']['project_name'] + '.tex'),
                     str(CONFIG['metadata']['project_name'] + 'Documentation'),
-                    CONFIG['metadata']['author_name'],
+                    str(CONFIG['metadata']['author_name']),
                     'manual'),
                     ]
 
@@ -253,9 +255,9 @@ latex_documents = [(master_doc,
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [(master_doc,
-              CONFIG['metadata']['project_name'],
+              str(CONFIG['metadata']['project_name']),
               str(CONFIG['metadata']['project_name'] + ' Documentation'),
-              [author], 1)
+              author, 1)
               ]
 
 
@@ -267,9 +269,9 @@ man_pages = [(master_doc,
 texinfo_documents = [(master_doc,
                       str(CONFIG['metadata']['project_name']),
                       str(CONFIG['metadata']['project_name'] + ' Documentation'),
-                      [author],
-                      CONFIG['metadata']['project_name'],
-                      CONFIG['metadata']['short_description'],
+                      author,
+                      str(CONFIG['metadata']['project_name']),
+                      str(CONFIG['metadata']['short_description']),
                       'Miscellaneous')
                       ]
 
