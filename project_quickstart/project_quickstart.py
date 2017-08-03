@@ -439,10 +439,10 @@ def main():
     if options['--project-name']:
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(project_template, code_dir)
-        copySingleFiles(report_templates, manuscript_dir, r'*')
+        copySingleFiles(report_templates, manuscript_dir, r'rst')
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        r'*')
+                        r'py', r'R', r'template', r'ini')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
@@ -457,8 +457,9 @@ def main():
         # Sphinx files only live in templates/docs/ but are also needed in
         # report templates:
         sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
-        copySingleFiles(sphinx_configs, manuscript_dir, 'conf.py', 'Makefile',
-                        'make.bat')
+        copySingleFiles(sphinx_configs,
+                        manuscript_dir,
+                        'conf.py', 'Makefile', 'make.bat')
         # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)
