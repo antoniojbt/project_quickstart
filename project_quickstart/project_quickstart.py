@@ -439,9 +439,11 @@ def main():
     if options['--project-name']:
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(project_template, code_dir)
-        copySingleFiles(report_templates, manuscript_dir, r'(*)')
-        copySingleFiles(script_templates, os.path.join(code_dir, 'project_template'),
-                        r'(*)')
+        copySingleFiles(report_templates, manuscript_dir) #, r'rst') copy all
+                                                          # files present
+        copySingleFiles(script_templates, os.path.join(code_dir,
+                                                       'project_template')
+                                                       ) #r'(*)')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
                                 # directory which will become the user's 
@@ -450,9 +452,9 @@ def main():
                                 # The code dir can be renamed when uploading 
 
         # Add any additional files, like rsync command example:
-        copySingleFiles(template_dir, project_dir, r'rsync_cmd')
+        copySingleFiles(template_dir, project_dir, r'rsync')
         copySingleFiles(template_dir, project_dir, r'TO_DO')
-        copySingleFiles(template_dir, project_dir, r'README')
+        copySingleFiles(data_dir, project_dir, r'README_data')
         # Sphinx files only live in templates/docs/ but are also needed in
         # report templates:
         sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
