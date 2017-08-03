@@ -50,7 +50,9 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 #################
 cwd = os.getcwd()
 def getINIdir(path = cwd):
-    ''' Search for an INI file, default is where the current working directory '''
+    ''' Search for an INI file given a path. The path default is the current
+        working directory.
+    '''
     f_count = 0
     for f in os.listdir(path):
         if (f.endswith('.ini') and not f.startswith('tox')):
@@ -62,6 +64,9 @@ def getINIdir(path = cwd):
         INI_file = os.path.abspath(path)
         print('You have no project configuration (".ini") file or more than one',
               'in the directory:', '\n', path)
+        sys.exit(''' Exiting.
+                     You will have to manually edit the Sphinx conf.py file.
+                 ''')
 
     return(INI_file)
 #################
@@ -70,16 +75,53 @@ def getINIdir(path = cwd):
 #################
 # Get location to this file:
 here = os.path.abspath(os.path.dirname(__file__))
-print(here)
+#print(here, '\n')
 
-ini_file = getINIdir(os.path.join(here, '..')
+ini_file = getINIdir(os.path.join(here, '..'))
 CONFIG.read(ini_file)
 
 # Print keys (sections):
-print('Values for setup.py:', '\n')
+print('Values found in INI file:', '\n')
+print(ini_file, '\n')
 for key in CONFIG:
     for value in CONFIG[key]:
         print(key, value, CONFIG[key][value])
+#################
+
+
+#################
+# Get version, this will be in project_XXXX/code/project_XXXX/version.py:
+def getVersionDir():
+    project_name = str(CONFIG['metadata']['project_name'])
+    #print(project_name, '\n')
+    version_dir = os.path.join(here, '..', 'code', project_name)
+    version_dir_2 = os.path.join(here, '..', project_name)
+    #print(version_dir, '\n', version_dir_2)
+    if os.path.exists(version_dir):
+        sys.path.insert(0, version_dir)
+        import version
+        version = version.set_version()
+    elif os.path.exists(version_dir_2):
+        sys.path.insert(0, version_dir_2)
+        import version
+        version = version.set_version()
+    else:
+        version = '0.1.0'
+        print(str('version not found, the directories: ' +
+                  version_dir +
+                  '\n' +
+                  'or' +
+                  '\n' +
+                  version_dir_2 +
+                  'do not seem to exist' +
+                  'version set to 0.1.0' +
+                  'Edit the Sphinx conf.py manually to change.'
+                  )
+              )
+    #print(version, '\n')
+    return(version)
+
+version = str(getVersionDir())
 #################
 
 
@@ -119,7 +161,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = CONFIG['metadata']['project_name']
-copyright = CONFIG['metadata']['year'], CONFIG['metadata']['author_name']
+copyright = CONFIG['metadata']['license_year'], CONFIG['metadata']['author_name']
 author = CONFIG['metadata']['author_name']
 
 # The version info for the project you're documenting, acts as replacement for
