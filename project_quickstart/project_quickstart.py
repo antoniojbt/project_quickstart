@@ -237,7 +237,7 @@ def main():
     # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
 
     template_dir = projectQuickstart.getDir('../templates')
-    project_template = os.path.join(template_dir, 'project_template')
+    py_package_template = os.path.join(template_dir, 'project_template')
     report_templates = os.path.join(template_dir, 'report_templates')
     script_templates = os.path.join(template_dir, 'script_templates')
 
@@ -245,7 +245,7 @@ def main():
         if options['--project-name']:
 
             dirs_to_use = [template_dir,
-                           project_template,
+                           py_package_template,
                            report_templates,
                            script_templates
                           ]
@@ -292,7 +292,7 @@ def main():
         # If directory paths are OK, continue:
         print(str('Path in use:' + '\n'
                   + template_dir + '\n'
-                  #+ project_template
+                  #+ py_package_template
                   + '\n' + '\n'
                   + 'Creating the project structure for {} in:'.format(project_name) + '\n'
                   + project_dir + '\n')
@@ -438,15 +438,15 @@ def main():
     # Call functions:
     if options['--project-name']:
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
-        projectTemplate(project_template, code_dir)
+        projectTemplate(py_package_template, code_dir)
         copySingleFiles(report_templates, manuscript_dir, r'rst')
-        copySingleFiles(script_templates, code_dir, r'.py', r'.R', r'.ini', r'template')
-                                # 'project_template' here refers to                                        
-                                #'project_quickstart/templates/project_template' 
-                                # directory which will become the user's 
+        copySingleFiles(script_templates,
+                        os.path.join(code_dir, 'project_template'),
+                        r'.py', r'.R', r'.ini', r'template')
+                                # code_dir + 'project_template'
+                                # will become the user's
                                 # new_project/code/new_project directory 
                                 # where scripts can go in 
-                                # The code dir can be renamed when uploading 
 
         # Add any additional files, like rsync command example:
         copySingleFiles(template_dir, project_dir, r'rsync')
