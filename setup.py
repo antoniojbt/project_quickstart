@@ -64,6 +64,11 @@ if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
     print ("Version detected:", LooseVersion(setuptools.__version__))
     raise ImportError(
         "Setuptools 1.1 or higher is required")
+#################
+
+
+#################
+# Find the project ini file
 
 # Get location to this file:
 here = os.path.abspath(os.path.dirname(__file__))
@@ -83,8 +88,28 @@ except ImportError:  # Py2 to Py3
 # write `--force` instead of `--force=true` below.
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 
-CONFIG.read(os.path.join(here, str('project_quickstart' + '.ini')))
-# str(CONFIG['metadata']['project_name'] + '.ini'))) 
+# Function to find the project ini file:
+cwd = os.getcwd()
+def getINIdir(path = cwd):
+    ''' Search for an INI file, default is where the current working directory '''
+    f_count = 0
+    for f in os.listdir(path):
+        if (f.endswith('.ini') and not f.startswith('tox')):
+            f_count += 1
+            INI_file = f
+    if f_count == 1:
+        INI_file = os.path.abspath(os.path.join(path, INI_file))
+    elif (f_count > 1 or f_count == 0):
+        INI_file = os.path.abspath(path)
+        print('You have no project configuration (".ini") file or more than one',
+              'in the directory:', '\n', path)
+        sys.exit()
+
+    return(INI_file)
+
+# Get the actual ini file and read its values:
+ini_file = getINIdir()
+CONFIG.read(os.path.join(here, ini_file))
 
 # Print keys (sections):
 print('Values for setup.py:', '\n')
