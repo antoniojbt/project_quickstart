@@ -453,6 +453,12 @@ def main():
         copySingleFiles(template_dir, project_dir, r'rsync_cmd')
         copySingleFiles(template_dir, project_dir, r'TO_DO')
         copySingleFiles(template_dir, project_dir, r'README')
+        # Sphinx files only live in templates/docs/ but are also needed in
+        # report templates:
+        sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
+        copySingleFiles(sphinx_configs, manuscript_dir, 'conf.py', 'Makefile',
+                        'make.bat')
+        # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)
 
