@@ -290,9 +290,9 @@ def main():
                 sys.exit()
 
         # If directory paths are OK, continue:
-        print(str('Paths in use:' + '\n'
+        print(str('Path in use:' + '\n'
                   + template_dir + '\n'
-                  + project_template
+                  #+ project_template
                   + '\n' + '\n'
                   + 'Creating the project structure for {} in:'.format(project_name) + '\n'
                   + project_dir + '\n')
@@ -440,7 +440,7 @@ def main():
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(project_template, code_dir)
         copySingleFiles(report_templates, manuscript_dir, r'rst')
-        copySingleFiles(script_templates, project_template,
+        copySingleFiles(script_templates, code_dir,
                         r'py', r'R', r'ini', r'template')
                                 # 'project_template' here refers to                                        
                                 #'project_quickstart/templates/project_template' 
