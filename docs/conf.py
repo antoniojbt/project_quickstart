@@ -140,14 +140,16 @@ print(version)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages']
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.doctest',
+              'sphinx.ext.todo',
+              'sphinx.ext.coverage',
+              'sphinx.ext.mathjax',
+              'sphinx.ext.ifconfig',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.githubpages',
+              #'rst2pdf.pdfbuilder'
+              ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -162,9 +164,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = CONFIG['metadata']['project_name']
+project_name = CONFIG['metadata']['project_name']
 copyright = str(CONFIG['metadata']['license_year'] + ', ' + CONFIG['metadata']['author_name'])
-author = CONFIG['metadata']['author_name']
+author = CONFIG['metadata']['all_author_names']
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -216,7 +218,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = str(CONFIG['metadata']['project_name'] + '.doc')
+htmlhelp_basename = str(project_name + '.doc')
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -243,10 +245,11 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [(master_doc,
-                    str(CONFIG['metadata']['project_name'] + '.tex'),
-                    str(CONFIG['metadata']['project_name'] + 'Documentation'),
-                    str(CONFIG['metadata']['author_name']),
-                    'manual'),
+                    str(project_name + '.tex'),
+                    str(project_name + 'Documentation'),
+                    author,
+                    'manual'
+                    ),
                     ]
 
 
@@ -255,9 +258,10 @@ latex_documents = [(master_doc,
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [(master_doc,
-              str(CONFIG['metadata']['project_name']),
-              str(CONFIG['metadata']['project_name'] + ' Documentation'),
-              author, 1)
+              project_name,
+              str(project_name + ' Documentation'),
+              author,
+              1)
               ]
 
 
@@ -267,13 +271,28 @@ man_pages = [(master_doc,
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [(master_doc,
-                      str(CONFIG['metadata']['project_name']),
-                      str(CONFIG['metadata']['project_name'] + ' Documentation'),
+                      project_name,
+                      str(project_name + ' Documentation'),
                       author,
-                      str(CONFIG['metadata']['project_name']),
+                      project_name,
                       str(CONFIG['metadata']['short_description']),
-                      'Miscellaneous')
+                      'Miscellaneous'
+                      )
                       ]
+
+
+# Added options for pdf building using rst2pdf:
+pdf_documents = [(master_doc,
+                  project_name,
+                  project_name,
+                  author
+                  ),
+                  ]
+
+# index - master document
+# str(CONFIG['metadata']['project_name']) - name of the generated pdf
+# str(CONFIG['metadata']['project_name']) - title of the pdf
+# str(CONFIG['metadata']['author_name'])  - author name in the pdf
 
 # This is from CGAT to include/exclude in docs depending on PARAMS used:
 # Added from some notes I had, maybe CGAT:

@@ -5,6 +5,11 @@
 Welcome to |project_name|'s documentation
 ================================================================================
 
+.. |date| date::
+.. |time| date:: %H:%M
+
+This document was generated on |date| at |time|
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

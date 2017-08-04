@@ -22,7 +22,7 @@ Even if the code is project specific it can still be versioned, frozen and archi
 This tool was produced with the following in mind:
 
 - Reproducibility concepts and best practice implementation
-- Use of Ruffus_ as a pipeline tool and CGAT_ tools for support 
+- Use of Ruffus_ as a pipeline tool and `CGAT tools`_ for support 
 - Python_ programming and packaging_
 - restructuredText_ and Sphinx_ for reporting
 - Travis_ and tox_ for testing
@@ -37,7 +37,7 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 
 .. _Ruffus: http://www.ruffus.org.uk/
 
-.. _CGAT: http://www.cgat.org/cgat/Tools/the-cgat-code-collection
+.. _`CGAT tools`: http://www.cgat.org/cgat/Tools/the-cgat-code-collection
 
 .. _Python: https://www.python.org/
 
