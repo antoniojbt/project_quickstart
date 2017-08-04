@@ -1,4 +1,3 @@
-####!/usr/bin/python3
 # -*- coding: utf-8 -*- 
 '''
 ###################################################
@@ -130,6 +129,8 @@ print(version)
 #################
 # Actual sphinx-quickstart configuration starts here
 
+
+#################
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -140,15 +141,16 @@ print(version)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'rst2pdf.pdfbuilder']
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.doctest',
+              'sphinx.ext.todo',
+              'sphinx.ext.coverage',
+              'sphinx.ext.mathjax',
+              'sphinx.ext.ifconfig',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.githubpages',
+              #'rst2pdf.pdfbuilder'
+              ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -193,8 +195,10 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+#################
 
 
+#################
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -212,15 +216,44 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+#################
 
 
+#################
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = str(project_name + '.doc')
+#################
 
 
+#################
 # -- Options for LaTeX output ---------------------------------------------
+# LaTex can be heavily customised
+# There are no themes as there are for html in Sphinx currently
+# There are extensive configuration options, see:
+# http://www.sphinx-doc.org/en/stable/config.html#latex-options
+# http://www.sphinx-doc.org/en/stable/latex.html
+# https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
+
+latex_engine = 'pdflatex' # consider 'xelatex' for better fonts
+
+latex_elements = {
+                  'fontpkg': r'''
+                      \setmainfont{DejaVu Serif}
+                      \setsansfont{DejaVu Sans}
+                      \setmonofont{DejaVu Sans Mono}
+                  ''',
+                  'preamble': r'''
+                      \usepackage[titles]{tocloft}
+                      \cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
+                      \setlength{\cftchapnumwidth}{0.75cm}
+                      \setlength{\cftsecindent}{\cftchapnumwidth}
+                      \setlength{\cftsecnumwidth}{1.25cm}
+                   ''',
+                   'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
+                   'printindex': r'\footnotesize\raggedright\printindex',
+                   }
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
@@ -233,11 +266,13 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #
-    # 'preamble': '',
+    #'preamble': '',
 
     # Latex figure (float) alignment
-    #
-    'figure_align': 'htbp',
+    # Default is 'figure_align': 'htbp',
+    # ‘H’ disables floating and position figures strictly 
+    # in the order they appear in the source.
+    #'figure_align': 'H',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -251,7 +286,37 @@ latex_documents = [(master_doc,
                     ),
                     ]
 
+# If true,  add page references after internal references.   This is very useful
+# or printed copies of the manual.
+latex_show_pagerefs = True
 
+latex_show_urls = 'footnote'
+
+# The name of an image file (relative to this directory) to place at the top of
+# the title page.
+#
+# latex_logo = None
+# If true, show page references after internal links.
+#
+# latex_show_pagerefs = False
+# If true, show URL addresses after external links.
+#
+# latex_show_urls = False
+# Documents to append as an appendix to all manuals.
+#
+# latex_appendices = []
+# If false, will not define \strong, \code, \titleref, \crossref ... but only
+# \sphinxstrong, ..., \sphinxtitleref, ... to help avoid clash with user added
+# packages.
+#
+# latex_keep_old_macro_names = True
+# If false, no module index is generated.
+#
+# latex_domain_indices = True
+#################
+
+
+#################
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -262,8 +327,10 @@ man_pages = [(master_doc,
               author,
               1)
               ]
+#################
 
 
+#################
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
@@ -278,21 +345,10 @@ texinfo_documents = [(master_doc,
                       'Miscellaneous'
                       )
                       ]
+#################
 
 
-# Added options for pdf building using rst2pdf:
-pdf_documents = [(master_doc,
-                  project_name,
-                  project_name,
-                  author
-                  ),
-                  ]
-
-# index - master document
-# str(CONFIG['metadata']['project_name']) - name of the generated pdf
-# str(CONFIG['metadata']['project_name']) - title of the pdf
-# str(CONFIG['metadata']['author_name'])  - author name in the pdf
-
+#################
 # This is from CGAT to include/exclude in docs depending on PARAMS used:
 # Added from some notes I had, maybe CGAT:
 #def setup(app):

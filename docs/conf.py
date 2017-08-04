@@ -1,4 +1,3 @@
-####!/usr/bin/python3
 # -*- coding: utf-8 -*- 
 '''
 ###################################################
@@ -45,6 +44,16 @@ except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
 # Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser(allow_no_value = True)
+#################
+
+
+#################
+# If this conf.py is part of a standrad python software project, 
+# set this relative path in order to be abe to use sphinx-apidoc
+# to find the relevant software tool modules
+# The expected directory structure would be
+# project_XXXX/docs/THIS_CONF.PY
+sys.path.insert(0, os.path.abspath('../..'))
 #################
 
 
@@ -130,6 +139,8 @@ print(version)
 #################
 # Actual sphinx-quickstart configuration starts here
 
+
+#################
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -195,7 +206,17 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+# order of autodocumented functions
+autodoc_member_order = "bysource"
 
+# autoclass configuration - use both class and __init__ method to
+# document methods.
+autoclass_content = "both"
+
+#################
+
+
+#################
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -213,33 +234,62 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+#################
 
 
+#################
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = str(project_name + '.doc')
+#################
 
 
+#################
 # -- Options for LaTeX output ---------------------------------------------
+# LaTex can be heavily customised
+# There are no themes as there are for html in Sphinx currently
+# There are extensive configuration options, see:
+# http://www.sphinx-doc.org/en/stable/config.html#latex-options
+# http://www.sphinx-doc.org/en/stable/latex.html
+# https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
+
+#latex_engine = 'xelatex' # consider 'xelatex' for better fonts
+#latex_engine = 'pdflatex'
 
 latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    'papersize': 'a4paper',
-
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    'pointsize': '12pt',
-
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
-
-    # Latex figure (float) alignment
-    #
-    'figure_align': 'htbp',
-}
+                   # The paper size ('letterpaper' or 'a4paper').
+                   'papersize': 'a4paper',
+                   # The font size ('10pt', '11pt' or '12pt').
+                   'pointsize': '11pt',
+                   # Latex figure (float) alignment
+                   # Default is 'figure_align': 'htbp',
+                   # ‘H’ disables floating and position figures strictly 
+                   # in the order they appear in the source.
+                   #'figure_align': 'H',
+                   # Additional stuff for the LaTeX preamble.
+                   #'preamble': '',
+                  'fontpkg': r'''
+                      \setmainfont{DejaVu Serif}
+                      \setsansfont{DejaVu Sans}
+                      \setmonofont{DejaVu Sans Mono}
+                  ''',
+                  # Lines 2 to 4 here make sure that underscore in text
+                  # isn not interpreted as math symbol in latex
+                  # http://www.tex.ac.uk/FAQ-underscore.html
+                  'preamble': r'''
+                      \usepackage[titles]{tocloft}
+                      \usepackage{lmodern}
+                      \usepackage[T1]{fontenc}
+                      \usepackage{textcomp}
+                      \cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
+                      \setlength{\cftchapnumwidth}{0.75cm}
+                      \setlength{\cftsecindent}{\cftchapnumwidth}
+                      \setlength{\cftsecnumwidth}{1.25cm}
+                   ''',
+#                   'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
+                   'printindex': r'\footnotesize\raggedright\printindex',
+                   }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
@@ -248,11 +298,41 @@ latex_documents = [(master_doc,
                     str(project_name + '.tex'),
                     str(project_name + 'Documentation'),
                     author,
-                    'manual'
+                    'article', #'manual' 'howto'
                     ),
                     ]
 
+# If true, add page references after internal references. This is very useful
+# or printed copies of the manual.
+#latex_show_pagerefs = True
 
+latex_show_urls = 'footnote'
+
+# The name of an image file (relative to this directory) to place at the top of
+# the title page.
+#
+# latex_logo = None
+# If true, show page references after internal links.
+#
+# latex_show_pagerefs = False
+# If true, show URL addresses after external links.
+#
+# latex_show_urls = False
+# Documents to append as an appendix to all manuals.
+#
+# latex_appendices = []
+# If false, will not define \strong, \code, \titleref, \crossref ... but only
+# \sphinxstrong, ..., \sphinxtitleref, ... to help avoid clash with user added
+# packages.
+#
+# latex_keep_old_macro_names = True
+# If false, no module index is generated.
+#
+# latex_domain_indices = True
+#################
+
+
+#################
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -263,8 +343,10 @@ man_pages = [(master_doc,
               author,
               1)
               ]
+#################
 
 
+#################
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
@@ -279,21 +361,10 @@ texinfo_documents = [(master_doc,
                       'Miscellaneous'
                       )
                       ]
+#################
 
 
-# Added options for pdf building using rst2pdf:
-pdf_documents = [(master_doc,
-                  project_name,
-                  project_name,
-                  author
-                  ),
-                  ]
-
-# index - master document
-# str(CONFIG['metadata']['project_name']) - name of the generated pdf
-# str(CONFIG['metadata']['project_name']) - title of the pdf
-# str(CONFIG['metadata']['author_name'])  - author name in the pdf
-
+#################
 # This is from CGAT to include/exclude in docs depending on PARAMS used:
 # Added from some notes I had, maybe CGAT:
 #def setup(app):

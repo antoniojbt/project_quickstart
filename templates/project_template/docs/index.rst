@@ -11,6 +11,15 @@ Welcome to |project_name|'s documentation!
 
    include_links
 
+
+.. raw latex can be used and may facilitate conversion to pdf
+..   .. raw:: latex
+                                                                                                                                                              
+..      \newpage
+..      \listoffigures
+..      \listoftables
+
+
 Indices and tables
 ==================
 
