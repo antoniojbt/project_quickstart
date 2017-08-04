@@ -53,7 +53,7 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 # to find the relevant software tool modules
 # The expected directory structure would be
 # project_XXXX/docs/THIS_CONF.PY
-sys.path.insert(0, os.path.abspath('../..'))
+#sys.path.insert(0, os.path.abspath('../..'))
 #################
 
 
@@ -159,7 +159,6 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
-              #'rst2pdf.pdfbuilder'
               ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -253,9 +252,6 @@ htmlhelp_basename = str(project_name + '.doc')
 # http://www.sphinx-doc.org/en/stable/config.html#latex-options
 # http://www.sphinx-doc.org/en/stable/latex.html
 # https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
-
-#latex_engine = 'xelatex' # consider 'xelatex' for better fonts
-#latex_engine = 'pdflatex'
 
 latex_elements = {
                    # The paper size ('letterpaper' or 'a4paper').
@@ -358,7 +354,7 @@ texinfo_documents = [(master_doc,
                       author,
                       project_name,
                       str(CONFIG['metadata']['short_description']),
-                      'Miscellaneous'
+                      'Miscellaneous',
                       )
                       ]
 #################

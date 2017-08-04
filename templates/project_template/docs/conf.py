@@ -48,6 +48,16 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 
 #################
+# If this conf.py is part of a standrad python software project, 
+# set this relative path in order to be abe to use sphinx-apidoc
+# to find the relevant software tool modules
+# The expected directory structure would be
+# project_XXXX/docs/THIS_CONF.PY
+#sys.path.insert(0, os.path.abspath('../..'))
+#################
+
+
+#################
 cwd = os.getcwd()
 def getINIdir(path = cwd):
     ''' Search for an INI file given a path. The path default is the current
@@ -149,7 +159,6 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
-              #'rst2pdf.pdfbuilder'
               ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -195,6 +204,14 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+# order of autodocumented functions
+autodoc_member_order = "bysource"
+
+# autoclass configuration - use both class and __init__ method to
+# document methods.
+autoclass_content = "both"
+
 #################
 
 
@@ -236,44 +253,39 @@ htmlhelp_basename = str(project_name + '.doc')
 # http://www.sphinx-doc.org/en/stable/latex.html
 # https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
 
-latex_engine = 'pdflatex' # consider 'xelatex' for better fonts
-
 latex_elements = {
+                   # The paper size ('letterpaper' or 'a4paper').
+                   'papersize': 'a4paper',
+                   # The font size ('10pt', '11pt' or '12pt').
+                   'pointsize': '11pt',
+                   # Latex figure (float) alignment
+                   # Default is 'figure_align': 'htbp',
+                   # ‘H’ disables floating and position figures strictly 
+                   # in the order they appear in the source.
+                   #'figure_align': 'H',
+                   # Additional stuff for the LaTeX preamble.
+                   #'preamble': '',
                   'fontpkg': r'''
                       \setmainfont{DejaVu Serif}
                       \setsansfont{DejaVu Sans}
                       \setmonofont{DejaVu Sans Mono}
                   ''',
+                  # Lines 2 to 4 here make sure that underscore in text
+                  # isn not interpreted as math symbol in latex
+                  # http://www.tex.ac.uk/FAQ-underscore.html
                   'preamble': r'''
                       \usepackage[titles]{tocloft}
+                      \usepackage{lmodern}
+                      \usepackage[T1]{fontenc}
+                      \usepackage{textcomp}
                       \cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
                       \setlength{\cftchapnumwidth}{0.75cm}
                       \setlength{\cftsecindent}{\cftchapnumwidth}
                       \setlength{\cftsecnumwidth}{1.25cm}
                    ''',
-                   'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
+#                   'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
                    'printindex': r'\footnotesize\raggedright\printindex',
                    }
-
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    'papersize': 'a4paper',
-
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    'pointsize': '12pt',
-
-    # Additional stuff for the LaTeX preamble.
-    #
-    #'preamble': '',
-
-    # Latex figure (float) alignment
-    # Default is 'figure_align': 'htbp',
-    # ‘H’ disables floating and position figures strictly 
-    # in the order they appear in the source.
-    #'figure_align': 'H',
-}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
@@ -282,13 +294,13 @@ latex_documents = [(master_doc,
                     str(project_name + '.tex'),
                     str(project_name + 'Documentation'),
                     author,
-                    'manual'
+                    'article', #'manual' 'howto'
                     ),
                     ]
 
-# If true,  add page references after internal references.   This is very useful
+# If true, add page references after internal references. This is very useful
 # or printed copies of the manual.
-latex_show_pagerefs = True
+#latex_show_pagerefs = True
 
 latex_show_urls = 'footnote'
 
@@ -342,7 +354,7 @@ texinfo_documents = [(master_doc,
                       author,
                       project_name,
                       str(CONFIG['metadata']['short_description']),
-                      'Miscellaneous'
+                      'Miscellaneous',
                       )
                       ]
 #################
