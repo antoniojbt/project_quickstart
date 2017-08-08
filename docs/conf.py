@@ -253,6 +253,10 @@ htmlhelp_basename = str(project_name + '.doc')
 # http://www.sphinx-doc.org/en/stable/latex.html
 # https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
 
+# Sphinx will generate the file XXXX.tex in e.g. _build/latex/
+# See this to avoid duplicating calls to packages, conflicting commands from
+# "latex_elements" setting below, etc.
+
 # For SVG figures see \usepackage{svg}
 # https://tex.stackexchange.com/questions/122871/include-svg-images-with-the-svg-package
 
@@ -265,12 +269,11 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                    # ‘H’ disables floating and position figures strictly 
                    # in the order they appear in the source.
                    #'figure_align': 'H',
-                   # Additional stuff for the LaTeX preamble.
-                   #'preamble': r'''xxx''',
+                   # Additional commands for the LaTeX preamble:
                    # Try to make sure that underscore in text
                    # are not interpreted as math symbols in latex
                    # http://www.tex.ac.uk/FAQ-underscore.html
-                   'fontpkg': r'''
+                   'preamble': r'''
                        \usepackage{lmodern}
                        \usepackage[T1]{fontenc}
                        \usepackage{textcomp}
