@@ -281,7 +281,8 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                        % See eg:
                        % https://github.com/lmweber/latex-templates/blob/master/template_PhD_committee_report.tex
                        ''',
-                   #  'printindex': r'\footnotesize\raggedright\printindex',
+                   #'printindex': r'\footnotesize\raggedright\printindex',
+                   #'releasename': r'version',
                    }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -296,32 +297,15 @@ latex_documents = [(master_doc,
                     ]
 
 # If true, add page references after internal references. This is very useful
-# or printed copies of the manual.
+# or printed copies of the manual. Default is False.
 #latex_show_pagerefs = True
-
-latex_show_urls = 'footnote'
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
+#latex_logo = None
 
-# latex_logo = None
-# If true, show page references after internal links.
-
-# latex_show_pagerefs = False
-# If true, show URL addresses after external links.
-
-# latex_show_urls = False
-# Documents to append as an appendix to all manuals.
-
-# latex_appendices = []
-# If false, will not define \strong, \code, \titleref, \crossref ... but only
-# \sphinxstrong, ..., \sphinxtitleref, ... to help avoid clash with user added
-# packages.
-
-# latex_keep_old_macro_names = True
-# If false, no module index is generated.
-
-# latex_domain_indices = True
+# Control whether to display URL addresses. This is very useful for printed copies of the manual.
+latex_show_urls = 'footnote'
 #################
 
 
