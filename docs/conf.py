@@ -257,8 +257,22 @@ htmlhelp_basename = str(project_name + '.doc')
 # See this to avoid duplicating calls to packages, conflicting commands from
 # "latex_elements" setting below, etc.
 
+# TO DO:
+# Convert SVG, url images, etc. from reST to Sphinx to PDF
+
+# See:
+# http://rest-sphinx-memo.readthedocs.io/en/latest/ReST.html#image-and-figure
+# https://tex.stackexchange.com/questions/5433/can-i-use-an-image-located-on-the-web-in-a-latex-document
+# https://sites.google.com/site/nickfolse/home/sphinx-latexpdf-output-with-svg-images
+# This will also need modifying Makefile
+# See Andreas' solutions for this.
+
+# Also see for latex packages and SVGs:
 # For SVG figures see \usepackage{svg}
 # https://tex.stackexchange.com/questions/122871/include-svg-images-with-the-svg-package
+# Also test .. only:: reST directive if SVG download and conversion fails
+# (for e.g. badges from GitHub in READMEs)
+
 
 latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                    'papersize': 'a4paper',
@@ -278,6 +292,8 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                        \usepackage[T1]{fontenc}
                        \usepackage{textcomp}
                        \usepackage[strings]{underscore}
+                       \usepackage{graphicx}
+                       \usepackage{color}
                        % See eg:
                        % https://github.com/lmweber/latex-templates/blob/master/template_PhD_committee_report.tex
                        ''',
