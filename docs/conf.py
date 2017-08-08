@@ -159,6 +159,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
+              'sphinx.ext.imgconverter', # Allows handling of SVGs
               ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -264,6 +265,8 @@ htmlhelp_basename = str(project_name + '.doc')
 # http://rest-sphinx-memo.readthedocs.io/en/latest/ReST.html#image-and-figure
 # https://tex.stackexchange.com/questions/5433/can-i-use-an-image-located-on-the-web-in-a-latex-document
 # https://sites.google.com/site/nickfolse/home/sphinx-latexpdf-output-with-svg-images
+# https://github.com/sphinx-doc/sphinx/issues/1907
+
 # This will also need modifying Makefile
 # See Andreas' solutions for this.
 
