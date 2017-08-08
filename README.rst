@@ -65,7 +65,7 @@ You can later on build computational pipelines using for example a pipeline quic
 
 .. _`Ruffus and CGAT framework`: https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 
-You will need to install other software (e.g. R, Ruffus, Sphinx, etc.) to make full use depending on your preferences.
+You will need to install other software (e.g. R, Ruffus, Sphinx_, etc.) to make full use depending on your preferences.
 
 -----
 
@@ -75,18 +75,17 @@ Some of the reasoning:
     - Usually a project is built around one data set/experiment/question but even in this case it's easy to see potential gains from automating and packaging.
     - Packaging your project can help with reproducibility, freezing code, version control, collaboration and general mental sanity (while managing a project at least).
     - Later on the code or parts of it could be extracted to work on the general case as a separate entity.
-    - This package is based on Python but the same applies to other languages. See discussions on writing your projects as packages in R (R. Flight_, H. Parker_ (also here_), H. Wickham_ and others_ for example). Hadley Wickham has a great ecosystem_ and a book_ on doing the same (and much more) with R_.
+    - This package is based on Python but the same applies to other languages. See discussions on writing your projects as packages in R (R. Flight_, H. Parker_ (also here__), H. Wickham_ and others_ for example). Hadley Wickham has a great ecosystem_ and a book_ on doing the same (and much more) with R_.
     
 .. _Flight: http://rmflight.github.io/posts/2014/07/analyses_as_packages.html
     
 .. _Parker: https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
 
-.. _here: https://hilaryparker.com/2013/04/03/personal-r-packages/
+__ https://hilaryparker.com/2013/04/03/personal-r-packages/
 
 .. _Wickham: http://r-pkgs.had.co.nz/intro.html
 
 .. _others: https://github.com/kbroman/broman
-
 
 .. _book: http://r-pkgs.had.co.nz/
 
@@ -156,6 +155,7 @@ pip
 
    pip install project_quickstart
 
+
 Conda
 =====
 
@@ -177,7 +177,7 @@ Create a project directory skeleton. From the command line do:
 
    project_quickstart --script-python my_super_script # which will create a Python script template called my_super_script.py
 
-This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
+This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx_, etc.
 
 The --script options will create additional copies of script templates in the current working directory. 
 
@@ -262,11 +262,11 @@ project_quickstart.py copies the contents of project_quickstart/templates/projec
 - Python packaging files
 - Dockerfile
 - etc
-- Zenodo, see Zenodo_ GitHub guide. Allow permissions and then with each tag release Zenodo archives the repo and gives it a DOI. See also SSI blog_ on Zenodo.
+- Zenodo, see `Zenodo GitHub guide`_. Allow permissions and then with each tag release Zenodo archives the repo and gives it a DOI. See also SSI blog_ on Zenodo.
 
 These go into the code directory.
 
-.. _Zenodo: https://guides.github.com/activities/citable-code/
+.. _`Zenodo GitHub guide`: https://guides.github.com/activities/citable-code/
 	
 .. _blog: https://www.software.ac.uk/blog/2016-09-26-making-code-citable-zenodo-and-github
 
@@ -279,9 +279,9 @@ Testing
 
 - See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
 - Check travis setup, add pep8 and flake8 to improve your code.
-- See CGAT docs for an explanation on testing_.
+- See CGAT docs for an explanation `on testing`_.
 	
-.. _testing: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
+.. _`on testing`: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
 
 -----
 
@@ -313,7 +313,7 @@ Documentation
 
 After setting up a project, edit the INI and rst files so that variables that get repeated (such as project name, author, date, etc.) are automatically passed to the various files that need them (setup.py, Dockerfile, manuscript_template, etc.). These will get substituted when running python setup.py or rendering rst documents for instance.
 
-Different renderers can give slightly different results (e.g. GitHub, RTD, Sphinx, rst2pdf, etc.)
+Different renderers can give slightly different results (e.g. GitHub, RTD, Sphinx_, rst2pdf, etc.)
 
 rst2pdf can substitute rst variables but pandoc doesn't seem to do it properly.
 
@@ -323,12 +323,10 @@ See some notes in CGAT reports_.
 
 - Add Python docs with rst, Sphinx_, quickstart_
 - Check doctests_
-- See this tutorial_ for Sphinx and general python packaging/workflow
+- See this tutorial_ for Sphinx_ and general python packaging/workflow
 - See also `Jeff Knupp's tutorial`_ and other `similar blogs`_ on Python packaging.
 
 .. _tutorial: https://jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
-
-.. _Sphinx: http://www.sphinx-doc.org/en/stable/
 
 .. _quickstart: http://thomas-cokelaer.info/tutorials/sphinx/quickstart.html
 
