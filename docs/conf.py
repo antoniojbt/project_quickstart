@@ -253,6 +253,9 @@ htmlhelp_basename = str(project_name + '.doc')
 # http://www.sphinx-doc.org/en/stable/latex.html
 # https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
 
+# For SVG figures see \usepackage{svg}
+# https://tex.stackexchange.com/questions/122871/include-svg-images-with-the-svg-package
+
 latex_elements = {
                    # The paper size ('letterpaper' or 'a4paper').
                    'papersize': 'a4paper',
@@ -265,26 +268,31 @@ latex_elements = {
                    #'figure_align': 'H',
                    # Additional stuff for the LaTeX preamble.
                    #'preamble': '',
-                  'fontpkg': r'''
-                      \setmainfont{DejaVu Serif}
-                      \setsansfont{DejaVu Sans}
-                      \setmonofont{DejaVu Sans Mono}
-                  ''',
-                  # Lines 2 to 4 here make sure that underscore in text
-                  # isn not interpreted as math symbol in latex
-                  # http://www.tex.ac.uk/FAQ-underscore.html
-                  'preamble': r'''
-                      \usepackage[titles]{tocloft}
-                      \usepackage{lmodern}
-                      \usepackage[T1]{fontenc}
-                      \usepackage{textcomp}
-                      \cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
-                      \setlength{\cftchapnumwidth}{0.75cm}
-                      \setlength{\cftsecindent}{\cftchapnumwidth}
-                      \setlength{\cftsecnumwidth}{1.25cm}
-                   ''',
+                   'fontpkg': r'''
+                       \usepackage[titles]{tocloft}
+                       \usepackage{lmodern}
+                       \usepackage[T1]{fontenc}
+                       \usepackage{textcomp}
+                                ''',
+                   # Lines 2 to 4 here make sure that underscore in text
+                   # isn not interpreted as math symbol in latex
+                   # http://www.tex.ac.uk/FAQ-underscore.html
+#                   'preamble': r'''
+#                                 \setmainfont{DejaVu Serif}
+#                                 \setsansfont{DejaVu Sans}
+#                                 \setmonofont{DejaVu Sans Mono}
+#                                ''',
+#                       \usepackage[titles]{tocloft}
+#                       \usepackage{lmodern}
+#                       \usepackage[T1]{fontenc}
+#                       \usepackage{textcomp}
+#                       \cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
+#                       \setlength{\cftchapnumwidth}{0.75cm}
+#                       \setlength{\cftsecindent}{\cftchapnumwidth}
+#                       \setlength{\cftsecnumwidth}{1.25cm}
+#                    ''',
 #                   'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
-                   'printindex': r'\footnotesize\raggedright\printindex',
+                    'printindex': r'\footnotesize\raggedright\printindex',
                    }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -294,7 +302,7 @@ latex_documents = [(master_doc,
                     str(project_name + '.tex'),
                     str(project_name + 'Documentation'),
                     author,
-                    'article', #'manual' 'howto'
+                    'howto', #'article', #'manual' 'howto'
                     ),
                     ]
 
