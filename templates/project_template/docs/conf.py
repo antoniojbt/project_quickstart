@@ -26,13 +26,13 @@
 '''
 
 ######################
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+#from __future__ import print_function
+#from __future__ import unicode_literals
+#from __future__ import division
+#from __future__ import absolute_import
 
-from future import standard_library
-standard_library.install_aliases()
+#from future import standard_library
+#standard_library.install_aliases()
 import os
 import sys
 
@@ -253,8 +253,10 @@ htmlhelp_basename = str(project_name + '.doc')
 # http://www.sphinx-doc.org/en/stable/latex.html
 # https://media.readthedocs.org/pdf/sphinx/stable/sphinx.pdf#section.16.1
 
-latex_elements = {
-                   # The paper size ('letterpaper' or 'a4paper').
+# For SVG figures see \usepackage{svg}
+# https://tex.stackexchange.com/questions/122871/include-svg-images-with-the-svg-package
+
+latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                    'papersize': 'a4paper',
                    # The font size ('10pt', '11pt' or '12pt').
                    'pointsize': '11pt',
@@ -264,27 +266,17 @@ latex_elements = {
                    # in the order they appear in the source.
                    #'figure_align': 'H',
                    # Additional stuff for the LaTeX preamble.
-                   #'preamble': '',
-                  'fontpkg': r'''
-                      \setmainfont{DejaVu Serif}
-                      \setsansfont{DejaVu Sans}
-                      \setmonofont{DejaVu Sans Mono}
-                  ''',
-                  # Lines 2 to 4 here make sure that underscore in text
-                  # isn not interpreted as math symbol in latex
-                  # http://www.tex.ac.uk/FAQ-underscore.html
-                  'preamble': r'''
-                      \usepackage[titles]{tocloft}
-                      \usepackage{lmodern}
-                      \usepackage[T1]{fontenc}
-                      \usepackage{textcomp}
-                      \cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
-                      \setlength{\cftchapnumwidth}{0.75cm}
-                      \setlength{\cftsecindent}{\cftchapnumwidth}
-                      \setlength{\cftsecnumwidth}{1.25cm}
-                   ''',
-#                   'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
-                   'printindex': r'\footnotesize\raggedright\printindex',
+                   #'preamble': r'''xxx''',
+                   # Try to make sure that underscore in text
+                   # are not interpreted as math symbols in latex
+                   # http://www.tex.ac.uk/FAQ-underscore.html
+                   'fontpkg': r'''
+                       \usepackage{lmodern}
+                       \usepackage[T1]{fontenc}
+                       \usepackage{textcomp}
+                       \usepackage[strings]{underscore}
+                       ''',
+                   #  'printindex': r'\footnotesize\raggedright\printindex',
                    }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -292,9 +284,9 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [(master_doc,
                     str(project_name + '.tex'),
-                    str(project_name + 'Documentation'),
+                    str(project_name + ' Documentation'),
                     author,
-                    'article', #'manual' 'howto'
+                    'howto', #'article', #'manual' 'howto'
                     ),
                     ]
 
