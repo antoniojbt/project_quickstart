@@ -159,7 +159,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
-              'sphinx.ext.imgconverter', # Allows handling of SVGs
+              #'sphinx.ext.imgconverter', # Allows handling of SVGs
               ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -207,11 +207,11 @@ pygments_style = 'sphinx'
 todo_include_todos = True
 
 # order of autodocumented functions
-autodoc_member_order = "bysource"
+autodoc_member_order = 'bysource'
 
 # autoclass configuration - use both class and __init__ method to
 # document methods.
-autoclass_content = "both"
+autoclass_content = 'both'
 
 #################
 
@@ -295,8 +295,8 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                        \usepackage[T1]{fontenc}
                        \usepackage{textcomp}
                        \usepackage[strings]{underscore}
-                       \usepackage{graphicx}
-                       \usepackage{color}
+                       %\usepackage{graphicx}
+                       %\usepackage{color}
                        % See eg:
                        % https://github.com/lmweber/latex-templates/blob/master/template_PhD_committee_report.tex
                        ''',
