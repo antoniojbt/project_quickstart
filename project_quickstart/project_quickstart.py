@@ -338,18 +338,18 @@ def main():
     # GitHub/packageable directory
 
     # For shutil.copytree functions, ignore the following files:
-    files_to_ignore = ['.dir_bash*,',
+    files_to_ignore = str('.dir_bash*,',
                           '*_pycache_*',
                           '*.bak',
                           'dummy*'
-                      ]
+                         )
 
     def projectTemplate(src, dst):
         '''
         Copy across project template files for
         a Python/GitHub/etc setup.
         Files {} are ignored.
-        '''.format(str(files_to_ignore))
+        '''.format(files_to_ignore)
 
         if os.path.exists(dst) and not options['--force']:
             print(docopt_error_msg)
@@ -363,7 +363,7 @@ def main():
         else:
             shutil.copytree(src,
                             dst,
-                            ignore = shutil.ignore_patterns(*files_to_ignore)
+                            ignore = shutil.ignore_patterns(files_to_ignore)
                             )
 
     # Copy across individual files outside of the 'templates' dir:
@@ -372,7 +372,7 @@ def main():
         Copies named files into the current working directory
         from a given directory excluding
         {}
-        '''.format(str(files_to_ignore))
+        '''.format(files_to_ignore)
 
         files = []
         for f in os.listdir(src):
@@ -382,7 +382,7 @@ def main():
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst,
-                         ignore = shutil.ignore_patterns(*files_to_ignore)
+                         ignore = shutil.ignore_patterns(files_to_ignore)
                          )
 
     # Replace all instances of template with 'name' from project_name as
