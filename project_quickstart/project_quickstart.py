@@ -462,9 +462,9 @@ def main():
                                )
                 #copySingleFiles(copy_from, copy_to, r'*')
                 # Copy sphinx-quickstart config files:
-                shutil.copytree(sphinx_configs
+                shutil.copytree(sphinx_configs,
                                 pipeline_dir_name,
-                                ignore = shutil.ignore_patterns(*files_to_ignore
+                                ignore = shutil.ignore_patterns(*files_to_ignore)
                                )
                 # Rename all 'template' substrings:
                 renameTree(copy_to, 'template', pipeline_dir_name)
@@ -484,6 +484,7 @@ def main():
         shutil.copytree(script_templates,
                         os.path.join(code_dir, 'project_template'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
+                        )
         #copySingleFiles(script_templates,
         #                os.path.join(code_dir, 'project_template'),
         #                r'*')
