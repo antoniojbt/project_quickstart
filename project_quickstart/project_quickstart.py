@@ -468,12 +468,10 @@ def main():
                                 copy_to,
                                 ignore = shutil.ignore_patterns(*files_to_ignore)
                                )
-                #copySingleFiles(copy_from, copy_to, r'*')
                 # Copy sphinx-quickstart config files:
-                shutil.copytree(sphinx_configs,
+                copySingleFiles(sphinx_configs,
                                 copy_to,
-                                ignore = shutil.ignore_patterns(*files_to_ignore)
-                               )
+                                *sphinx_files)
                 # Rename all 'template' substrings:
                 renameTree(copy_to, 'template', pipeline_dir_name)
                 print('Creating:', '\n',
@@ -488,15 +486,18 @@ def main():
     if options['--project-name']:
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(py_package_template, code_dir)
-        copySingleFiles(report_templates, manuscript_dir, r'rst')
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        #r'\w+')
-                        r'.py', r'.R', r'.ini', r'template')
+                        r'.py', r'.R')
                                 # code_dir + 'project_template'
                                 # will become the user's
                                 # new_project/code/new_project directory 
                                 # where scripts can go in 
+        shutil.copytree(pipeline_dir,
+                        os.path.join(code_dir, 'project_template'),
+                        ignore = shutil.ignore_patterns(*files_to_ignore)
+                        )
+        copySingleFiles(report_templates, manuscript_dir, r'rst')
 
         # Add any additional files, like rsync command example:
         copySingleFiles(template_dir, project_dir, r'rsync')
@@ -516,7 +517,10 @@ def main():
     # R and py templates are single, standalone files that get renamed on the
     # go. --script-pipeline copies a directory with script, Sphinx, ini and rst
     # files which get renamed in function above.
-    if options['--script-python'] or options['--script-R'] or options['--script-pipeline'] and not options['--project-name']:
+    if (options['--script-python']
+            or options['--script-R']
+            or options['--script-pipeline']
+            and not options['--project-name']):
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
