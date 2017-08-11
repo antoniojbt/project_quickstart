@@ -245,6 +245,7 @@ def main():
     py_package_template = os.path.join(template_dir, 'project_template')
     report_templates = os.path.join(template_dir, 'report_templates')
     script_templates = os.path.join(template_dir, 'script_templates')
+    pipeline_templates = os.path.join(script_templates,'pipeline_template')
 
     # Modified sphinx-quickstart templates only live in: 
         # templates/project_template/docs/
@@ -456,15 +457,14 @@ def main():
                               '''.format(copy_to)
                               )
             else:
-                copy_from = os.path.join(script_templates, 'pipeline_template')
-                shutil.copytree(copy_from,
+                shutil.copytree(pipeline_templates,
                                 copy_to,
                                 ignore = shutil.ignore_patterns(*files_to_ignore)
                                )
                 #copySingleFiles(copy_from, copy_to, r'*')
                 # Copy sphinx-quickstart config files:
                 shutil.copytree(sphinx_configs,
-                                pipeline_dir_name,
+                                copy_to,
                                 ignore = shutil.ignore_patterns(*files_to_ignore)
                                )
                 # Rename all 'template' substrings:
