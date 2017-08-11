@@ -339,10 +339,10 @@ def main():
     # GitHub/packageable directory
 
     # For shutil.copytree functions, ignore the following files:
-    files_to_ignore = ['.dir_bash_history,',
-                          '__pycache__',
-                          '*.bak',
-                          'dummy*',
+    files_to_ignore = [r'.dir_bash_history,',
+                       r'__pycache__',
+                       r'*.bak',
+                       r'dummy*',
                       ]
 
     def projectTemplate(src, dst):
@@ -377,10 +377,13 @@ def main():
 
         files = []
         for f in os.listdir(src):
+            for arg in args:
+                if arg in f:
+                    files.extend([f])
             for i in files_to_ignore:
-                for arg in args:
-                    if arg in f and i not in f:
-                       files.extend([f])
+                if i in f:
+                    files.remove([f])
+        print(files)
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst
@@ -499,7 +502,7 @@ def main():
                         manuscript_dir,
                         r'*') #sphinx_files)
         copySingleFiles(sphinx_configs,
-                        pipeline_dir_name,
+                        pipeline_templates,
                         r'*') #sphinx_files)
         # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
