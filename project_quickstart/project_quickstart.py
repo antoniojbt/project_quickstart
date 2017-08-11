@@ -253,7 +253,7 @@ def main():
         # code/docs, report directory
         # and pipeline directory:
     sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
-    #sphinx_files = ['conf.py', 'Makefile', 'make.bat']
+    sphinx_files = ['conf.py', 'Makefile', 'make.bat']
 
     def createProject():
         if options['--project-name']:
@@ -382,12 +382,12 @@ def main():
                     files.extend([f])
                 else:
                     pass
-            for i in files_to_ignore:
-                for f in files:
-                    if i in f:
-                        files.remove([f])
-                    else:
-                        pass
+            #for i in files_to_ignore:
+            #    for f in files:
+            #        if i in f:
+            #            files.remove([f])
+            #        else:
+            #            pass
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst
@@ -491,8 +491,8 @@ def main():
         copySingleFiles(report_templates, manuscript_dir, r'rst')
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        r'\w+')
-                        #r'.py', r'.R', r'.ini', r'template')
+                        #r'\w+')
+                        r'.py', r'.R', r'.ini', r'template')
                                 # code_dir + 'project_template'
                                 # will become the user's
                                 # new_project/code/new_project directory 
@@ -504,10 +504,10 @@ def main():
         copySingleFiles(data_dir, project_dir, r'README_data')
         copySingleFiles(sphinx_configs,
                         manuscript_dir,
-                        r'\w+') #sphinx_files)
+                        *sphinx_files)
         copySingleFiles(sphinx_configs,
                         pipeline_templates,
-                        r'\w+') #sphinx_files)
+                        *sphinx_files)
         # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)
