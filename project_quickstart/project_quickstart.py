@@ -252,7 +252,7 @@ def main():
         # code/docs, report directory
         # and pipeline directory:
     sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
-    sphinx_files = ['conf.py', 'Makefile', 'make.bat']
+    #sphinx_files = ['conf.py', 'Makefile', 'make.bat']
 
     def createProject():
         if options['--project-name']:
@@ -339,17 +339,17 @@ def main():
 
     # For shutil.copytree functions, ignore the following files:
     files_to_ignore = ['.dir_bash*,',
-                       '*_pycache_*',
-                       '*.bak',
-                       'dummy*',
-                       ]
+                          '*_pycache_*',
+                          '*.bak',
+                          'dummy*'
+                      ]
 
     def projectTemplate(src, dst):
         '''
         Copy across project template files for
         a Python/GitHub/etc setup.
         Files {} are ignored.
-        '''.format(files_to_ignore)
+        '''.format(str(files_to_ignore))
 
         if os.path.exists(dst) and not options['--force']:
             print(docopt_error_msg)
@@ -363,7 +363,7 @@ def main():
         else:
             shutil.copytree(src,
                             dst,
-                            ignore = shutil.ignore_patterns(files_to_ignore)
+                            ignore = shutil.ignore_patterns(*files_to_ignore)
                             )
 
     # Copy across individual files outside of the 'templates' dir:
@@ -372,7 +372,7 @@ def main():
         Copies named files into the current working directory
         from a given directory excluding
         {}
-        '''.format(files_to_ignore)
+        '''.format(str(files_to_ignore))
 
         files = []
         for f in os.listdir(src):
@@ -382,7 +382,7 @@ def main():
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst,
-                         ignore = shutil.ignore_patterns(files_to_ignore)
+                         ignore = shutil.ignore_patterns(*files_to_ignore)
                          )
 
     # Replace all instances of template with 'name' from project_name as
@@ -460,14 +460,12 @@ def main():
                 copySingleFiles(copy_from, copy_to, r'*')
                 # Copy sphinx-quickstart config files:
                 copySingleFiles(sphinx_configs,
-                        pipeline_dir,
-                        sphinx_files)
+                                pipeline_dir_name,
+                                r'*')#sphinx_files)
                 # Rename all 'template' substrings:
                 renameTree(copy_to, 'template', pipeline_dir_name)
-                files_copied = []
                 print('Creating:', '\n',
                       copy_to)
-                      )
 
         else:
             print(docopt_error_msg)
@@ -494,10 +492,10 @@ def main():
         copySingleFiles(data_dir, project_dir, r'README_data')
         copySingleFiles(sphinx_configs,
                         manuscript_dir,
-                        sphinx_files)
+                        r'*') #sphinx_files)
         copySingleFiles(sphinx_configs,
-                        pipeline_dir,
-                        sphinx_files)
+                        pipeline_dir_name,
+                        r'*') #sphinx_files)
         # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)
@@ -506,10 +504,7 @@ def main():
     # R and py templates are single, standalone files that get renamed on the
     # go. --script-pipeline copies a directory with script, Sphinx, ini and rst
     # files which get renamed in function above.
-    if options['--script-python']
-              or options['--script-R']
-              or options['--script-pipeline']
-              and not options['--project-name']:
+    if options['--script-python'] or options['--script-R'] or options['--script-pipeline'] and not options['--project-name']:
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
