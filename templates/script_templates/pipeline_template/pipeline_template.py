@@ -179,11 +179,13 @@ def full():
 #    E.info("starting report build process from scratch")
 #    P.run_report(clean=True)
 
+# TO DO:
+# docopt and sysargv will conflict between script and Pipeline...
 # Finish and exit with docopt arguments:
-if __name__ == '__main__':
-    arguments = docopt(__doc__, version='xxx 0.1')
-    print(arguments)
-    sys.exit(main())
+#if __name__ == '__main__':
+#    arguments = docopt(__doc__, version='xxx 0.1')
+#    print(arguments)
+#    sys.exit(main())
 
-#if __name__ == "__main__":
-#    sys.exit(P.main(sys.argv))
+if __name__ == "__main__":
+    sys.exit(P.main(sys.argv))

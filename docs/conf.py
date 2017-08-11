@@ -120,8 +120,6 @@ def getVersionDir():
         print(str('version not found, the directories: ' +
                   version_dir +
                   '\n' +
-                  'or' +
-                  '\n' +
                   version_dir_2 +
                   'do not seem to exist' +
                   'version set to 0.1.0' +
@@ -160,6 +158,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
               #'sphinx.ext.imgconverter', # Allows handling of SVGs
+              #'sphinx.ext.inheritance_diagram',
               ]
 
 # Add any paths that contain templates here, relative to this directory.

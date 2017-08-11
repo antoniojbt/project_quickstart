@@ -36,6 +36,10 @@
 import os
 import sys
 
+import CGATPipelines.Pipeline as P
+import CGATPipelines
+
+
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
 try:
@@ -55,6 +59,25 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 # project_XXXX/docs/THIS_CONF.PY
 #sys.path.insert(0, os.path.abspath('../..'))
 #################
+
+
+################################################################
+# CGAT conf.py 
+#  XXXX/CGATPipelines/CGATPipelines/configuration/conf.py
+# Import pipeline configuration from pipeline.ini in the current
+# directory and the common one.
+
+# PATH were code for pipelines is stored
+pipelinesdir = os.path.dirname(CGATPipelines.__file__)
+
+# The default configuration file - 'inifile' is read by
+# sphinx-report.
+inifile = os.path.join(os.path.dirname(CGATPipelines.__file__),
+                       'configuration',
+                       'pipeline.ini')
+
+PARAMS = P.getParameters([inifile, "pipeline.ini"])
+################################################################
 
 
 #################
@@ -160,6 +183,16 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
               ]
+
+################################################################
+# CGAT conf.py 
+#  XXXX/CGATPipelines/CGATPipelines/configuration/conf.py
+if P.CONFIG.has_section('intersphinx'):
+    intersphinx_mapping = dict(
+        [(x, (os.path.abspath(y), None))
+         for x, y in P.CONFIG.items('intersphinx')])
+################################################################
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

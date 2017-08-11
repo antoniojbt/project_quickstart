@@ -14,15 +14,17 @@ from a basic sphinx-quickstart run:
 
 These were modified to include rst substitution variables such as project_name and author_name.
 
-Templates such as a manuscript and cover letter are also included.
+These will also be copied if running project_quickstart --script-pipeline=NAME
+Templates such as a manuscript and cover letter are also included, or some
+equivalents for reporting in the pipeline_NAME directory.
 
 Templates and config files are from a basic setup to get started faster. 
-You can ignore, delete or regenerate them. 
-Use sphinx-quickstart, pandoc, or other renderers.
+You can ignore, delete or regenerate them. Use sphinx-quickstart, pandoc, or other renderers.
 
 There is a template for rst substitution variables as well. Manual checking and editing 
-are needed of course.
+are needed of course:
 
+index.rst
 include_links.rst
 report_substitution_vars.rst
 rst_substitution_instructions.rst
@@ -41,8 +43,9 @@ usually:
 
 - project_XXXX/code/docs for the code documentation
 - project_XXXX/documents_and_manuscript/ for the manuscript preparation
+- project_XXXX/results/pipeline_XXXX/report_pipeline_XXX
 
-index.rst (or other rst file) can be used as the master document, simply
-include all file names to be rendered.
+index.rst (or other rst file) is used as the master document, simply
+include all file names to be rendered there.
 
 
