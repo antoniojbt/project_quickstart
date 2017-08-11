@@ -381,8 +381,7 @@ def main():
                     files.extend([f])
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
-                         dst,
-                         ignore = shutil.ignore_patterns(*files_to_ignore)
+                         dst
                          )
 
     # Replace all instances of template with 'name' from project_name as
@@ -457,11 +456,16 @@ def main():
                               )
             else:
                 copy_from = os.path.join(script_templates, 'pipeline_template')
-                copySingleFiles(copy_from, copy_to, r'*')
+                shutil.copytree(copy_from,
+                                copy_to,
+                                ignore = shutil.ignore_patterns(*files_to_ignore)
+                               )
+                #copySingleFiles(copy_from, copy_to, r'*')
                 # Copy sphinx-quickstart config files:
-                copySingleFiles(sphinx_configs,
+                shutil.copytree(sphinx_configs
                                 pipeline_dir_name,
-                                r'*')#sphinx_files)
+                                ignore = shutil.ignore_patterns(*files_to_ignore
+                               )
                 # Rename all 'template' substrings:
                 renameTree(copy_to, 'template', pipeline_dir_name)
                 print('Creating:', '\n',
@@ -477,9 +481,12 @@ def main():
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(py_package_template, code_dir)
         copySingleFiles(report_templates, manuscript_dir, r'rst')
-        copySingleFiles(script_templates,
+        shutil.copytree(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        r'*')
+                        ignore = shutil.ignore_patterns(*files_to_ignore)
+        #copySingleFiles(script_templates,
+        #                os.path.join(code_dir, 'project_template'),
+        #                r'*')
                         #r'.py', r'.R', r'.ini', r'template')
                                 # code_dir + 'project_template'
                                 # will become the user's
