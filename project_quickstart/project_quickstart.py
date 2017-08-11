@@ -380,10 +380,14 @@ def main():
             for arg in args:
                 if arg in f:
                     files.extend([f])
+                else:
+                    pass
             for i in files_to_ignore:
-                if i in f:
-                    files.remove([f])
-        print(files)
+                for f in files:
+                    if i in f:
+                        files.remove([f])
+                    else:
+                        pass
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst
@@ -487,7 +491,7 @@ def main():
         copySingleFiles(report_templates, manuscript_dir, r'rst')
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        r'*')
+                        r'\w+')
                         #r'.py', r'.R', r'.ini', r'template')
                                 # code_dir + 'project_template'
                                 # will become the user's
@@ -500,10 +504,10 @@ def main():
         copySingleFiles(data_dir, project_dir, r'README_data')
         copySingleFiles(sphinx_configs,
                         manuscript_dir,
-                        r'*') #sphinx_files)
+                        r'\w+') #sphinx_files)
         copySingleFiles(sphinx_configs,
                         pipeline_templates,
-                        r'*') #sphinx_files)
+                        r'\w+') #sphinx_files)
         # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)

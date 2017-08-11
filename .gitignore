@@ -1,3 +1,12 @@
+# Symlinks:
+templates/report_templates/Makefile
+templates/report_templates/make.bat
+templates/report_templates/conf.py
+
+templates/script_templates/pipeline_template/make.bat
+templates/script_templates/pipeline_template/Makefile
+templates/script_templates/pipeline_template/conf.py
+
 # Mac OS X and others:
 *.tar
 *.gz
@@ -13,7 +22,7 @@
 # Compiled python modules:
 *.pyc
 
-# Ptyhon packaging, setuptools, eggs, etc.:
+# Python packaging, setuptools, eggs, etc.:
 MANIFEST
 PKG-INFO
 *.egg-info
