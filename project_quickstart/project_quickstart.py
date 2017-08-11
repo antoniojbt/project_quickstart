@@ -253,7 +253,12 @@ def main():
         # code/docs, report directory
         # and pipeline directory:
     sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
-    sphinx_files = ['conf.py', 'Makefile', 'make.bat']
+    sphinx_files = ['conf.py',
+                    'Makefile',
+                    'make.bat',
+                    'include_links.rst',
+                    'index.rst',
+                    ]
 
     def createProject():
         if options['--project-name']:
@@ -484,8 +489,11 @@ def main():
 
     # Call functions according to option given:
     if options['--project-name']:
+        # Create the skeleton:
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
+        # Copy the code packaging structure and templates:
         projectTemplate(py_package_template, code_dir)
+        # Copy script templates to code/project_XXXX/project_XXXX/ :
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
                         r'.py', r'.R')
@@ -493,22 +501,32 @@ def main():
                                 # will become the user's
                                 # new_project/code/new_project directory 
                                 # where scripts can go in 
-        shutil.copytree(pipeline_dir,
-                        os.path.join(code_dir, 'project_template'),
+        # Copy a first pipeline directory with templates on project creation
+        # This will have the project name
+        # Pipelines created with --script-pipeline are given a different name held
+        # in pipeline_dir_name:
+        shutil.copytree(pipeline_templates,
+                        os.path.join(code_dir,
+                                     'project_template',
+                                     'pipeline_template'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
                         )
+        # Copy sphinx templates to this pipeline directory:
+        copySingleFiles(sphinx_configs,
+                        os.path.join(code_dir,
+                                     'project_template',
+                                     'pipeline_template'),
+                        *sphinx_files)
+        # Copy the report templates to the manuscript directory:
         copySingleFiles(report_templates, manuscript_dir, r'rst')
-
+        # Copy sphinx templates to this manuscript directory:
+        copySingleFiles(sphinx_configs,
+                        manuscript_dir,
+                        *sphinx_files)
         # Add any additional files, like rsync command example:
         copySingleFiles(template_dir, project_dir, r'rsync')
         copySingleFiles(template_dir, project_dir, r'TO_DO')
         copySingleFiles(data_dir, project_dir, r'README_data')
-        copySingleFiles(sphinx_configs,
-                        manuscript_dir,
-                        *sphinx_files)
-        copySingleFiles(sphinx_configs,
-                        pipeline_templates,
-                        *sphinx_files)
         # Rename 'template' with the project name given:
         renameTree(project_dir, 'project_template', project_name)
         renameTree(project_dir, 'template', project_name)
