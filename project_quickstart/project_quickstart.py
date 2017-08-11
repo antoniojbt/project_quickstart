@@ -338,8 +338,8 @@ def main():
     # GitHub/packageable directory
 
     # For shutil.copytree functions, ignore the following files:
-    files_to_ignore = ['.dir_bash*,',
-                          '*_pycache_*',
+    files_to_ignore = ['.dir_bash_history,',
+                          '__pycache__',
                           '*.bak',
                           'dummy*',
                       ]
@@ -376,9 +376,10 @@ def main():
 
         files = []
         for f in os.listdir(src):
-            for arg in args:
-                if arg in f:
-                    files.extend([f])
+            for i in files_to_ignore:
+                for arg in args:
+                    if arg in f and i not in f:
+                       files.extend([f])
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst
@@ -481,13 +482,9 @@ def main():
         code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
         projectTemplate(py_package_template, code_dir)
         copySingleFiles(report_templates, manuscript_dir, r'rst')
-        shutil.copytree(script_templates,
+        copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
-                        ignore = shutil.ignore_patterns(*files_to_ignore)
-                        )
-        #copySingleFiles(script_templates,
-        #                os.path.join(code_dir, 'project_template'),
-        #                r'*')
+                        r'*')
                         #r'.py', r'.R', r'.ini', r'template')
                                 # code_dir + 'project_template'
                                 # will become the user's
