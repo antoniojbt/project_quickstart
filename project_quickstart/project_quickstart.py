@@ -339,10 +339,10 @@ def main():
     # GitHub/packageable directory
 
     # For shutil.copytree functions, ignore the following files:
-    files_to_ignore = [r'.dir_bash_history,',
-                       r'__pycache__',
-                       r'*.bak',
-                       r'dummy*',
+    files_to_ignore = ['dir_bash_history',
+                       '__pycache__',
+                       '*.bak',
+                       'dummy*',
                       ]
 
     def projectTemplate(src, dst):
