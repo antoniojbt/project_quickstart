@@ -205,6 +205,7 @@ def main():
                     and sphinx-quickstart modified conf.py and Makefile
                     files.''')
             pipeline_dir_name = str(options["--script-pipeline"]).strip('[]').strip("''")
+            pipeline_dir_name = str('pipeline_{}').format(pipeline_dir_name)
             # All files within the directory
             # project_quickstart/templates/script_templates/pipeline_template
             # plus project_quickstart/templates/script_templates/pipeline_template.py
@@ -212,7 +213,8 @@ def main():
 
         elif options['--script-pipeline'] and len(options['--script-pipeline']) == 0:
             print(docopt_error_msg)
-            print(''' You need to provide a pipeline name to generate "pipeline_NAME.py" ''')
+            print(''' You need to provide a pipeline name to generate the
+                    directory "pipeline_NAME" ''')
             sys.exit()
 
         # Exit if options not given:
@@ -479,7 +481,7 @@ def main():
                                 *sphinx_files)
                 # Rename all 'template' substrings:
                 renameTree(copy_to, 'template', pipeline_dir_name)
-                print('Creating:', '\n',
+                print('Created:', '\n',
                       copy_to)
 
         else:
