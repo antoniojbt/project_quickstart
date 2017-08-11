@@ -338,11 +338,11 @@ def main():
     # GitHub/packageable directory
 
     # For shutil.copytree functions, ignore the following files:
-    files_to_ignore = str('.dir_bash*,',
+    files_to_ignore = ['.dir_bash*,',
                           '*_pycache_*',
                           '*.bak',
-                          'dummy*'
-                         )
+                          'dummy*',
+                      ]
 
     def projectTemplate(src, dst):
         '''
@@ -363,7 +363,7 @@ def main():
         else:
             shutil.copytree(src,
                             dst,
-                            ignore = shutil.ignore_patterns(files_to_ignore)
+                            ignore = shutil.ignore_patterns(*files_to_ignore)
                             )
 
     # Copy across individual files outside of the 'templates' dir:
@@ -382,7 +382,7 @@ def main():
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst,
-                         ignore = shutil.ignore_patterns(files_to_ignore)
+                         ignore = shutil.ignore_patterns(*files_to_ignore)
                          )
 
     # Replace all instances of template with 'name' from project_name as
