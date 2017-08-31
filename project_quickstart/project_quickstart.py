@@ -276,8 +276,7 @@ def main():
         # basic error messages have been set:
         if options['--project-name']:
             # Create the skeleton:
-            code_dir, manuscript_dir, data_dir, results_dir, tree_dir =
-            pQ.createProject()
+            code_dir, manuscript_dir, data_dir, results_dir, tree_dir = pQ.createProject()
             # Copy the code packaging structure and templates:
             pQ.projectTemplate(py_package_template, code_dir)
             # Copy script templates to code/project_XXXX/project_XXXX/ :
@@ -328,10 +327,10 @@ def main():
                 and not options['--project-name']):
             pQ.scriptTemplate()
 
-        # Handle exceptions:
-        except docopt.DocoptExit:
-            print(docopt_error_msg)
-            raise
+    # Handle exceptions:
+    except docopt.DocoptExit:
+        print(docopt_error_msg)
+        raise
 
         # Print a welcome message if successful:
         if options['--project-name']:

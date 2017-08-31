@@ -30,6 +30,12 @@ except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
 # Global variable for configuration file ('.ini'):
 CONFIG = configparser.ConfigParser(allow_no_value = True)
+
+# Modules not in core library:
+import docopt
+
+# Define options according to docopt:
+options = docopt.docopt(__doc__, version = version)
 #################
 
 
