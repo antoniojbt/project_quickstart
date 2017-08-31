@@ -272,124 +272,124 @@ def main():
                   '--script-R, --script-python or --script-pipeline.')
             sys.exit()
 
-    # Call functions according to option given after locations, file names and
-    # basic error messages have been set:
-    if options['--project-name']:
-        # Create the skeleton:
-        code_dir, manuscript_dir, data_dir, results_dir, tree_dir =
-        pQ.createProject()
-        # Copy the code packaging structure and templates:
-        pQ.projectTemplate(py_package_template, code_dir)
-        # Copy script templates to code/project_XXXX/project_XXXX/ :
-        pQ.copySingleFiles(script_templates,
-                        os.path.join(code_dir, 'project_template'),
-                        r'.py', r'.R')
-                                # code_dir + 'project_template'
-                                # will become the user's
-                                # new_project/code/new_project directory 
-                                # where scripts can go in 
-        # Copy a first pipeline directory with templates on project creation
-        # This will have the project name
-        # Pipelines created with --script-pipeline are given a different name held
-        # in pipeline_dir_name:
-        shutil.copytree(pipeline_templates,
-                        os.path.join(code_dir,
-                                     'project_template',
-                                     'pipeline_template'),
-                        ignore = shutil.ignore_patterns(*files_to_ignore)
-                        )
-        # Copy sphinx templates to this pipeline directory:
-        pQ.copySingleFiles(sphinx_configs,
-                        os.path.join(code_dir,
-                                     'project_template',
-                                     'pipeline_template'),
-                        *sphinx_files)
-        # Copy the report templates to the manuscript directory:
-        pQ.copySingleFiles(report_templates, manuscript_dir, r'rst')
-        # Copy sphinx templates to this manuscript directory:
-        pQ.copySingleFiles(sphinx_configs,
-                        manuscript_dir,
-                        *sphinx_files)
-        # Add any additional files, like rsync command example:
-        pQ.copySingleFiles(template_dir, project_dir, r'rsync')
-        pQ.copySingleFiles(template_dir, project_dir, r'TO_DO')
-        pQ.copySingleFiles(data_dir, project_dir, r'README_data')
-        # Rename 'template' with the project name given:
-        pQ.renameTree(project_dir, 'project_template', project_name)
-        pQ.renameTree(project_dir, 'template', project_name)
+        # Call functions according to option given after locations, file names and
+        # basic error messages have been set:
+        if options['--project-name']:
+            # Create the skeleton:
+            code_dir, manuscript_dir, data_dir, results_dir, tree_dir =
+            pQ.createProject()
+            # Copy the code packaging structure and templates:
+            pQ.projectTemplate(py_package_template, code_dir)
+            # Copy script templates to code/project_XXXX/project_XXXX/ :
+            pQ.copySingleFiles(script_templates,
+                            os.path.join(code_dir, 'project_template'),
+                            r'.py', r'.R')
+                                    # code_dir + 'project_template'
+                                    # will become the user's
+                                    # new_project/code/new_project directory 
+                                    # where scripts can go in 
+            # Copy a first pipeline directory with templates on project creation
+            # This will have the project name
+            # Pipelines created with --script-pipeline are given a different name held
+            # in pipeline_dir_name:
+            shutil.copytree(pipeline_templates,
+                            os.path.join(code_dir,
+                                         'project_template',
+                                         'pipeline_template'),
+                            ignore = shutil.ignore_patterns(*files_to_ignore)
+                            )
+            # Copy sphinx templates to this pipeline directory:
+            pQ.copySingleFiles(sphinx_configs,
+                            os.path.join(code_dir,
+                                         'project_template',
+                                         'pipeline_template'),
+                            *sphinx_files)
+            # Copy the report templates to the manuscript directory:
+            pQ.copySingleFiles(report_templates, manuscript_dir, r'rst')
+            # Copy sphinx templates to this manuscript directory:
+            pQ.copySingleFiles(sphinx_configs,
+                            manuscript_dir,
+                            *sphinx_files)
+            # Add any additional files, like rsync command example:
+            pQ.copySingleFiles(template_dir, project_dir, r'rsync')
+            pQ.copySingleFiles(template_dir, project_dir, r'TO_DO')
+            pQ.copySingleFiles(data_dir, project_dir, r'README_data')
+            # Rename 'template' with the project name given:
+            pQ.renameTree(project_dir, 'project_template', project_name)
+            pQ.renameTree(project_dir, 'template', project_name)
 
-    # Create a script template copy
-    # R and py templates are single, standalone files that get renamed on the
-    # go. --script-pipeline copies a directory with script, Sphinx, ini and rst
-    # files which get renamed in function above.
-    if (options['--script-python']
-            or options['--script-R']
-            or options['--script-pipeline']
-            and not options['--project-name']):
-        pQ.scriptTemplate()
+        # Create a script template copy
+        # R and py templates are single, standalone files that get renamed on the
+        # go. --script-pipeline copies a directory with script, Sphinx, ini and rst
+        # files which get renamed in function above.
+        if (options['--script-python']
+                or options['--script-R']
+                or options['--script-pipeline']
+                and not options['--project-name']):
+            pQ.scriptTemplate()
 
-    # Handle exceptions:
-    except docopt.DocoptExit:
-        print(docopt_error_msg)
-        raise
+        # Handle exceptions:
+        except docopt.DocoptExit:
+            print(docopt_error_msg)
+            raise
 
-    # Print a welcome message if successful:
-    if options['--project-name']:
-        end_msg = str( '\n' +
-                   """ Done, welcome to {0}!
+        # Print a welcome message if successful:
+        if options['--project-name']:
+            end_msg = str( '\n' +
+                       """ Done, welcome to {0}!
 
-        The folder structure and files have been successfully copied to
-        {1}
+            The folder structure and files have been successfully copied to
+            {1}
 
-        The folder structure is
-        {2}
+            The folder structure is
+            {2}
 
-        Remember to back up code, data and manuscript directories (or your
-        equivalents).
+            Remember to back up code, data and manuscript directories (or your
+            equivalents).
 
-        The directory
-        {3}
-        can be uploaded to a version control system (file templates are for GitHub).
-        You could link it to Travis CI, Zenodo and ReadtheDocs for example.
-        There are some notes and reminders within the files copied over.
-        You may want to change the name 'code' to something more suitable when
-        uploading, freezing, packaging, etc.
+            The directory
+            {3}
+            can be uploaded to a version control system (file templates are for GitHub).
+            You could link it to Travis CI, Zenodo and ReadtheDocs for example.
+            There are some notes and reminders within the files copied over.
+            You may want to change the name 'code' to something more suitable when
+            uploading, freezing, packaging, etc.
 
-        Script templates are in
-        {3}/{0}
+            Script templates are in
+            {3}/{0}
 
-        The structure largely follows Python packaging conventions.
-        You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
-        in here.
+            The structure largely follows Python packaging conventions.
+            You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
+            in here.
 
-        You can work and save results in
-        {6}
+            You can work and save results in
+            {6}
 
-        Install Sphinx to render your rst documents in
-        {4}
+            Install Sphinx to render your rst documents in
+            {4}
 
-        Basic rst template files have been generated already.
-        Install and use sphinx-quickstart if you want a more complete skeleton.
+            Basic rst template files have been generated already.
+            Install and use sphinx-quickstart if you want a more complete skeleton.
 
-        Feel free to raise issues, fork or contribute at:
+            Feel free to raise issues, fork or contribute at:
 
-        https://github.com/AntonioJBT/project_quickstart
+            https://github.com/AntonioJBT/project_quickstart
 
-        Have fun!
+            Have fun!
 
-        """.format(project_root,
-                   project_dir,
-                   tree_dir,
-                   code_dir,
-                   manuscript_dir,
-                   data_dir,
-                   results_dir
-                   )
-        )
+            """.format(project_root,
+                       project_dir,
+                       tree_dir,
+                       code_dir,
+                       manuscript_dir,
+                       data_dir,
+                       results_dir
+                       )
+            )
 
-        print(end_msg)
+            print(end_msg)
 
-    return
+        return
 
 if __name__ == '__main__':
     # if using docopt:
