@@ -408,12 +408,10 @@ def main():
         project.
         '''
         for dirpath, dirname, filename in os.walk(full_path):
-            print(dirpath, dirname, filename)
             for d in dirname:
                 for f in os.listdir(os.path.join(dirpath, d)):
                     d = os.path.join(dirpath, d)
                     if old_substring in f:
-                        print(f)
                         os.rename(os.path.join(d, f),
                                   os.path.join(d, f.replace(old_substring,
                                         '{}').format(new_substring))
@@ -421,7 +419,6 @@ def main():
 
             for d in dirname:
                 if old_substring in d:
-                    print(d)
                     os.rename(os.path.join(str(dirpath), d),
                               os.path.join(str(dirpath), d.replace(
                                   old_substring, '{}').format(new_substring))
@@ -483,9 +480,10 @@ def main():
                                 copy_to,
                                 *sphinx_files)
                 # Rename all 'template' substrings:
-                renameTree(os.path.join(copy_to, pipeline_dir_name),
+                pipeline_name = str(pipeline_dir_name).strip('pipeline_')
+                renameTree(copy_to,
                            'template',
-                           pipeline_dir_name
+                           pipeline_name
                            )
                 print('Created in:', '\n',
                       copy_to)
