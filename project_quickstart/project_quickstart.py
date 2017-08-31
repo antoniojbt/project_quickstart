@@ -423,6 +423,13 @@ def main():
                               os.path.join(str(dirpath), d.replace(
                                   old_substring, '{}').format(new_substring))
                               )
+            # Files in the root dir called don't get renamed, run here:     
+            for f in os.listdir(dirpath):
+                if old_substring in f:
+                    os.rename(os.path.join(dirpath, f),
+                              os.path.join(dirpath, f.replace(old_substring,
+                                    '{}').format(new_substring))
+                              )
 
     # Make single copies of script templates as standalone function:
     def scriptTemplate():
