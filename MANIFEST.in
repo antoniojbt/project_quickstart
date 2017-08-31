@@ -77,6 +77,8 @@ exclude templates/project_template/scripts/.dir_bash_history
 exclude templates/project_template/tests/.dir_bash_history
 exclude templates/project_template/project_template/.dir_bash_history
 recursive-exclude docs *.pdf
+recursive-exclude docs *.html
+recursive-exclude project_quickstart *.refactor
 
 # Extensions to include:
 #include *.pyxbld
