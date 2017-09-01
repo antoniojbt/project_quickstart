@@ -248,7 +248,6 @@ def main():
     report_templates = os.path.join(template_dir, 'report_templates')
     script_templates = os.path.join(template_dir, 'script_templates')
     pipeline_templates = os.path.join(script_templates,'pipeline_template')
-    pipeline_configuration = os.path.join(pipeline_templates, 'configuration_pipeline_template')
 
     # Modified sphinx-quickstart templates only live in: 
         # templates/project_template/docs/
@@ -390,12 +389,7 @@ def main():
                     files.extend([f])
                 else:
                     pass
-            #for i in files_to_ignore:
-            #    for f in files:
-            #        if i in f:
-            #            files.remove([f])
-            #        else:
-            #            pass
+
         for f in map(str, files):
             shutil.copy2(os.path.join(src, f),
                          dst
@@ -485,7 +479,7 @@ def main():
                                )
                 # Copy sphinx-quickstart config files:
                 copySingleFiles(sphinx_configs,
-                                pipeline_configuration,
+                                os.path.join(copy_to, 'configuration_pipeline_template'),
                                 *sphinx_files)
                 # Rename all 'template' substrings:
                 pipeline_name = str(pipeline_dir_name).strip('pipeline_')
@@ -529,7 +523,8 @@ def main():
         copySingleFiles(sphinx_configs,
                         os.path.join(code_dir,
                                      'project_template',
-                                     'pipeline_template'),
+                                     'pipeline_template',
+                                     'configuration_pipeline_template'),
                         *sphinx_files)
         # Copy the report templates to the manuscript directory:
         copySingleFiles(report_templates, manuscript_dir, r'rst')
