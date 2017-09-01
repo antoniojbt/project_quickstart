@@ -248,6 +248,7 @@ def main():
     report_templates = os.path.join(template_dir, 'report_templates')
     script_templates = os.path.join(template_dir, 'script_templates')
     pipeline_templates = os.path.join(script_templates,'pipeline_template')
+    pipeline_configuration = os.path.join(pipeline_templates, 'configuration_pipeline_template')
 
     # Modified sphinx-quickstart templates only live in: 
         # templates/project_template/docs/
@@ -484,7 +485,7 @@ def main():
                                )
                 # Copy sphinx-quickstart config files:
                 copySingleFiles(sphinx_configs,
-                                copy_to,
+                                pipeline_configuration,
                                 *sphinx_files)
                 # Rename all 'template' substrings:
                 pipeline_name = str(pipeline_dir_name).strip('pipeline_')
