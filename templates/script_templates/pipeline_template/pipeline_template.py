@@ -100,15 +100,33 @@ import sys
 import os
 import sqlite3
 
-# TO DO: check CGAT_core and how to import here:
+# Check CGAT_core and how to import here:
 import CGAT.Experiment as E
 import CGATPipelines.Pipeline as P
 
-# load options from the config file
-PARAMS = P.getParameters(
-    ["%s/pipeline.ini" % os.path.splitext(__file__)[0],
-     "../pipeline.ini",
-     "pipeline.ini"])
+# Get pipeline.ini file:
+def getINI():
+    path = os.path.splitext(__file__)[0]
+    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
+    f_count = 0
+    for path in paths:
+        if os.path.exists(path):
+            for f in os.listdir(path):
+                if (f.endswith('.ini') and f.startswith('pipeline')):
+                    f_count += 1
+                    INI_file = f
+
+    if f_count != 1:
+        raise ValueError('''No pipeline ini file found or more than one in the
+                            directories:
+                            {}
+                        '''.format(paths)
+                        )
+    return(INI_file)
+
+# Load options from the config file
+INI_file = getINI()
+PARAMS = P.getParameters([INI_file])
 
 # -----------------------------------------------
 # Utility functions
@@ -133,14 +151,14 @@ def connect():
 
 # ---------------------------------------------------
 # Specific pipeline tasks
-@transform(("pipeline.ini", "conf.py"),
+@transform((INI_file, "conf.py"),
            regex("(.*)\.(.*)"),
            r"\1.counts")
 def countWords(infile, outfile):
     '''count the number of words in the pipeline configuration files.'''
 
     # the command line statement we want to execute
-    statement = '''awk 'BEGIN { printf("word\\tfreq\\n"); } 
+    statement = '''awk 'BEGIN { printf("word\\tfreq\\n"); }
     {for (i = 1; i <= NF; i++) freq[$i]++}
     END { for (word in freq) printf "%%s\\t%%d\\n", word, freq[word] }'
     < %(infile)s > %(outfile)s'''

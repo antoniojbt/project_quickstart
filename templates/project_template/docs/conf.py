@@ -136,8 +136,12 @@ def getVersionDir():
         version = version.set_version()
     elif os.path.exists(version_dir_2):
         sys.path.insert(0, version_dir_2)
-        import version
-        version = version.set_version()
+        try:
+            import version
+            version = version.set_version()
+        except ImportError:
+            print('No module version found, setting version to 0.1.0')
+            version = '0.1.0'
     else:
         version = '0.1.0'
         print(str('version not found, the directories: ' +

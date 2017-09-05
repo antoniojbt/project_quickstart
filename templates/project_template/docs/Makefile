@@ -8,7 +8,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = project_quickstart
+SPHINXPROJ    = super_project
 SOURCEDIR     = .
 BUILDDIR      = _build
 ########
@@ -75,5 +75,4 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 ########
-
 
