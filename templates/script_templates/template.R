@@ -1,65 +1,90 @@
-#############################################
-# xxx.R - for xxx
+######################
+# R script to run with docopt for command line options:
+'
+script_name
+===========
 
-# Author: 
-# Date: 
-
-#Purpose
-#=======
-
-#Methods
-#=======
-
-#Usage
-#=====
-
-#To use type::
-#    xxx.R [options] [arguments]
-#    xxx.R --help
-
-#Options
-#=======
-
-#-I    input file name.
-#-S    output file name.
-#-L    log file name.
+Author: |author_names| 
+Release: |version|
+Date: |today|
 
 
-# Input
-# Output
+Purpose
+=======
 
-# Use docopt, see
-#https://github.com/docopt/docopt.R
-
-#############################################
+|description|
 
 
-#############################################
+Usage and options
+=================
+
+These are based on docopt_ for R:
+
+https://github.com/docopt/docopt.R
+https://cran.r-project.org/web/packages/docopt/index.html
+
+
+Usage:
+       script_name [--main-method]
+       script_name [-I FILE]
+       script_name [-O FILE]
+       script_name [-h | --help]
+       script_name [-V | --version]
+       script_name [-f --force]
+       script_name [-L | --log]
+
+Options:
+    -I             Input file name.
+    -O             Output file name.
+    -h --help      Show this screen
+    -V --version   Show version
+    -f --force     Force overwrite
+    -L --log       Log file name.
+
+
+Input: 
+
+
+Output:
+
+
+Requirements:
+
+
+Documentation
+=============
+
+    For more information see:
+
+    |url|
+
+' -> doc
+
+# Print docopt options and messages:
+library(docopt, quietly = TRUE)
+# Retrieve the command-line arguments:
+opt <- docopt(doc, version = 0.1)
+# See:
+# https://cran.r-project.org/web/packages/docopt/docopt.pdf
+# https://www.slideshare.net/EdwindeJonge1/docopt-user2014
+# http://rgrannell1.github.io/blog/2014/08/04/command-line-interfaces-in-r/
+# docopt(doc, args = commandArgs(TRUE), name = NULL, help = TRUE,
+# version = NULL, strict = FALSE, strip_names = !strict,
+# quoted_args = !strict)
+
+# Print to screen:
+str(opt)
+######################
+
+
+######################
 # Logging
-# TO DO: move to a separate script
+# This can be taken care of by CGAT Experiment.py if running as a pipeline.
+# Otherwise there seem to be few good alternatives. A workaround is this code:
+# logging.R
+# In the script_templates dir of project_quickstart.
+# It does not run on it own though, needs copy/pasting for now.
 
-##Set working directory and file locations and names of required inputs:
-
-# Working directory:
-# setwd('')
-
-#Direct output to file as well as printing to screen (plots aren't redirected though, each done separately). 
-#Input is not echoed to the output file either.
-
-output_file <- file(paste("R_session_output_",Sys.Date(),".txt", sep=""))
-output_file
-sink(output_file, append=TRUE, split=TRUE, type = c("output", "message"))
-
-#If the script can run from end to end, use source() with echo to execute and save all input 
-#to the output file (and not truncate 150+ character lines):
-#source(script_file, echo=TRUE, max.deparse.length=10000)
-
-#Record start of session and locations:
-Sys.time()
-print(paste('Working directory :', getwd()))
-getwd()
-
-##TO DO extract parameters:
 
 # Re-load a previous R session, data and objects:
 #load('R_session_saved_image_order_and_match.RData', verbose=T)
@@ -67,51 +92,60 @@ getwd()
 # Filename to save current R session, data and objects at the end:
 R_session_saved_image <- paste('R_session_saved_image_','.RData', sep='')
 R_session_saved_image
+######################
 
-# Run with cmd arguments:
-args <- commandArgs(trailingOnly = TRUE)
-#############################################
 
-#############################
+######################
 # Import libraries:
-library(ggplot2)
 library(data.table)
-library(gridExtra)
-#############################
+######################
 
 
-#############################################
-# Set-up arguments:
+######################
+# TO DO: change to docopt:
+#Set-up arguments:
 
-xxx_var = as.character(args[1])
-#############################################
+some_var <- as.character(args[1])
+another_var <- as.numeric(args[2])
+######################
 
 
 
-#############################################
+######################
 # Read files:
-xxx_file <- fread(snpspos, sep = ' ', header = TRUE, stringsAsFactors = FALSE)
-head()
-dim()
-#############################################
+input_file <- fread(input_file, sep = ' ', header = TRUE, stringsAsFactors = FALSE)
+head(input_file)
+tail(input_file)
+dim(input_file)
+str(input_file)
+summary(input_file)
+class(input_file)
+######################
 
 
+######################
+# Get one of the example data sets in R:
+data()
 
-#############################################
-# Plot:
-png(paste('qqplot_', SNP_file, '.png', sep = ''))
-plot(me)
+######################
+
+
+######################
+# Plot here or use a separate plot_template.R script (preferable if processing
+# large datasets, process first, save, plot separately):
+plot_name <- svg(paste(plot_name, '.svg', sep = ''))
+plot(plot_name)
 dev.off()
-#############################################
+######################
 
 
-#############################################
+######################
 ## Save some text:
-cat(file = 'xxx.txt', xxx_var, "\t", xxx_var, '\n', append = TRUE)
-#############################################
+cat(file <- output_file, some_var, '\t', another_var, '\n', append = TRUE)
+######################
 
 
-#############################################
+######################
 # The end:
 # Remove objects that are not necessary to save:
 # ls()
@@ -127,5 +161,5 @@ save.image(file=R_session_saved_image, compress='gzip')
 sessionInfo()
 q()
 
-# Next: run the script for xxx
-#############################
+# Next: run the script for xxx step
+######################

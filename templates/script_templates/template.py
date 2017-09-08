@@ -2,7 +2,7 @@
 script_name
 ===========
 
-:Author: |author_name|
+:Author: |author_names|
 :Release: |version|
 :Date: |today|
 
@@ -40,6 +40,16 @@ Options:
     -f --force     Force overwrite
     -L --log       Log file name.
 
+
+Input:
+
+
+Output:
+
+
+Requirements:
+
+
 Documentation
 =============
 
@@ -49,6 +59,35 @@ Documentation
 
 '''
 ##############
+# Get all the modules needed
+# System:
+import os
+import sys
+import glob
+
+# Options and help:
+from docopt import docopt
+
+# Data science:
+import pandas as pd
+import numpy as np
+
+# required to make iteritems python2 and python3 compatible
+from builtins import dict
+
+# Try getting CGAT:
+try:
+    import CGAT.IOTools as IOTools
+    import CGATPipeline.Pipeline as P
+    import CGATPipeline.Experiment as E
+
+except ImportError:
+    print("Couldn't import CGAT modules")
+    raise
+##############
+
+##############
+#####
 # Some basic Python reminders
 # Slicing/indexing excludes the last number
 # Lists are 0 based
@@ -60,11 +99,9 @@ Documentation
 # Functional programming
 # OOP
 # regex
+#####
 
-import sys
-import os
-import docopt
-
+#####
 # Basic function structure:
 def my_func():
     '''
@@ -73,24 +110,27 @@ def my_func():
 
     # Make sure the setup is correct for this function:
     assert True == True
+    print('Do something')
+    x = 1
+    OK = x * 10
+    return(OK)
+#####
 
-    # do something
-
-    return
-
+#####
 # Handle errors:
 try:
-    pass #something
+    print('Pass something')
 except TypeError: #some error to catch
     print('Wrong type of variable') #some helpful message or other option
-    raise # Raise the systeme error anyway
+    raise # Raise the system error anyway
 except: # 'except:' by itself will catch everything, potentially disastrous
     print("Unexpected error:", sys.exc_info()[0])
     raise # even if caught raise the error
 finally:
     print('Did this work?')#do this regardless of the above, also dangerous
+#####
 
-
+#####
 # Else/if basic structure:
 x = 5
 if x > 1:
@@ -99,7 +139,9 @@ elif x < 1:
     print('Negative')
 else:
     print('Zero')
+#####
 
+#####
 # Basic OOP class structure:
 # Form e.g.: https://www.tutorialspoint.com/python/python_classes_objects.htm
 class SuperHero:
@@ -128,66 +170,13 @@ super2 = SuperHero("AveJoe", 'Common Sense')
 super1.displaySuperHero()
 super2.displaySuperHero()
 print("Total SuperHero saves %d" % SuperHero.SuperSaves)
-
+#####
 ##############
 
-
-
-
 ##############
-# Get all the modules needed
-
-# System:
-import os
-import sys
-import glob
-import imp
-# Options and help:
-from docopt import docopt
-
-# Data science:
-import pandas as pd
-import numpy as np
-
-# required to make iteritems python2 and python3 compatible
-from builtins import dict
-
-# Try getting CGAT:
-try:
-    import CGAT.IOTools as IOTools
-    import CGATPipeline.Pipeline as P
-    import CGATPipeline.Experiment as E
-
-except ImportError:
-    print("Couldn't import CGAT modules")
-    raise
-##############
-
-# Non-docopt arguments structure:
-# e.g. see umi-tools
-
-def main(argv=None):
-
-    argv = sys.argv
-
-    path = os.path.abspath(os.path.dirname(__file__))
-
-    if len(argv) == 1 or argv[1] == "--help" or argv[1] == "-h":
-        print(globals()["__doc__"])
-
-        return
-
-    command = argv[1]
-
-    (file, pathname, description) = imp.find_module(command, [path, ])
-    module = imp.load_module(command, file, pathname, description)
-    # remove 'umi-tools' from sys.argv
-#    del sys.argv[0]
-#    module.main(sys.argv)
-
-
 # Finish and exit with docopt arguments:
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='xxx 0.1')
     print(arguments)
     sys.exit(main())
+##############
