@@ -1,6 +1,6 @@
 '''
-script_name
-===========
+plot_template.py
+================
 
 :Author: |author_name|
 :Release: |version|
@@ -13,6 +13,8 @@ Purpose
 |description|
 
 
+This script generates boxplot and scatterplot examples.
+
 Usage and options
 =================
 
@@ -24,21 +26,18 @@ These are based on docopt_, see examples_.
 
 
 Usage:
-       script_name [--main-method]
-       script_name [-I FILE]
-       script_name [-O FILE]
-       script_name [-h | --help]
-       script_name [-V | --version]
-       script_name [-f --force]
-       script_name [-L | --log]
+       plot_template.py [-I FILE] [-O FILE] [--pop=<pop_size>] [--sample=<sample_size>] [--force] [--dry-run]
+       plot_template.py [-h | --help] [-v | --version]
 
 Options:
-    -I             Input file name.
-    -O             Output file name.
-    -h --help      Show this screen
-    -V --version   Show version
-    -f --force     Force overwrite
-    -L --log       Log file name.
+    -I FILE                   Input file name, not used here
+    -O FILE                   Output file name, not used here
+    --pop=<pop_size>          Population size as integer [default: 100]
+    --sample=<sample_size>    Sample size as integer [default: 500]
+    -h --help                 Show this screen
+    -v --version              Shows the version, not set here
+    --force                   Overwrites files, not used here
+    --dry-run                 Shows what will happen, not used here
 
 Documentation
 =============
@@ -51,64 +50,89 @@ Documentation
 ############
 import sys
 import os
-import docopt
+from docopt import docopt
 
 import matplotlib.pyplot as plt
 import random
+
+# Read docopt options:
+options = docopt(__doc__)
 ############
 
 ############
-# Generate some example data to make this script runnable
-# This is modified from 
-# http://users.ecs.soton.ac.uk/jn2/teaching/pythonLecture.html
 
-# Make a first example plot:
-popSize = 100
-category1 = []
-category2 = []
+def doBoxplot():
+    '''Generate some example data and create a boxplot
+       This is modified from
+       http://users.ecs.soton.ac.uk/jn2/teaching/pythonLecture.html
+    '''
 
-# Start by generating scores for category 1 individuals
-# Their mean score is 95
-for i in range(popSize):
-    category1.append(random.normalvariate(95,10))
+    # Make a first example plot:
+    if options['--pop']:
+        popSize = int(options['--pop'])
+    else:
+        popSize = 100
 
-# Now generate scores for category 2 individuals
-# They have a higher mean of 105
-for i in range(popSize):
-    category2.append(random.normalvariate(105,10))
+    category1 = []
+    category2 = []
 
-scores = [category1,category2]
+    # Start by generating scores for category 1 individuals
+    # Their mean score is 95
+    for i in range(popSize):
+        category1.append(random.normalvariate(95,10))
 
-plt.boxplot(scores)
-plt.savefig('boxplots.svg')
-plt.savefig('boxplots.pdf')
-plt.close()
+    # Now generate scores for category 2 individuals
+    # They have a higher mean of 105
+    for i in range(popSize):
+        category2.append(random.normalvariate(105,10))
+
+    scores = [category1,category2]
+
+    plt.boxplot(scores)
+    plt.savefig('boxplots.svg')
+    #plt.savefig('boxplots.pdf')
+    plt.close()
+    return
 ############
 
 ############
-# Make a second example plot:
-x = []
-y = []
+def doScatterplot():
+    '''Create a scatterplot example
+    '''
+    x = []
+    y = []
 
-sampleSize = 500
+    if options['--sample']:
+        sampleSize = int(options['--sample'])
+    else:
+        sampleSize = 500
 
-for i in range(sampleSize):
-    newVal = random.normalvariate(100,10)
-    x.append(newVal)
-    y.append(newVal / 2.0 + random.normalvariate(50,5))
+    for i in range(sampleSize):
+        newVal = random.normalvariate(100,10)
+        x.append(newVal)
+        y.append(newVal / 2.0 + random.normalvariate(50,5))
 
-plt.scatter(x,y,c="red",marker="s")
-plt.xlabel("Variable 1")
-plt.ylabel("Variable 2")
-plt.savefig("scatter2.svg")
-plt.savefig('scatter2.pdf')
-plt.close()
+    plt.scatter(x,y,c="red",marker="s")
+    plt.xlabel("Variable 1")
+    plt.ylabel("Variable 2")
+    plt.savefig("scatter2.svg")
+    #plt.savefig('scatter2.pdf')
+    plt.close()
+    return
+############
+
+############
+# Call functions:
+def main():
+    doBoxplot()
+    doScatterplot()
+    return
 ############
 
 ############ 
 # Finish and exit with docopt arguments:
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='xxx 0.1')
+    arguments = docopt(__doc__)
     print(arguments)
     sys.exit(main())
 ############

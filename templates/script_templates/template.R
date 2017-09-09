@@ -2,7 +2,7 @@
 # R script to run with docopt for command line options:
 '
 script_name
-===========
+===============
 
 Author: |author_names| 
 Release: |version|
@@ -23,33 +23,29 @@ These are based on docopt_ for R:
 https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
+To run, type:
+    Rscript script_name -I <INPUT_FILE> [options]
 
-Usage:
-       script_name [--main-method]
-       script_name [-I FILE]
-       script_name [-O FILE]
+Usage: script_name (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>]
        script_name [-h | --help]
-       script_name [-V | --version]
-       script_name [-f --force]
-       script_name [-L | --log]
 
 Options:
-    -I             Input file name.
-    -O             Output file name.
-    -h --help      Show this screen
-    -V --version   Show version
-    -f --force     Force overwrite
-    -L --log       Log file name.
+  -I <INPUT_FILE>                 Input file name
+  --session=<R_SESSION_NAME>      R session name if to be saved
+  -h --help                       Show this screen
 
+Input:
 
-Input: 
-
+    A tab separated file with headers. This is read with data.table and stringsAsFactors = FALSE
 
 Output:
 
+    A histogram, boxplot and scatterplot from the R dataset mtcars as three svg files.
 
 Requirements:
 
+    library(docopt)
+    library(data.table)
 
 Documentation
 =============
@@ -57,25 +53,24 @@ Documentation
     For more information see:
 
     |url|
-
 ' -> doc
 
-# Print docopt options and messages:
+# Load docopt:
 library(docopt, quietly = TRUE)
 # Retrieve the command-line arguments:
-opt <- docopt(doc, version = 0.1)
+args <- docopt(doc)
 # See:
 # https://cran.r-project.org/web/packages/docopt/docopt.pdf
-# https://www.slideshare.net/EdwindeJonge1/docopt-user2014
-# http://rgrannell1.github.io/blog/2014/08/04/command-line-interfaces-in-r/
 # docopt(doc, args = commandArgs(TRUE), name = NULL, help = TRUE,
 # version = NULL, strict = FALSE, strip_names = !strict,
 # quoted_args = !strict)
 
 # Print to screen:
-str(opt)
+str(args)
+# Within the script specify options as:
+# args[['--session']]
+# args $ `-I` == TRUE
 ######################
-
 
 ######################
 # Logging
@@ -84,50 +79,46 @@ str(opt)
 # logging.R
 # In the script_templates dir of project_quickstart.
 # It does not run on it own though, needs copy/pasting for now.
+######################
 
-
-# Re-load a previous R session, data and objects:
+######################
+# Load a previous R session, data and objects:
 #load('R_session_saved_image_order_and_match.RData', verbose=T)
-
-# Filename to save current R session, data and objects at the end:
-R_session_saved_image <- paste('R_session_saved_image_','.RData', sep='')
-R_session_saved_image
 ######################
 
-
 ######################
-# Import libraries:
+# Import libraries
+ # source('http://bioconductor.org/biocLite.R')
 library(data.table)
 ######################
 
 
 ######################
-# TO DO: change to docopt:
-#Set-up arguments:
-
-some_var <- as.character(args[1])
-another_var <- as.numeric(args[2])
-######################
-
-
-
-######################
 # Read files:
-input_file <- fread(input_file, sep = ' ', header = TRUE, stringsAsFactors = FALSE)
-head(input_file)
-tail(input_file)
-dim(input_file)
-str(input_file)
-summary(input_file)
-class(input_file)
-######################
+if (is.null(args[['-I']]) == FALSE) {
+  input_name <- as.character(args[['-I']])#(args $ `-I`)
+  # input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+} else {
+  # Stop if arguments not given:
+  print('You need to provide an input file. This has to be tab separated with headers.')
+  stopifnot(!is.null(args[['-I']]) == TRUE)
+}
+input_name
 
+# Or load the example data:
+data("mtcars")
+input_data <- data.frame(mtcars)
 
-######################
-# Get one of the example data sets in R:
-data()
-
-######################
+# Explore data:
+class(input_data)
+dim(input_data)
+head(input_data)
+tail(input_data)
+str(input_data)
+colnames(input_data)
+rownames(input_data)
+summary(input_data)
+###################### 
 
 
 ######################
@@ -155,11 +146,22 @@ cat(file <- output_file, some_var, '\t', another_var, '\n', append = TRUE)
 #objects_to_save <- (c('xxx_var'))
 #save(list=objects_to_save, file=R_session_saved_image, compress='gzip')
 
-# To save R workspace with all objects to use at a later time:
-save.image(file=R_session_saved_image, compress='gzip')
+# Filename to save current R session, data and objects at the end:
+if (is.null(args[['--session']]) == FALSE) {
+  save_session <- as.character(args[['--session']]) #args $ `--session`
+  R_session_saved_image <- sprintf('R_session_saved_image_%s.RData', save_session)
+  print(sprintf('Saving an R session image as: %s', R_session_saved_image))
+  save.image(file = R_session_saved_image, compress = 'gzip')
+} else {
+  print('Not saving an R session image, this is the default. Specify the --session option otherwise')
+}
 
+# If using Rscript and creating plots, Rscript will create the file Rplots.pdf 
+# by default, it doesn't look like there is an easy way to suppress it, so deleting here:
+print('Deleting the file Rplots.pdf...')
+system('rm -f Rplots.pdf')
 sessionInfo()
 q()
 
-# Next: run the script for xxx step
+# Next: run the script for xxx
 ######################
