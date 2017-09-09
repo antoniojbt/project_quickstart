@@ -1,8 +1,8 @@
 ######################
 # R script to run with docopt for command line options:
 '
-script_name
-===========
+plot_template.R
+===============
 
 Author: |author_names| 
 Release: |version|
@@ -24,18 +24,15 @@ https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
 To run, type:
-    Rscript script_name -I <input_file>
+    Rscript plot_template.R -I <INPUT_FILE> [options]
 
-Usage: script_name (-I <INPUT_FILE>)
-       script_name [--session <R_SESSION_NAME>]
-       script_name [-h | --help]
-       script_name [-v | --version]
+Usage: plot_template.R (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>]
+       plot_template.R [-h | --help]
 
 Options:
-  -I             Input file name [default: this_is_a_test].
-  --session      R session name if to be saved [default: FALSE].
-  -h --help      Show this screen.
-  -v --version   Show version [default: NA].
+  -I <INPUT_FILE>                 Input file name
+  --session=<R_SESSION_NAME>      R session name if to be saved
+  -h --help                       Show this screen
 
 Input:
 
@@ -57,10 +54,9 @@ Documentation
     For more information see:
 
     |url|
-
 ' -> doc
 
-# Print docopt options and messages:
+# Load docopt:
 library(docopt, quietly = TRUE)
 # Retrieve the command-line arguments:
 args <- docopt(doc)
@@ -72,6 +68,9 @@ args <- docopt(doc)
 
 # Print to screen:
 str(args)
+# Within the script specify options as:
+# args[['--session']]
+# args $ `-I` == TRUE
 ######################
 
 ######################
@@ -86,15 +85,6 @@ str(args)
 ######################
 # Load a previous R session, data and objects:
 #load('R_session_saved_image_order_and_match.RData', verbose=T)
-
-# Filename to save current R session, data and objects at the end:
-if (args $ `--session` == TRUE) {
-  save_session <- as.character(args $ `--session`)
-  R_session_saved_image <- sprintf('R_session_saved_image_%s.RData', save_session)
-  print(sprintf('Saving the R session as: %s', R_session_saved_image))
-} else {
-  print('Not saving an R session, this is the default. Specify the --session option otherwise')
-}
 ######################
 
 
@@ -109,13 +99,15 @@ library(data.table)
 
 ######################
 # Read files:
-if (args $ `-I` == TRUE) {
-  input_name <- as.character(args $ `-I`)
-  #input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+if (is.null(args[['-I']]) == FALSE) {
+  input_name <- as.character(args[['-I']])#(args $ `-I`)
+  # input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 } else {
   # Stop if arguments not given:
-  stopifnot(args $ `-I` == TRUE)
+  print('You need to provide an input file. This has to be tab separated with headers.')
+  stopifnot(!is.null(args[['-I']]) == TRUE)
 }
+input_name
 
 # Or load the example data:
 data("mtcars")
@@ -145,6 +137,9 @@ ggplot(input_data, aes(x = wt)) +
        ylab('density') +
        xlab('weight')
 ggsave(sprintf('%s.svg', plot_name))
+# Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
+# Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
+dev.off()
 
 # A boxplot:
 plot_name <- sprintf('%s_car_cyl_mpg_boxplot_2', input_name)
@@ -156,6 +151,9 @@ ggplot(input_data, aes(x = cyl_factor, y = wt, fill = cyl_factor)) +
        xlab('number of cylinders') +
        theme_classic()
 ggsave(sprintf('%s.svg', plot_name))
+# Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
+# Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
+dev.off()
 
 # Scatterplot and legend:
 # http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
@@ -170,6 +168,9 @@ ggplot(input_data, aes(x = hp, y = qsec, colour = cyl_factor)) +
        labs(colour = 'number of cylinders') +
        theme_classic()
 ggsave(sprintf('%s.svg', plot_name))
+# Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
+# Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
+dev.off()
 ######################
 
 
@@ -183,14 +184,20 @@ ggsave(sprintf('%s.svg', plot_name))
 #objects_to_save <- (c('xxx_var'))
 #save(list=objects_to_save, file=R_session_saved_image, compress='gzip')
 
-# To save R workspace with all objects to use at a later time:
-if (args $ `--session` == TRUE){
-  print(sprintf('Saving the R session as: %s', R_session_saved_image))
-  save.image(file=R_session_saved_image, compress='gzip')
-} else{
-  print('Did not save the R session, this is the default')
+# Filename to save current R session, data and objects at the end:
+if (is.null(args[['--session']]) == FALSE) {
+  save_session <- as.character(args[['--session']]) #args $ `--session`
+  R_session_saved_image <- sprintf('R_session_saved_image_%s.RData', save_session)
+  print(sprintf('Saving an R session image as: %s', R_session_saved_image))
+  save.image(file = R_session_saved_image, compress = 'gzip')
+} else {
+  print('Not saving an R session image, this is the default. Specify the --session option otherwise')
 }
 
+# If using Rscript and creating plots, Rscript will create the file Rplots.pdf 
+# by default, it doesn't look like there is an easy way to suppress it, so deleting here:
+print('Deleting the file Rplots.pdf...')
+system('rm -f Rplots.pdf')
 sessionInfo()
 q()
 
