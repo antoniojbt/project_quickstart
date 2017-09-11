@@ -14,6 +14,7 @@ Purpose
 
 |description|
 
+Runs some basic stats and plots as examples.
 
 Usage and options
 =================
@@ -40,12 +41,13 @@ Input:
 
 Output:
 
-    A histogram, boxplot and scatterplot from the R dataset mtcars as three svg files.
+    A boxplot and scatterplot from the R dataset mtcars as svg files and an html table of a linear regression output.
 
 Requirements:
 
     library(docopt)
     library(data.table)
+    library(stargazer)
 
 Documentation
 =============
@@ -90,6 +92,7 @@ str(args)
 # Import libraries
  # source('http://bioconductor.org/biocLite.R')
 library(data.table)
+library(stargazer) # tables for linear regressions
 ######################
 
 
@@ -97,6 +100,7 @@ library(data.table)
 # Read files:
 if (is.null(args[['-I']]) == FALSE) {
   input_name <- as.character(args[['-I']])#(args $ `-I`)
+  # input_name <- as.character('mtcars')
   # input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 } else {
   # Stop if arguments not given:
@@ -117,16 +121,48 @@ tail(input_data)
 str(input_data)
 colnames(input_data)
 rownames(input_data)
-summary(input_data)
 ###################### 
 
+###################### 
+# Do some stats, simple examples here:
+# What's the question? What's the hypothesis?
+# Descriptive:
+class(input_data)
+str(input_data)
+complete.cases(input_data)
+summary(input_data)
+summary(input_data$gear)
+summary(input_data$qsec)
+cor(input_data$mpg, input_data$qsec)
 
-######################
+# Process variables:
+cyl_factor <- factor(input_data$cyl)
+cyl_factor
+gear_factor <- factor(input_data$gear)
+gear_factor
+
+# Some basic exploratory plots
 # Plot here or use a separate plot_template.R script (preferable if processing
 # large datasets, process first, save, plot separately):
-plot_name <- svg(paste(plot_name, '.svg', sep = ''))
-plot(plot_name)
+plot_name <- svg(sprintf('%s_boxplot_lm.svg', input_name))
+boxplot(input_data$mpg ~ cyl_factor)
 dev.off()
+
+plot_name <- svg(sprintf('%s_scatterplot_lm.svg', input_name))
+plot(input_data$qsec ~ cyl_factor)
+dev.off()
+
+# Inferential:
+pass_formula <- 'qsec ~ cyl_factor + hp + wt + gear_factor'
+lm_input_data <- lm(formula = pass_formula, data = input_data)
+summary(lm_input_data)
+stargazer(out = sprintf('%s_lm_table.html', input_name), 
+          style = 'all',
+          lm_input_data,
+          type = 'html',
+          summary = TRUE,
+          title = 'Car speed adjusted for cylinders, horse power, weight and gears'
+          )
 ######################
 
 
