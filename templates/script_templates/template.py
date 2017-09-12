@@ -26,8 +26,8 @@ These are based on docopt_, see examples_.
 
 
 Usage:
-       template.py [--a_number=<int>] [-I FILE] [-O FILE]
-       template.py [--createDF] [--sample-size=<int>] [-I FILE] [-O FILE]
+       template.py [--a_number=<int>]
+       template.py (--createDF) [--sample-size=<int>] [-O FILE]
        template.py [-h | --help] [-V | --version] [-f --force] [-L | --log]
 
 Options:
@@ -89,7 +89,7 @@ try:
     import CGATPipeline.Experiment as E
 
 except ImportError:
-    print("Warning: Couldn't import CGAT modules, continuing without")
+    print('\n', "Warning: Couldn't import CGAT modules, continuing without")
     pass
 
 # Import this project's module, uncomment if building something more elaborate:
@@ -209,7 +209,8 @@ def runOOPHeroes(saves):
 def id_generator(size = 6,
                  chars = string.ascii_uppercase + string.digits,
                  sample_size = 1000):
-    ''' Generates a random sequence of letters and numbers
+    ''' Generates a random sequence of letters and numbers and outputs a pandas
+        series  of a given sample size that is is
         Modified from:
         https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python?rq=1
     '''
@@ -235,12 +236,12 @@ def number_generator(lower_bound = 0,
                      sample_size = 1000):
     ''' Generate a set of random values based on a given mean, standard
         deviation, list size and range from a normal distribution.
-        Remember that in Python indexing is 0-based (includes the start
-        but excludes the stop).
+        The output is a pandas series of a given sample size.
     '''
     # See:
     # https://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.stats.truncnorm.html
     # stackoverflow how-to-specify-upper-and-lower-limits
+    # In Python indexing is 0-based (includes the start but excludes the stop)
     sample = stats.truncnorm.rvs(a = lower_bound,
                                  b = upper_bound,
                                  loc = mean,
@@ -254,13 +255,14 @@ def number_generator(lower_bound = 0,
 
     return(sample)
 
-def bool_generator(size = 1000):
+def bool_generator(sample_size = 1000):
     ''' Generate a list of random values given a size for booleans
-        (e.g. male or female)
+        (e.g. male or female).
+        The output is a pandas series of a given sample size.
     '''
     gender = []
-    size = size + 1
-    for n in range(1, size):
+    sample_size = sample_size + 1
+    for n in range(1, sample_size):
         n = random.choice(['male', 'female'])
         gender.append(n)
 
@@ -271,7 +273,7 @@ def bool_generator(size = 1000):
     #      )
     return(gender)
 
-def createDF(sample_size = 1000):
+def createDF(sample_size = 1000, outfile = 'pandas_dataframe_example.tsv'):
     ''' Generate a pandas dataframe that uses random IDs and random values from
         given distributions of four variables.
     '''
@@ -290,7 +292,7 @@ def createDF(sample_size = 1000):
     # http://www.thelancet.com/cms/attachment/2094506084/2077189969/mmc1.pdf
     # https://www.uptodate.com/contents/image?imageKey=ENDO%2F73797&topicKey=ENDO%2F1798&rank=1~150&source=see_link&search=hypoglycemia
 
-    print('Sample size is: ', sample_size)
+    print('\n', 'Sample size is: ', sample_size)
     random_df = pandas.DataFrame({'ID': id_generator(size = 6,
                                                      chars = string.ascii_uppercase + string.digits,
                                                      sample_size = sample_size),
@@ -299,7 +301,7 @@ def createDF(sample_size = 1000):
                                                           mean = 40.0,
                                                           sd = 20,
                                                           sample_size = sample_size),
-                                  'gender': bool_generator(size = 1000),
+                                  'gender': bool_generator(sample_size = sample_size),
                                   'glucose': number_generator(lower_bound = 0,
                                                               upper_bound = 501,
                                                               mean = 80,
@@ -310,13 +312,33 @@ def createDF(sample_size = 1000):
                                                           mean = 26,
                                                           sd = 3,
                                                           sample_size = sample_size),
-                                 })
-    print(random_df.head(),
-          '\n',
+                                  },
+                          # Enforce column order as the dataframe comes from a dictionary:
+                                  columns = ['ID', 'age', 'gender', 'glucose', 'BMI']
+                                  )
+
+    print('\n',
+          'The first rows of your data frame are:',
+          '\n', '\n',
+          random_df.head(),
+          '\n', '\n',
+          'The last rows of your data frame are:',
+          '\n', '\n',
           random_df.tail(),
-          '\n',
+          '\n', '\n',
+          'Some basic stats:'
+          '\n', '\n',
           random_df.describe(),
+          '\n',
           )
+
+    # Save the file to disk with a default name:
+    print('\n', 'Saving the dataframe as a tab separated file: {}'.format(outfile), '\n')
+    random_df.to_csv(outfile,
+                     sep = '\t',
+                     na_rep = 'NA',
+                     header = True,
+                     )
     return(random_df)
 #####
 ##############
@@ -326,12 +348,12 @@ def main():
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
-    version = 'my "first version" (aka something like "0.1.1")'
+    version = '"first version" (or e.g. "0.1.1")'
     options = docopt.docopt(__doc__, version = version)
     welcome_msg = str('\n' + 'Welcome to template.py. This is {}' +
             '\n').format(version)
     print(welcome_msg)
-    docopt_error_msg = str('template.py exited due to an error.' + '\n')
+    docopt_error_msg = str('\n' + 'template.py exited due to an error.' + '\n')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
                            + 'Try template.py --help'
@@ -346,29 +368,39 @@ def main():
         if options['--a_number'] and len(options['--a_number']) > 0:
             a_number = str(options['--a_number']).strip('[]').strip("''")
             a_number = int(a_number)
-            print('Your chosen number for SuperHeroes is: {}'.format(a_number))
-            print(''' This number will also be used for the elseIf function
-                       example. ''')
+            print('\n', 'Your chosen number for SuperHeroes is: {}'.format(a_number))
+            print('\n', ''' This number will also be used for the elseIf
+                            function example.
+                        ''')
             # Call all the functions described above here:
             my_func(a_number)
             elseIf(a_number = a_number)
             handleErrors()
             runOOPHeroes(saves = a_number)
-            print("Ran some tests above and finished succesfully. That's all.")
+            print('\n', "Ran some tests above and finished succesfully. That's all.")
 
-        if (options['--createDF'] and
-            options['--sample-size'] and
-            len(options['--sample-size']) > 0):
+        elif options['--createDF']:
+            # Repeat defaults here (these will override previous ones) to avoid
+            # complicated options combinations:
+            outfile = 'pandas_dataframe_example.tsv'
+            sample_size = 1000
 
-            sample_size = str(options['--sample-size']).strip('[]').strip("''")
-            sample_size = int(sample_size)
-            print('Your sample size for the pandas dataframe is: {}'.format(sample_size))
-            createDF(sample_size = sample_size)
+            if not options['--sample-size']:
+                print(''' Using default values for sample size to create a pandas
+                          dataframe.''')
 
-        elif options['--createDF'] and not options['--sample-size']:
-            print(''' Using default values for sample size to create a pandas
-                      dataframe.''')
-            createDF()
+            elif (options['--sample-size'] and
+                    len(options['--sample-size']) > 0):
+                sample_size = str(options['--sample-size']).strip('[]').strip("''")
+                sample_size = int(sample_size)
+                print('\n', 'Your sample size for the pandas dataframe is: {}'.format(sample_size))
+
+            if options['-O'] and len(options['-O']) > 0:
+                outfile = str(options['-O']).strip('[]').strip("''")
+                outfile = str(outfile + '.tsv')
+                print('Saving your dataframe with the name: {}'.format(outfile))
+
+            createDF(sample_size = sample_size, outfile = outfile)
 
         else:
             print(docopt_error_msg)

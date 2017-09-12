@@ -26,7 +26,7 @@ https://cran.r-project.org/web/packages/docopt/index.html
 To run, type:
     Rscript plot_template.R -I <INPUT_FILE> [options]
 
-Usage: plot_template.R (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>]
+Usage: plot_template.R [-I <INPUT_FILE>] [--session=<R_SESSION_NAME>]
        plot_template.R [-h | --help]
 
 Options:
@@ -54,6 +54,7 @@ Documentation
     For more information see:
 
     |url|
+
 ' -> doc
 
 # Load docopt:
@@ -101,17 +102,18 @@ library(data.table)
 # Read files:
 if (is.null(args[['-I']]) == FALSE) {
   input_name <- as.character(args[['-I']])#(args $ `-I`)
-  # input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+  input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 } else {
-  # Stop if arguments not given:
-  print('You need to provide an input file. This has to be tab separated with headers.')
-  stopifnot(!is.null(args[['-I']]) == TRUE)
+  # Warn or stop if arguments not given:
+  warning('You need to provide an input file. This has to be tab separated with headers.',
+          'Continuing with a preloaded dataset as example data.')
+  #stopifnot(!is.null(args[['-I']]) == TRUE)
+  # Load the example data:
+  input_name <- "mtcars"
+  data("mtcars")
+  input_data <- data.frame(mtcars)
 }
 input_name
-
-# Or load the example data:
-data("mtcars")
-input_data <- data.frame(mtcars)
 
 # Explore data:
 class(input_data)
@@ -126,40 +128,77 @@ summary(input_data)
 
 
 ######################
+####
 # Histogram overlaid with kernel density curve
 # http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
-plot_name <- sprintf('%s_car_weight_histogram', input_name)
-ggplot(input_data, aes(x = wt)) +
+
+# Setup:
+var1 <- 'wt'
+var1
+var1_label <- 'Car weight'
+var1_label
+plot_name <- sprintf('%s_%s_histogram', input_name, var1)
+plot_name
+# Plot:
+ggplot(input_data, aes(x = var1)) +
        geom_histogram(aes( y = ..density..), # Histogram with density instead of count on y-axis
                  binwidth = 0.5,
                  colour = "black", fill = "white") +
        geom_density(alpha = 0.2, fill = "#FF6666") + # Overlay with transparent density plot
        ylab('density') +
-       xlab('weight')
+       xlab(var1_label)
+# Save to file:
 ggsave(sprintf('%s.svg', plot_name))
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
+####
 
-# A boxplot:
-plot_name <- sprintf('%s_car_cyl_mpg_boxplot_2', input_name)
-cyl_factor <- factor(input_data$cyl)
-cyl_factor
-ggplot(input_data, aes(x = cyl_factor, y = wt, fill = cyl_factor)) +
+####
+# A boxplot
+# Setup:
+var1 <- 'cyl'
+var1
+var1_label <- 'Number of cylinders'
+var1_label
+var1_factor <- factor(input_data$var1)
+var1_factor
+var2 <- 'wt'
+var2
+var2_label <- 'Car weight'
+var2_label
+plot_name <- sprintf('%s_%s_%s_boxplot_2', input_name, var1, var2)
+plot_name
+# Plot:
+ggplot(input_data, aes(x = var1_factor, y = var2, fill = var1_factor)) +
        geom_boxplot() +
-       ylab('weight') +
-       xlab('number of cylinders') +
+       ylab(var2_label) +
+       xlab(var1_label) +
        theme_classic()
+# Save to file:
 ggsave(sprintf('%s.svg', plot_name))
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
+####
 
+####
 # Scatterplot and legend:
 # http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
+# Setup:
+var1 <- 'wt'
+var1
+var1_label <- 'Car weight'
+var1_label
+var1_factor <- factor(mtcars$cyl)
+var1_factor
+var2 <- 'wt'
+var2
+var2_label <- 'Car weight'
+var2_label
 plot_name <- sprintf('%s_car_qsec_hp_scatterplot', input_name)
-cyl_factor <- factor(mtcars$cyl)
-cyl_factor
+plot_name
+# Plot:
 ggplot(input_data, aes(x = hp, y = qsec, colour = cyl_factor)) +
        geom_point() +
        geom_smooth(method = lm) +
@@ -167,10 +206,12 @@ ggplot(input_data, aes(x = hp, y = qsec, colour = cyl_factor)) +
        xlab('gross horse power') +
        labs(colour = 'number of cylinders') +
        theme_classic()
+# Save:
 ggsave(sprintf('%s.svg', plot_name))
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
+####
 ######################
 
 
