@@ -12,8 +12,13 @@ Purpose
 
 |description|
 
-This is a template for a python script. It is runnable though and gives some
-output to screen.
+This is a template for a python script. It is runnable, grew completely
+out of proportion and is now a template and a basic example.
+
+When you use project_quickstart's "--script-python" option for example
+you'll get this copy. For now just delete everything in the middle and
+write you script.
+
 
 Usage and options
 =================
@@ -65,6 +70,9 @@ Documentation
 '''
 ##############
 # Get all the modules needed
+# Understand Python:
+import this
+
 # System:
 import os
 import sys
@@ -107,17 +115,43 @@ import random
 
 ##############
 #####
+# Behaviours to keep in mind:
+# http://docs.python-guide.org/en/latest/writing/gotchas/
+# https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make
+# https://sopython.com/wiki/Common_Gotchas_In_Python
 # Some basic Python reminders
-# Slicing/indexing excludes the last number
-# Lists are 0 based
+# Indexing is 0-based, start included, stop excluded
 # PEP8 has 80 character limit and 4 spaces for indentation, do not use tabs, much less mix
 # Python operator precedence: https://www.tutorialspoint.com/python/operators_precedence_example.htm
 # dictionaries are accessed as my_dict[2] ; '2' == key, not index ; while my_list[2] is an index ; use assert if ambigous
 # modulo is % (the remainder) ; // gives the integer of the division
 # lists and dictionaries are mutable; tuples immutable
-# Functional programming
-# OOP
+
+# Some Python pages:
+# https://www.python.org/
+# https://en.wikipedia.org/wiki/Python_(programming_language)
+# http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html
+
+# Coding in Python:
+# http://docs.python-guide.org/en/latest/writing/style/
+# https://stackoverflow.com/questions/356161/python-coding-standards-best-practices
+
+# Programming styles
+# https://blog.newrelic.com/2015/04/01/python-programming-styles/
+
+# Functional programming in Python:
+# https://stackoverflow.com/questions/36504/why-functional-languages?noredirect=1&lq=1
+# https://stackoverflow.com/questions/1017621/why-isnt-python-very-good-for-functional-programming
+# https://stackoverflow.com/questions/21895525/python-programming-functional-vs-imperative-code
+
+# OOP:
+# https://docs.python.org/3/tutorial/classes.html
+# https://python.swaroopch.com/oop.html
+# https://jeffknupp.com/blog/2014/06/18/improve-your-python-python-classes-and-object-oriented-programming/
+
 # regex
+# http://www.diveintopython3.net/regular-expressions.html
+# https://docs.python.org/3/howto/regex.html
 #####
 
 #####

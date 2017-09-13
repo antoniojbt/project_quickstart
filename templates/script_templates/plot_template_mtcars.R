@@ -14,6 +14,9 @@ Purpose
 
 |description|
 
+This is a simple template and example R script with docopt style options to run from the command line.
+The R example dataset "mtcars" is used.
+
 
 Usage and options
 =================
@@ -24,29 +27,28 @@ https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
 To run, type:
-    Rscript plot_template.R -I <INPUT_FILE> [options]
+    Rscript plot_template.R [--session=<R_SESSION_NAME>]
 
-Usage: plot_template.R [-I <INPUT_FILE>] [--session=<R_SESSION_NAME>]
+Usage: plot_template.R [--session=<R_SESSION_NAME>]
        plot_template.R [-h | --help]
 
 Options:
-  -I <INPUT_FILE>                 Input file name
   --session=<R_SESSION_NAME>      R session name if to be saved
   -h --help                       Show this screen
 
 Input:
 
-    A tab separated file with headers. This is read with data.table and stringsAsFactors = FALSE
+    None needed, the script loads the already available mtcars dataset.
 
 Output:
 
-    A histogram, boxplot and scatterplot from the R dataset mtcars as three svg files.
+    A histogram, boxplot and scatterplot as three svg files.
 
 Requirements:
 
     library(docopt)
     library(ggplot2)
-    library(data.table)
+
 
 Documentation
 =============
@@ -69,7 +71,7 @@ args <- docopt(doc)
 
 # Print to screen:
 str(args)
-# Within the script specify options as:
+# Within the script specify options as e.g.:
 # args[['--session']]
 # args $ `-I` == TRUE
 ######################
@@ -84,8 +86,8 @@ str(args)
 ######################
 
 ######################
-# Load a previous R session, data and objects:
-#load('R_session_saved_image_order_and_match.RData', verbose=T)
+# Load a previous R session, data and objects, e.g.:
+# load('R_session_saved_image_R_plotting_test.RData', verbose=T)
 ######################
 
 
@@ -99,21 +101,10 @@ library(data.table)
 
 
 ######################
-# Read files:
-if (is.null(args[['-I']]) == FALSE) {
-  input_name <- as.character(args[['-I']])#(args $ `-I`)
-  input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
-} else {
-  # Warn or stop if arguments not given:
-  warning('You need to provide an input file. This has to be tab separated with headers.',
-          'Continuing with a preloaded dataset as example data.')
-  #stopifnot(!is.null(args[['-I']]) == TRUE)
-  # Load the example data:
-  input_name <- "mtcars"
-  data("mtcars")
-  input_data <- data.frame(mtcars)
-}
-input_name
+# Load the example data:
+input_name <- "mtcars"
+data("mtcars")
+input_data <- data.frame(mtcars)
 
 # Explore data:
 class(input_data)
@@ -124,8 +115,34 @@ str(input_data)
 colnames(input_data)
 rownames(input_data)
 summary(input_data)
-###################### 
+######################
 
+######################
+# Create your own ggplot2 theme or see ggthemes package
+# https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html
+# http://sape.inf.usi.ch/quick-reference/ggplot2/themes
+# The following is modified from:
+# https://stackoverflow.com/questions/31404433/is-there-an-elegant-way-of-having-uniform-font-size-for-the-whole-plot-in-ggplot
+# If re-using functions it is much better to copy this to a new script and run here as:
+# source('my_ggplot_theme.R')
+theme_my <- function(base_size = 14, base_family = "Times") {
+  normal_text <- element_text(size = as.numeric(base_size), colour = "black", face = "plain")
+  large_text <- element_text(size = as.numeric(base_size + 1), colour = "black", face = "plain")
+  bold_text <- element_text(size = as.numeric(base_size + 1), colour = "black", face = "bold")
+  axis_text <- element_text(size = as.numeric(base_size - 1), colour = "black", face = "plain")
+  theme_classic(base_size = base_size, base_family = base_family) +
+    theme(legend.key = element_blank(),
+          strip.background = element_blank(),
+          text = normal_text,
+          plot.title = bold_text,
+          axis.title = large_text,
+          axis.text = axis_text,
+          legend.title = bold_text,
+          legend.text = normal_text
+          )
+  }
+theme_my()
+######################
 
 ######################
 ####
@@ -133,22 +150,24 @@ summary(input_data)
 # http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
 
 # Setup:
-var1 <- 'wt'
-var1
-var1_label <- 'Car weight'
-var1_label
-plot_name <- sprintf('%s_%s_histogram', input_name, var1)
+x_var <- 'wt'
+x_var_label <- 'Car weight'
+plot_name <- sprintf('%s_%s_histogram.svg', input_name, x_var)
 plot_name
 # Plot:
-ggplot(input_data, aes(x = var1)) +
+ggplot(input_data, aes(x = input_data[, x_var])) +
        geom_histogram(aes( y = ..density..), # Histogram with density instead of count on y-axis
                  binwidth = 0.5,
                  colour = "black", fill = "white") +
        geom_density(alpha = 0.2, fill = "#FF6666") + # Overlay with transparent density plot
        ylab('density') +
-       xlab(var1_label)
+       xlab(x_var_label) +
+       theme_my()
+       # theme_classic() +
+       # theme(text = element_text(size = 12),
+       #  legend.position = 'none') # Place after theme_"style"()
 # Save to file:
-ggsave(sprintf('%s.svg', plot_name))
+ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
@@ -157,26 +176,24 @@ dev.off()
 ####
 # A boxplot
 # Setup:
-var1 <- 'cyl'
-var1
-var1_label <- 'Number of cylinders'
-var1_label
-var1_factor <- factor(input_data$var1)
-var1_factor
-var2 <- 'wt'
-var2
-var2_label <- 'Car weight'
-var2_label
-plot_name <- sprintf('%s_%s_%s_boxplot_2', input_name, var1, var2)
+x_var <- 'cyl'
+x_var_label <- 'Number of cylinders'
+x_var_factor <- factor(input_data[, x_var])
+x_var_factor
+y_var <- 'wt'
+y_var_label <- 'Car weight'
+plot_name <- sprintf('%s_%s_%s_boxplot_2.svg', input_name, x_var, y_var)
 plot_name
 # Plot:
-ggplot(input_data, aes(x = var1_factor, y = var2, fill = var1_factor)) +
+ggplot(input_data, aes(x = x_var_factor, y = input_data[, y_var], fill = x_var_factor)) +
        geom_boxplot() +
-       ylab(var2_label) +
-       xlab(var1_label) +
-       theme_classic()
+       ylab(y_var_label) +
+       xlab(x_var_label) +
+       theme_my() +
+       theme(legend.position = 'none') # Place after theme_"style"()
+             # text = element_text(size = 12) # Change text size
 # Save to file:
-ggsave(sprintf('%s.svg', plot_name))
+ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
@@ -186,28 +203,26 @@ dev.off()
 # Scatterplot and legend:
 # http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
 # Setup:
-var1 <- 'wt'
-var1
-var1_label <- 'Car weight'
-var1_label
-var1_factor <- factor(mtcars$cyl)
-var1_factor
-var2 <- 'wt'
-var2
-var2_label <- 'Car weight'
-var2_label
-plot_name <- sprintf('%s_car_qsec_hp_scatterplot', input_name)
+x_var <- 'hp'
+x_var_label <- 'Gross horse power'
+grouping_var <- 'cyl'
+grouping_var <- factor(input_data[, grouping_var])
+y_var <- 'qsec'
+y_var_label <- '1/4 mile time'
+legend_label <- 'Number of cylinders'
+plot_name <- sprintf('%s_%s_%s_scatterplot.svg', input_name, x_var, y_var)
 plot_name
 # Plot:
-ggplot(input_data, aes(x = hp, y = qsec, colour = cyl_factor)) +
+ggplot(input_data, aes(x = input_data[, x_var], y = input_data[, y_var], colour = grouping_var)) +
        geom_point() +
        geom_smooth(method = lm) +
-       ylab('1/4 mile time') +
-       xlab('gross horse power') +
-       labs(colour = 'number of cylinders') +
-       theme_classic()
+       ylab(y_var_label) +
+       xlab(x_var_label) +
+       labs(colour = legend_label) +
+       theme_my() +
+       theme(legend.position = 'none') # Place after theme_"style"()
 # Save:
-ggsave(sprintf('%s.svg', plot_name))
+ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
