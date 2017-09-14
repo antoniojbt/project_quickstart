@@ -1,8 +1,8 @@
 ######################
 # R script to run with docopt for command line options:
 '
-plot_template.R
-===============
+plot_pq_example_pandas.R
+========================
 
 Author: |author_names| 
 Release: |version|
@@ -27,28 +27,31 @@ https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
 To run, type:
-    Rscript plot_template.R [--session=<R_SESSION_NAME>]
+    Rscript plot_pq_example_pandas.R -I <INPUT_FILE> [options]
 
-Usage: plot_template.R [--session=<R_SESSION_NAME>]
-       plot_template.R [-h | --help]
+Usage: plot_pq_example_pandas.R [-I <INPUT_FILE>] [--session=<R_SESSION_NAME>]
+                                [--vars=<x_var_name> <y_var_name> <var3>]
+       plot_pq_example_pandas.R [-h | --help]
 
 Options:
-  --session=<R_SESSION_NAME>      R session name if to be saved
-  -h --help                       Show this screen
+  -I <INPUT_FILE>                           Input file name
+  --session=<R_SESSION_NAME>                R session name if to be saved
+  --vars=<x_var_name> <y_var_name> <var3>   Variables to plot from input file
+  -h --help                                 Show this screen
 
 Input:
 
-    None needed, the script loads the already available mtcars dataset.
+    A tab separated file with headers. This is read with data.table and stringsAsFactors = FALSE
 
 Output:
 
-    A histogram, boxplot and scatterplot as three svg files.
+    A histogram, boxplot and scatterplot from the R dataset mtcars as three svg files.
 
 Requirements:
 
     library(docopt)
     library(ggplot2)
-
+    library(data.table)
 
 Documentation
 =============
@@ -86,62 +89,89 @@ str(args)
 ######################
 
 ######################
-# Load a previous R session, data and objects, e.g.:
-# load('R_session_saved_image_R_plotting_test.RData', verbose=T)
+# Load a previous R session, data and objects:
+#load('R_session_saved_image_order_and_match.RData', verbose=T)
 ######################
 
 
 ######################
 # Import libraries
- # source('http://bioconductor.org/biocLite.R')
+# source('http://bioconductor.org/biocLite.R')
 library(ggplot2)
 # library(ggthemes)
 library(data.table)
 ######################
 
 
-######################
-# Load the example data:
-input_name <- "mtcars"
-data("mtcars")
-input_data <- data.frame(mtcars)
+# Read files:
+if (is.null(args[['-I']]) == FALSE) {
+  # args[['-I']] <- as.character('pandas_DF.tsv') # For testing
+  input_name <- as.character(args[['-I']])#(args $ `-I`)
+  input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+} else {
+  # Stop if arguments not given:
+  print('You need to provide an input file. This has to be tab separated with headers.')
+  stopifnot(!is.null(args[['-I']]) == TRUE)
+}
+
+print('File being used: ')
+print(input_name)
+# Split at the last '.':
+input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
+print('Name being used to save output files: ')
+print(input_name)
 
 # Explore data:
 class(input_data)
-dim(input_data)
-head(input_data)
-tail(input_data)
+dim(input_data) # nrow(), ncol()
 str(input_data)
+input_data # equivalent to head() and tail()
+setkey(input_data) # memory efficient and fast
+key(input_data)
+tables()
 colnames(input_data)
-rownames(input_data)
-summary(input_data)
+input_data[, 2, with = FALSE] # by column position, preferable by column name to avoid silent bugs
+###################### 
+
+######################
+# Function to check if arguments for plotting variables were given:
+# Get the named variable from the command line arguments:
+cond_1 <- is.null(args[['-I']]) == FALSE
+cond_2 <- is.null(args[['--vars']]) == FALSE
+
+if (cond_1 & cond_2) {
+  vars <- strsplit(args[['--vars']], split = ' ')[[1]]
+  x_var <- vars[1]
+  y_var <- vars[2]
+  print(c(vars, class(vars), var_1, var_2))
+  } else {
+    # Load vars:
+    x_var <- 'age'
+    y_var <- 'glucose'
+    var3 <- 'gender'
+    warning(sprintf("Variable names not given, using defaults %s, %s and %s
+                    as x_var, y_var and var3, respectively.", x_var, y_var, var3))
+    }
+
+# Stop if the dataset doesn't have the variables given:
+cond_1 <- is.null(grep(x = colnames(input_data), pattern =  x_var))
+cond_2 <- is.null(grep(x = colnames(input_data), pattern =  y_var))
+cond_3 <- is.null(grep(x = colnames(input_data), pattern =  var3))
+if (cond_1 | cond_2 | cond_3) {
+  print('You need to provide an input file with named variables.
+        This has to be tab separated with headers.')
+  stopifnot(!is.null(args[['-I']]) == TRUE)
+  } else {
+    message(sprintf('The variables names provided, %s, %s and %s, were found in the
+                    dataset %s, continuing analysis.', x_var, y_var, var3, input_name))
+    }
 ######################
 
 ######################
-# Create your own ggplot2 theme or see ggthemes package
-# https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html
-# http://sape.inf.usi.ch/quick-reference/ggplot2/themes
-# The following is modified from:
-# https://stackoverflow.com/questions/31404433/is-there-an-elegant-way-of-having-uniform-font-size-for-the-whole-plot-in-ggplot
-# If re-using functions it is much better to copy this to a new script and run here as:
-# source('my_ggplot_theme.R')
-theme_my <- function(base_size = 14, base_family = "Times") {
-  normal_text <- element_text(size = as.numeric(base_size), colour = "black", face = "plain")
-  large_text <- element_text(size = as.numeric(base_size + 1), colour = "black", face = "plain")
-  bold_text <- element_text(size = as.numeric(base_size + 1), colour = "black", face = "bold")
-  axis_text <- element_text(size = as.numeric(base_size - 1), colour = "black", face = "plain")
-  theme_classic(base_size = base_size, base_family = base_family) +
-    theme(legend.key = element_blank(),
-          strip.background = element_blank(),
-          text = normal_text,
-          plot.title = bold_text,
-          axis.title = large_text,
-          axis.text = axis_text,
-          legend.title = bold_text,
-          legend.text = normal_text
-          )
-  }
-theme_my()
+# Convert data.table to data.frame as easier to handle for plotting:
+setDF(x = input_data)
+# input_data <- as.data.frame(input_data)
+class(input_data)
 ######################
 
 ######################
@@ -150,10 +180,8 @@ theme_my()
 # http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
 
 # Setup:
-x_var <- 'wt'
-x_var_label <- 'Car weight'
 plot_name <- sprintf('%s_%s_histogram.svg', input_name, x_var)
-plot_name
+x_var_label <- x_var
 # Plot:
 ggplot(input_data, aes(x = input_data[, x_var])) +
        geom_histogram(aes( y = ..density..), # Histogram with density instead of count on y-axis
@@ -161,11 +189,7 @@ ggplot(input_data, aes(x = input_data[, x_var])) +
                  colour = "black", fill = "white") +
        geom_density(alpha = 0.2, fill = "#FF6666") + # Overlay with transparent density plot
        ylab('density') +
-       xlab(x_var_label) +
-       theme_my()
-       # theme_classic() +
-       # theme(text = element_text(size = 12),
-       #  legend.position = 'none') # Place after theme_"style"()
+       xlab(x_var_label)
 # Save to file:
 ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
@@ -176,22 +200,17 @@ dev.off()
 ####
 # A boxplot
 # Setup:
-x_var <- 'cyl'
-x_var_label <- 'Number of cylinders'
-x_var_factor <- factor(input_data[, x_var])
-x_var_factor
-y_var <- 'wt'
-y_var_label <- 'Car weight'
-plot_name <- sprintf('%s_%s_%s_boxplot_2.svg', input_name, x_var, y_var)
-plot_name
+var3_label <- var3
+var3_factor <- factor(input_data[, var3])
+y_var_label <- y_var
+plot_name <- sprintf('%s_%s_%s_boxplot.svg', input_name, var3, y_var)
 # Plot:
-ggplot(input_data, aes(x = x_var_factor, y = input_data[, y_var], fill = x_var_factor)) +
+ggplot(input_data, aes(x = var3_factor, y = input_data[, y_var], fill = var3_factor)) +
        geom_boxplot() +
        ylab(y_var_label) +
-       xlab(x_var_label) +
-       theme_my() +
-       theme(legend.position = 'none') # Place after theme_"style"()
-             # text = element_text(size = 12) # Change text size
+       xlab(var3_label) +
+       theme_classic() +
+       theme(legend.position = 'none')
 # Save to file:
 ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
@@ -203,24 +222,17 @@ dev.off()
 # Scatterplot and legend:
 # http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
 # Setup:
-x_var <- 'hp'
-x_var_label <- 'Gross horse power'
-grouping_var <- 'cyl'
-grouping_var <- factor(input_data[, grouping_var])
-y_var <- 'qsec'
-y_var_label <- '1/4 mile time'
-legend_label <- 'Number of cylinders'
+x_var_label <- x_var
+y_var_label <- y_var
 plot_name <- sprintf('%s_%s_%s_scatterplot.svg', input_name, x_var, y_var)
-plot_name
 # Plot:
-ggplot(input_data, aes(x = input_data[, x_var], y = input_data[, y_var], colour = grouping_var)) +
+ggplot(input_data, aes(x = input_data[, x_var], y = input_data[, y_var], colour = var3_factor)) +
        geom_point() +
        geom_smooth(method = lm) +
        ylab(y_var_label) +
        xlab(x_var_label) +
-       labs(colour = legend_label) +
-       theme_my() +
-       theme(legend.position = 'none') # Place after theme_"style"()
+       labs(colour = var3) +
+       theme_classic()
 # Save:
 ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
@@ -255,6 +267,7 @@ if (is.null(args[['--session']]) == FALSE) {
 print('Deleting the file Rplots.pdf...')
 system('rm -f Rplots.pdf')
 sessionInfo()
+print('Finished successfully')
 q()
 
 # Next: run the script for xxx

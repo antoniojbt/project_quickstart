@@ -1,8 +1,8 @@
 ######################
 # R script to run with docopt for command line options:
 '
-script_name
-===============
+pq_example.R
+============
 
 Author: |author_names| 
 Release: |version|
@@ -14,7 +14,7 @@ Purpose
 
 |description|
 
-Run exploratory stats and plots.
+Runs some basic stats and plots as examples.
 
 Usage and options
 =================
@@ -25,10 +25,10 @@ https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
 To run, type:
-    Rscript script_name -I <INPUT_FILE> [options]
+    Rscript pq_example.R -I <INPUT_FILE> [options]
 
-Usage: script_name (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>] [-O <OUTPUT_FILE>]
-       script_name [-h | --help]
+Usage: pq_example.R (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>] [-O <OUTPUT_FILE>]
+       pq_example.R [-h | --help]
 
 Options:
   -I <INPUT_FILE>                 Input file name
@@ -42,12 +42,13 @@ Input:
 
 Output:
 
-
+    A boxplot and scatterplot from the R dataset mtcars as svg files and an html table of a linear regression output.
 
 Requirements:
 
     library(docopt)
     library(data.table)
+    library(stargazer)
 
 Documentation
 =============
@@ -77,9 +78,10 @@ str(args)
 ######################
 # Logging
 # This can be taken care of by CGAT Experiment.py if running as a pipeline.
-# Otherwise there seem to be few good alternatives. A workaround is the code in:
-# XXXX/project_quickstart/templates/script_templates/logging.R
-# It does not run on its own though, needs copy/pasting for now.
+# Otherwise there seem to be few good alternatives. A workaround is this code:
+# logging.R
+# In the script_templates dir of project_quickstart.
+# It does not run on it own though, needs copy/pasting for now.
 ######################
 
 ######################
@@ -89,15 +91,16 @@ str(args)
 
 ######################
 # Import libraries
-# source('http://bioconductor.org/biocLite.R')
-# biocLite()
+ # source('http://bioconductor.org/biocLite.R')
 library(data.table)
-# https://github.com/Rdatatable/data.table/wiki/Getting-started
+suppressMessages(library(stargazer, quietly = TRUE)) # tables for linear regressions
 ######################
 
+
 ######################
-# Read files, this is with data.table:
+# Read files:
 if (is.null(args[['-I']]) == FALSE) {
+  # args[['-I']] <- as.character('pandas_DF.tsv') # For testing
   input_name <- as.character(args[['-I']])#(args $ `-I`)
   input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 } else {
@@ -112,10 +115,10 @@ print(input_name)
 input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
 print('Name being used to save output files: ')
 print(input_name)
-######################
 
-######################
-# Explore data:
+# Explore data, this is using data.table syntax:
+# https://github.com/Rdatatable/data.table/wiki/Getting-started
+# http://www.listendata.com/2016/10/r-data-table.html
 class(input_data)
 dim(input_data) # nrow(), ncol()
 str(input_data)
@@ -125,15 +128,15 @@ key(input_data)
 tables()
 colnames(input_data)
 input_data[, 2, with = FALSE] # by column position, preferable by column name to avoid silent bugs
-######################
+###################### 
 
 
 ######################
 # Process variables
 str(input_data)
-# The following is much simpler with a dataframe (R base) instead of a data.table
+# The following is much simpler with a dataframe instead of a data.table though
 # What you use depends on memory, preference, etc.
-# Convert a data.table to a data.frame:
+# To convert a data.table to a data.frame:
 # setDF(input_data) # changes by reference
 input_data_df <- as.data.frame(input_data) # create a new object
 class(input_data_df)
@@ -149,8 +152,8 @@ pass_var_dt <- function(var_name) {
   a_var <- as.character(var_name)
   a_var_p <- parse(text = a_var)
 }
-x_var_name <- 'XXX' # still needed
-x_var <- pass_var_dt('XXX')
+x_var_name <- 'gender' # still needed
+x_var <- pass_var_dt('gender')
 head(input_data[, eval(x_var)])
 # Convert variables in data.table
 # https://stackoverflow.com/questions/7813578/convert-column-classes-in-data-table
@@ -160,8 +163,8 @@ str(input_data)
 str(input_data_df)
 
 # Setup more variables:
-y_var_name <- 'YYY'
-y_var <- pass_var_dt('YYY')
+y_var_name <- 'glucose'
+y_var <- pass_var_dt('glucose')
 head(input_data[, eval(y_var)])
 var3_name <- 'age'
 var3 <- pass_var_dt('age')
@@ -170,8 +173,8 @@ head(input_data[, eval(var3)])
 
 
 ###################### 
-# What's the question?
-# What's the hypothesis?
+# Do some stats, simple examples here:
+# What's the question? What's the hypothesis?
 # Descriptive:
 nrow(input_data)
 length(which(complete.cases(input_data) == TRUE))
@@ -226,35 +229,51 @@ if (is.null(args[['-O']]) == FALSE) {
 
 # Save file:
 fwrite(desc_stats, outfile, 
-       sep = '\t', na = 'NA',
-       col.names = TRUE, row.names = FALSE,
-       quote = FALSE)
+            sep = '\t', na = 'NA',
+            col.names = TRUE, row.names = FALSE,
+            quote = FALSE)
 ######################
 
+
 ######################
-# Some basic exploratory plots
+# Some basic exploratory plots, no aesthetics
 # Plot here or use a separate plot_template.R script (preferable if processing
 # large datasets, process first, save, plot separately):
 plot_name <- svg(sprintf('%s_%s_%s.svg', input_name, x_var_name, y_var_name))
-# par(mfrow = c(1, 3)) # rows, cols
+par(mfrow = c(1, 3)) # rows, cols
+# data.frame:
 boxplot(input_data_df[,  y_var_name] ~ input_data_df[,  x_var_name])
+# data.table:
+boxplot(input_data[,  eval(y_var)] ~ input_data[,  eval(x_var)])
+# data.frame scatterplot:
+plot(input_data_df[, y_var_name] ~ input_data_df[, var3_name])
 dev.off()
 ######################
 
 ######################
 # Some inferential stats:
+colnames(input_data_df)
+pass_formula <- sprintf('%s ~ %s + %s', y_var_name, x_var_name, var3_name)
+pass_formula
+lm_input_data <- lm(formula = pass_formula, data = input_data_df)
+summary(lm_input_data)
 
 # Make a table from the output of the linear regression:
-
+title <- as.character("Some random analysis that doesn't make sense")
+stargazer(out = sprintf('%s_lm_table.html', input_name), 
+          style = 'all',
+          lm_input_data,
+          type = 'html',
+          summary = TRUE,
+          title = title)
 ######################
+
 
 ######################
 ## Save some text:
-# Methods
-# Legend
-# Interpretation
 # cat(file <- output_file, some_var, '\t', another_var, '\n', append = TRUE)
 ######################
+
 
 ######################
 # The end:
@@ -280,8 +299,8 @@ if (is.null(args[['--session']]) == FALSE) {
 # by default, it doesn't look like there is an easy way to suppress it, so deleting here:
 print('Deleting the file Rplots.pdf...')
 system('rm -f Rplots.pdf')
-print('Finished successfully.')
 sessionInfo()
+print('Finished successfully.')
 q()
 
 # Next: run the script for xxx

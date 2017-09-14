@@ -1,8 +1,8 @@
 ######################
 # R script to run with docopt for command line options:
 '
-script_name
-===============
+pq_example_mtcars.R
+===================
 
 Author: |author_names| 
 Release: |version|
@@ -25,10 +25,10 @@ https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
 To run, type:
-    Rscript script_name -I <INPUT_FILE> [options]
+    Rscript pq_example_mtcars.R -I <INPUT_FILE> [options]
 
-Usage: script_name (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>]
-       script_name [-h | --help]
+Usage: pq_example_mtcars.R (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>]
+       pq_example_mtcars.R [-h | --help]
 
 Options:
   -I <INPUT_FILE>                 Input file name
