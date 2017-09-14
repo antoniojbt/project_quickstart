@@ -14,9 +14,6 @@ Purpose
 
 |description|
 
-This is a simple template and example R script with docopt style options to run from the command line.
-The R example dataset "mtcars" is used.
-
 
 Usage and options
 =================
@@ -30,14 +27,12 @@ To run, type:
     Rscript plot_template.R -I <INPUT_FILE> [options]
 
 Usage: plot_template.R [-I <INPUT_FILE>] [--session=<R_SESSION_NAME>]
-                       [--vars=<var1_name> <var2_name>]
        plot_template.R [-h | --help]
 
 Options:
-  -I <INPUT_FILE>                 Input file name
-  --session=<R_SESSION_NAME>      R session name if to be saved
-  --vars=<var1_and_var2_names>    Variables to plot from input file
-  -h --help                       Show this screen
+  -I <INPUT_FILE>                           Input file name
+  --session=<R_SESSION_NAME>                R session name if to be saved
+  -h --help                                 Show this screen
 
 Input:
 
@@ -45,7 +40,7 @@ Input:
 
 Output:
 
-    A histogram, boxplot and scatterplot from the R dataset mtcars as three svg files.
+    Plots as svg files.
 
 Requirements:
 
@@ -96,64 +91,50 @@ str(args)
 
 ######################
 # Import libraries
- # source('http://bioconductor.org/biocLite.R')
+# source('http://bioconductor.org/biocLite.R')
 library(ggplot2)
 # library(ggthemes)
 library(data.table)
 ######################
 
-
 ######################
 # Read files:
 if (is.null(args[['-I']]) == FALSE) {
+  # args[['-I']] <- as.character('pandas_DF.tsv') # For testing
   input_name <- as.character(args[['-I']])#(args $ `-I`)
   input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 } else {
-  # Warn or stop if arguments not given:
-  warning('You need to provide an input file. This has to be tab separated with headers.',
-          'Continuing with a preloaded dataset as example data.')
-  #stopifnot(!is.null(args[['-I']]) == TRUE)
-  # Load the example data:
-  input_name <- "mtcars"
-  data("mtcars")
-  input_data <- data.frame(mtcars)
+  # Stop if arguments not given:
+  print('You need to provide an input file. This has to be tab separated with headers.')
+  stopifnot(!is.null(args[['-I']]) == TRUE)
 }
-input_name
 
+print('File being used: ')
+print(input_name)
+# Split at the last '.':
+input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
+print('Name being used to save output files: ')
+print(input_name)
+######################
+
+######################
 # Explore data:
 class(input_data)
-dim(input_data)
-head(input_data)
-tail(input_data)
+dim(input_data) # nrow(), ncol()
 str(input_data)
+input_data # equivalent to head() and tail()
+setkey(input_data) # memory efficient and fast
+key(input_data)
+tables()
 colnames(input_data)
-rownames(input_data)
-summary(input_data)
-######################
+input_data[, 2, with = FALSE] # by column position, preferable by column name to avoid silent bugs
+###################### 
 
 ######################
-# Function to check if arguments for plotting variables were given:
-# Get the named variable from the command line arguments:
-cond_1 <- is.null(args[['-I']]) == FALSE
-cond_2 <- is.null(args[['--vars']]) == FALSE
-cond_1
-cond_2
-
-# args[['--vars']] <- "wt qsec"
-get_vars(variable_name) {
-  if (cond_1 == FALSE & cond_2 == FALSE) {
-    vars <- strsplit(args[['--vars']], split = ' ')[[1]]
-    var_1 <- vars[1]
-    var_2 <- vars[2]
-    print(c(vars, class(vars), var_1, var_2))
-    } else {
-      warning("Variable names not given, using a preloaded dataset instead")
-      # Load vars from the mtcars example data:
-      var_1 <- 'wt'
-      var_2 <- 
-    }
-  }
-
+# Convert data.table to data.frame as easier to handle for plotting:
+setDF(x = input_data)
+# input_data <- as.data.frame(input_data)
+class(input_data)
 ######################
 
 ######################
@@ -162,22 +143,18 @@ get_vars(variable_name) {
 # http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
 
 # Setup:
-# var1 <- 'wt'
-var1
-var1_label <- 'Car weight'
-var1_label
-plot_name <- sprintf('%s_%s_histogram', input_name, var1)
-plot_name
+plot_name <- sprintf('%s_%s_histogram.svg', input_name, x_var)
+x_var_label <- x_var
 # Plot:
-ggplot(input_data, aes(x = var1)) +
+ggplot(input_data, aes(x = input_data[, x_var])) +
        geom_histogram(aes( y = ..density..), # Histogram with density instead of count on y-axis
                  binwidth = 0.5,
                  colour = "black", fill = "white") +
        geom_density(alpha = 0.2, fill = "#FF6666") + # Overlay with transparent density plot
        ylab('density') +
-       xlab(var1_label)
+       xlab(x_var_label)
 # Save to file:
-ggsave(sprintf('%s.svg', plot_name))
+ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
@@ -186,26 +163,19 @@ dev.off()
 ####
 # A boxplot
 # Setup:
-var1 <- 'cyl'
-var1
-var1_label <- 'Number of cylinders'
-var1_label
-var1_factor <- factor(input_data$var1)
-var1_factor
-var2 <- 'wt'
-var2
-var2_label <- 'Car weight'
-var2_label
-plot_name <- sprintf('%s_%s_%s_boxplot_2', input_name, var1, var2)
-plot_name
+var3_label <- var3
+var3_factor <- factor(input_data[, var3])
+y_var_label <- y_var
+plot_name <- sprintf('%s_%s_%s_boxplot.svg', input_name, var3, y_var)
 # Plot:
-ggplot(input_data, aes(x = var1_factor, y = var2, fill = var1_factor)) +
+ggplot(input_data, aes(x = var3_factor, y = input_data[, y_var], fill = var3_factor)) +
        geom_boxplot() +
-       ylab(var2_label) +
-       xlab(var1_label) +
-       theme_classic()
+       ylab(y_var_label) +
+       xlab(var3_label) +
+       theme_classic() +
+       theme(legend.position = 'none')
 # Save to file:
-ggsave(sprintf('%s.svg', plot_name))
+ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
@@ -215,28 +185,19 @@ dev.off()
 # Scatterplot and legend:
 # http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
 # Setup:
-var1 <- 'wt'
-var1
-var1_label <- 'Car weight'
-var1_label
-var1_factor <- factor(mtcars$cyl)
-var1_factor
-var2 <- 'wt'
-var2
-var2_label <- 'Car weight'
-var2_label
-plot_name <- sprintf('%s_car_qsec_hp_scatterplot', input_name)
-plot_name
+x_var_label <- x_var
+y_var_label <- y_var
+plot_name <- sprintf('%s_%s_%s_scatterplot.svg', input_name, x_var, y_var)
 # Plot:
-ggplot(input_data, aes(x = hp, y = qsec, colour = cyl_factor)) +
+ggplot(input_data, aes(x = input_data[, x_var], y = input_data[, y_var], colour = var3_factor)) +
        geom_point() +
        geom_smooth(method = lm) +
-       ylab('1/4 mile time') +
-       xlab('gross horse power') +
-       labs(colour = 'number of cylinders') +
+       ylab(y_var_label) +
+       xlab(x_var_label) +
+       labs(colour = var3) +
        theme_classic()
 # Save:
-ggsave(sprintf('%s.svg', plot_name))
+ggsave(plot_name)
 # Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
 # Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
 dev.off()
@@ -269,6 +230,7 @@ if (is.null(args[['--session']]) == FALSE) {
 print('Deleting the file Rplots.pdf...')
 system('rm -f Rplots.pdf')
 sessionInfo()
+print('Finished successfully')
 q()
 
 # Next: run the script for xxx
