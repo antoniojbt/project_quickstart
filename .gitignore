@@ -7,6 +7,10 @@ templates/script_templates/pipeline_template/make.bat
 templates/script_templates/pipeline_template/Makefile
 templates/script_templates/pipeline_template/conf.py
 
+# Legacy:
+legacy/*refactor
+*refactor
+
 # Mac OS X and others:
 *.tar
 *.gz
