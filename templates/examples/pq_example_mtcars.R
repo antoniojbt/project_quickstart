@@ -14,7 +14,8 @@ Purpose
 
 |description|
 
-Runs some basic stats and plots as examples.
+Runs some basic stats and plots as examples using the mt_cars dataset available in R.
+
 
 Usage and options
 =================
@@ -25,28 +26,27 @@ https://github.com/docopt/docopt.R
 https://cran.r-project.org/web/packages/docopt/index.html
 
 To run, type:
-    Rscript pq_example_mtcars.R -I <INPUT_FILE> [options]
+    Rscript pq_example_mtcars.R [options]
 
-Usage: pq_example_mtcars.R (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>]
+Usage: pq_example_mtcars.R [--session=<R_SESSION_NAME>]
        pq_example_mtcars.R [-h | --help]
 
 Options:
-  -I <INPUT_FILE>                 Input file name
   --session=<R_SESSION_NAME>      R session name if to be saved
   -h --help                       Show this screen
 
 Input:
 
-    A tab separated file with headers. This is read with data.table and stringsAsFactors = FALSE
+    None needed, the script loads the data "mtcars"
 
 Output:
 
-    A boxplot and scatterplot from the R dataset mtcars as svg files and an html table of a linear regression output.
+    A boxplot and scatterplot from the R dataset mtcars as svg files
+    and an html table of a linear regression output.
 
 Requirements:
 
     library(docopt)
-    library(data.table)
     library(stargazer)
 
 Documentation
@@ -90,37 +90,24 @@ str(args)
 
 ######################
 # Import libraries
- # source('http://bioconductor.org/biocLite.R')
-library(data.table)
+# source('http://bioconductor.org/biocLite.R')
 suppressMessages(library(stargazer, quietly = TRUE)) # tables for linear regressions
 ######################
 
 
 ######################
-# Read files:
-if (is.null(args[['-I']]) == FALSE) {
-  # args[['-I']] <- as.character('pandas_dataframe_example.tsv') # For testing
-  input_name <- as.character(args[['-I']])#(args $ `-I`)
-  input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
-} else {
-  # Stop if arguments not given:
-  print('You need to provide an input file. This has to be tab separated with headers.')
-  stopifnot(!is.null(args[['-I']]) == TRUE)
-}
-input_name
+# Load dataset:
+input_name <- 'mtcars'
+data('mtcars')
+input_data <- as.data.frame(mtcars)
 
-# Explore data, this is using data.table syntax:
-# https://github.com/Rdatatable/data.table/wiki/Getting-started
-# http://www.listendata.com/2016/10/r-data-table.html
+# Explore data:
 class(input_data)
 dim(input_data) # nrow(), ncol()
 str(input_data)
-input_data # equivalent to head() and tail()
-setkey(input_data) # memory efficient and fast
-key(input_data)
-tables()
+head(input_data)
+tail(input_data)
 colnames(input_data)
-input_data[, 2, with = FALSE] # by column position, preferable by column name to avoid silent bugs
 ###################### 
 
 ###################### 
@@ -130,20 +117,7 @@ input_data[, 2, with = FALSE] # by column position, preferable by column name to
 nrow(input_data)
 length(which(complete.cases(input_data) == TRUE))
 summary(input_data)
-summary(input_data[, c(2:3)])
-input_data[, .(mean = mean('age' , na.rm = TRUE)), with = FALSE] # drop with and put column name, usually better practice
-input_data[, lapply(.SD, mean), .SDcols = c(2:ncol(input_data))]
-input_data[, sapply(.SD, function(x) c(mean = mean(x, na.rm = TRUE),
-                                       median = median(x, na.rm = TRUE),
-                                       SD = sd(x, na.rm = TRUE),
-                                       min = min(x, na.rm = TRUE),
-                                       max = max(x, na.rm = TRUE)
-                                       # quantile_25 = quantile(x, 0.25, na.rm = TRUE), # will error for non-numeric
-                                       # quantile_75 = quantile(x, 0.75, na.rm = TRUE) # will error for non-numeric
-                                       )),
-                    .SDcols = c(2:ncol(input_data))]
-
-# TO DO: continue here:
+summary(input_data[, c('wt', 'qsec', 'gear')])
 # Process variables:
 cyl_factor <- factor(input_data$cyl)
 cyl_factor
@@ -177,7 +151,7 @@ stargazer(out = sprintf('%s_lm_table.html', input_name),
 
 ######################
 ## Save some text:
-cat(file <- output_file, some_var, '\t', another_var, '\n', append = TRUE)
+# cat(file <- output_file, some_var, '\t', another_var, '\n', append = TRUE)
 ######################
 
 

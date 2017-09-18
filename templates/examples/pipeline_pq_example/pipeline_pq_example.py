@@ -1,6 +1,6 @@
 '''
-pipeline_name
-=============
+pipeline_pq_example.py
+======================
 
 :Author: |author_name|
 :Release: |version|
@@ -22,38 +22,26 @@ Purpose
 Usage and options
 =================
 
-These are based on docopt_, see examples_.
+These are based on CGATPipelines_ and Ruffus_
 
-.. _docopt: https://github.com/docopt/docopt
+.. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
 
-.. _examples: https://github.com/docopt/docopt/blob/master/examples/options_example.py
+.. _Ruffus: http://www.ruffus.org.uk/
 
 
-Usage:
-       pipeline_name [--main-method]
-       pipeline_name [-I FILE]
-       pipeline_name [-O FILE]
-       pipeline_name [-h | --help]
-       pipeline_name [-V | --version]
-       pipeline_name [-f --force]
-       pipeline_name [-L | --log]
+For command line help type:
 
-Options:
-    -I             Input file name.
-    -O             Output file name.
-    -h --help      Show this screen
-    -V --version   Show version
-    -f --force     Force overwrite
-    -L --log       Log file name.
-
+    python pipeline_pq_example.py --help
 
 Configuration
 =============
 
-This pipeline is built using a Ruffus/CGAT approach. You need to have Python, Ruffus, CGAT core tools and any other specific dependencies needed fo this script.
+This pipeline is built using a Ruffus/CGAT approach. You need to have Python,
+Ruffus, CGAT core tools and any other specific dependencies needed fo this
+script.
 
-A configuration file was created at the same time as this script
-(pipeline_template.ini).
+A configuration file was created at the same time as this script.
+
 Use this to extract any arbitrary parameters that could be changed in future
 re-runs of the pipeline.
 
@@ -83,7 +71,8 @@ software to be in the path:
 Requirements:
 
 * R >= 1.1
-*
+* Python >= 3.5
+
 
 Documentation
 =============
@@ -93,7 +82,7 @@ Documentation
         |url|
 
 '''
-
+################
 from ruffus import *
 
 import sys
@@ -103,7 +92,9 @@ import sqlite3
 # Check CGAT_core and how to import here:
 import CGAT.Experiment as E
 import CGATPipelines.Pipeline as P
+################
 
+################
 # Get pipeline.ini file:
 def getINI():
     path = os.path.splitext(__file__)[0]
@@ -127,8 +118,9 @@ def getINI():
 # Load options from the config file
 INI_file = getINI()
 PARAMS = P.getParameters([INI_file])
+################
 
-# -----------------------------------------------
+################
 # Utility functions
 def connect():
     '''utility function to connect to database.
@@ -147,25 +139,52 @@ def connect():
     cc.close()
 
     return dbh
+################
 
+################
+path_to_scripts = '/Users/antoniob/Documents/github.dir/AntonioJBT/project_quickstart/templates/examples/'
 
-# ---------------------------------------------------
 # Specific pipeline tasks
-@transform((INI_file, "conf.py"),
-           regex("(.*)\.(.*)"),
-           r"\1.counts")
-def countWords(infile, outfile):
-    '''count the number of words in the pipeline configuration files.'''
 
-    # the command line statement we want to execute
-    statement = '''awk 'BEGIN { printf("word\\tfreq\\n"); }
-    {for (i = 1; i <= NF; i++) freq[$i]++}
-    END { for (word in freq) printf "%%s\\t%%d\\n", word, freq[word] }'
-    < %(infile)s > %(outfile)s'''
+#@transform(countWords,
+#           suffix(".counts"),
+#           "_counts.load")
+#def loadWordCounts(infile, outfile):
+#    '''load results of word counting into database.'''
+#    P.load(infile, outfile, "--add-index=word")
+
+@mkdir('pq_results')
+@originate('pandas_DF')
+def createDF():
+    '''
+    Call a python example script from project_quickstart which creates a pandas dataframe
+    '''
+    statement = '''
+                cd pq_results ;
+                python pq_example.py --createDF -O %(outfile)s.tsv
+                '''
+    P.run()
+
+def run_pq_examples():
+    ''' Runs python and R scripts from project_quickstart as examples of a
+        pipeline with Ruffus and CGAT tools.
+        A dataframe, several plots and a multi-panel plot are generated.
+    '''
+    # command line statement to execute, to run in bash:
+    statement = '''
+                Rscript pq_example.R -I %(outfile)s.tsv ;
+                checkpoint ;
+                Rscript plot_pq_example_pandas.R -I %(outfile)s ;
+                checkpoint ;
+                python svgutils_pq_example.py \
+                        --plotA=pandas_DF_gender_glucose_boxplot.svg \
+                        --plotB=pandas_DF_age_histogram.svg ;
+                checkpoint ;
+                '''
 
     # execute command in variable statement.
-    #
-    # The command will be sent to the cluster.  The statement will be
+    # The command will be sent to the cluster (by default, but this can be
+    # turned off with --local).  The statement will be
     # interpolated with any options that are defined in in the
     # configuration files or variable that are declared in the calling
     # function.  For example, %(infile)s will we substituted with the
@@ -173,20 +192,21 @@ def countWords(infile, outfile):
     P.run()
 
 
-@transform(countWords,
-           suffix(".counts"),
-           "_counts.load")
-def loadWordCounts(infile, outfile):
-    '''load results of word counting into database.'''
-    P.load(infile, outfile, "--add-index=word")
+def run_mtcars():
+    '''
+    A second set of examples from project_quickstart
+    Some plots and an html table of a linear regression are generated.
+    '''
+    # Plots simple examples:
+    statement = '''python plot_pq_example.py '''
 
-
-# ---------------------------------------------------
-# Generic pipeline tasks
-@follows(loadWordCounts)
-def full():
-    pass
-
+    # Scripts for mt_cars in R:
+    statement = ''' Rscript pq_example_mtcars.R ;
+                    checkpoint ;
+                    Rscript plot_pq_example_mtcars.R
+                    checkpoint ;
+                '''
+    P.run()
 
 #def build_report():
 #    '''build report from scratch.

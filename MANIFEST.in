@@ -65,9 +65,7 @@ recursive-include templates *.ini
 recursive-include templates *.py
 recursive-include templates *.rst
 recursive-include templates Makefile
-
-# Include example scripts and pipelines:
-recursive-include examples *
+recursive-include templates/examples *
 
 # Files to exclude:
 exclude .gitignore

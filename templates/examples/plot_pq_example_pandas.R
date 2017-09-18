@@ -15,7 +15,6 @@ Purpose
 |description|
 
 This is a simple template and example R script with docopt style options to run from the command line.
-The R example dataset "mtcars" is used.
 
 
 Usage and options
@@ -42,6 +41,11 @@ Options:
 Input:
 
     A tab separated file with headers. This is read with data.table and stringsAsFactors = FALSE
+    Run the script
+    
+    python some_path/project_quickstart/templates/examples/pq_example.py -h
+    
+    first to generate an input for this script.
 
 Output:
 

@@ -19,41 +19,30 @@ Purpose
 .. briefly describe the main purpose and methods of the pipeline
 
 
+
 Usage and options
 =================
 
-These are based on docopt_, see examples_.
+These are based on CGATPipelines_ and Ruffus_
 
-.. _docopt: https://github.com/docopt/docopt
+.. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
 
-.. _examples: https://github.com/docopt/docopt/blob/master/examples/options_example.py
+.. _Ruffus: http://www.ruffus.org.uk/
 
 
-Usage:
-       pipeline_name [--main-method]
-       pipeline_name [-I FILE]
-       pipeline_name [-O FILE]
-       pipeline_name [-h | --help]
-       pipeline_name [-V | --version]
-       pipeline_name [-f --force]
-       pipeline_name [-L | --log]
+For command line help type:
 
-Options:
-    -I             Input file name.
-    -O             Output file name.
-    -h --help      Show this screen
-    -V --version   Show version
-    -f --force     Force overwrite
-    -L --log       Log file name.
-
+    python pipeline_pq_example.py --help
 
 Configuration
 =============
 
-This pipeline is built using a Ruffus/CGAT approach. You need to have Python, Ruffus, CGAT core tools and any other specific dependencies needed fo this script.
+This pipeline is built using a Ruffus/CGAT approach. You need to have Python,
+Ruffus, CGAT core tools and any other specific dependencies needed for this
+script.
 
-A configuration file was created at the same time as this script
-(pipeline_template.ini).
+A configuration file was created at the same time as this script.
+
 Use this to extract any arbitrary parameters that could be changed in future
 re-runs of the pipeline.
 
@@ -83,7 +72,7 @@ software to be in the path:
 Requirements:
 
 * R >= 1.1
-*
+* Python >= 3.5
 
 Documentation
 =============
@@ -93,7 +82,7 @@ Documentation
         |url|
 
 '''
-
+################
 from ruffus import *
 
 import sys
@@ -103,7 +92,9 @@ import sqlite3
 # Check CGAT_core and how to import here:
 import CGAT.Experiment as E
 import CGATPipelines.Pipeline as P
+################
 
+################
 # Get pipeline.ini file:
 def getINI():
     path = os.path.splitext(__file__)[0]
@@ -127,8 +118,9 @@ def getINI():
 # Load options from the config file
 INI_file = getINI()
 PARAMS = P.getParameters([INI_file])
+################
 
-# -----------------------------------------------
+################
 # Utility functions
 def connect():
     '''utility function to connect to database.
@@ -147,9 +139,9 @@ def connect():
     cc.close()
 
     return dbh
+################
 
-
-# ---------------------------------------------------
+################
 # Specific pipeline tasks
 @transform((INI_file, "conf.py"),
            regex("(.*)\.(.*)"),
@@ -179,15 +171,16 @@ def countWords(infile, outfile):
 def loadWordCounts(infile, outfile):
     '''load results of word counting into database.'''
     P.load(infile, outfile, "--add-index=word")
+################
 
-
-# ---------------------------------------------------
+################
 # Generic pipeline tasks
 @follows(loadWordCounts)
 def full():
     pass
+################
 
-
+################
 #def build_report():
 #    '''build report from scratch.
 #
@@ -196,14 +189,9 @@ def full():
 
 #    E.info("starting report build process from scratch")
 #    P.run_report(clean=True)
+################
 
-# TO DO:
-# docopt and sysargv will conflict between script and Pipeline...
-# Finish and exit with docopt arguments:
-#if __name__ == '__main__':
-#    arguments = docopt(__doc__, version='xxx 0.1')
-#    print(arguments)
-#    sys.exit(main())
-
+################
 if __name__ == "__main__":
     sys.exit(P.main(sys.argv))
+################

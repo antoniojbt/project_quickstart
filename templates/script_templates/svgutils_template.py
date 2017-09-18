@@ -1,6 +1,6 @@
 '''
-script_name
-===========
+svg_template.py
+===============
 
 :Author: |author_name|
 :Release: |version|
@@ -12,7 +12,16 @@ Purpose
 
 |description|
 
-Make a figure layout using svgutils
+Make a figure layout using the python package svgutils.
+
+See examples and information from svgutils:
+
+    - https://neuroscience.telenczuk.pl/?p=331
+    - http://svgutils.readthedocs.io/en/latest/tutorials/composing_multipanel_figures.html
+    - https://svgutils.readthedocs.io/en/latest/compose.html
+    - http://cairosvg.org/
+    - https://inkscape.org/en/
+
 
 Usage and options
 =================
@@ -25,21 +34,33 @@ These are based on docopt_, see examples_.
 
 
 Usage:
-       script_name [--plot1]
-       script_name [--plot1]
-       script_name [-O FILE]
-       script_name [-h | --help]
-       script_name [-V | --version]
-       script_name [-f --force]
-       script_name [-L | --log]
+       svg_template.py (--plotA=<file_name>) (--plotB=<file_name>)
+                       [--plotC=<file_name>] [--plotD=<file_name>]
+                       (-O FILE)
+       svg_template.py [-h | --help]
 
 Options:
-    --plot1        
-    -O             Output file name.
-    -h --help      Show this screen
-    -V --version   Show version
-    -f --force     Force overwrite
-    -L --log       Log file name.
+    --plotA <file_name>       Plot name for position A
+    --plotB <file_name>       Plot name for position B
+    --plotC <file_name>       Plot name for position C
+    --plotD <file_name>       Plot name for position D
+    -O FILE                   Output file name
+    -h --help                 Show this screen
+
+
+Input:
+
+    Requires svg files as input.
+
+
+Output:
+
+    Outputs svg and pdf formats of a multi-panel plot.
+
+Requires:
+
+    Python packages and optionally Inkscape
+
 
 Documentation
 =============
@@ -48,96 +69,213 @@ Documentation
 
         |url|
 
-    Also see examples and information from svgutils:
-
-    - https://neuroscience.telenczuk.pl/?p=331
-    - http://svgutils.readthedocs.io/en/latest/tutorials/composing_multipanel_figures.html
-    - https://svgutils.readthedocs.io/en/latest/compose.html
-    - http://cairosvg.org/
-    - https://inkscape.org/en/
-
 '''
-############
-import sys
+##############
+# Get all the modules needed
+# System:
 import os
+import sys
+import glob
+
+# Options and help:
 import docopt
 
+# Get svgutils and PDF converter if not using Inkscape:
 from svgutils.compose import *
 import cairosvg
-import os
-############
 
-############
-# Names of the plots to read in, these have to be svg files:
-plot1 = 'boxplots.svg' # These are taken from above as example data
-plot2 = 'scatter2.svg'
+# Get additional packages needed:
+import string
 
-# Name the figure panel (which will be "F{figure_number}_{figure_name}.{format}", 
-# Only svg can be output with svgutils:
-figure_number = '1'
-figure_name = 'test'
-file_format_in = 'svg'
-file_format_out = 'pdf'
-layout_name_1 = str('F{}_{}.{}'.format(figure_number,
-                                       figure_name,
-                                       file_format_in))
-layout_name_2 = str('F{}_{}.{}'.format(figure_number,
-                                       figure_name,
-                                       file_format_out))
+# Import this project's module, uncomment if building something more elaborate:
+#try:
+#    import module_template.py
 
-my_layout = Figure("21cm", "19cm", # A4 paper is 210 mm x 197 mm
-                  # Panel() groups all elements belonging to one plot/panel
-                  Panel(
-                      SVG(plot1).scale(0.8), # scale only the plot, not the text
-                      # Place Text() after SVG(), otherwise it doesn't plot:
-                      Text("A", 25, 20, size = 11, weight = 'bold'),
-                      ).move(0, 10),
-                  Panel(
-                      SVG(plot2).scale(0.8),
-                      Text("B", 25, 20, size = 11, weight = 'bold'),
-                      ).move(340, 10), # placed here move() is applied to all
-                                       # elements of the panel
-                                       # move(280, 0) will move the figure 280
-                                       # px horizontally
-                  #Grid(20, 20) # Generates a grid of horizontal and vertical lines 
-                               # labelled with their position in pixel units
-                               # Use to test if figure is placed correctly, then
-                               # comment out. Use within Figure()
-                               # e.g. Figure(XXX, Grid(20, 20), Panel(XXX))
-                    )
-                     #.tile(2, 1) # (ncols, nrows), use before .save()
-                     #.tile() errors, see:
-                     #https://stackoverflow.com/questions/45850144/is-there-a-bug-in-svgutils-compose-module-regarding-the-arrangement-of-figures/45863869#45863869
-
-# Save the Figure:
-my_layout.save(layout_name_1)
-
-# Convert SVG file to PDF with CairoSVG:
-cairosvg.svg2pdf(url = layout_name_1,
-                 write_to = layout_name_2
-                 )
-
-# Alternatively with inkscape:
-#os.system('''inkscape --export-pdf=F{}_{}.ink.{} {}'''.format(figure_number,
-#                                                              figure_name,
-#                                                              file_format_out,
-#                                                              layout_name_1)
-#          )
-
-# Inkscape is very power and has many more options, e.g. 
-# --export-background=white --export-area-drawing
-# See:
-#https://inkscape.org/sk/doc/inkscape-man.html
+#except ImportError:
+#    print("Could not import this project's module, exiting")
+#    raise
+##############
 
 
-# TO DO: How to add legends directly?
-# Otherwise pull into an rst file and add there. 
-############
+##############
+def plotMultiSVG(plots_given, outfile, **kwargs):
+    ''' Takes two to four svg files and outputs a multi-panel figure in svg and
+        pdf formats.
+    '''
+    plot_names = []
 
-############ 
+    for option in plots_given:
+        plot_name = str(option).strip('[]').strip("''")
+        plot_names.append(plot_name)
+
+    print(''' The multi-panel figure will have the following {} plots:
+              {}
+          '''.format(len(plot_names), plot_names))
+
+    # Name the final figure panel (which will be "F{figure_number}_{figure_name}.{format}", 
+    # Only svg can be output with svgutils:
+    figure_name = outfile
+    file_format_in = 'svg'
+    file_format_out = 'pdf'
+    layout_name_1 = str('figure_{}.{}'.format(figure_name,
+                                              file_format_in))
+    layout_name_2 = str('figure_{}.{}'.format(figure_name,
+                                              file_format_out))
+
+    # Set up svgutils arguments:
+    fig_size1 = "21cm"
+    fig_size2 = "19cm" # A4 paper is 210 mm x 197 mm
+    size = 11
+    weight = "bold"
+    pos1 = 25
+    pos2 = 20
+    scale = 0.8
+
+    def getPanel():
+        ''' Get a panel for each plot passed in the arguments
+            In svgutils Panel() groups all elements belonging to one plot/panel
+        '''
+        svg_panels = []
+        letters = ['A', 'B', 'C', 'D']
+        moves = [(20, 20), (380, 20), (20, 380), (380, 380)] # These move the plots
+                                                             # but are temporary,
+                                                             # and unlikely to
+                                                             # work, as just
+                                                             # guesses.
+                                                             # Use tile() instead
+                                                             # when PR is done, see
+                                                             # below.
+                                                             # move(horizontal px,
+                                                             # vertical px)
+        for idx,val in enumerate(plot_names):
+            move_h, move_v = moves[idx][0], moves[idx][1]
+            # vals are the actual plot to use
+            # moves will place the plot at a given position
+
+            panel_func = Panel(SVG(val).scale(scale), # scale only the plot, not the text
+                                        Text(letters[idx], # Place Text() after SVG(), otherwise it doesn't plot
+                                        pos1, pos2,
+                                        size = size,
+                                        weight = weight),
+                                ).move(move_h, move_v) # move the whole panel
+            svg_panels.append(panel_func)
+        return(svg_panels)
+
+
+    def getFigure():
+        ''' Create the figure with the panels using svgutils Figure() funciton
+        '''
+        svg_panels = getPanel()
+        fig_layout = Figure(fig_size1, fig_size2,
+                            *svg_panels,
+                                    # Grid(20, 20) # Generates a grid of horizontal and vertical lines 
+                                                   # labelled with their position in pixel units
+                                                   # Use to test if figure is placed correctly, then
+                                                   # comment out. Use within Figure()
+                                                   # e.g. Figure(XXX, Grid(20, 20), Panel(XXX))
+                                    )
+                                    #.tile(2, 1) # (ncols, nrows), use before .save()
+                                    #.tile() errors, see:
+                #https://stackoverflow.com/questions/45850144/is-there-a-bug-in-svgutils-compose-module-regarding-the-arrangement-of-figures/45863869#45863869
+
+        # Save the Figure:
+        fig_layout.save(layout_name_1)
+
+        # Convert SVG file to PDF with CairoSVG:
+        cairosvg.svg2pdf(url = layout_name_1,
+                         write_to = layout_name_2
+                         )
+
+        # Alternatively with inkscape:
+        #os.system('''inkscape --export-pdf=F{}_{}.ink.{} {}'''.format(figure_number,
+        #                                                              figure_name,
+        #                                                              file_format_out,
+        #                                                              layout_name_1)
+        #          )
+
+        # Inkscape has many more options, e.g. 
+        # --export-background=white --export-area-drawing
+        # See:
+        #https://inkscape.org/sk/doc/inkscape-man.html
+
+    # Call this function:
+    getFigure()
+
+    # TO DO: How to add legends directly?
+    # Otherwise pull into an rst file and add there. 
+##############
+
+##############
+def main():
+    ''' with docopt main() expects a dictionary with arguments from docopt()
+    docopt will automatically check your docstrings for usage, set -h, etc.
+    '''
+    options = docopt.docopt(__doc__)
+    welcome_msg = str('\n' + 'Welcome to svgutils_template.py')
+    print(welcome_msg)
+    docopt_error_msg = str('\n' + 'svgutils_template.py exited due to an error.' + '\n')
+    docopt_error_msg = str(docopt_error_msg
+                           + '\n'
+                           + 'Try svgutils_template.py --help'
+                           + '\n' + '\n'
+                           + 'Options in place:'
+                           + '\n'
+                           + str(options)
+                           + '\n'
+                           )
+
+    try:
+        # Names of the plots to read in, these have to be svg files:
+        cond1 = options['--plotA'] and options['--plotB'] and options['-O']
+        cond2 = cond1 and options['--plotC']
+        cond3 = cond2 and options['--plotD']
+        plots_given = []
+        outfile = str(options["-O"]).strip('[]').strip("''")
+        print(cond1, cond2, cond3)
+
+        # Exit if one of plotA, plotB or outfile name are not given:
+        if not (cond1 or cond2 or cond3):
+            print(''' You need to provide at least two plots and an output file
+                      name to make a multi-panel figure. Pass plots A and B or up
+                      to four plots in svg format.
+                   ''')
+            print(docopt_error_msg)
+            sys.exit()
+
+        # If at least two plots are given run:
+        if cond1 and not cond2 and not cond3:
+            plots_given.append(options['--plotA'])
+            plots_given.append(options['--plotB'])
+            plotMultiSVG(plots_given = plots_given, outfile = outfile)
+
+        elif cond2 and not cond3:
+            plots_given.append(options['--plotA'])
+            plots_given.append(options['--plotB'])
+            plots_given.append(options['--plotC'])
+            plotMultiSVG(plots_given = plots_given, outfile = outfile)
+
+        elif cond3:
+            plots_given.append(options['--plotA'])
+            plots_given.append(options['--plotB'])
+            plots_given.append(options['--plotC'])
+            plots_given.append(options['--plotD'])
+            plotMultiSVG(plots_given = plots_given, outfile = outfile)
+
+        else:
+            print(docopt_error_msg)
+            print(''' Something didn't work... Exiting.
+                  ''')
+            sys.exit()
+
+    # Handle exceptions:
+    except docopt.DocoptExit:
+        print(docopt_error_msg)
+        raise
+##############
+
+
+##############
 # Finish and exit with docopt arguments:
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='xxx 0.1')
-    print(arguments)
     sys.exit(main())
-############
+############ 

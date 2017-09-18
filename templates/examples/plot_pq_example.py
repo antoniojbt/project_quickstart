@@ -89,7 +89,7 @@ def doBoxplot():
     scores = [category1,category2]
 
     plt.boxplot(scores)
-    plt.savefig('boxplots.svg')
+    plt.savefig('pyplot_example_boxplots.svg')
     #plt.savefig('boxplots.pdf')
     plt.close()
     return
@@ -115,7 +115,7 @@ def doScatterplot():
     plt.scatter(x,y,c="red",marker="s")
     plt.xlabel("Variable 1")
     plt.ylabel("Variable 2")
-    plt.savefig("scatter2.svg")
+    plt.savefig("pyplot_example_scatterplot.svg")
     #plt.savefig('scatter2.pdf')
     plt.close()
     return

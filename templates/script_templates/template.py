@@ -1,6 +1,6 @@
 '''
 template.py
-===========
+================
 
 :Author: |author_names|
 :Release: |version|
