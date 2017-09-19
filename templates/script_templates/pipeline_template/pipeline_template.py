@@ -23,7 +23,7 @@ Purpose
 Usage and options
 =================
 
-These are based on CGATPipelines_ and Ruffus_
+These are based on CGATPipelines_ and Ruffus_, not docopt.
 
 .. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
 
@@ -83,15 +83,39 @@ Documentation
 
 '''
 ################
-from ruffus import *
-
+# Get modules needed:
 import sys
 import os
+
+# Pipeline:
+import ruffus
+
+# Database:
 import sqlite3
 
-# Check CGAT_core and how to import here:
-import CGAT.Experiment as E
-import CGATPipelines.Pipeline as P
+# Try getting CGAT: 
+try:
+    import CGAT.IOTools as IOTools
+    import CGATPipelines.Pipeline as P
+    import CGATPipelines.Experiment as E
+
+except ImportError:
+    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
+    raise
+
+# required to make iteritems python2 and python3 compatible
+from builtins import dict
+
+# Import this project's module, uncomment if building something more elaborate: 
+#try: 
+#    import module_template.py 
+
+#except ImportError: 
+#    print("Could not import this project's module, exiting") 
+#    raise 
+
+# Import additional packages: 
+
 ################
 
 ################
