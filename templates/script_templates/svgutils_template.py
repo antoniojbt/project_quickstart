@@ -135,8 +135,15 @@ def plotMultiSVG(plots_given, outfile, **kwargs):
         ''' Get a panel for each plot passed in the arguments
             In svgutils Panel() groups all elements belonging to one plot/panel
         '''
+        # TO DO: get any number of panels from any number of plots given in the
+        # CLI. Change docopt options to repeating arguments eg 
+        # my_script.py --plot-names <plot_name> <plot_name>...
+        # which would then be tiled left to right, top to bottom
+        # switch to tile after PR or fork and update upstream
+        # provide scale, moves, grid, fig sizes, size, weight, pos1, pos2, etc.
+        # as CLI options with current defaults
         svg_panels = []
-        letters = ['A', 'B', 'C', 'D']
+        letters = ['A', 'B', 'C', 'D'] # TO DO change to string upper case
         moves = [(20, 20), (380, 20), (20, 380), (380, 380)] # These move the plots
                                                              # but are temporary,
                                                              # and unlikely to
