@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 pipeline_pq_example.py
 ======================
@@ -83,16 +84,43 @@ Documentation
 
 '''
 ################
-from ruffus import *
-
+# Get modules needed:
 import sys
 import os
+
+# Pipeline:
+from ruffus import *
+
+# Database:
 import sqlite3
 
-# Check CGAT_core and how to import here:
-import CGAT.Experiment as E
-import CGATPipelines.Pipeline as P
+# Try getting CGAT: 
+try:
+    import CGAT.IOTools as IOTools
+    import CGATPipelines.Pipeline as P
+    import CGAT.Experiment as E
+
+except ImportError:
+    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
+    raise
+
+# required to make iteritems python2 and python3 compatible
+from builtins import dict
+
+# Import this project's module, uncomment if building something more elaborate: 
+#try: 
+#    import module_template.py 
+
+#except ImportError: 
+#    print("Could not import this project's module, exiting") 
+#    raise 
+
+# Import additional packages: 
+
+# Set path if necessary:
+#os.system('''export PATH="~/Documents/github.dir/AntonioJBT/project_quickstart/templates:$PATH"''')
 ################
+
 
 ################
 # Get pipeline.ini file:
@@ -118,6 +146,10 @@ def getINI():
 # Load options from the config file
 INI_file = getINI()
 PARAMS = P.getParameters([INI_file])
+
+# Set global parameters here, obtained from the ini file
+# e.g. get the cmd tools to run if specified:
+#cmd_tools = P.asList(PARAMS["cmd_tools_to_run"])
 ################
 
 ################
@@ -142,29 +174,29 @@ def connect():
 ################
 
 ################
-path_to_scripts = '/Users/antoniob/Documents/github.dir/AntonioJBT/project_quickstart/templates/examples/'
-
-# Specific pipeline tasks
-
-#@transform(countWords,
-#           suffix(".counts"),
-#           "_counts.load")
-#def loadWordCounts(infile, outfile):
-#    '''load results of word counting into database.'''
-#    P.load(infile, outfile, "--add-index=word")
-
 @mkdir('pq_results')
-@originate('pandas_DF')
 def createDF():
     '''
     Call a python example script from project_quickstart which creates a pandas dataframe
     '''
+
+    # Read from the pipeline.ini configuration file
+    # where "pipeline" = section (or key)
+    # "outfile_pandas" option (value)
+    # separated by "_"
+    # CGATPipelines.Pipeline takes some of the work away.
+    if "pipeline_outfile_pandas" in PARAMS:
+        outfile = PARAMS["pipeline_outfile_pandas"]
+    else:
+        outfile = 'pandas_DF'
+
     statement = '''
                 cd pq_results ;
-                python pq_example.py --createDF -O %(outfile)s.tsv
+                python pq_example.py --createDF -O %(outfile)s
                 '''
     P.run()
 
+@follows(createDF)
 def run_pq_examples():
     ''' Runs python and R scripts from project_quickstart as examples of a
         pipeline with Ruffus and CGAT tools.
@@ -208,22 +240,59 @@ def run_mtcars():
                 '''
     P.run()
 
-#def build_report():
-#    '''build report from scratch.
-#
-#    Any existing report will be overwritten.
-#    '''
 
-#    E.info("starting report build process from scratch")
-#    P.run_report(clean=True)
+@follows(run_mtcars)
+def makeMultiPanel():
+    '''
+       Generate a multi-panel plot using svgutils python package.
+       svg plots already need to be present.
+    '''
+    # Generate a multi-panel plot from existing svg files:
+    statement = '''python svgutils_pq_example.py '''
 
-# TO DO:
-# docopt and sysargv will conflict between script and Pipeline...
-# Finish and exit with docopt arguments:
-#if __name__ == '__main__':
-#    arguments = docopt(__doc__, version='xxx 0.1')
-#    print(arguments)
-#    sys.exit(main())
+    P.run()
+################
 
+
+################
+# Create a pipeline target (call) that will run the full pipeline:
+@follows(run_pq_examples, makeMultiPanel)
+def full():
+    pass
+################
+
+
+################
+# Specify function to create reports pre-configured with sphinx-quickstart:
+def make_report():
+    ''' Generates html and pdf versions of restructuredText files
+        using sphinx-quickstart pre-configured files (conf.py and Makefile).
+        Pre-configured files need to be in a pre-existing report directory.
+        Existing reports are overwritten.
+    '''
+    if os.path.exists('report'):
+        statement = ''' cd report ;
+                        checkpoint ;
+                        make html ;
+                        checkpoint ;
+                        make latexpdf
+                    '''
+        E.info("Building pdf and html versions of your rst files.")
+        P.run()
+
+    else:
+        E.stop(''' The directory "report" does not exist. Did you run the config
+                   option? This should copy across templates for easier
+                   reporting of your pipeline.
+                   If you changed the dir names, just go in and run "make html" or
+                   "make latexpdf" or follow Sphinx docs.
+                ''')
+
+    return
+################
+
+
+################
 if __name__ == "__main__":
     sys.exit(P.main(sys.argv))
+################

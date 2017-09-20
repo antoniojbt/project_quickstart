@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 pq_example.py
 =============

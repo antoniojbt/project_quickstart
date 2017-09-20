@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 plot_pq_example.py
 ==================

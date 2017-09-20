@@ -3,9 +3,9 @@ See rst-basics_ for webpages and tutorials.
 .. _rst-basics: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
 
 
-#############
-Project title
-#############
+##############
+|project_name|
+##############
 
 -----
 

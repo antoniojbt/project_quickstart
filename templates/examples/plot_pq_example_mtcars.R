@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 ######################
 # R script to run with docopt for command line options:
 '

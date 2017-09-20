@@ -116,7 +116,9 @@ from builtins import dict
 
 # Import additional packages: 
 
+
 ################
+
 
 ################
 # Get pipeline.ini file:
@@ -142,7 +144,27 @@ def getINI():
 # Load options from the config file
 INI_file = getINI()
 PARAMS = P.getParameters([INI_file])
+
+# Read from the pipeline.ini configuration file
+# where "pipeline" = section (or key)
+# "outfile_pandas" option (value)
+# separated by "_"
+# CGATPipelines.Pipeline takes some of the work away.
+# e.g.:
+'''
+def someFunc():
+    " Comment function "
+    if "pipeline_outfile_pandas" in PARAMS:
+        outfile = PARAMS["pipeline_outfile_pandas"]
+    else:
+        outfile = 'pandas_DF'
+
+    statement = " cd pq_results ; python pq_example.py --createDF -O %(outfile)s "
+    # Use CGATPipelines to handle the job:
+    P.run()
+'''
 ################
+
 
 ################
 # Utility functions
@@ -165,8 +187,11 @@ def connect():
     return dbh
 ################
 
+
 ################
 # Specific pipeline tasks
+# Tools called need the full path or be directly callable
+
 @transform((INI_file, "conf.py"),
            regex("(.*)\.(.*)"),
            r"\1.counts")
@@ -197,23 +222,44 @@ def loadWordCounts(infile, outfile):
     P.load(infile, outfile, "--add-index=word")
 ################
 
+
 ################
-# Generic pipeline tasks
+# Create the "full" pipeline target to run all functions specified
 @follows(loadWordCounts)
 def full():
     pass
 ################
 
-################
-#def build_report():
-#    '''build report from scratch.
-#
-#    Any existing report will be overwritten.
-#    '''
 
-#    E.info("starting report build process from scratch")
-#    P.run_report(clean=True)
 ################
+# Specify function to create reports pre-configured with sphinx-quickstart: 
+def make_report():
+    ''' Generates html and pdf versions of restructuredText files
+        using sphinx-quickstart pre-configured files (conf.py and Makefile).
+        Pre-configured files need to be in a pre-existing report directory.
+        Existing reports are overwritten.
+    '''
+    if os.path.exists('report'):
+        statement = ''' cd report ;
+                        checkpoint ;
+                        make html ;
+                        checkpoint ;
+                        make latexpdf
+                    '''
+        E.info("Building pdf and html versions of your rst files.")
+        P.run()
+
+    else:
+        E.stop(''' The directory "report" does not exist. Did you run the config
+                   option? This should copy across templates for easier
+                   reporting of your pipeline.
+                   If you changed the dir names, just go in and run "make html" or
+                   "make latexpdf" or follow Sphinx docs.
+                ''')
+
+    return
+################
+
 
 ################
 if __name__ == "__main__":
