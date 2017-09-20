@@ -88,7 +88,7 @@ import sys
 import os
 
 # Pipeline:
-import ruffus
+from ruffus import *
 
 # Database:
 import sqlite3
@@ -97,7 +97,7 @@ import sqlite3
 try:
     import CGAT.IOTools as IOTools
     import CGATPipelines.Pipeline as P
-    import CGATPipelines.Experiment as E
+    import CGAT.Experiment as E
 
 except ImportError:
     print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
