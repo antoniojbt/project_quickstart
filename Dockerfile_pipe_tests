@@ -1,0 +1,210 @@
+##################################################
+# Dockerfile for project_quickstart 
+# https://github.com/AntonioJBT/project_quickstart
+##################################################
+
+
+############
+# Base image
+############
+
+#FROM continuumio/miniconda3
+# It runs on Debian GNU/Linux 8; use e.g. uname -a ; cat /etc/issue.net
+
+# FROM python:3-onbuild 
+# FROM ubuntu:17.04
+#FROM jfloff/alpine-python
+
+# Or simply run:
+# docker run --rm -ti continuumio/miniconda3
+# docker run --rm -ti ubuntu
+
+
+FROM frolvlad/alpine-miniconda3
+# https://github.com/frol/docker-alpine-miniconda3
+# https://hub.docker.com/r/frolvlad/alpine-miniconda3/
+
+
+#########
+# Contact
+#########
+MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
+
+
+#########################
+# Update/install packages
+#########################
+
+# Install system dependencies
+# If running on Debian and anaconda/miniconda image, use apt-get:
+# apt-get update && apt-get upgrade --quiet --install -y apt-utils \
+RUN apk update && apk upgrade && apk add \ 
+    tzdata \
+    wget \
+    bzip2 \
+    unzip \
+    sudo \
+    gcc \
+    bash
+
+# Get libraries for matplotlib:
+RUN apk add libx11 \
+            libxext \
+            libsm \
+            libxrender
+            
+
+#RUN apt-get update && apt-get install -y \
+#    graphviz \
+#    inkscape \
+#    vim \
+#    fixincludes # this isn't available in apk Alpine
+
+# Additional packages, taken from CGAT cgat example (uses Ubuntu image?):
+#RUN sudo apt-get --quiet install -y gcc g++ \
+#RUN sudo apt-get gcc g++ \
+#    zlib1g-dev libssl-dev libssl1.0.0 libbz2-dev libfreetype6-dev libpng12-dev \
+#    libblas-dev libatlas-dev liblapack-dev gfortran libpq-dev r-base-dev \
+#    libreadline-dev libmysqlclient-dev libboost-dev libsqlite3-dev
+
+#########################
+# Install conda
+#########################
+
+# Miniconda:
+#RUN cd /usr/bin \
+#    && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+#    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda \
+#    && export PATH="/usr/local/miniconda/bin:$PATH"
+
+# Add conda channels:
+RUN conda config --add channels r \
+    && conda config --add channels defaults \
+    && conda config --add channels conda-forge \
+    && conda config --add channels bioconda
+
+# There are dependency issues, specially rpy2, with clashes between conda-forge
+# and default r, see here for icu 54 vs 56:
+#https://github.com/conda-forge/conda-forge.github.io/issues/234
+# but updates, new recipes, etc. changed things. 
+# Solution was to update icu, which switches it to conda-forge icu58:
+RUN conda install -y icu
+ 
+
+RUN conda update -y conda
+
+# Create a python 3.5 environment:
+RUN conda create -y -n py35 python=3.5
+
+# Environments can't easily be sourced from a Dockerfile
+# Mixing RUN with source errors, use instead this form of RUN:
+# See:
+# https://stackoverflow.com/questions/20635472/using-the-run-instruction-in-a-dockerfile-with-source-does-not-work
+# https://docs.docker.com/engine/reference/builder/#run
+# https://stackoverflow.com/questions/20635472/using-the-run-instruction-in-a-dockerfile-with-source-does-not-work/45087082#45087082
+# Install everything in the virtual environment:
+# Several cgat dependecies fail with pip so run with conda instead:
+RUN /bin/bash -c 'source activate py35 ; conda install -y git ; \
+    pip install --upgrade pip cython numpy ; pip install pysam ; pip install pandas ; \
+    pip install future ruffus ; conda install -y -c r r=3.3 ; conda install -y rpy2 ; \
+    wget --no-check-certificate https://raw.githubusercontent.com/CGATOxford/cgat/master/requires.txt ; \
+    cat requires.txt | grep -v "#" | xargs -n 1 pip install ; \
+    conda install -y alignlib-lite ; conda install -y bedtools ; \
+    conda install -y pybedtools ; conda install -y -c bioconda ucsc-wigtobigwig ; \
+    pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
+    pip install git+git://github.com/AntonioJBT/project_quickstart.git ; \
+    pip install cgat ; \
+    source deactivate'
+
+# pip install cgat fails repeatedly, do from git:
+#RUN /bin/bash -c 'source activate py35 ; \
+#    cd /home \
+#    && git clone https://github.com/CGATOxford/cgat.git \
+#    && cd cgat \
+#    && python setup.py install \
+#    && cd ..
+
+# Continue without virtual environment:
+# Install git:
+RUN conda install -y git
+
+#########################
+# Install Python packages
+#########################
+
+RUN pip install --upgrade pip \
+    && pip install --upgrade cython \
+    && pip install --upgrade numpy
+#    && pip install --upgrade pysam
+
+RUN pip install --upgrade future pandas ruffus
+
+RUN conda install -y pysam
+
+#########################
+# Install R
+#########################
+
+# Base R:
+RUN conda install -y -c r r=3.3 \
+    && conda install -y rpy2
+
+#########################
+# Install package to test
+#########################
+# Install CGAT core utilities:
+
+# Get all packages needed for cgat tools first and install:
+#RUN wget --no-check-certificate https://raw.githubusercontent.com/CGATOxford/cgat/master/requires.txt
+
+
+# This can be OK but will exit if any one package errors (e.g. alignlib-lite):
+RUN cat requires.txt | grep -v "#" | xargs -n 1 pip install
+
+# Install CGATPipelines fork:
+#RUN pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git
+
+# These error, see logs saved in:
+#/Users/antoniob/Documents/github.dir/docker_tests.dir
+#RUN pip install cgat
+#pip install git+git://github.com/CGATOxford/cgat.git
+
+# Install packages to test for pipelining:
+#RUN pip install git+git://github.com/AntonioJBT/project_quickstart.git
+
+# Clone files for this project in easy location:
+RUN cd /home \
+    && git clone https://github.com/AntonioJBT/pipeline_example.git \
+    && cd pipeline_example \
+    && pip install -r requirements.rst \
+    && python setup.py install \
+    && cd ..
+
+###############################
+# Install external dependencies
+###############################
+
+
+############################
+# Default action to start in
+############################
+# Only one CMD is read (if several only the last one is executed)
+#ENTRYPOINT ['/xxx']
+#CMD echo "Hello world"
+#CMD project_quickstart.py
+#CMD ["/bin/bash"]
+CMD ["/bin/bash"]
+
+# To build run as:
+#docker build --no-cache=true -t antoniojbt/pipe_tests_alpine .
+
+# To run e.g.:
+# docker run --rm -ti antoniojbt/pipe_tests
+
+# If mounting a volume do e.g.:
+# docker run -v /host/directory:/container/directory --rm -ti antoniojbt/pipe_tests
+# docker run -v ~/Documents/github.dir/docker_tests.dir:/home/ --rm -ti antoniojbt/pipe_tests_alpine
+
+
+# Create a shared folder between docker container and host
+#VOLUME ["/shared/data"]
