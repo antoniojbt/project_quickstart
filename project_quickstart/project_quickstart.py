@@ -34,7 +34,7 @@ Usage:
        project_quickstart [--script-python=<script_name>]
        project_quickstart [--script-R=<script_name>]
        project_quickstart [--script-pipeline=<pipeline_name>]
-       project_quickstart [--examples]
+       project_quickstart [--example]
        project_quickstart [-f | --force]
        project_quickstart [-h | --help]
        project_quickstart [--version]
@@ -45,7 +45,7 @@ Options:
     --script-python=FILE          Create a python script template, '.py' is appended.
     --script-R=FILE               Create an R script template, '.R' is appended.
     --script-pipeline=FILE        Create a Ruffus/CGAT pipeline template, 'pipeline_FILE.py' is created.
-    --examples                    Create a project_quickstart example with
+    --example                     Create a project_quickstart example with
                                   runnable scripts and pipeline.
     -f --force                    Take care, forces to overwrite files and directories.
     -h --help                     Show this screen.
@@ -564,10 +564,10 @@ def main():
             and not options['--project-name']):
         scriptTemplate()
 
-    if options['--examples']:
-        os.system('project_quickstart -n pq_examples')
+    if options['--example']:
+        os.system('project_quickstart -n pq_example')
         copySingleFiles(examples_dir,
-                        os.path.join(code_dir, 'pq_examples'),
+                        os.path.join(code_dir, 'pq_example'),
                         r'.py', r'.R', r'*pq_example*')
 
     # Print a nice welcome message (if successful):
