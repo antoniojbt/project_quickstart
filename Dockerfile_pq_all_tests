@@ -84,12 +84,11 @@ RUN conda config --add channels r \
     && conda config --add channels bioconda
 
 # There are dependency issues, specially rpy2, with clashes between conda-forge
-# and default r, see here for icu 54 vs 56:
+# and default r (r-base), see here for icu 54 vs 56:
 #https://github.com/conda-forge/conda-forge.github.io/issues/234
 # but updates, new recipes, etc. changed things. 
 # Solution was to update icu, which switches it to conda-forge icu58:
 RUN conda install -y icu
- 
 
 RUN conda update -y conda
 
@@ -111,6 +110,7 @@ RUN /bin/bash -c 'source activate py35 ; conda install -y git ; \
     cat requires.txt | grep -v "#" | xargs -n 1 pip install ; \
     conda install -y alignlib-lite ; conda install -y bedtools ; \
     conda install -y pybedtools ; conda install -y -c bioconda ucsc-wigtobigwig ; \
+    conda install -y icu ; \
     pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
     pip install git+git://github.com/AntonioJBT/project_quickstart.git ; \
     pip install cgat ; \
@@ -157,7 +157,7 @@ RUN conda install -y -c r r=3.3
 #RUN wget --no-check-certificate https://raw.githubusercontent.com/CGATOxford/cgat/master/requires.txt
 
 
-# This can be OK but will exit if any one package errors (e.g. alignlib-lite):
+# Run one line at a time otherwise docker exits if any package fails to install (e.g. alignlib-lite):
 RUN cat requires.txt | grep -v "#" | xargs -n 1 pip install
 
 # Install CGATPipelines fork:

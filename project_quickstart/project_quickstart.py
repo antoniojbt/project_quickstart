@@ -623,10 +623,10 @@ def main():
     # Finally, last options to run if specified:
     if options['--example']:
         os.system('project_quickstart -n pq_example')
+        os.system('rm -f pq_example/code/pq_example/*')
         copySingleFiles(examples_dir,
-                        os.path.join(code_dir, 'pq_example'),
+                        os.path.abspath('pq_example/code/pq_example/'),
                         r'.py', r'.R', r'*pq_example*')
-
 
     return
 
