@@ -220,7 +220,7 @@ def main():
                     directory "pipeline_NAME" ''')
             sys.exit()
 
-        if options['--example']:
+        if options['--example'] and not options['--project-name']:
             print(''' Creating a project_quickstart example with runnable
                       scripts and pipeline. Once the files are copied, run the
                       scripts with python and R (Rscript). To run the pipeline
@@ -621,7 +621,7 @@ def main():
         print(end_msg)
 
     # Finally, last options to run if specified:
-    if options['--example']:
+    if options['--example'] and not options['--project-name']::
         os.system('project_quickstart -n pq_example')
         os.system('rm -f pq_example/code/pq_example/*')
         copySingleFiles(examples_dir,
