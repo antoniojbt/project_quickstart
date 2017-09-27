@@ -224,8 +224,8 @@ def main():
             print(''' Creating a project_quickstart example with runnable
                       scripts and pipeline. Once the files are copied, run the
                       scripts with python and R (Rscript). To run the pipeline
-                      script you will need to install several dependencies (see
-                      the docs). To run the svg script and sphinx reports you
+                      script you will need to install several dependencies.
+                      To run the svg script and sphinx reports you
                       will need several more packages (see the docs).
                   ''')
             # See end of script for execution of option
@@ -564,12 +564,6 @@ def main():
             and not options['--project-name']):
         scriptTemplate()
 
-    if options['--example']:
-        os.system('project_quickstart -n pq_example')
-        copySingleFiles(examples_dir,
-                        os.path.join(code_dir, 'pq_example'),
-                        r'.py', r'.R', r'*pq_example*')
-
     # Print a nice welcome message (if successful):
     if options['--project-name']:
         end_msg = str( '\n' +
@@ -625,6 +619,14 @@ def main():
         )
 
         print(end_msg)
+
+    # Finally, last options to run if specified:
+    if options['--example']:
+        os.system('project_quickstart -n pq_example')
+        copySingleFiles(examples_dir,
+                        os.path.join(code_dir, 'pq_example'),
+                        r'.py', r'.R', r'*pq_example*')
+
 
     return
 
