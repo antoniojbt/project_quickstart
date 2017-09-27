@@ -235,12 +235,13 @@ def main():
                 and not options['--script-R']
                 and not options['--script-python']
                 and not options['--script-pipeline']
-                ):
+                and not options['--example']
+            ):
             print(docopt_error_msg)
             print('Error in  the options given or none supplied.',
                   '\n',
                   'A project name is required.',
-                  'Otherwise you need to use,',
+                  'Otherwise you need to use',
                   '--script-R, --script-python or --script-pipeline.')
             sys.exit()
 
@@ -621,9 +622,9 @@ def main():
         print(end_msg)
 
     # Finally, last options to run if specified:
-    if options['--example'] and not options['--project-name']::
+    if options['--example'] and not options['--project-name']:
         os.system('project_quickstart -n pq_example')
-        os.system('rm -f pq_example/code/pq_example/*')
+        os.system('rm -rf pq_example/code/pq_example/*')
         copySingleFiles(examples_dir,
                         os.path.abspath('pq_example/code/pq_example/'),
                         r'.py', r'.R', r'*pq_example*')
