@@ -34,6 +34,7 @@ Usage:
        project_quickstart [--script-python=<script_name>]
        project_quickstart [--script-R=<script_name>]
        project_quickstart [--script-pipeline=<pipeline_name>]
+       project_quickstart [--examples]
        project_quickstart [-f | --force]
        project_quickstart [-h | --help]
        project_quickstart [--version]
@@ -44,6 +45,8 @@ Options:
     --script-python=FILE          Create a python script template, '.py' is appended.
     --script-R=FILE               Create an R script template, '.R' is appended.
     --script-pipeline=FILE        Create a Ruffus/CGAT pipeline template, 'pipeline_FILE.py' is created.
+    --examples                    Create a project_quickstart example with
+                                  runnable scripts and pipeline.
     -f --force                    Take care, forces to overwrite files and directories.
     -h --help                     Show this screen.
     --version                     Show version.
@@ -217,6 +220,16 @@ def main():
                     directory "pipeline_NAME" ''')
             sys.exit()
 
+        if options['--example']:
+            print(''' Creating a project_quickstart example with runnable
+                      scripts and pipeline. Once the files are copied, run the
+                      scripts with python and R (Rscript). To run the pipeline
+                      script you will need to install several dependencies (see
+                      the docs). To run the svg script and sphinx reports you
+                      will need several more packages (see the docs).
+                  ''')
+            # See end of script for execution of option
+
         # Exit if options not given:
         if (not options['--project-name']
                 and not options['--script-R']
@@ -248,6 +261,7 @@ def main():
     report_templates = os.path.join(template_dir, 'report_templates')
     script_templates = os.path.join(template_dir, 'script_templates')
     pipeline_templates = os.path.join(script_templates,'pipeline_template')
+    examples_dir = os.path.join(template_dir, 'examples')
 
     # Modified sphinx-quickstart templates only live in: 
         # templates/project_template/docs/
@@ -549,6 +563,12 @@ def main():
             or options['--script-pipeline']
             and not options['--project-name']):
         scriptTemplate()
+
+    if options['--examples']:
+        os.system('project_quickstart -n pq_examples')
+        copySingleFiles(examples_dir,
+                        os.path.join(code_dir, 'pq_examples'),
+                        r'.py', r'.R', r'*pq_example*')
 
     # Print a nice welcome message (if successful):
     if options['--project-name']:

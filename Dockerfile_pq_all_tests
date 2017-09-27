@@ -124,7 +124,7 @@ RUN /bin/bash -c 'source activate py35 ; conda install -y git ; \
 #    && python setup.py install \
 #    && cd ..
 
-# Continue without virtual environment:
+# Continue without virtual environment, install a few basic packages:
 # Install git:
 RUN conda install -y git
 
@@ -146,8 +146,7 @@ RUN conda install -y pysam
 #########################
 
 # Base R:
-RUN conda install -y -c r r=3.3 \
-    && conda install -y rpy2
+RUN conda install -y -c r r=3.3
 
 #########################
 # Install package to test
@@ -176,6 +175,13 @@ RUN cat requires.txt | grep -v "#" | xargs -n 1 pip install
 RUN cd /home \
     && git clone https://github.com/AntonioJBT/pipeline_example.git \
     && cd pipeline_example \
+    && pip install -r requirements.rst \
+    && python setup.py install \
+    && cd ..
+
+RUN cd /home \
+    && git clone https://github.com/AntonioJBT/project_quickstart.git \
+    && cd project_quickstart \
     && pip install -r requirements.rst \
     && python setup.py install \
     && cd ..
