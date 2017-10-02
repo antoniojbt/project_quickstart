@@ -38,7 +38,7 @@ Configuration
 =============
 
 This pipeline is built using a Ruffus/CGAT approach. You need to have Python,
-Ruffus, CGAT core tools and any other specific dependencies needed fo this
+Ruffus, CGAT core tools and any other specific dependencies needed for this
 script.
 
 A configuration file was created at the same time as this script.
@@ -87,7 +87,6 @@ Documentation
 # Get modules needed:
 import sys
 import os
-import re
 
 # Pipeline:
 from ruffus import *
@@ -125,26 +124,26 @@ from builtins import dict
 
 ################
 # Get pipeline.ini file:
-#def getINI():
-#    path = os.path.splitext(__file__)[0]
-#    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
-#    f_count = 0
-#    for path in paths:
-#        if os.path.exists(path):
-#            for f in os.listdir(path):
-#                if (f.endswith('.ini') and f.startswith('pipeline')):
-#                    f_count += 1
-#                    INI_file = f
-#
-#    if f_count != 1:
-#        raise ValueError('''No pipeline ini file found or more than one in the
-#                            directories:
-#                            {}
-#                        '''.format(paths)
-#                        )
-#    return(INI_file)
+def getINI():
+    path = os.path.splitext(__file__)[0]
+    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
+    f_count = 0
+    for path in paths:
+        if os.path.exists(path):
+            for f in os.listdir(path):
+                if (f.endswith('.ini') and f.startswith('pipeline')):
+                    f_count += 1
+                    INI_file = f
 
-# Load options from the config file:
+    if f_count != 1:
+        raise ValueError('''No pipeline ini file found or more than one in the
+                            directories:
+                            {}
+                        '''.format(paths)
+                        )
+    return(INI_file)
+
+# Load options from the config file
 # Pipeline configuration 
 ini_file = 'pipelin{}.ini'.format(r'(.*)')
 
@@ -287,8 +286,10 @@ def make_report():
         statement = ''' cd report ;
                         checkpoint ;
                         make html ;
+                        ln -s _build/html/index.hmtl . ;
                         checkpoint ;
-                        make latexpdf
+                        make latexpdf ;
+                        ln -s _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
         P.run()

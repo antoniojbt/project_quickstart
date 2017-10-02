@@ -115,35 +115,39 @@ from builtins import dict
 #    raise 
 
 # Import additional packages: 
-
-
+# Set path if necessary:
+#os.system('''export PATH="~/xxxx/xxxx:$PATH"''')
 ################
 
 
 ################
-# Get pipeline.ini file:
-def getINI():
-    path = os.path.splitext(__file__)[0]
-    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
-    f_count = 0
-    for path in paths:
-        if os.path.exists(path):
-            for f in os.listdir(path):
-                if (f.endswith('.ini') and f.startswith('pipeline')):
-                    f_count += 1
-                    INI_file = f
+# Get pipeline.ini file
+# Use this if not based on CGATPipelines:
+# Many more functions need changing though
 
-    if f_count != 1:
-        raise ValueError('''No pipeline ini file found or more than one in the
-                            directories:
-                            {}
-                        '''.format(paths)
-                        )
-    return(INI_file)
+#def getINI():
+#    path = os.path.splitext(__file__)[0]
+#    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
+#    f_count = 0
+#    for path in paths:
+#        if os.path.exists(path):
+#            for f in os.listdir(path):
+#                if (f.endswith('.ini') and f.startswith('pipeline')):
+#                    f_count += 1
+#                    INI_file = f
 
+#    if f_count != 1:
+#        raise ValueError('''No pipeline ini file found or more than one in the
+#                            directories:
+#                            {}
+#                        '''.format(paths)
+#                        )
+#    return(INI_file)
+
+# With CGAT tools run as:
 # Load options from the config file
-INI_file = getINI()
-PARAMS = P.getParameters([INI_file])
+#INI_file = getINI()
+#PARAMS = P.getParameters([INI_file])
 
 # Read from the pipeline.ini configuration file
 # where "pipeline" = section (or key)
@@ -243,8 +247,10 @@ def make_report():
         statement = ''' cd report ;
                         checkpoint ;
                         make html ;
+                        ln -s _build/html/index.hmtl . ;
                         checkpoint ;
-                        make latexpdf
+                        make latexpdf ;
+                        ln -s _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
         P.run()

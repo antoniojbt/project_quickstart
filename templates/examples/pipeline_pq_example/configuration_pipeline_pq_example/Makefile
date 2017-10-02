@@ -8,7 +8,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = super_project
+SPHINXPROJ    = pq_example 
 SOURCEDIR     = .
 BUILDDIR      = _build
 ########

@@ -36,9 +36,12 @@
 import os
 import sys
 
-import CGATPipelines.Pipeline as P
-import CGATPipelines
-
+try:
+    import CGATPipelines.Pipeline as P
+    import CGATPipelines
+except ImportError:
+    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
+    pass
 
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
@@ -53,7 +56,7 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 #################
 # If this conf.py is part of a standrad python software project, 
-# set this relative path in order to be abe to use sphinx-apidoc
+# set this relative path in order to be able to use sphinx-apidoc
 # to find the relevant software tool modules
 # The expected directory structure would be
 # project_XXXX/docs/THIS_CONF.PY
@@ -61,27 +64,12 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 #################
 
 
-################################################################
-# CGAT conf.py 
-#  XXXX/CGATPipelines/CGATPipelines/configuration/conf.py
-# Import pipeline configuration from pipeline.ini in the current
-# directory and the common one.
-
-# PATH were code for pipelines is stored
-pipelinesdir = os.path.dirname(CGATPipelines.__file__)
-
-# The default configuration file - 'inifile' is read by
-# sphinx-report.
-inifile = os.path.join(os.path.dirname(CGATPipelines.__file__),
-                       'configuration',
-                       'pipeline.ini')
-
-PARAMS = P.getParameters([inifile, "pipeline.ini"])
-################################################################
-
-
 #################
+# Load options from the config file:
+# Pipeline configuration 
 cwd = os.getcwd()
+print(cwd)
+
 def getINIdir(path = cwd):
     ''' Search for an INI file given a path. The path default is the current
         working directory.
@@ -102,23 +90,34 @@ def getINIdir(path = cwd):
                  ''')
 
     return(INI_file)
-#################
 
+modulename = 'P'
+if modulename in sys.modules:
+    ini_file = 'pipelin{}.ini'.format(r'(.*)')
+    P.getParameters(
+        ["{}/{}".format(os.path.splitext(__file__)[0], ini_file),
+         "../{}".format(ini_file),
+         "{}".format(ini_file),
+        ],
+    )
 
-#################
-# Get location to this file:
-here = os.path.abspath(os.path.dirname(__file__))
-#print(here, '\n')
+    PARAMS = P.PARAMS
 
-ini_file = getINIdir(os.path.join(here, '..'))
-CONFIG.read(ini_file)
+else:
+    # Get location to this file:
+    here = os.path.abspath(os.path.dirname(__file__))
+    print(here, '\n')
 
-# Print keys (sections):
-print('Values found in INI file:', '\n')
-print(ini_file, '\n')
-for key in CONFIG:
-    for value in CONFIG[key]:
-        print(key, value, CONFIG[key][value])
+    #ini_file = getINIdir(os.path.join(here, '..'))
+    ini_file = getINIdir(os.path.abspath(here))
+    CONFIG.read(ini_file)
+
+    # Print keys (sections):
+    print('Values found in INI file:', '\n')
+    print(ini_file, '\n')
+    for key in CONFIG:
+        for value in CONFIG[key]:
+            print(key, value, CONFIG[key][value])
 #################
 
 
@@ -166,8 +165,6 @@ print(version)
 #################
 # Actual sphinx-quickstart configuration starts here
 
-
-#################
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -187,15 +184,6 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.githubpages',
               ]
-
-################################################################
-# CGAT conf.py 
-#  XXXX/CGATPipelines/CGATPipelines/configuration/conf.py
-if P.CONFIG.has_section('intersphinx'):
-    intersphinx_mapping = dict(
-        [(x, (os.path.abspath(y), None))
-         for x, y in P.CONFIG.items('intersphinx')])
-################################################################
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -248,7 +236,6 @@ autodoc_member_order = "bysource"
 # autoclass configuration - use both class and __init__ method to
 # document methods.
 autoclass_content = "both"
-
 #################
 
 
