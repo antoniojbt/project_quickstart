@@ -624,10 +624,11 @@ def main():
     # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
         os.system('project_quickstart -n pq_example')
-        os.system('rm -rf pq_example/code/pq_example/*')
-        copySingleFiles(examples_dir,
-                        os.path.abspath('pq_example/code/pq_example/'),
-                        r'.py', r'.R', r'*pq_example*')
+        os.system('rm -rf pq_example/code/pq_example')
+        shutil.copytree(examples_dir,
+                        os.path.abspath('pq_example/code/pq_example'),
+                        ignore = shutil.ignore_patterns(*files_to_ignore)
+                        )
 
     return
 

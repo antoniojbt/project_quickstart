@@ -101,12 +101,42 @@ except ImportError:
 # e.g. main()) to a module.py script.
 
 def createGreat(my_msg = 'Great stuff!'):
-    ''' Useful explanation here for docstrings
+    '''
+    Useful explanation here for docstrings. Try to follow these conventions:
+    https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt#id5
+    See the next function as a docs example (taken directly from the IDE
+    Spyder).
     '''
     # Do something great
     great = my_msg
     print(great)
     return(great)
+
+def average(a, b):
+    """
+    Given two numbers a and b, return their average value.
+
+    Parameters
+    ----------
+    a : number
+      A number
+    b : number
+      Another number
+
+    Returns
+    -------
+    res : number
+      The average of a and b, computed using 0.5*(a + b)
+
+    Example
+    -------
+    >>> average(5, 10)
+    7.5
+
+    """
+
+    return (a + b) * 0.5
+
 #####
 ##############
 

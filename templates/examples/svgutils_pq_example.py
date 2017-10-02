@@ -27,7 +27,7 @@ These are based on docopt_, see examples_.
 
 
 Usage:
-       svgutils_pq_example.py  (--plotA=<name>) (--plotB=<name>)
+       svgutils_pq_example.py  (--plotA=<name>) (--plotB=<name>) [-O FILE]
        svgutils_pq_example.py  [-h | --help]
 
 Options:
@@ -77,21 +77,19 @@ import cairosvg
 ##############
 
 ##############
-def plotSVG(plotA, plotB):
+def plotSVG(plotA, plotB, outfile = 'F1_test'):
     ''' Plots a two panel figure with plots provided using svgutils.
     '''
-    # Name the figure panel (which will be "F{figure_number}_{figure_name}.{format}", 
     # Only svg can be output with svgutils:
-    figure_number = '1'
-    figure_name = 'test'
+    #figure_number = '1'
+    #figure_name = 'test'
+    outfile = outfile
     file_format_in = 'svg'
     file_format_out = 'pdf'
-    layout_name_1 = str('F{}_{}.{}'.format(figure_number,
-                                           figure_name,
-                                           file_format_in))
-    layout_name_2 = str('F{}_{}.{}'.format(figure_number,
-                                           figure_name,
-                                           file_format_out))
+    layout_name_1 = str('{}.{}'.format(outfile,
+                                       file_format_in))
+    layout_name_2 = str('{}.{}'.format(outfile,
+                                       file_format_out))
     my_layout = Figure("21cm", "19cm", # A4 paper is 210 mm x 197 mm
                               # Panel() groups all elements belonging to one plot/panel
                               Panel(
@@ -153,7 +151,11 @@ def main():
             plotA= str(options['--plotA']).strip('[]').strip("''")
             plotB= str(options['--plotB']).strip('[]').strip("''")
             # Call function above to plot with files provided:
-            plotSVG(plotA, plotB)
+            if options['-O']:
+                outfile = str(options["-O"]).strip('[]').strip("''")
+                plotSVG(plotA, plotB, outfile = outfile)
+            elif not options['-O']:
+                plotSVG(plotA, plotB)
 
         elif not options['--plotA'] and not options['--plotB']:
             plotA = 'pandas_DF_gender_glucose_boxplot.svg'

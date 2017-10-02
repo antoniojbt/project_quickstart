@@ -87,6 +87,7 @@ Documentation
 # Get modules needed:
 import sys
 import os
+import re
 
 # Pipeline:
 from ruffus import *
@@ -124,28 +125,40 @@ from builtins import dict
 
 ################
 # Get pipeline.ini file:
-def getINI():
-    path = os.path.splitext(__file__)[0]
-    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
-    f_count = 0
-    for path in paths:
-        if os.path.exists(path):
-            for f in os.listdir(path):
-                if (f.endswith('.ini') and f.startswith('pipeline')):
-                    f_count += 1
-                    INI_file = f
+#def getINI():
+#    path = os.path.splitext(__file__)[0]
+#    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
+#    f_count = 0
+#    for path in paths:
+#        if os.path.exists(path):
+#            for f in os.listdir(path):
+#                if (f.endswith('.ini') and f.startswith('pipeline')):
+#                    f_count += 1
+#                    INI_file = f
+#
+#    if f_count != 1:
+#        raise ValueError('''No pipeline ini file found or more than one in the
+#                            directories:
+#                            {}
+#                        '''.format(paths)
+#                        )
+#    return(INI_file)
 
-    if f_count != 1:
-        raise ValueError('''No pipeline ini file found or more than one in the
-                            directories:
-                            {}
-                        '''.format(paths)
-                        )
-    return(INI_file)
+# Load options from the config file:
+# Pipeline configuration 
+ini_file = 'pipelin{}.ini'.format(r'(.*)')
 
-# Load options from the config file
-INI_file = getINI()
-PARAMS = P.getParameters([INI_file])
+P.getParameters(
+    ["{}/{}".format(os.path.splitext(__file__)[0], ini_file),
+     "../{}".format(ini_file),
+     "{}".format(ini_file),
+     ],
+    )
+
+PARAMS = P.PARAMS
+
+#INI_file = getINI()
+#PARAMS = P.getParameters([INI_file])
 
 # Set global parameters here, obtained from the ini file
 # e.g. get the cmd tools to run if specified:
@@ -235,7 +248,7 @@ def run_mtcars():
     # Scripts for mt_cars in R:
     statement = ''' Rscript pq_example_mtcars.R ;
                     checkpoint ;
-                    Rscript plot_pq_example_mtcars.R
+                    Rscript plot_pq_example_mtcars.R ;
                     checkpoint ;
                 '''
     P.run()

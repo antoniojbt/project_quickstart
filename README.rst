@@ -177,9 +177,80 @@ Create a project directory skeleton. From the command line do:
 
    project_quickstart --script-python my_super_script # which will create a Python script template called my_super_script.py
 
+
+To run an example, do:
+
+.. code-block:: bash   
+
+   project_quickstart --example # will create a project with runnable scripts and pipeline ;
+   cd pq_example/results ;
+   python ../code/pq_example/pq_example.py --createDF -O my_dataframe ; # You'll need pythonw for matplotlib if on a Mac
+   Rscript ../code/pq_example/pq_example.R -I my_dataframe.tsv ;
+   Rscript ../code/pq_example/plot_pq_example_pandas.R -I my_dataframe.tsv ;
+   python ../code/pq_example/svgutils_pq_example.py \
+                        --plotA=my_dataframe_gender_glucose_boxplot.svg \
+                        --plotB=my_dataframe_age_histogram.svg
+
+You can also try:
+
+.. code-block:: bash
+                        
+   Rscript ../code/pq_example/pq_example_mtcars.R ;
+   Rscript ../code/pq_example/plot_pq_example_mtcars.R ;
+   python ../code/pq_example/svgutils_pq_example.py --plotA=mtcars_cyl_wt_boxplot_2.svg \
+                                                    --plotB=mtcars_hp_qsec_scatterplot.svg \
+                                                    -O F1_mt_cars
+   python ../code/pq_example/svgutils_pq_example.py --plotA=mtcars_wt_histogram.svg  \
+                                                    --plotB=mtcars_boxplot_lm.svg \
+                                                    -O F2_mtcars
+
+svgutils_pq_example.py is a simple wrapper for the python package svgutils,
+don't expect too much. You can modify the script, play around with scale(),
+move(), Grid(), etc. if needed.
+
+If you have CGATPipelines_, sphinx-quickstart_ and Ruffus_ installed, you can run:
+
+.. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
+
+.. _Ruffus: http://www.ruffus.org.uk/
+
+.. _sphinx-quickstart: http://www.sphinx-doc.org/en/stable/index.html
+
+.. code-block:: bash
+
+   mkdir report ;
+   cd report ;
+   make html ;
+   make latexpdf
+
+or if you like pipelines:
+
+.. code-block:: bash
+
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full
+   export PATH="../code/pq_example:$PATH"
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make full --local
+
+
 This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx_, etc.
 
 The --script options will create additional copies of script templates in the current working directory. 
+
+Dependencies
+============
+
+These can become a nightmare as many programs are needed when running pipelines
+in biomedical research. Try to stick to one package manager, such as conda. Pip
+and conda usually play well and complement each other. 
+
+Docker images and testing can also make things easier for reproducible
+environments.
+
+To run the example pipeline above see the file 'Dockerfile_pq_all_tests' in
+this repository for installation instructions and a docker image you can run.
+
 
 Citation
 ########

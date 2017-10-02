@@ -103,13 +103,25 @@ RUN conda create -y -n py35 python=3.5
 # https://stackoverflow.com/questions/20635472/using-the-run-instruction-in-a-dockerfile-with-source-does-not-work/45087082#45087082
 # Install everything in the virtual environment:
 # Several cgat dependecies fail with pip so run with conda instead:
-RUN /bin/bash -c 'source activate py35 ; conda install -y git ; \
-    pip install --upgrade pip cython numpy ; pip install pysam ; pip install pandas ; \
-    pip install future ruffus ; conda install -y -c r r=3.3 ; conda install -y rpy2 ; \
+RUN /bin/bash -c 'source activate py35 ; \
+    conda install -y git ; \
+    pip install --upgrade pip cython numpy ; \
+    pip install pysam ; \
+    pip install pandas ; \
+    pip install future ruffus ; \
+    conda install -y -c r r=3.3 ; \
+    conda install -y rpy2 ; \
+    conda install r-docopt ; \
+    conda install r-data.table ; \
+    R --vanilla -e "source('https://bioconductor.org/biocLite.R') ; install.packages('stargazer', repos = 'http://cran.us.r-project.org') ; library('stargazer')" ; \
+    conda install r-ggplot2 ; \
+    R --vanilla -e "source('https://bioconductor.org/biocLite.R') ; install.packages('svglite', repos = 'http://cran.us.r-project.org') ; library('svglite')" ; \
     wget --no-check-certificate https://raw.githubusercontent.com/CGATOxford/cgat/master/requires.txt ; \
     cat requires.txt | grep -v "#" | xargs -n 1 pip install ; \
-    conda install -y alignlib-lite ; conda install -y bedtools ; \
-    conda install -y pybedtools ; conda install -y -c bioconda ucsc-wigtobigwig ; \
+    conda install -y alignlib-lite ; \
+    conda install -y bedtools ; \
+    conda install -y pybedtools ; \
+    conda install -y -c bioconda ucsc-wigtobigwig ; \
     conda install -y icu ; \
     pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
     pip install git+git://github.com/AntonioJBT/project_quickstart.git ; \
