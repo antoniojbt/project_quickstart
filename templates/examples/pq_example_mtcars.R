@@ -141,10 +141,9 @@ dev.off()
 pass_formula <- 'qsec ~ cyl_factor + hp + wt + gear_factor'
 lm_input_data <- lm(formula = pass_formula, data = input_data)
 summary(lm_input_data)
-stargazer(out = sprintf('%s_lm_table.html', input_name), 
+stargazer(out = sprintf('%s_lm_table.txt', input_name), 
           style = 'all',
           lm_input_data,
-          type = 'html',
           summary = TRUE,
           title = 'Car speed adjusted for cylinders, horse power, weight and gears'
           )

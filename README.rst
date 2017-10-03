@@ -209,16 +209,16 @@ don't expect too much. You can modify the script, play around with scale(),
 move(), Grid(), etc.
 
 
-If you have Sphinx installed, you can get a report:
+If you have Sphinx and a latex engine installed, you can get a report:
 
 .. code-block:: bash
 
    cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example
    cd configuration_pipeline_pq_example
    make html
-   ln -s _build/html/*.html .
+   ln -s _build/html/report_pipeline_pq_example.html .
    make latexpdf
-   ln -s _build/tex/*.pdf .
+   ln -s _build/tex/pq_example.pdf .
 
 If you have CGATPipelines_, sphinx-quickstart_ and Ruffus_ installed, you can run:
 
