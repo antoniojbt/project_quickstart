@@ -1,40 +1,41 @@
+.. include:: report_substitution_vars.rst
+
+##############
+|project_name|
+##############
+
+
+Authored by:
+
+|all_author_names|
+
+Date: |date|
+
+Keywords: |keywords|
+
+version = |version|
+
+Licensed as |license|
+
+Check the project at:
+
+|project_url|
+
+Correspondence to: |author_email|
+
+
 See rst-basics_ for webpages and tutorials.
 
 .. _rst-basics: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
 
 
-#############
-pq_example
-#############
-
------
-
-author1, author2, author3 …
-
-affiliation1, affiliation2, affiliation3 …
-
-Correspondence should be addressed to:
-
-Keywords:
-
-Running title:
-
-
 Introduction
 ############
 
-Include other rst files::
+|short_description|
 
-  .. toctree::
-      :maxdepth: 2
-      :numbered:
-      :titlesonly:
-      :glob:
-      :hidden:
 
-      report_pipeline_pq_example.rst
-
-See the toctree_ directive for full info.
+You can include other rst files. See the toctree_ directive:
 
 .. _toctree: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#include-other-rst-files-with-the-toctree-directive
 
@@ -44,57 +45,49 @@ Results
 
 Result 1
 
-.. Glob all legends*.rst files:
 
-.. toctree::
-    :glob:
-    
-     F*.svg
+Include an image, e.g.:
 
-
-Include an image::
-
-  .. image:: images/ball1.gif
+.. image:: ../F1_mtcars.*
   
-Or::
 
-  .. image:: images/xxx.png
-    :height: 100
-    :width: 200
-    :scale: 50
-    :alt: alternate text
+Or:
+
+.. image:: ../F1_mtcars.*
+   :height: 100
+   :width: 200
+   :scale: 50
+   :alt: A multi-panel plot from the R dataset mtcars
+
 
 See image_ directive full markup.
 
 .. _image: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
 
-Or import a figure which can have a caption and whatever else you add::
 
-  .. figure:: mtcars_scatterplot_lm.svg
-      :width: 200px
-      :align: center
-      :height: 100px
-      :alt: alternate text
-      :figclass: align-center
-      
-      a caption would be written here as plain text. You can add more with eg::
-  
-    .. code-block:: python
+Or import a figure which can have a caption and whatever else you add:
 
-        import image
 
-Include a simple csv table::
+.. figure:: ../F2_mt_cars.*
+   :align: center
 
-  .. csv-table:: a title
-     :header: "name", "firstname", "age"
-     :widths: 20, 20, 10
-     
-     "Smith", "John", 40
-     "Smith", "John, Junior", 20
+   This is a multi-panel plot from the file F2_mt_cars.pdf
 
-See csv-table_ directive for example.
 
-.. _csv-table: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#the-csv-table-directive
+PDF files can be included as :download:`pdf <../F1_mtcars.pdf>`
+
+
+Include a table as a file here:
+
+.. include:: ../mtcars_lm_table.html
+
+.. include:: ../my_dataframe_lm_table.html
+
+
+.. csv-table::
+
+   ../desc_stats_my_dataframe.tsv
+
 
 
 Code used is available at |project_url|
@@ -109,5 +102,4 @@ References, e.g. [CIT2002]_ are defined at the bottom of the page as::
 and called with::
 
   [CIT2002]_
-
 

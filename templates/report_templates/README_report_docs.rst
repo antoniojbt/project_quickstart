@@ -48,4 +48,17 @@ usually:
 index.rst (or other rst file) is used as the master document, simply
 include all file names to be rendered there.
 
+For images you see:
+
+http://www.sphinx-doc.org/en/stable/rest.html
+
+http://www.sphinx-doc.org/en/stable/builders.html#builders
+
+use e.g.: my_figure.* so that sphinx can choose which format is the most
+appropriate conversion (html, pdf).
+
+For SVG files, have the Makefile convert svg to pdf before running Sphinx, see:
+
+https://sites.google.com/site/nickfolse/home/sphinx-latexpdf-output-with-svg-images
+
 
