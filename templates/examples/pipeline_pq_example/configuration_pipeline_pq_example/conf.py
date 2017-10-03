@@ -304,6 +304,7 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                        \usepackage[strings]{underscore}
                        % See eg:
                        % https://github.com/lmweber/latex-templates/blob/master/template_PhD_committee_report.tex
+                       %\usepackage{svg}
                        ''',
                    #'printindex': r'\footnotesize\raggedright\printindex',
                    #'releasename': r'version',

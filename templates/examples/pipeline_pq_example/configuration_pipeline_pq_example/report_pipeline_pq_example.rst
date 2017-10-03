@@ -46,14 +46,16 @@ Results
 Result 1
 
 
-Include an image, e.g.:
+Include a figure, e.g.:
 
-.. image:: ../F1_mtcars.*
-  
+.. figure:: ../F1_mtcars.*
+
+    This is from "../F1_mtcars.*"
+
 
 Or:
 
-.. image:: ../F1_mtcars.*
+.. figure:: ../F1_mtcars.*
    :height: 100
    :width: 200
    :scale: 50
@@ -68,32 +70,48 @@ See image_ directive full markup.
 Or import a figure which can have a caption and whatever else you add:
 
 
-.. figure:: ../F2_mt_cars.*
+.. figure:: ../F2_mtcars.*
    :align: center
 
-   This is a multi-panel plot from the file F2_mt_cars.pdf
+   This is a multi-panel plot from the file F2_mtcars.*
 
 
-PDF files can be included as :download:`pdf <../F1_mtcars.pdf>`
+PDF files can be included as a clickable download e.g. :download:`F1_mtcars.pdf file <../F1_mtcars.pdf>`
 
 
 Include a table as a file here:
 
-.. include:: ../mtcars_lm_table.html
 
-.. include:: ../my_dataframe_lm_table.html
+Don't abuse the raw directive. Embedding html for an html output works, but not
+for a pdf output. The files "../my_dataframe_lm_table.html" won't appear
+in a pdf for instance.
+
+Preferable to output tables as csv or tsv and use::
+
+   .. csv-table::
+   :file: ../desc_stats_my_dataframe.tsv
+   :delim: tab
+
+
+to embed results in either html or pdf output.
+
+
+.. raw:: html
+   :file: ../my_dataframe_lm_table.html
+
+
+.. raw:: html
+   :file: ../mtcars_lm_table.html
 
 
 .. csv-table::
-
-   ../desc_stats_my_dataframe.tsv
-
-
-
-Code used is available at |project_url|
+   :file: ../desc_stats_my_dataframe.tsv
+   :delim: tab
 
 References
 ##########
+
+Code used is available at |project_url|
 
 References, e.g. [CIT2002]_ are defined at the bottom of the page as::
 
@@ -102,4 +120,3 @@ References, e.g. [CIT2002]_ are defined at the bottom of the page as::
 and called with::
 
   [CIT2002]_
-

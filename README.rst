@@ -182,11 +182,11 @@ To run an example, do:
 
 .. code-block:: bash   
 
-   project_quickstart --example # will create a project with runnable scripts and pipeline ;
-   cd pq_example/results ;
-   python ../code/pq_example/pq_example.py --createDF -O my_dataframe ; # You'll need pythonw for matplotlib if on a Mac
-   Rscript ../code/pq_example/pq_example.R -I my_dataframe.tsv ;
-   Rscript ../code/pq_example/plot_pq_example_pandas.R -I my_dataframe.tsv ;
+   project_quickstart --example # will create a project with runnable scripts and pipeline
+   cd pq_example/results
+   python ../code/pq_example/pq_example.py --createDF -O my_dataframe # You'll need pythonw for matplotlib if on a Mac
+   Rscript ../code/pq_example/pq_example.R -I my_dataframe.tsv
+   Rscript ../code/pq_example/plot_pq_example_pandas.R -I my_dataframe.tsv
    python ../code/pq_example/svgutils_pq_example.py \
                         --plotA=my_dataframe_gender_glucose_boxplot.svg \
                         --plotB=my_dataframe_age_histogram.svg
@@ -195,8 +195,8 @@ You can also try:
 
 .. code-block:: bash
                         
-   Rscript ../code/pq_example/pq_example_mtcars.R ;
-   Rscript ../code/pq_example/plot_pq_example_mtcars.R ;
+   Rscript ../code/pq_example/pq_example_mtcars.R
+   Rscript ../code/pq_example/plot_pq_example_mtcars.R
    python ../code/pq_example/svgutils_pq_example.py --plotA=mtcars_cyl_wt_boxplot_2.svg \
                                                     --plotB=mtcars_hp_qsec_scatterplot.svg \
                                                     -O F1_mt_cars
@@ -213,11 +213,11 @@ If you have Sphinx installed, you can get a report:
 
 .. code-block:: bash
 
-   cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example ;
-   cd configuration_pipeline_pq_example ;
-   make html ;
+   cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example
+   cd configuration_pipeline_pq_example
+   make html
    ln -s _build/html/*.html .
-   make latexpdf ;
+   make latexpdf
    ln -s _build/tex/*.pdf .
 
 If you have CGATPipelines_, sphinx-quickstart_ and Ruffus_ installed, you can run:
@@ -230,9 +230,9 @@ If you have CGATPipelines_, sphinx-quickstart_ and Ruffus_ installed, you can ru
 
 .. code-block:: bash
 
-   mkdir report ;
-   cd report ;
-   make html ;
+   mkdir report
+   cd report
+   make html
    make latexpdf
 
 or if you like pipelines:
