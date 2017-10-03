@@ -65,7 +65,7 @@ You can later on build computational pipelines using for example a pipeline quic
 
 .. _`Ruffus and CGAT framework`: https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
 
-You will need to install other software (e.g. R, Ruffus, Sphinx_, etc.) to make full use depending on your preferences.
+You will need to install other software (e.g. R, Ruffus_, Sphinx_, etc.) to make full use depending on your preferences.
 
 -----
 
@@ -97,7 +97,7 @@ __ https://hilaryparker.com/2013/04/03/personal-r-packages/
 
 Other similar packages:
 
-I discovered CookieCutter_ while working on this. It does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
+I discovered CookieCutter_ while working on this. It probably does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
 
 .. _CookieCutter: https://github.com/audreyr/cookiecutter-pypackage
 
@@ -121,6 +121,8 @@ Dependencies
 - Python 3.5
 - See requirements.rst for Python libraries needed
 - None external
+- If you run the examples option you will need many more tools. See
+  Dockerfile_pq_all_tests for specific instructions.
 
 
 From GitHub
@@ -177,10 +179,20 @@ Create a project directory skeleton. From the command line do:
 
    project_quickstart --script-python my_super_script # which will create a Python script template called my_super_script.py
 
+This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
 
-To run an example, do:
+The --script options will create additional copies of script templates in the current working directory.
 
-.. code-block:: bash   
+
+A simple example
+================
+
+To run an example of a project with scripts, pipeline and report, you'll need to install several additional tools.
+See the file "Dockerfile_pq_all_tests" on how to do this for Linux.
+
+Once you have these installed, run:
+
+.. code-block:: bash
 
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
@@ -210,7 +222,7 @@ don't expect too much. You can modify the script, play around with scale(),
 move(), Grid(), etc.
 
 
-If you have Sphinx and a latex engine installed, you can get a report:
+You can get a simple example of a report, based on sphinx-quickstart_, by doing:
 
 .. code-block:: bash
 
@@ -219,24 +231,10 @@ If you have Sphinx and a latex engine installed, you can get a report:
    make html
    ln -s _build/html/report_pipeline_pq_example.html .
    make latexpdf
-   ln -s _build/tex/pq_example.pdf .
+   ln -s _build/latex/pq_example.pdf .
 
-If you have CGATPipelines_, sphinx-quickstart_ and Ruffus_ installed, you can run:
 
-.. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
-
-.. _Ruffus: http://www.ruffus.org.uk/
-
-.. _sphinx-quickstart: http://www.sphinx-doc.org/en/stable/index.html
-
-.. code-block:: bash
-
-   mkdir report
-   cd report
-   make html
-   make latexpdf
-
-or if you like pipelines:
+If you have CGATPipelines_ and Ruffus_ installed you can try:
 
 .. code-block:: bash
 
@@ -247,9 +245,12 @@ or if you like pipelines:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make full --local
 
 
-This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx_, etc.
+.. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
 
-The --script options will create additional copies of script templates in the current working directory. 
+.. _Ruffus: http://www.ruffus.org.uk/
+
+.. _sphinx-quickstart: http://www.sphinx-doc.org/en/stable/index.html
+
 
 Dependencies
 ============
