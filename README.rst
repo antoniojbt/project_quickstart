@@ -189,7 +189,8 @@ To run an example, do:
    Rscript ../code/pq_example/plot_pq_example_pandas.R -I my_dataframe.tsv
    python ../code/pq_example/svgutils_pq_example.py \
                         --plotA=my_dataframe_gender_glucose_boxplot.svg \
-                        --plotB=my_dataframe_age_histogram.svg
+                        --plotB=my_dataframe_age_histogram.svg \
+                        -O F1_mydataframe
 
 You can also try:
 
@@ -199,7 +200,7 @@ You can also try:
    Rscript ../code/pq_example/plot_pq_example_mtcars.R
    python ../code/pq_example/svgutils_pq_example.py --plotA=mtcars_cyl_wt_boxplot_2.svg \
                                                     --plotB=mtcars_hp_qsec_scatterplot.svg \
-                                                    -O F1_mt_cars
+                                                    -O F1_mtcars
    python ../code/pq_example/svgutils_pq_example.py --plotA=mtcars_wt_histogram.svg  \
                                                     --plotB=mtcars_boxplot_lm.svg \
                                                     -O F2_mtcars
@@ -213,7 +214,7 @@ If you have Sphinx and a latex engine installed, you can get a report:
 
 .. code-block:: bash
 
-   cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example
+   cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example .
    cd configuration_pipeline_pq_example
    make html
    ln -s _build/html/report_pipeline_pq_example.html .

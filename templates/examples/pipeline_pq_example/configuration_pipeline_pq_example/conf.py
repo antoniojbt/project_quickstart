@@ -293,6 +293,7 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                    # ‘H’ disables floating and position figures strictly 
                    # in the order they appear in the source.
                    #'figure_align': 'H',
+                   # https://tex.stackexchange.com/questions/39017/how-to-influence-the-position-of-float-environments-like-figure-and-table-in-lat/39020#39020
                    # Additional commands for the LaTeX preamble:
                    # Try to make sure that underscore in text
                    # are not interpreted as math symbols in latex

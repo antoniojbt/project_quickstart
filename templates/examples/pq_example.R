@@ -262,7 +262,13 @@ summary(lm_input_data)
 
 # Make a table from the output of the linear regression:
 title <- as.character("Some random analysis that doesn't make sense")
-stargazer(out = sprintf('%s_lm_table.txt', input_name), 
+stargazer(out = sprintf('%s_lm_table.html', input_name), 
+          style = 'all',
+          lm_input_data,
+          summary = TRUE,
+          title = title)
+
+stargazer(out = sprintf('%s_lm_table.tex', input_name),
           style = 'all',
           lm_input_data,
           summary = TRUE,
