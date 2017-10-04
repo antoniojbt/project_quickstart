@@ -233,6 +233,11 @@ You can get a simple example of a report, based on sphinx-quickstart_, by doing:
    make latexpdf
    ln -s _build/latex/pq_example.pdf .
 
+You can run this with a bash script:
+
+.. code-block:: bash
+
+   bash ../code/pq_example/examples.sh > examples.log
 
 If you have CGATPipelines_ and Ruffus_ installed you can try:
 

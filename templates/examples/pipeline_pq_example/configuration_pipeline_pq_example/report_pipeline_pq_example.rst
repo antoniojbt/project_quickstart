@@ -79,28 +79,33 @@ Include a figure, e.g.::
 
   .. figure:: ../F1_mtcars.*
 
-      This is from "../F1_mtcars.*"
+     This is from "../F1_mtcars.*"
+
+     You can add a legend here.
 
 
 .. figure:: ../F1_mtcars.*
 
     This is from "../F1_mtcars.*"
 
+    You can add a legend here.
+
 
 Or::
 
   .. figure:: ../F1_mtcars.*
-     :height: 100
-     :width: 200
+     :height: 300
+     :width: 300
      :scale: 75
      :alt: A multi-panel plot from the R dataset mtcars
 
 
 .. figure:: ../F2_mtcars.*
-   :height: 100
-   :width: 200
+   :height: 300
+   :width: 300
    :scale: 75
    :alt: A multi-panel plot from the R dataset mtcars
+
 
 
 And::
@@ -120,7 +125,9 @@ And::
 .. figure:: ../F1_mydataframe.*
    :align: center
 
-   Another figure that needs a legend.
+   These are python matplotlib plots.
+
+   The legend follows the empty line after the caption.
 
 
 See image_ directive full markup.

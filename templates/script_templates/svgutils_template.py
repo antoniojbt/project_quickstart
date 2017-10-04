@@ -189,20 +189,21 @@ def plotMultiSVG(plots_given, outfile, **kwargs):
         # Save the Figure:
         fig_layout.save(layout_name_1)
 
-        # Convert SVG file to PDF with CairoSVG:
-        cairosvg.svg2pdf(url = layout_name_1,
-                         write_to = layout_name_2
-                         )
+        # Convert SVG file to PDF:
+        #cairosvg.svg2pdf(url = layout_name_1,
+        #                 write_to = layout_name_2
+        #                 )
 
         # Alternatively with inkscape:
-        #os.system('''inkscape --export-pdf=F{}_{}.ink.{} {}'''.format(figure_number,
-        #                                                              figure_name,
-        #                                                              file_format_out,
-        #                                                              layout_name_1)
-        #          )
-
+        os.system('''inkscape --without-gui \
+                              --export-area-drawing \
+                              --export-margin=2 \
+                              --file={} \
+                              --export-pdf={}'''.format(layout_name_1,
+                                                        layout_name_2)
+                 )
         # Inkscape has many more options, e.g. 
-        # --export-background=white --export-area-drawing
+        # --export-background=white --export-dpi=300
         # See:
         #https://inkscape.org/sk/doc/inkscape-man.html
 

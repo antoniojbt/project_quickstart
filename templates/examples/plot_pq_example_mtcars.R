@@ -97,6 +97,7 @@ str(args)
 # Import libraries
  # source('http://bioconductor.org/biocLite.R')
 library(ggplot2)
+library(grid)
 # library(ggthemes)
 library(data.table)
 ######################
@@ -140,7 +141,9 @@ theme_my <- function(base_size = 14, base_family = "Times") {
           axis.title = large_text,
           axis.text = axis_text,
           legend.title = bold_text,
-          legend.text = normal_text
+          legend.text = normal_text,
+          #plot.margin = grid::unit(c(1,1,1,1),"mm")
+          plot.margin = grid::unit(c(1,1,1,1), "mm")
           )
   }
 theme_my()

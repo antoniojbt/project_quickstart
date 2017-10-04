@@ -90,7 +90,9 @@ def plotSVG(plotA, plotB, outfile = 'F1_test'):
                                        file_format_in))
     layout_name_2 = str('{}.{}'.format(outfile,
                                        file_format_out))
-    my_layout = Figure("21cm", "19cm", # A4 paper is 210 mm x 197 mm
+    paper_size_w = "19cm" # A4 paper is 210 mm x 197 mm
+    paper_size_h = "12cm"
+    my_layout = Figure(paper_size_w, paper_size_h, # read as width, height
                               # Panel() groups all elements belonging to one plot/panel
                               Panel(
                                   SVG(plotA).scale(0.75), # scale only the plot, not the text
@@ -119,10 +121,19 @@ def plotSVG(plotA, plotB, outfile = 'F1_test'):
              {}
              as file: {}'''.format(plotA, plotB, layout_name_1))
 
-    # Convert SVG file to PDF with CairoSVG:
-    cairosvg.svg2pdf(url = layout_name_1,
-                     write_to = layout_name_2
-                     )
+    # Convert SVG file to PDF:
+    #cairosvg.svg2pdf(url = layout_name_1,
+    #                 write_to = layout_name_2
+    #                 )
+    # Alternatively with inkscape:                                         
+    os.system('''inkscape --without-gui \
+                          --export-area-drawing \
+                          --export-margin=1 \
+                          --file={} \
+                          --export-pdf={}'''.format(layout_name_1,
+                                                    layout_name_2)
+                 )
+    #--export-dpi=300 \
     print('Saved file as pdf: {}'.format(layout_name_2))
 ##############
 
