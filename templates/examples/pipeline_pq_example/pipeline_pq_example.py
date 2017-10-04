@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 '''
 pipeline_pq_example.py
 ======================
@@ -156,12 +156,25 @@ P.getParameters(
 
 PARAMS = P.PARAMS
 
+print(PARAMS)
+
 #INI_file = getINI()
 #PARAMS = P.getParameters([INI_file])
 
 # Set global parameters here, obtained from the ini file
 # e.g. get the cmd tools to run if specified:
 #cmd_tools = P.asList(PARAMS["cmd_tools_to_run"])
+
+
+# Get the path to scripts for this project, e.g. project_xxxx/code/project_xxxx/:
+
+#project_scripts_dir = os.path.splitext(__file__)[0]
+#project_scripts_dir = '%(project_scripts_dir)s/' % P.getParams()
+# e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
+project_scripts_dir = "/Users/antoniob/Desktop/Downloads_to_delete/miscellaneous_tests/pq_tests/pq_example/code/pq_example/"
+print(''' Location set for the projects scripts is:
+          {}
+      '''.format(project_scripts_dir))
 ################
 
 ################
@@ -204,7 +217,7 @@ def createDF():
 
     statement = '''
                 cd pq_results ;
-                python pq_example.py --createDF -O %(outfile)s
+                python %(project_scripts_dir)s/pq_example.py --createDF -O %(outfile)s
                 '''
     P.run()
 
@@ -216,11 +229,11 @@ def run_pq_examples():
     '''
     # command line statement to execute, to run in bash:
     statement = '''
-                Rscript pq_example.R -I %(outfile)s.tsv ;
+                Rscript %(project_scripts_dir)s/pq_example.R -I %(outfile)s.tsv ;
                 checkpoint ;
-                Rscript plot_pq_example_pandas.R -I %(outfile)s ;
+                Rscript %(project_scripts_dir)s/plot_pq_example_pandas.R -I %(outfile)s ;
                 checkpoint ;
-                python svgutils_pq_example.py \
+                python %(project_scripts_dir)s/svgutils_pq_example.py \
                         --plotA=pandas_DF_gender_glucose_boxplot.svg \
                         --plotB=pandas_DF_age_histogram.svg ;
                 checkpoint ;
@@ -242,12 +255,12 @@ def run_mtcars():
     Some plots and an html table of a linear regression are generated.
     '''
     # Plots simple examples:
-    statement = '''python plot_pq_example.py '''
+    statement = '''python %(project_scripts_dir)s/plot_pq_example.py '''
 
     # Scripts for mt_cars in R:
-    statement = ''' Rscript pq_example_mtcars.R ;
+    statement = ''' Rscript %(project_scripts_dir)s/pq_example_mtcars.R ;
                     checkpoint ;
-                    Rscript plot_pq_example_mtcars.R ;
+                    Rscript %(project_scripts_dir)s/plot_pq_example_mtcars.R ;
                     checkpoint ;
                 '''
     P.run()
@@ -260,7 +273,7 @@ def makeMultiPanel():
        svg plots already need to be present.
     '''
     # Generate a multi-panel plot from existing svg files:
-    statement = '''python svgutils_pq_example.py '''
+    statement = '''python %(project_scripts_dir)s/svgutils_pq_example.py '''
 
     P.run()
 ################
