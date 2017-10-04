@@ -46,7 +46,6 @@ python ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
                                                  -O ${svg_out}
 
 # Create the report:
-#ln -sf /Users/antoniob/Documents/github.dir/AntonioJBT/project_quickstart/templates/examples/pipeline_pq_example/configuration_pipeline_pq_example/* .
 cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example .
 cd configuration_pipeline_pq_example
 make html
