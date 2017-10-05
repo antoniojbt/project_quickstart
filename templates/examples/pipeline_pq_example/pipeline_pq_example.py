@@ -87,6 +87,9 @@ Documentation
 # Get modules needed:
 import sys
 import os
+import pprint
+import re
+import subprocess
 
 # Pipeline:
 from ruffus import *
@@ -123,58 +126,84 @@ from builtins import dict
 
 
 ################
-# Get pipeline.ini file:
-def getINI():
-    path = os.path.splitext(__file__)[0]
-    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
-    f_count = 0
-    for path in paths:
-        if os.path.exists(path):
-            for f in os.listdir(path):
-                if (f.endswith('.ini') and f.startswith('pipeline')):
-                    f_count += 1
-                    INI_file = f
-
-    if f_count != 1:
-        raise ValueError('''No pipeline ini file found or more than one in the
-                            directories:
-                            {}
-                        '''.format(paths)
-                        )
-    return(INI_file)
-
 # Load options from the config file
-# Pipeline configuration 
-ini_file = 'pipelin{}.ini'.format(r'(.*)')
+# Pipeline configuration
+ini_paths = [os.path.abspath(os.path.dirname(sys.argv[0])),
+             "../",
+             os.getcwd(),
+             ]
 
-P.getParameters(
-    ["{}/{}".format(os.path.splitext(__file__)[0], ini_file),
-     "../{}".format(ini_file),
-     "{}".format(ini_file),
-     ],
-    )
+def getParamsFiles(paths = ini_paths):
+    '''
+    Search for python ini files in given paths, append files with full
+    paths for P.getParameters() to read.
+    Current paths given are:
+    where this code is executing, one up, current directory
+    '''
+    p_params_files = []
+    for path in ini_paths:
+        for f in os.listdir(os.path.abspath(path)):
+            ini_file = re.search(r'pipelin(.*).ini', f)
+            if ini_file:
+                ini_file = os.path.join(os.path.abspath(path), ini_file.group())
+                p_params_files.append(ini_file)
+    return(p_params_files)
+
+P.getParameters(getParamsFiles())
 
 PARAMS = P.PARAMS
+# Print the options loaded from ini files and possibly a .cgat file:
+pprint.pprint(PARAMS)
 
-print(PARAMS)
-
-#INI_file = getINI()
-#PARAMS = P.getParameters([INI_file])
 
 # Set global parameters here, obtained from the ini file
 # e.g. get the cmd tools to run if specified:
 #cmd_tools = P.asList(PARAMS["cmd_tools_to_run"])
 
+def get_py_exec():
+    '''
+    Look for the python executable. This is only in case of running on a Mac
+    which needs pythonw for matplotlib for instance.
+    '''
+    try:
+        PARAMS["py_exec"]
+        py_exec = '{}'.format(PARAMS['py_exec'])
+    except NameError:
+        E.warn('''
+               You need to specify the python executable, just "python" or
+               "pythonw" is needed. Trying to guess now...
+               ''')
+    else:
+        test_cmd = subprocess.check_output(['which', 'pythonw'])
+        sys_return = re.search(r'(.*)pythonw', str(test_cmd))
+        if sys_return:
+            py_exec = 'pythonw'
+        else:
+            py_exec = 'python'
+    return(py_exec)
 
-# Get the path to scripts for this project, e.g. project_xxxx/code/project_xxxx/:
+def getINIpaths():
+    '''
+    Get the path to scripts for this project, e.g.
+    project_xxxx/code/project_xxxx/:
+    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
+    '''
+    try:
+        project_scripts_dir = '{}/'.format(PARAMS['project_scripts_dir'])
+        E.info('''
+               Location set for the projects scripts is:
+               {}
+               '''.format(project_scripts_dir)
+               )
+    except KeyError:
+        E.warn('''
+               Could not set project scripts location, this needs to be
+               specified in the project ini file.
+               ''')
+        raise
 
-#project_scripts_dir = os.path.splitext(__file__)[0]
-#project_scripts_dir = '%(project_scripts_dir)s/' % P.getParams()
-# e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
-project_scripts_dir = "/Users/antoniob/Desktop/Downloads_to_delete/miscellaneous_tests/pq_tests/pq_example/code/pq_example/"
-print(''' Location set for the projects scripts is:
-          {}
-      '''.format(project_scripts_dir))
+    return(project_scripts_dir)
+
 ################
 
 ################
@@ -199,63 +228,96 @@ def connect():
 ################
 
 ################
-@mkdir('pq_results')
-def createDF():
+def tsvName():
     '''
-    Call a python example script from project_quickstart which creates a pandas dataframe
+    Setup the name of the initial tsv dataframe
     '''
-
-    # Read from the pipeline.ini configuration file
-    # where "pipeline" = section (or key)
-    # "outfile_pandas" option (value)
-    # separated by "_"
-    # CGATPipelines.Pipeline takes some of the work away.
-    if "pipeline_outfile_pandas" in PARAMS:
-        outfile = PARAMS["pipeline_outfile_pandas"]
+    #print(P.asList(PARAMS["tsv_example"]))
+    if "pipeline_tsv_example" in PARAMS:
+        tsv_example = P.asList(PARAMS["pipeline_tsv_example"])
     else:
-        outfile = 'pandas_DF'
+        tsv_example = 'pandas_df'
 
-    statement = '''
-                cd pq_results ;
-                python %(project_scripts_dir)s/pq_example.py --createDF -O %(outfile)s
-                '''
-    P.run()
+    E.info(print(tsv_example))
 
-@follows(createDF)
-def run_pq_examples():
-    ''' Runs python and R scripts from project_quickstart as examples of a
-        pipeline with Ruffus and CGAT tools.
-        A dataframe, several plots and a multi-panel plot are generated.
+    return(tsv_example) # Return as a list, if several names are passed then
+                          # several files will be created
+
+tsv_example = tsvName()
+
+# Make sure the python executable and project scripts dir are set:
+@follows(get_py_exec, getINIpaths)
+@follows(tsvName)
+@originate(tsv_example)
+#@mkdir('pq_results') # Create a folder and place results there if needed
+def getPandasDF(outfile):
     '''
-    # command line statement to execute, to run in bash:
+    Call a python example script from project_quickstart to create a pandas dataframe
+    '''
     statement = '''
-                Rscript %(project_scripts_dir)s/pq_example.R -I %(outfile)s.tsv ;
-                checkpoint ;
-                Rscript %(project_scripts_dir)s/plot_pq_example_pandas.R -I %(outfile)s ;
-                checkpoint ;
-                python %(project_scripts_dir)s/svgutils_pq_example.py \
-                        --plotA=pandas_DF_gender_glucose_boxplot.svg \
-                        --plotB=pandas_DF_age_histogram.svg ;
-                checkpoint ;
+                %(py_exec)s %(project_scripts_dir)s/pq_example.py \
+                                                       --createDF \
+                                                       -O %(outfile)s ;
                 '''
-
-    # execute command in variable statement.
+    # execute command contained in the statement.
     # The command will be sent to the cluster (by default, but this can be
     # turned off with --local).  The statement will be
     # interpolated with any options that are defined in in the
     # configuration files or variable that are declared in the calling
-    # function.  For example, %(infile)s will we substituted with the
-    # contents of the variable "infile".
+    # function.
+    # For example, %(infile)s will we substituted with the
+    # contents of the variable "infile"
+    # py_exec provides the basename of the directory where the project scripts
+    # live.
+    P.run() # run() lives in cgat/CGAT/Experiment.py
+
+
+@follows(getPandasDF)
+@transform(tsv_example, suffix('.tsv'), output = '.svg')
+# See Ruffus: http://www.ruffus.org.uk/decorators/transform.html
+def run_pq_examples(infile, outfile):
+    '''
+    Runs python and R scripts from project_quickstart as examples of a
+    pipeline with Ruffus and CGAT tools.
+    A dataframe, several plots and a multi-panel plot are generated.
+    '''
+    # command line statement to execute, to run in bash:
+    statement = '''
+                Rscript %(project_scripts_dir)s/pq_example.R -I %(infile)s ;
+                checkpoint ;
+                Rscript %(project_scripts_dir)s/plot_pq_example_pandas.R \
+                                                                -I %(infile)s \
+                                                                -O %(outfile)s ;
+                '''
+    P.run()
+
+@follows(run_pq_examples)
+@transform(tsv_example, suffix('.svg'), '.pdf')
+def pandasMultiPanel(infile, outfile):
+    '''
+    Creates a multi-panel figure from the plots generated from
+    pq_example.R and plot_pq_example_pandas.R
+    '''
+    statement = '''
+                %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
+                              --plotA=%(infile)s_gender_glucose_boxplot.svg \
+                              --plotB=%(infile)s_age_histogram.svg ;
+                checkpoint ;
+                '''
     P.run()
 
 
+# Make sure the python executable and project scripts dir are set:
+@follows(get_py_exec, getINIpaths)
 def run_mtcars():
     '''
     A second set of examples from project_quickstart
     Some plots and an html table of a linear regression are generated.
     '''
     # Plots simple examples:
-    statement = '''python %(project_scripts_dir)s/plot_pq_example.py '''
+    statement = '''
+                %(py_exec)s %(project_scripts_dir)s/plot_pq_example.py ;
+                '''
 
     # Scripts for mt_cars in R:
     statement = ''' Rscript %(project_scripts_dir)s/pq_example_mtcars.R ;
@@ -267,21 +329,24 @@ def run_mtcars():
 
 
 @follows(run_mtcars)
-def makeMultiPanel():
+def mtcarsMultiPanel():
     '''
        Generate a multi-panel plot using svgutils python package.
        svg plots already need to be present.
     '''
     # Generate a multi-panel plot from existing svg files:
-    statement = '''python %(project_scripts_dir)s/svgutils_pq_example.py '''
+    statement = '''%(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py '''
 
     P.run()
 ################
 
 
 ################
-# Create a pipeline target (call) that will run the full pipeline:
-@follows(run_pq_examples, makeMultiPanel)
+# Create a pipeline target (call) that will run the full pipeline
+# These targets follow all other targets so 'full' will print them out when
+# doing:
+# python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full --local -v 3
+@follows(pandasMultiPanel, mtcarsMultiPanel)
 def full():
     pass
 ################

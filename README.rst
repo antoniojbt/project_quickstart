@@ -246,7 +246,6 @@ If you have CGATPipelines_ and Ruffus_ installed you can try:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full
-   export PATH="../code/pq_example:$PATH"
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make full --local
 
 

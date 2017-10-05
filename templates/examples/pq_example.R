@@ -40,11 +40,14 @@ Options:
 
 Input:
 
-    A tab separated file with headers. This is read with data.table and stringsAsFactors = FALSE
+    A tab separated file with headers. This is read with data.table
+    and stringsAsFactors = FALSE
+    The script is designed to take in the output of the script pq_example.py
 
 Output:
 
-    A boxplot and scatterplot from the R dataset mtcars as svg files and an html table of a linear regression output.
+    A tsv table with some descriptive statistics, a boxplot and a summary 
+    table from a linear regression output using the R package stargazer.
 
 Requirements:
 

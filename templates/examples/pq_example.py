@@ -34,19 +34,15 @@ These are based on docopt_, see examples_.
 Usage:
        pq_example.py [--a_number=<int>]
        pq_example.py (--createDF) [--sample-size=<int>] [-O FILE]
-       pq_example.py [-h | --help] [-V | --version] [-f --force] [-L | --log]
+       pq_example.py [-h | --help] [-V | --version]
 
 Options:
     --a_number=<int>    Give a number just for fun
     --createDF          Create a pandas data frame
     --sample-size=<int> Specify a sample size (number of rows) for the dataframe[default: 1000]
-    -I FILE             Input file name
     -O FILE             Output file name
     -h --help           Show this screen
     -V --version        Show version
-    -f --force          Force overwrite
-    -L --log            Log file name
-
 
 Input:
 
@@ -71,8 +67,8 @@ Documentation
 '''
 ##############
 # Get all the modules needed
-# Understand Python:
-import this
+# Understanding Python:
+#import this
 
 # System:
 import os

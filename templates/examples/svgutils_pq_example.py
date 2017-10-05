@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 '''
 svgutils_pq_example.py
 ======================
