@@ -54,9 +54,10 @@ RUN apk add libx11 \
             libxrender
             
 
-#RUN apt-get update && apt-get install -y \
-#    graphviz \
-#    inkscape \
+# Get plotting libraries:
+RUN apk add inkscape \
+            graphviz
+
 #    vim \
 #    fixincludes # this isn't available in apk Alpine
 

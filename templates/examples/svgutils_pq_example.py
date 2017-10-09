@@ -94,12 +94,12 @@ def plotSVG(plotA, plotB, outfile = 'F1_test'):
     my_layout = Figure(paper_size_w, paper_size_h, # read as width, height
                               # Panel() groups all elements belonging to one plot/panel
                               Panel(
-                                  SVG(plotA).scale(0.75), # scale only the plot, not the text
+                                  SVG(plotA).scale(0.70), # scale only the plot, not the text
                                   # Place Text() after SVG(), otherwise it doesn't plot:
                                   Text("A", 0, 20, size = 11, weight = 'bold'),
                                   ).move(20, 20), # hor, vert move
                               Panel(
-                                  SVG(plotB).scale(0.75),
+                                  SVG(plotB).scale(0.70),
                                   Text("B", 0, 20, size = 11, weight = 'bold'),
                                   ).move(380, 20), # placed here move() is applied to all
                                                    # elements of the panel

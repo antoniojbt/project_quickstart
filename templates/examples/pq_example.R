@@ -224,14 +224,14 @@ desc_stats <- desc_stats[, c("statistics", "age", "glucose", "BMI")]
 desc_stats
 # Save as a file, give a name if -O option not provided:
 if (is.null(args[['-O']]) == FALSE) {
-  output_name <- as.character(args[['-O']])
-  input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+  outfile <- as.character(args[['-O']])
+  outfile <- sprintf('desc_stats_%s.tsv', outfile)  
 } else {
   # Warn if arguments not given:
   outfile <- sprintf('desc_stats_%s.tsv', input_name)
   warning(sprintf('Outfile name not given, using a default: %s', outfile))
 }
-
+outfile
 # Save file:
 fwrite(desc_stats, outfile, 
             sep = '\t', na = 'NA',

@@ -246,8 +246,10 @@ If you have CGATPipelines_ and Ruffus_ installed you can try:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py printconfig
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py plot full
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make full --local
-
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make make_report --local
 
 .. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
 

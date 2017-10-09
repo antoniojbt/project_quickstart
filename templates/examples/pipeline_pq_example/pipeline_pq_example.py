@@ -17,7 +17,7 @@ Overview
 Purpose
 =======
 
-.. briefly describe the main purpose and methods of the pipeline
+This is an example Python pipeline for project_quickstart
 
 
 Usage and options
@@ -32,7 +32,8 @@ These are based on CGATPipelines_ and Ruffus_
 
 For command line help type:
 
-    python pipeline_pq_example.py --help
+    python xxxx/pq_example/code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
+
 
 Configuration
 =============
@@ -50,14 +51,16 @@ re-runs of the pipeline.
 Input files
 ===========
 
-.. Describe the input files needed, urls for reference and preferably place
-example data somewhere.
+No input is needed, a script generates a tab separated dataframe with simulated
+values.
 
 
 Pipeline output
 ===============
 
-.. Describe output files and results
+ Runs python and R scripts from project_quickstart as examples of a
+ pipeline with Ruffus and CGAT tools.
+A dataframe, several plots and a multi-panel plot are generated.
 
 
 Requirements
@@ -66,13 +69,17 @@ Requirements
 CGATPipelines core setup, Ruffus as well as the following
 software to be in the path:
 
-.. Add any additional external requirements such as 3rd party software
-   or R modules below:
-
 Requirements:
 
-* R >= 1.1
+See Dockerfile_pq for instructions and dependencies
+
+* R >= 3
 * Python >= 3.5
+* R data.table
+* R stargazer
+* R ggplot2
+* CGATPipelines
+* CGAT
 
 
 Documentation
@@ -153,7 +160,9 @@ P.getParameters(getParamsFiles())
 
 PARAMS = P.PARAMS
 # Print the options loaded from ini files and possibly a .cgat file:
-pprint.pprint(PARAMS)
+#pprint.pprint(PARAMS)
+# From the command line:
+#python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py printconfig
 
 
 # Set global parameters here, obtained from the ini file
@@ -232,13 +241,10 @@ def tsvName():
     '''
     Setup the name of the initial tsv dataframe
     '''
-    #print(P.asList(PARAMS["tsv_example"]))
     if "pipeline_tsv_example" in PARAMS:
         tsv_example = P.asList(PARAMS["pipeline_tsv_example"])
     else:
         tsv_example = 'pandas_df'
-
-    E.info(print(tsv_example))
 
     return(tsv_example) # Return as a list, if several names are passed then
                           # several files will be created
@@ -258,6 +264,7 @@ def getPandasDF(outfile):
                 %(py_exec)s %(project_scripts_dir)s/pq_example.py \
                                                        --createDF \
                                                        -O %(outfile)s ;
+                touch %(outfile)s
                 '''
     # execute command contained in the statement.
     # The command will be sent to the cluster (by default, but this can be
@@ -271,28 +278,42 @@ def getPandasDF(outfile):
     # live.
     P.run() # run() lives in cgat/CGAT/Experiment.py
 
-
-@follows(getPandasDF)
-@transform(tsv_example, suffix('.tsv'), output = '.svg')
-# See Ruffus: http://www.ruffus.org.uk/decorators/transform.html
-def run_pq_examples(infile, outfile):
+@follows(tsvName, getPandasDF)
+def renameList():
     '''
-    Runs python and R scripts from project_quickstart as examples of a
-    pipeline with Ruffus and CGAT tools.
-    A dataframe, several plots and a multi-panel plot are generated.
+    Rename list of tsv files being passed to facilitate Ruffus reading and
+    tracking.
+    '''
+    tsv_example = tsvName()
+    tsv_example_full = []
+    for f in tsv_example:
+        f = str(f + '.tsv')
+        tsv_example_full.append(f)
+
+    return(tsv_example_full)
+
+tsv_example_full = renameList()
+
+@follows(renameList)
+@transform(tsv_example_full, regex(r'(.*).tsv'), r'\1.pq_example.touch', r'\1')
+# See Ruffus: http://www.ruffus.org.uk/decorators/transform.html
+def run_pq_examples(infile, touchFile, outname):
+    '''
     '''
     # command line statement to execute, to run in bash:
+    # touch %(outfile)s gives Ruffus a timestamp, not the most elegant way but
+    # helpful if there are multiple outputs from a script
     statement = '''
-                Rscript %(project_scripts_dir)s/pq_example.R -I %(infile)s ;
-                checkpoint ;
+                Rscript %(project_scripts_dir)s/pq_example.R -I %(infile)s \
+                                                             -O %(outname)s ;
                 Rscript %(project_scripts_dir)s/plot_pq_example_pandas.R \
-                                                                -I %(infile)s \
-                                                                -O %(outfile)s ;
+                                                            -I %(infile)s ;
+                touch %(touchFile)s
                 '''
     P.run()
 
 @follows(run_pq_examples)
-@transform(tsv_example, suffix('.svg'), '.pdf')
+@transform(tsv_example, regex(r'(.*)'), r'\1.multiPanel.touch')
 def pandasMultiPanel(infile, outfile):
     '''
     Creates a multi-panel figure from the plots generated from
@@ -301,43 +322,61 @@ def pandasMultiPanel(infile, outfile):
     statement = '''
                 %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
                               --plotA=%(infile)s_gender_glucose_boxplot.svg \
-                              --plotB=%(infile)s_age_histogram.svg ;
-                checkpoint ;
+                              --plotB=%(infile)s_age_histogram.svg \
+                              -O %(infile)s ;
+                touch %(outfile)s ;
                 '''
     P.run()
 
 
 # Make sure the python executable and project scripts dir are set:
 @follows(get_py_exec, getINIpaths)
-def run_mtcars():
+@originate('run_mtcars_R.touch')
+def run_mtcars(outfile):
     '''
     A second set of examples from project_quickstart
     Some plots and an html table of a linear regression are generated.
     '''
-    # Plots simple examples:
-    statement = '''
-                %(py_exec)s %(project_scripts_dir)s/plot_pq_example.py ;
-                '''
+    # Plot simple examples with python:
+    #statement = '''
+    #            %(py_exec)s %(project_scripts_dir)s/plot_pq_example.py ;
+    #            touch %(outfile)s
+    #            '''
 
-    # Scripts for mt_cars in R:
-    statement = ''' Rscript %(project_scripts_dir)s/pq_example_mtcars.R ;
-                    checkpoint ;
-                    Rscript %(project_scripts_dir)s/plot_pq_example_mtcars.R ;
-                    checkpoint ;
+    # R scripts for mtcars dataset example:
+    statement = '''
+                Rscript %(project_scripts_dir)s/pq_example_mtcars.R ;
+                checkpoint ;
+                Rscript %(project_scripts_dir)s/plot_pq_example_mtcars.R ;
+                checkpoint ;
+                touch %(outfile)s
                 '''
     P.run()
 
 
 @follows(run_mtcars)
-def mtcarsMultiPanel():
+@originate('F1_mtcars.multiPanel.touch', 'F2_mtcars.multiPanel.touch')
+def mtcarsMultiPanel(outfile1, outfile2):
     '''
-       Generate a multi-panel plot using svgutils python package.
-       svg plots already need to be present.
+    Generate a multi-panel plot from existing svg files using the svgutils
+    python package. Plots can be generated by run_mtcars().
     '''
-    # Generate a multi-panel plot from existing svg files:
-    statement = '''%(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py '''
 
+    statement = '''
+                %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
+                                      --plotA=mtcars_cyl_wt_boxplot_2.svg \
+                                      --plotB=mtcars_hp_qsec_scatterplot.svg \
+                                      -O F1_mtcars ;
+                touch %(outfile1)s ;
+                checkpoint ;
+                %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
+                                          --plotA=mtcars_wt_histogram.svg  \
+                                          --plotB=mtcars_boxplot_lm.svg \
+                                          -O F2_mtcars ;
+                touch %(outfile2)s
+                '''
     P.run()
+
 ################
 
 
@@ -354,17 +393,18 @@ def full():
 
 ################
 # Specify function to create reports pre-configured with sphinx-quickstart:
+@follows(full)
 def make_report():
     ''' Generates html and pdf versions of restructuredText files
         using sphinx-quickstart pre-configured files (conf.py and Makefile).
         Pre-configured files need to be in a pre-existing report directory.
         Existing reports are overwritten.
     '''
-    if os.path.exists('report'):
-        statement = ''' cd report ;
+    if os.path.exists('pipeline_report'):
+        statement = ''' cd pipeline_report ;
                         checkpoint ;
                         make html ;
-                        ln -s _build/html/index.hmtl . ;
+                        ln -s _build/html/report_pipeline_pq_example.html . ;
                         checkpoint ;
                         make latexpdf ;
                         ln -s _build/latex/pq_example.pdf .
@@ -373,12 +413,12 @@ def make_report():
         P.run()
 
     else:
-        E.stop(''' The directory "report" does not exist. Did you run the config
+        sys.exit(''' The directory "pipeline_report" does not exist. Did you run the config
                    option? This should copy across templates for easier
                    reporting of your pipeline.
                    If you changed the dir names, just go in and run "make html" or
                    "make latexpdf" or follow Sphinx docs.
-                ''')
+                 ''')
 
     return
 ################

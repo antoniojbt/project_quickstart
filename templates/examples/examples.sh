@@ -24,7 +24,7 @@ python ../code/pq_example/svgutils_pq_example.py \
                         -O ${svg_out}
 
 # Second set of examples
-# Reset variables, could change names to avoid confusion:
+# Reset variables (it would be better to change names to avoid confusion):
 plotA=mtcars_cyl_wt_boxplot_2.svg
 plotB=mtcars_hp_qsec_scatterplot.svg
 svg_out=F1_mtcars
@@ -36,7 +36,7 @@ python ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
                                                  -O ${svg_out}
 
 # Additional plotting
-# Reset variables, could change names to avoid confusion:
+# Reset variables:
 plotA=mtcars_wt_histogram.svg
 plotB=mtcars_boxplot_lm.svg
 svg_out=F2_mtcars
@@ -52,4 +52,4 @@ make html
 ln -fs _build/html/report_pipeline_pq_example.html .
 make latexpdf
 ln -fs _build/latex/pq_example.pdf .
-open pq_example.pdf report_pipeline_pq_example.html # on Mac
+#open pq_example.pdf report_pipeline_pq_example.html # on Mac
