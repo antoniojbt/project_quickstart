@@ -37,6 +37,7 @@ include COPYING
 include external_dependencies.rst
 include requirements.rst
 include Dockerfile
+include Dockerfile_pq_all_tests
 
 # Include project documentation:
 recursive-include docs *.html
@@ -72,6 +73,7 @@ exclude .gitignore
 exclude .dir_bash_history
 exclude tests/.dir_bash_history
 exclude templates/.dir_bash_history
+exclude templates/.DS_Store
 exclude templates/project_template/.dir_bash_history
 exclude templates/project_template/docs/.dir_bash_history
 exclude templates/project_template/scripts/.dir_bash_history

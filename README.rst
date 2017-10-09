@@ -299,7 +299,7 @@ v0.3 (future)
 - updated templates
 - added rsync example command and instructions for remote copies
 - added Ruffus/CGAT simplified pipeline template script
-
+- added example scripts and pipeline, option '--example'
 
 v0.2
 
@@ -447,6 +447,8 @@ For example, if you want to tag and version a previous commit, do the following:
 
 .. code-block:: bash
 
+    # Update version.py if needed
+
 	# Check the tag history:
 	git tag
 
@@ -459,6 +461,9 @@ For example, if you want to tag and version a previous commit, do the following:
 	# Push the tag 
 	# By default, the git push command does not transfer tags to remote servers, so run:
 	git push origin v0.1
+    
+    # You'll then need to click around in the GitHub repository to formally
+    publish the release.
 
 -----
 
