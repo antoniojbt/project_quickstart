@@ -89,7 +89,7 @@ def plotSVG(plotA, plotB, outfile = 'F1_test'):
                                        file_format_in))
     layout_name_2 = str('{}.{}'.format(outfile,
                                        file_format_out))
-    paper_size_w = "19cm" # A4 paper is 210 mm x 197 mm
+    paper_size_w = "20cm" # A4 paper is 210 mm x 197 mm
     paper_size_h = "12cm"
     my_layout = Figure(paper_size_w, paper_size_h, # read as width, height
                               # Panel() groups all elements belonging to one plot/panel

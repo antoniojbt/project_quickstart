@@ -172,7 +172,7 @@ And::
    The legend follows the empty line after the caption.
 
 
-You can see the `image directive` for details.
+You can see the `image directive`_ for details.
 
 .. _`image directive`: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
 
