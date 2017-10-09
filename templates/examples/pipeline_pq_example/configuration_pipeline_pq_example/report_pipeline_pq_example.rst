@@ -260,7 +260,7 @@ See the sphinxcontrib-bibtex_ extension for details.
 
 There are other ways of including citations, see the `citation directive`_ for a simple approach.
 
-.. _ sphinxcontrib-bibtex: https://github.com/mcmtroffaes/sphinxcontrib-bibtex
+.. _sphinxcontrib-bibtex: https://github.com/mcmtroffaes/sphinxcontrib-bibtex
 
 .. _`citation directive`: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#citations
 
