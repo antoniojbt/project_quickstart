@@ -111,6 +111,7 @@ RUN /bin/bash -c 'source activate py35 ; \
     pip install pandas ; \
     pip install future ruffus ; \
     conda install sphinx ; \
+    pip install sphinxcontrib-bibtex ; \
     conda install -y -c r r=3.3 ; \
     conda install -y rpy2 ; \
     conda install r-docopt ; \
