@@ -190,6 +190,14 @@ A simple example
 To run an example of a project with scripts, pipeline and report, you'll need to install several additional tools.
 See the file "Dockerfile_pq_all_tests" on how to do this for Linux.
 
+A shorter version to run in a conda environment can be done with:
+
+.. code-block:: bash
+
+   wget 
+
+
+
 Once you have these installed, run:
 
 .. code-block:: bash
