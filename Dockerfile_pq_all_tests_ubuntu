@@ -30,9 +30,9 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 
 # Install system dependencies
 # If running on Debian and anaconda/miniconda image, use apt-get:
-RUN apt-get update && apt-get upgrade --quiet --install -y apt-utils
+RUN apt-get update && apt-get upgrade -qy apt-utils
 
-RUN apt-get --quiet --install -y gcc \
+RUN apt-get install -qy gcc \
     g++ \
     tzdata \
     wget \
@@ -43,7 +43,7 @@ RUN apt-get --quiet --install -y gcc \
     fixincludes
 
 # Get libraries for matplotlib:
-RUN apt-get --quiet --install -y \
+RUN apt-get install -qy \
             libx11 \
             libxext \
             libsm \
@@ -51,14 +51,14 @@ RUN apt-get --quiet --install -y \
             
 
 # Get plotting libraries:
-RUN apt-get --quiet --install -y \
+RUN apt-get install -qy \
             inkscape \
             graphviz \
             cairo \
             cairo-dev
 
 # Get dependencies:
-RUN apt-get --quiet --install -y \
+RUN apt-get install -qy \
             libcairo2-dev \
             libjpeg8-dev \
             libpango1.0-dev \
@@ -66,7 +66,7 @@ RUN apt-get --quiet --install -y \
             build-essential
 
 # Additional packages:
-RUN sudo apt-get --quiet --install -y \
+RUN sudo apt-get install -qy \
     zlib1g-dev libssl-dev libssl1.0.0 libbz2-dev libfreetype6-dev libpng12-dev \
     libblas-dev libatlas-dev liblapack-dev gfortran libpq-dev r-base-dev \
     libreadline-dev libmysqlclient-dev libboost-dev libsqlite3-dev
