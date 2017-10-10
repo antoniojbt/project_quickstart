@@ -86,6 +86,8 @@ Documentation
 # Get modules needed:
 import sys
 import os
+import re
+import subprocess
 
 # Pipeline:
 from ruffus import *
