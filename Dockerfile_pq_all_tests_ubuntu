@@ -42,14 +42,6 @@ RUN apt-get install -qy gcc \
     bash \
     fixincludes
 
-# Get libraries for matplotlib:
-#RUN apt-get install -qy \
-#            libx11 \
-#            libxext \
-#            libsm \
-#            libxrender
-            
-
 # Get plotting libraries:
 RUN apt-get install -qy \
             inkscape \
@@ -60,10 +52,10 @@ RUN apt-get install -qy \
 #########################
 
 # Miniconda:
-#RUN cd /usr/bin \
-#    && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-#    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda \
-#    && export PATH="/usr/local/miniconda/bin:$PATH"
+RUN cd /usr/bin \
+    && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda \
+    && export PATH="/usr/local/miniconda/bin:$PATH"
 
 # Add conda channels:
 RUN conda config --add channels r \
@@ -97,13 +89,13 @@ RUN /bin/bash -c 'source activate py35 ; \
     pip install pysam ; \
     pip install pandas ; \
     pip install future ruffus ; \
-    conda install sphinx ; \
+    conda install -y sphinx ; \
     pip install sphinxcontrib-bibtex ; \
     conda install -y -c r r=3.3 ; \
     conda install -y rpy2 ; \
-    conda install readline ; \
-    conda install r-docopt ; \
-    conda install r-data.table ; \
+    conda install -y readline ; \
+    conda install -y r-docopt ; \
+    conda install -y r-data.table ; \
     R --vanilla -e "source('https://bioconductor.org/biocLite.R') ; install.packages('stargazer', repos = 'http://cran.us.r-project.org') ; library('stargazer')" ; \
     conda install r-ggplot2 ; \
     R --vanilla -e "source('https://bioconductor.org/biocLite.R') ; install.packages('svglite', repos = 'http://cran.us.r-project.org') ; library('svglite')" ; \
