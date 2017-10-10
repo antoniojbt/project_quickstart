@@ -256,6 +256,8 @@ If you have CGATPipelines_ and Ruffus_ installed you can try:
 
 .. code-block:: bash
 
+   project_quickstart --example # will create a project with runnable scripts and pipeline
+   cd pq_example/results
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full
