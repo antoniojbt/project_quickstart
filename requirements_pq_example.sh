@@ -14,7 +14,8 @@ conda create -yn py35_test python=3.5
 # Install project_quickstart (if you don't have it already):
 wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.rst
 pip install -r requirements.rst 
-pip install project_quickstart
+pip install --upgrade git+git://github.com/AntonioJBT/project_quickstart.git
+#pip install project_quickstart
 
 # Install a fork of CGATPipelines:
 wget https://raw.githubusercontent.com/AntonioJBT/CGATPipeline_core/master/requirements.txt
@@ -33,5 +34,4 @@ R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages
 conda install -y r-ggplot2
 R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")'
 
-# Then activate the environment in your terminal:
-# source activate py35_test
+echo 'Activate the environment in your terminal running "source activate py35_test"'

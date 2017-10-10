@@ -194,14 +194,14 @@ A shorter version to run in a conda environment can be done with:
 
 .. code-block:: bash
 
-   wget 
+   wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements_pq_example.sh
+   bash requirements_pq_example.sh
 
-
-
-Once you have these installed, run:
+Once you have everything installed, run:
 
 .. code-block:: bash
 
+   source activate py35_test
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
    python ../code/pq_example/pq_example.py --createDF -O my_dataframe # You'll need pythonw for matplotlib if on a Mac
@@ -241,11 +241,14 @@ You can get a simple example of a report, based on sphinx-quickstart_, by doing:
    make latexpdf
    ln -s _build/latex/pq_example.pdf .
 
-You can run this with a bash script:
+You can run most of this with a bash script:
 
 .. code-block:: bash
 
+   project_quickstart --example # will create a project with runnable scripts and pipeline
+   cd pq_example/results
    bash ../code/pq_example/examples.sh > examples.log
+   open pq_example.pdf report_pipeline_pq_example.html # in a Mac
 
 If you have CGATPipelines_ and Ruffus_ installed you can try:
 
