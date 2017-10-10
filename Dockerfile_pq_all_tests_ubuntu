@@ -59,10 +59,10 @@ RUN cd /usr/bin \
 RUN export PATH="/usr/local/miniconda/bin:$PATH"
 
 # Add conda channels:
-RUN conda config --add channels r \
+RUN /bin/bash -c 'conda config --add channels r \
     && conda config --add channels defaults \
     && conda config --add channels conda-forge \
-    && conda config --add channels bioconda
+    && conda config --add channels bioconda'
 
 # There are dependency issues, specially rpy2, with clashes between conda-forge
 # and default r (r-base), see here for icu 54 vs 56:
@@ -107,6 +107,7 @@ RUN /bin/bash -c 'source activate py35 ; \
     conda install -y pybedtools ; \
     conda install -y -c bioconda ucsc-wigtobigwig ; \
     conda install -y icu ; \
+    pip install sphinxcontrib-bibtex ; \
     pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
     pip install git+git://github.com/AntonioJBT/project_quickstart.git ; \
     pip install cgat ; \

@@ -23,6 +23,7 @@ pip install -r requirements.txt
 pip install cgat
 
 # Install dependencies for project_quickstart's example:
+pip install sphinxcontrib-bibtex
 conda install -y rpy2
 conda install -y r-docopt
 conda install -y r-data.table
