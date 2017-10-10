@@ -114,6 +114,7 @@ RUN /bin/bash -c 'source activate py35 ; \
     pip install sphinxcontrib-bibtex ; \
     conda install -y -c r r=3.3 ; \
     conda install -y rpy2 ; \
+    conda install readline ; \
     conda install r-docopt ; \
     conda install r-data.table ; \
     R --vanilla -e "source('https://bioconductor.org/biocLite.R') ; install.packages('stargazer', repos = 'http://cran.us.r-project.org') ; library('stargazer')" ; \

@@ -15,7 +15,7 @@ plotB=my_dataframe_age_histogram.svg
 svg_out=my_dataframe
 
 # First set of examples
-pythonw ../code/pq_example/pq_example.py --createDF -O ${pandas_out}
+python ../code/pq_example/pq_example.py --createDF -O ${pandas_out} # you'll need pythonw if on a Mac
 Rscript ../code/pq_example/pq_example.R -I ${infile}
 Rscript ../code/pq_example/plot_pq_example_pandas.R -I ${infile}
 python ../code/pq_example/svgutils_pq_example.py \
