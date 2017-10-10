@@ -43,33 +43,17 @@ RUN apt-get install -qy gcc \
     fixincludes
 
 # Get libraries for matplotlib:
-RUN apt-get install -qy \
-            libx11 \
-            libxext \
-            libsm \
-            libxrender
+#RUN apt-get install -qy \
+#            libx11 \
+#            libxext \
+#            libsm \
+#            libxrender
             
 
 # Get plotting libraries:
 RUN apt-get install -qy \
             inkscape \
-            graphviz \
-            cairo \
-            cairo-dev
-
-# Get dependencies:
-RUN apt-get install -qy \
-            libcairo2-dev \
-            libjpeg8-dev \
-            libpango1.0-dev \
-            libgif-dev \
-            build-essential
-
-# Additional packages:
-RUN sudo apt-get install -qy \
-    zlib1g-dev libssl-dev libssl1.0.0 libbz2-dev libfreetype6-dev libpng12-dev \
-    libblas-dev libatlas-dev liblapack-dev gfortran libpq-dev r-base-dev \
-    libreadline-dev libmysqlclient-dev libboost-dev libsqlite3-dev
+            graphviz
 
 #########################
 # Install conda
