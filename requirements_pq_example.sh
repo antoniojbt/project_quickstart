@@ -14,6 +14,7 @@ set -o nounset
 # dependencies for project_quickstart's example
 
 conda create -yn py35_test python=3.5
+
 bash -c 'source activate py35_test ; \
          wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.rst ; \
          pip install -r requirements.rst ; \
@@ -32,6 +33,7 @@ bash -c 'source activate py35_test ; \
          R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")' ; \
          conda install -y r-ggplot2 ; \
          R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")' ; \
+         conda install -y r-string ; \
          source deactivate'
 
 echo 'Activate the environment in your terminal running "source activate py35_test"'

@@ -190,7 +190,8 @@ A simple example
 To run an example of a project with scripts, pipeline and report, you'll need to install several additional tools.
 See the file "Dockerfile_pq_all_tests" on how to do this for Linux.
 
-A shorter version to run in a conda environment can be done with:
+To create and run within a conda environment you can try the following bash
+script. You may need to run commands manually for now if it fails though.
 
 .. code-block:: bash
 
@@ -248,6 +249,7 @@ You can run most of this with a bash script:
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
    bash ../code/pq_example/examples.sh > examples.log
+   # You'll need to change the executable to pythonw on a Mac
    open pq_example.pdf report_pipeline_pq_example.html # in a Mac
 
 If you have CGATPipelines_ and Ruffus_ installed you can try:

@@ -36,13 +36,6 @@
 import os
 import sys
 
-try:
-    import CGATPipelines.Pipeline as P
-    import CGATPipelines
-except ImportError:
-    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
-    pass
-
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
 try:
