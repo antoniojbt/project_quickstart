@@ -121,6 +121,89 @@ from builtins import dict
 
 
 ################
+# Load options from the config file
+# Pipeline configuration
+ini_paths = [os.path.abspath(os.path.dirname(sys.argv[0])),
+             "../",
+             os.getcwd(),
+             ]
+
+def getParamsFiles(paths = ini_paths):
+    '''
+    Search for python ini files in given paths, append files with full
+    paths for P.getParameters() to read.
+    Current paths given are:
+    where this code is executing, one up, current directory
+    '''
+    p_params_files = []
+    for path in ini_paths:
+        for f in os.listdir(os.path.abspath(path)):
+            ini_file = re.search(r'pipelin(.*).ini', f)
+            if ini_file:
+                ini_file = os.path.join(os.path.abspath(path), ini_file.group())
+                p_params_files.append(ini_file)
+    return(p_params_files)
+
+P.getParameters(getParamsFiles())
+
+PARAMS = P.PARAMS
+# Print the options loaded from ini files and possibly a .cgat file:
+#pprint.pprint(PARAMS)
+# From the command line:
+#python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py printconfig
+
+
+# Set global parameters here, obtained from the ini file
+# e.g. get the cmd tools to run if specified:
+#cmd_tools = P.asList(PARAMS["cmd_tools_to_run"])
+
+def get_py_exec():
+    '''
+    Look for the python executable. This is only in case of running on a Mac
+    which needs pythonw for matplotlib for instance.
+    '''
+    try:
+        PARAMS["py_exec"]
+        py_exec = '{}'.format(PARAMS['py_exec'])
+    except NameError:
+        E.warn('''
+               You need to specify the python executable, just "python" or
+               "pythonw" is needed. Trying to guess now...
+               ''')
+    else:
+        test_cmd = subprocess.check_output(['which', 'pythonw'])
+        sys_return = re.search(r'(.*)pythonw', str(test_cmd))
+        if sys_return:
+            py_exec = 'pythonw'
+        else:
+            py_exec = 'python'
+    return(py_exec)
+
+def getINIpaths():
+    '''
+    Get the path to scripts for this project, e.g.
+    project_xxxx/code/project_xxxx/:
+    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
+    '''
+    try:
+        project_scripts_dir = '{}/'.format(PARAMS['project_scripts_dir'])
+        E.info('''
+               Location set for the projects scripts is:
+               {}
+               '''.format(project_scripts_dir)
+               )
+    except KeyError:
+        E.warn('''
+               Could not set project scripts location, this needs to be
+               specified in the project ini file.
+               ''')
+        raise
+
+    return(project_scripts_dir)
+################
+
+
+################
 # Get pipeline.ini file
 # Use this if not based on CGATPipelines:
 # Many more functions need changing though
