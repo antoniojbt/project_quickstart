@@ -11,18 +11,11 @@
 #FROM continuumio/miniconda3
 # It runs on Debian GNU/Linux 8; use e.g. uname -a ; cat /etc/issue.net
 
-# FROM python:3-onbuild 
-# FROM ubuntu:17.04
-#FROM jfloff/alpine-python
+FROM ubuntu:17.10
 
 # Or simply run:
 # docker run --rm -ti continuumio/miniconda3
 # docker run --rm -ti ubuntu
-
-
-FROM frolvlad/alpine-miniconda3
-# https://github.com/frol/docker-alpine-miniconda3
-# https://hub.docker.com/r/frolvlad/alpine-miniconda3/
 
 
 #########
@@ -37,47 +30,46 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 
 # Install system dependencies
 # If running on Debian and anaconda/miniconda image, use apt-get:
-# apt-get update && apt-get upgrade --quiet --install -y apt-utils \
-RUN apk update && apk upgrade && apk add \ 
-    gcc \
+RUN apt-get update && apt-get upgrade --quiet --install -y apt-utils
+
+RUN apt-get --quiet --install -y gcc \
     g++ \
     tzdata \
     wget \
     bzip2 \
     unzip \
     sudo \
-    gcc \
-    bash
+    bash \
+    fixincludes
 
 # Get libraries for matplotlib:
-RUN apk add libx11 \
+RUN apt-get --quiet --install -y \
+            libx11 \
             libxext \
             libsm \
             libxrender
             
 
 # Get plotting libraries:
-RUN apk add inkscape \
+RUN apt-get --quiet --install -y \
+            inkscape \
             graphviz \
             cairo \
             cairo-dev
 
-#    vim \
-#    fixincludes # this isn't available in apk Alpine
-
 # Get dependencies:
-#RUN apk add libcairo2-dev \
-#            libjpeg8-dev \
-#            libpango1.0-dev \
-#            libgif-dev \
-#            build-essential
+RUN apt-get --quiet --install -y \
+            libcairo2-dev \
+            libjpeg8-dev \
+            libpango1.0-dev \
+            libgif-dev \
+            build-essential
 
-# Additional packages, taken from CGAT cgat example (uses Ubuntu image?):
-#RUN sudo apt-get --quiet install -y gcc g++ \
-#RUN sudo apt-get gcc g++ \
-#    zlib1g-dev libssl-dev libssl1.0.0 libbz2-dev libfreetype6-dev libpng12-dev \
-#    libblas-dev libatlas-dev liblapack-dev gfortran libpq-dev r-base-dev \
-#    libreadline-dev libmysqlclient-dev libboost-dev libsqlite3-dev
+# Additional packages:
+RUN sudo apt-get --quiet --install -y \
+    zlib1g-dev libssl-dev libssl1.0.0 libbz2-dev libfreetype6-dev libpng12-dev \
+    libblas-dev libatlas-dev liblapack-dev gfortran libpq-dev r-base-dev \
+    libreadline-dev libmysqlclient-dev libboost-dev libsqlite3-dev
 
 #########################
 # Install conda
