@@ -252,7 +252,7 @@ You can run most of this with a bash script:
    # You'll need to change the executable to pythonw on a Mac
    open pq_example.pdf report_pipeline_pq_example.html # in a Mac
 
-If you have CGATPipelines_ and Ruffus_ installed you can try:
+If you have CGATPipelines_ installed you can try the following. Note that currently I'm running this off a `CGATPipelines fork`_ though. The plan is to drop the fork in future though.
 
 .. code-block:: bash
 
@@ -273,6 +273,7 @@ If you have CGATPipelines_ and Ruffus_ installed you can try:
 
 .. _sphinx-quickstart: http://www.sphinx-doc.org/en/stable/index.html
 
+.. _`CGATPipelines fork`: https://github.com/AntonioJBT/CGATPipeline_core
 
 Dependencies
 ============
@@ -284,8 +285,7 @@ and conda usually play well and complement each other.
 Docker images and testing can also make things easier for reproducible
 environments.
 
-To run the example pipeline above see the file 'Dockerfile_pq_all_tests' in
-this repository for installation instructions and a docker image you can run.
+To run the example pipeline above see the Dockerfiles in this repository for installation instructions and images you can try.
 
 
 Citation
@@ -310,7 +310,7 @@ You are more than welcome to fork or submit pull requests (!).
 Change log
 ##########
 
-v0.3 (future)
+v0.3
 
 - updated templates
 - added rsync example command and instructions for remote copies
