@@ -36,6 +36,13 @@
 import os
 import sys
 
+try:
+    import CGATPipelines.Pipeline as P
+    import CGATPipelines
+except ImportError:
+    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
+    pass
+
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
 try:
@@ -68,19 +75,21 @@ def getINIdir(path = cwd):
         working directory.
     '''
     f_count = 0
-    for f in os.listdir(path):
-        if (f.endswith('.ini') and not f.startswith('tox')):
-            f_count += 1
-            INI_file = f
-    if f_count == 1:
-        INI_file = os.path.abspath(os.path.join(path, INI_file))
-    elif (f_count > 1 or f_count == 0):
-        INI_file = os.path.abspath(path)
-        print('You have no project configuration (".ini") file or more than one',
-              'in the directory:', '\n', path)
-        sys.exit(''' Exiting.
-                     You will have to manually edit the Sphinx conf.py file.
-                 ''')
+    paths = ['..', '.']
+    for path in paths:
+        for f in os.listdir(path):
+            if (f.endswith('.ini') and not f.startswith('tox')):
+                f_count += 1
+                INI_file = f
+        if f_count == 1:
+            INI_file = os.path.abspath(os.path.join(path, INI_file))
+        elif (f_count > 1 or f_count == 0):
+            INI_file = os.path.abspath(path)
+            print('You have no project configuration (".ini") file or more than one',
+                  'in the directory:', '\n', path)
+            sys.exit(''' Exiting.
+                         You will have to manually edit the Sphinx conf.py file.
+                     ''')
 
     return(INI_file)
 

@@ -120,7 +120,6 @@ Dependencies
 
 - Python 3.5
 - See requirements.rst for Python libraries needed
-- None external
 - If you run the examples option you will need many more tools. See
   Dockerfile_pq_all_tests for specific instructions.
 
@@ -191,7 +190,8 @@ To run an example of a project with scripts, pipeline and report, you'll need to
 See the file "Dockerfile_pq_all_tests" on how to do this for Linux.
 
 To create and run within a conda environment you can try the following bash
-script. You may need to run commands manually for now if it fails though.
+script. You may need to run commands manually if it fails though and there are
+other dependencies which need manual installation (inkscape and latex for example).
 
 .. code-block:: bash
 
@@ -265,6 +265,7 @@ If you have CGATPipelines_ and Ruffus_ installed you can try:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py plot full
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make full --local
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make make_report --local
+   open pipeline_report/_build/latex/pq_example.pdf pipeline_report/_build/html/report_pipeline_pq_example.html
 
 .. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
 
