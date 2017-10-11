@@ -55,7 +55,7 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 
 #################
-# If this conf.py is part of a standrad python software project, 
+# If this conf.py is part of a standard python software project, 
 # set this relative path in order to be able to use sphinx-apidoc
 # to find the relevant software tool modules
 # The expected directory structure would be

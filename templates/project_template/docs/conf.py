@@ -24,7 +24,6 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 ######################
 '''
-
 ######################
 #from __future__ import print_function
 #from __future__ import unicode_literals
@@ -36,9 +35,12 @@
 import os
 import sys
 
-import CGATPipelines.Pipeline as P
-import CGATPipelines
-
+try:
+    import CGATPipelines.Pipeline as P
+    import CGATPipelines
+except ImportError:
+    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
+    pass
 
 # Set up calling parameters from INI file:
 # Modules with Py2 to 3 conflicts
@@ -50,77 +52,72 @@ except ImportError:  # Py2 to Py3
 CONFIG = configparser.ConfigParser(allow_no_value = True)
 #################
 
-
 #################
-# If this conf.py is part of a standrad python software project, 
-# set this relative path in order to be abe to use sphinx-apidoc
+# If this conf.py is part of a standard python software project, 
+# set this relative path in order to be able to use sphinx-apidoc
 # to find the relevant software tool modules
 # The expected directory structure would be
 # project_XXXX/docs/THIS_CONF.PY
 #sys.path.insert(0, os.path.abspath('../..'))
 #################
 
-
-################################################################
-# CGAT conf.py 
-#  XXXX/CGATPipelines/CGATPipelines/configuration/conf.py
-# Import pipeline configuration from pipeline.ini in the current
-# directory and the common one.
-
-# PATH were code for pipelines is stored
-pipelinesdir = os.path.dirname(CGATPipelines.__file__)
-
-# The default configuration file - 'inifile' is read by
-# sphinx-report.
-inifile = os.path.join(os.path.dirname(CGATPipelines.__file__),
-                       'configuration',
-                       'pipeline.ini')
-
-PARAMS = P.getParameters([inifile, "pipeline.ini"])
-################################################################
-
-
 #################
+# Load options from the config file:
+# Pipeline configuration 
 cwd = os.getcwd()
+print(cwd)
+
 def getINIdir(path = cwd):
     ''' Search for an INI file given a path. The path default is the current
         working directory.
     '''
     f_count = 0
-    for f in os.listdir(path):
-        if (f.endswith('.ini') and not f.startswith('tox')):
-            f_count += 1
-            INI_file = f
-    if f_count == 1:
-        INI_file = os.path.abspath(os.path.join(path, INI_file))
-    elif (f_count > 1 or f_count == 0):
-        INI_file = os.path.abspath(path)
-        print('You have no project configuration (".ini") file or more than one',
-              'in the directory:', '\n', path)
-        sys.exit(''' Exiting.
-                     You will have to manually edit the Sphinx conf.py file.
-                 ''')
+    paths = ['..', '.']
+    for path in paths:
+        for f in os.listdir(path):
+            if (f.endswith('.ini') and not f.startswith('tox')):
+                f_count += 1
+                INI_file = f
+        if f_count == 1:
+            INI_file = os.path.abspath(os.path.join(path, INI_file))
+        elif (f_count > 1 or f_count == 0):
+            INI_file = os.path.abspath(path)
+            print('You have no project configuration (".ini") file or more than one',
+                  'in the directory:', '\n', path)
+            sys.exit(''' Exiting.
+                         You will have to manually edit the Sphinx conf.py file.
+                     ''')
 
     return(INI_file)
+
+modulename = 'P'
+if modulename in sys.modules:
+    ini_file = 'pipelin{}.ini'.format(r'(.*)')
+    P.getParameters(
+        ["{}/{}".format(os.path.splitext(__file__)[0], ini_file),
+         "../{}".format(ini_file),
+         "{}".format(ini_file),
+        ],
+    )
+
+    PARAMS = P.PARAMS
+
+else:
+    # Get location to this file:
+    here = os.path.abspath(os.path.dirname(__file__))
+    print(here, '\n')
+
+    #ini_file = getINIdir(os.path.join(here, '..'))
+    ini_file = getINIdir(os.path.abspath(here))
+    CONFIG.read(ini_file)
+
+    # Print keys (sections):
+    print('Values found in INI file:', '\n')
+    print(ini_file, '\n')
+    for key in CONFIG:
+        for value in CONFIG[key]:
+            print(key, value, CONFIG[key][value])
 #################
-
-
-#################
-# Get location to this file:
-here = os.path.abspath(os.path.dirname(__file__))
-#print(here, '\n')
-
-ini_file = getINIdir(os.path.join(here, '..'))
-CONFIG.read(ini_file)
-
-# Print keys (sections):
-print('Values found in INI file:', '\n')
-print(ini_file, '\n')
-for key in CONFIG:
-    for value in CONFIG[key]:
-        print(key, value, CONFIG[key][value])
-#################
-
 
 #################
 # Get version, this will be in project_XXXX/code/project_XXXX/version.py:
@@ -317,7 +314,8 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
                        \usepackage{textcomp}
                        \usepackage[strings]{underscore}
                        % See eg:
-                       % https://github.com/lmweber/latex-templates/blob/master/template_PhD_committee_report.tex
+                       %                       https://github.com/lmweber/latex-templates/blob/master/template_PhD_committee_report.texi
+                       %\usepackage{svg}
                        ''',
                    #'printindex': r'\footnotesize\raggedright\printindex',
                    #'releasename': r'version',
@@ -328,7 +326,7 @@ latex_elements = { # The paper size ('letterpaper' or 'a4paper').
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [(master_doc,
                     str(project_name + '.tex'),
-                    str(project_name + ' Documentation'),
+                    str(project_name + ' documentation'),
                     author,
                     'howto', #'article', #'manual' 'howto'
                     ),
