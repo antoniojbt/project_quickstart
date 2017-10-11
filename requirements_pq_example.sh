@@ -18,6 +18,7 @@ conda create -yn py35_test python=3.5
 bash -c 'source activate py35_test ; \
          wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.rst ; \
          pip install -r requirements.rst ; \
+         pip install svgutils cairosvg ; \
          pip install --upgrade git+git://github.com/AntonioJBT/project_quickstart.git ; \
          wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.rst ; \
          pip install -r requirements.rst ; \
