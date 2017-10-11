@@ -121,7 +121,7 @@ Dependencies
 - Python 3.5
 - See requirements.rst for Python libraries needed
 - If you run the examples option you will need many more tools. See
-  Dockerfile_pq_all_tests for specific instructions.
+  the Dockerfiles included for specific instructions.
 
 
 From GitHub
@@ -187,7 +187,7 @@ A simple example
 ================
 
 To run an example of a project with scripts, pipeline and report, you'll need to install several additional tools.
-See the file "Dockerfile_pq_all_tests" on how to do this for Linux.
+See the Dockerfiles on how to do this for Linux.
 
 To create and run within a conda environment you can try the following bash
 script. You may need to run commands manually if it fails though and there are

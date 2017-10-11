@@ -3,7 +3,6 @@
 # https://github.com/AntonioJBT/project_quickstart
 ##################################################
 
-
 ############
 # Base image
 ############
@@ -11,11 +10,17 @@
 #FROM continuumio/miniconda3
 # It runs on Debian GNU/Linux 8; use e.g. uname -a ; cat /etc/issue.net
 
-FROM ubuntu:17.10
+# FROM python:3-onbuild 
+# FROM ubuntu:17.04
+#FROM jfloff/alpine-python
 
 # Or simply run:
 # docker run --rm -ti continuumio/miniconda3
 # docker run --rm -ti ubuntu
+
+FROM frolvlad/alpine-miniconda3
+# https://github.com/frol/docker-alpine-miniconda3
+# https://hub.docker.com/r/frolvlad/alpine-miniconda3/
 
 
 #########
@@ -30,51 +35,68 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 
 # Install system dependencies
 # If running on Debian and anaconda/miniconda image, use apt-get:
-RUN apt-get update && apt-get upgrade -qy apt-utils
-
-RUN apt-get install -qy gcc \
+# apt-get update && apt-get upgrade --quiet --install -y apt-utils \
+RUN apk update && apk upgrade && apk add \ 
+    gcc \
     g++ \
     tzdata \
     wget \
     bzip2 \
     unzip \
     sudo \
+    gcc \
     bash \
-    fixincludes
+    make
+
+# Get libraries for matplotlib:
+RUN apk add libx11 \
+            libxext \
+            libsm \
+            libxrender
+            
 
 # Get plotting libraries:
-RUN apt-get install -qy \
-            inkscape \
-            graphviz
+RUN apk add inkscape \
+            graphviz \
+            cairo \
+            cairo-dev \
+            cairo-tools \
+            cairo-doc \
+            cairo-gobject
+
+# Get dependencies:
+#RUN apk add \
+
+# Additional packages:
 
 #########################
 # Install conda
 #########################
 
 # Miniconda:
-RUN cd /usr/bin \
-    && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda
-
-RUN export PATH="/usr/local/miniconda/bin:$PATH"
+#RUN cd /usr/bin \
+#    && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+#    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /usr/local/miniconda \
+#    && export PATH="/usr/local/miniconda/bin:$PATH"
 
 # Add conda channels:
-RUN /bin/bash -c 'conda config --add channels r \
+RUN conda config --add channels r \
     && conda config --add channels defaults \
     && conda config --add channels conda-forge \
-    && conda config --add channels bioconda'
+    && conda config --add channels bioconda
 
-# There are dependency issues, specially rpy2, with clashes between conda-forge
+# Note that there are dependency issues, specially rpy2, with clashes between conda-forge
 # and default r (r-base), see here for icu 54 vs 56:
 #https://github.com/conda-forge/conda-forge.github.io/issues/234
 # but updates, new recipes, etc. changed things. 
 # Solution was to update icu, which switches it to conda-forge icu58:
-RUN conda install -y icu
+#RUN conda install -y icu
 
+# Update conda:
 RUN conda update -y conda
 
 # Create a python 3.5 environment:
-RUN conda create -y -n py35 python=3.5
+#RUN conda create -y -n py35 python=3.5
 
 # Environments can't easily be sourced from a Dockerfile
 # Mixing RUN with source errors, use instead this form of RUN:
@@ -84,13 +106,16 @@ RUN conda create -y -n py35 python=3.5
 # https://stackoverflow.com/questions/20635472/using-the-run-instruction-in-a-dockerfile-with-source-does-not-work/45087082#45087082
 # Install everything in the virtual environment:
 # Several cgat dependecies fail with pip so run with conda instead:
-RUN /bin/bash -c 'source activate py35 ; \
-    conda install -y git ; \
+#RUN /bin/bash -c 'source activate py35 ; \
+#    conda install -y git ; \
+#    source deactivate'
+
+RUN conda install -y git ; \
     pip install --upgrade pip cython numpy ; \
     pip install pysam ; \
     pip install pandas ; \
     pip install future ruffus ; \
-    conda install -y sphinx ; \
+    conda install sphinx ; \
     pip install sphinxcontrib-bibtex ; \
     conda install -y -c r r=3.3 ; \
     conda install -y rpy2 ; \
@@ -98,7 +123,8 @@ RUN /bin/bash -c 'source activate py35 ; \
     conda install -y r-docopt ; \
     conda install -y r-data.table ; \
     R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")' ; \
-    conda install r-ggplot2 ; \
+    conda install -y r-ggplot2 ; \
+    conda install -y r-gdtools ; \
     R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")' ; \
     wget --no-check-certificate https://raw.githubusercontent.com/CGATOxford/cgat/master/requires.txt ; \
     cat requires.txt | grep -v "#" | xargs -n 1 pip install ; \
@@ -107,86 +133,9 @@ RUN /bin/bash -c 'source activate py35 ; \
     conda install -y pybedtools ; \
     conda install -y -c bioconda ucsc-wigtobigwig ; \
     conda install -y icu ; \
-    pip install sphinxcontrib-bibtex ; \
     pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
     pip install git+git://github.com/AntonioJBT/project_quickstart.git ; \
-    pip install cgat ; \
-    source deactivate'
-
-# pip install cgat fails repeatedly, do from git:
-#RUN /bin/bash -c 'source activate py35 ; \
-#    cd /home \
-#    && git clone https://github.com/CGATOxford/cgat.git \
-#    && cd cgat \
-#    && python setup.py install \
-#    && cd ..
-
-# Continue without virtual environment, install a few basic packages:
-# Install git:
-RUN conda install -y git
-
-#########################
-# Install Python packages
-#########################
-
-RUN pip install --upgrade pip \
-    && pip install --upgrade cython \
-    && pip install --upgrade numpy
-#    && pip install --upgrade pysam
-
-RUN pip install --upgrade future pandas ruffus
-
-RUN conda install -y pysam
-
-#########################
-# Install R
-#########################
-
-# Base R:
-RUN conda install -y -c r r=3.3
-
-#########################
-# Install package to test
-#########################
-# Install CGAT core utilities:
-
-# Get all packages needed for cgat tools first and install:
-#RUN wget --no-check-certificate https://raw.githubusercontent.com/CGATOxford/cgat/master/requires.txt
-
-
-# Run one line at a time otherwise docker exits if any package fails to install (e.g. alignlib-lite):
-RUN cat requires.txt | grep -v "#" | xargs -n 1 pip install
-
-# Install CGATPipelines fork:
-#RUN pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git
-
-# These error, see logs saved in:
-#/Users/antoniob/Documents/github.dir/docker_tests.dir
-#RUN pip install cgat
-#pip install git+git://github.com/CGATOxford/cgat.git
-
-# Install packages to test for pipelining:
-#RUN pip install git+git://github.com/AntonioJBT/project_quickstart.git
-
-# Clone files for this project in easy location:
-RUN cd /home \
-    && git clone https://github.com/AntonioJBT/pipeline_example.git \
-    && cd pipeline_example \
-    && pip install -r requirements.rst \
-    && python setup.py install \
-    && cd ..
-
-RUN cd /home \
-    && git clone https://github.com/AntonioJBT/project_quickstart.git \
-    && cd project_quickstart \
-    && pip install -r requirements.rst \
-    && python setup.py install \
-    && cd ..
-
-###############################
-# Install external dependencies
-###############################
-
+    pip install cgat 
 
 ############################
 # Default action to start in
