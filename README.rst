@@ -17,7 +17,14 @@ Boilerplate tools and templates for setting up a data analysis project.
 
 Create a new directory, subfolders and files that will help quickstart your data science project with packaging, testing, scripts, reporting and other templates.
 
-Even if the code is project specific it can still be versioned, frozen and archived for reproducibility purposes later on.
+Quickstart:
+
+.. code-block:: bash
+
+   pip install project_quickstart
+   project_quickstart --help
+   project_quickstart -n my_super_project
+   
 
 This tool was produced with the following in mind:
 
@@ -61,21 +68,14 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 .. _Zenodo: https://guides.github.com/activities/citable-code/
 
 
-You can later on build computational pipelines using for example a pipeline quickstart tool based on a `Ruffus and CGAT framework`_.
-
-.. _`Ruffus and CGAT framework`: https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
-
-You will need to install other software (e.g. R, Ruffus_, Sphinx_, etc.) to make full use depending on your preferences.
-
------
-
-Some of the reasoning:
+Some of the reasoning
+#####################
 
     - Analyses are rarely only run once even within the same project. Automating as much as possible saves time and errors. The setup can be costly initially but over time this pays off, particularly when needing to track errors, confirming results, handing over or reconstructing the history and reasoning (even to yourself months later).
     - Usually a project is built around one data set/experiment/question but even in this case it's easy to see potential gains from automating and packaging.
     - Packaging your project can help with reproducibility, freezing code, version control, collaboration and general mental sanity (while managing a project at least).
     - Later on the code or parts of it could be extracted to work on the general case as a separate entity.
-    - This package is based on Python but the same applies to other languages. See discussions on writing your projects as packages in R (R. Flight_, H. Parker_ (also here__), H. Wickham_ and others_ for example). Hadley Wickham has a great ecosystem_ and a book_ on doing the same (and much more) with R_.
+    - This package is based on Python but the same applies to other languages. See discussions on writing your projects as packages in R (R. Flight_, H. Parker_ (also here__), H. Wickham_ and others_ for example). See Hadley Wickham's R_ ecosystem_ and book_.
     
 .. _Flight: http://rmflight.github.io/posts/2014/07/analyses_as_packages.html
     
@@ -92,20 +92,6 @@ __ https://hilaryparker.com/2013/04/03/personal-r-packages/
 .. _ecosystem: http://hadley.nz/
 
 .. _R: https://www.r-project.org/
-
------
-
-Other similar packages:
-
-I discovered CookieCutter_ while working on this. It probably does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
-
-.. _CookieCutter: https://github.com/audreyr/cookiecutter-pypackage
-
-Also see its data-science_ and reproducibility_ templates, they look good.
-
-.. _reproducibility: https://github.com/mkrapp/cookiecutter-reproducible-science
-
-.. _data-science: https://github.com/drivendata/cookiecutter-data-science
 
 
 Installation
@@ -138,9 +124,7 @@ or clone from GitHub (https example, you may need ssh):
 .. code-block:: bash
 
    git clone https://github.com/AntonioJBT/project_quickstart.git
-    
    cd project_quickstart
-
    python setup.py install
 
 See stackoverflow_ example and pip docs_ for further help and explanations pip and git installs.
@@ -157,12 +141,6 @@ pip
    pip install project_quickstart
 
 
-Conda
-=====
-
-TODO
-
-
 Usage
 #####
 
@@ -171,11 +149,8 @@ Create a project directory skeleton. From the command line do:
 .. code-block:: bash
 
    project_quickstart --help
-
    project_quickstart -n my_super_project
-
    project_quickstart --script-R my_super_script # which will create an R script template called my_super_script.R
-
    project_quickstart --script-python my_super_script # which will create a Python script template called my_super_script.py
 
 This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
@@ -275,18 +250,6 @@ If you have CGATPipelines_ installed you can try the following. Note that curren
 
 .. _`CGATPipelines fork`: https://github.com/AntonioJBT/CGATPipeline_core
 
-Dependencies
-============
-
-These can become a nightmare as many programs are needed when running pipelines
-in biomedical research. Try to stick to one package manager, such as conda. Pip
-and conda usually play well and complement each other. 
-
-Docker images and testing can also make things easier for reproducible
-environments.
-
-To run the example pipeline above see the Dockerfiles in this repository for installation instructions and images you can try.
-
 
 Citation
 ########
@@ -310,6 +273,11 @@ You are more than welcome to fork or submit pull requests (!).
 Change log
 ##########
 
+v0.4 (future)
+
+- Minor bug in the example report conf.py
+- ggtheme template
+
 v0.3
 
 - updated templates
@@ -331,8 +299,8 @@ GPL-3
 More details and suggestions
 ############################
 
-Project workflow suggestions
-============================
+Project workflow 
+=================
 
 #. Run this package to setup folders, github repo structure, code testing, py package files, etc.
 #. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
@@ -345,10 +313,17 @@ Project workflow suggestions
 #. Freeze with release tag + zenodo archiving and/or tar ball with py sdist
 #. Repeat cycle
 
------
+Even if the code is project specific it can still be versioned, frozen and archived for reproducibility purposes later on.
 
-General notes
-=============
+You can later on build computational pipelines using for example a pipeline quickstart tool based on a `Ruffus and CGAT framework`_.
+
+.. _`Ruffus and CGAT framework`: https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
+
+You will need to install other software (e.g. R, Ruffus_, Sphinx_, etc.) to make full use depending on your preferences.
+
+
+project_quickstart usage notes
+==============================
 
 project_quickstart.py creates a folder structure with file templates for:
 
@@ -379,7 +354,6 @@ These go into the code directory.
 
 Make additional script template copies with project_quickstart.py (located in project_quickstart/templates/project_template/).
 
------
 
 Testing
 =======
@@ -390,7 +364,6 @@ Testing
 	
 .. _`on testing`: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
 
------
 
 Upload code to GitHub
 =====================
@@ -410,10 +383,8 @@ In your local machine, under my_project_xxx/code/ do:
 	git push -u origin master
 
 	# To copy on any other machine simply run:
-	
 	git clone https://github.com/user_xxx/my_project_xxx.git
 
------
 
 Documentation
 =============
@@ -448,7 +419,20 @@ Try to follow Python style guides. See projects where these have been slightly a
 
 .. _style: https://www.cgat.org/downloads/public/cgat/documentation/styleguide.html#styleguide
 
------
+
+Dependencies
+============
+
+These can become a nightmare as many programs are needed when running pipelines
+in biomedical research. Try to stick to one package manager, such as conda. Pip
+and conda usually play well and complement each other. 
+
+Docker images and testing can also make things easier for reproducible
+environments.
+
+To run the example pipeline above see the Dockerfiles in this repository for installation instructions and images you can try.
+
+
 
 Archiving and computing environment
 ===================================
@@ -500,4 +484,17 @@ If your code is useful to others, you can make it available with PyPI, create a 
 	Make sure to check the official sites and follow their tutorials for each of the tools as a primary source however.
 	
 	Feel free to fork, raise issues and send pull requests.
-	
+
+
+Similar packages
+================
+
+I discovered CookieCutter_ while working on this. It probably does what I have setup here better, with useful features, flexibility and many templates for different types of projects.
+
+.. _CookieCutter: https://github.com/audreyr/cookiecutter-pypackage
+
+Also see its data-science_ and reproducibility_ templates, they look good.
+
+.. _reproducibility: https://github.com/mkrapp/cookiecutter-reproducible-science
+
+.. _data-science: https://github.com/drivendata/cookiecutter-data-science
