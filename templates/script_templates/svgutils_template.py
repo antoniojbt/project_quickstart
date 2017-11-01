@@ -118,19 +118,19 @@ def plotMultiSVG(plots_given, outfile, **kwargs):
     figure_name = outfile
     file_format_in = 'svg'
     file_format_out = 'pdf'
-    layout_name_1 = str('figure_{}.{}'.format(figure_name,
-                                              file_format_in))
-    layout_name_2 = str('figure_{}.{}'.format(figure_name,
-                                              file_format_out))
+    layout_name_1 = str('{}.{}'.format(figure_name,
+                                       file_format_in))
+    layout_name_2 = str('{}.{}'.format(figure_name,
+                                       file_format_out))
 
     # Set up svgutils arguments:
     fig_size1 = "21cm"
     fig_size2 = "19cm" # A4 paper is 210 mm x 197 mm
     size = 11
     weight = "bold"
-    pos1 = 25
-    pos2 = 20
-    scale = 0.8
+    pos1 = 10
+    pos2 = 10
+    scale = 0.6
 
     def getPanel():
         ''' Get a panel for each plot passed in the arguments
