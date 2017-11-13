@@ -9,8 +9,13 @@
 .. Fill in the variables:
 
 .. |project_name| replace::
+
 .. |short_description| replace::
+
 .. |long_description| replace::
+
 .. |author_name| replace::
+
 .. |license| replace::
+
 .. |author_email| replace::
