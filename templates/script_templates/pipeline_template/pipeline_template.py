@@ -121,6 +121,23 @@ from builtins import dict
 #os.system('''export PATH="~/xxxx/xxxx:$PATH"''')
 ################
 
+################
+# Get locations of source code (this file)
+    # os.path.join note: a subsequent argument with an '/' discards anything
+    # before it
+    # For function to search path see: 
+    # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
+# MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+def getDir(path = _ROOT):
+    ''' Get the absolute path to where this function resides. Useful for
+    determining the user's path to a package. If a sub-directory is given it
+    will be added to the path returned. Use '..' to go up directory levels. '''
+   # src_top_dir = os.path.abspath(os.path.join(_ROOT, '..'))
+    src_dir = _ROOT
+    return(os.path.abspath(os.path.join(src_dir, path)))
+################
 
 ################
 # Load options from the config file
@@ -202,56 +219,6 @@ def getINIpaths():
         raise
 
     return(project_scripts_dir)
-################
-
-
-################
-# Get pipeline.ini file
-# Use this if not based on CGATPipelines:
-# Many more functions need changing though
-
-#def getINI():
-#    path = os.path.splitext(__file__)[0]
-#    paths = [path, os.path.join(os.getcwd(), '..'), os.getcwd()]
-#    f_count = 0
-#    for path in paths:
-#        if os.path.exists(path):
-#            for f in os.listdir(path):
-#                if (f.endswith('.ini') and f.startswith('pipeline')):
-#                    f_count += 1
-#                    INI_file = f
-
-#    if f_count != 1:
-#        raise ValueError('''No pipeline ini file found or more than one in the
-#                            directories:
-#                            {}
-#                        '''.format(paths)
-#                        )
-#    return(INI_file)
-
-# With CGAT tools run as:
-# Load options from the config file
-#INI_file = getINI()
-#PARAMS = P.getParameters([INI_file])
-
-# Read from the pipeline.ini configuration file
-# where "pipeline" = section (or key)
-# "outfile_pandas" option (value)
-# separated by "_"
-# CGATPipelines.Pipeline takes some of the work away.
-# e.g.:
-'''
-def someFunc():
-    " Comment function "
-    if "pipeline_outfile_pandas" in PARAMS:
-        outfile = PARAMS["pipeline_outfile_pandas"]
-    else:
-        outfile = 'pandas_DF'
-
-    statement = " cd pq_results ; python pq_example.py --createDF -O %(outfile)s "
-    # Use CGATPipelines to handle the job:
-    P.run()
-'''
 ################
 
 

@@ -1,6 +1,17 @@
-See rst-basics_ for webpages and tutorials.
+.. See rst-basics_ for webpages and tutorials.
 
 .. _rst-basics: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
+
+.. A few tips for abstracts from http://www.keystonesymposia.org/index.cfm?e=Web.Meeting.AbstractTips 
+   use simple declarative sentences
+   avoid the use of the passive voice
+   avoid, or minimize, the use of abbreviations and acronyms
+   For abstract aim for 2500 characters
+   Manuscript ~3000 words
+   title should be brief, but clearly convey the central message of the study
+   avoid the inclusion of detailed data sets or lists of numbers
+   
+   
 
 
 #############
@@ -26,13 +37,29 @@ Running title:
 Abstract
 ########
 
+.. Use instead title, hypothesis, methods, results, and conclusions
+
 Background: 
+
+- What’s the topic?
+- Clearly describe the problem and its importance
+- Summarise current gaps in knowledge
+- Clearly state the aim or hypothesis early on
 
 Methods: 
 
+- Explain how the research was carried out
+- Brief and basic information on the experimental approach and the types of measurements that were made
+
 Findings: 
 
+- Describe the top 3 results. Write with the hypothesis in mind.
+
 Interpretation:
+
+- What are the key impact and limitation of your research (as they relate to the key hypothesis)?
+- Possibly a sentence on significance of results to scientific advance.
+- Possibly one sentence on future directions.
 
 Funding: 
 

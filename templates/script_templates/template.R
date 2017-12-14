@@ -29,7 +29,8 @@ https://cran.r-project.org/web/packages/docopt/index.html
 To run, type:
     Rscript script_name -I <INPUT_FILE> [options]
 
-Usage: script_name (-I <INPUT_FILE>) [--session=<R_SESSION_NAME>] [-O <OUTPUT_FILE>]
+Usage: script_name (-I <INPUT_FILE>)
+       script_name [options]
        script_name [-h | --help]
 
 Options:
@@ -37,6 +38,7 @@ Options:
   -O <OUTPUT_FILE>                Output file name
   --session=<R_SESSION_NAME>      R session name if to be saved
   -h --help                       Show this screen
+  -var                            some numeric argument [default: 0.001].
 
 Input:
 
@@ -98,9 +100,13 @@ library(data.table)
 ######################
 
 ######################
+##########
 # Read files, this is with data.table:
 if (is.null(args[['-I']]) == FALSE) {
-  input_name <- as.character(args[['-I']])#(args $ `-I`)
+  input_name <- as.character(args[['-I']])
+  # For tests:
+  # input_name <- 'XXX'
+  # setwd('~/xxxx/')
   input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 } else {
   # Stop if arguments not given:
@@ -110,10 +116,26 @@ if (is.null(args[['-I']]) == FALSE) {
 
 print('File being used: ')
 print(input_name)
-# Split at the last '.':
-input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
-print('Name being used to save output files: ')
-print(input_name)
+##########
+
+##########
+# Set output file names:
+suffix <- 'my_output'
+if (is.null(args[['-O']])) {
+  stopifnot(!is.null(args[['-I']]))
+  print('Output file name prefix not given. Using:')
+  # Split infile name at the last '.':
+  input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
+  output_file_name <- sprintf('%s.%s', input_name, suffix)
+  print('Name being used to save output files: ')
+  print(output_file_name)
+} else {
+  output_file_name <- as.character(args[['-O']])
+  # output_file_name <- 'testing'
+  output_file_name <- sprintf('%s.%s', output_file_name, suffix)
+  print(sprintf('Output file names will contain %s', output_file_name))
+}
+##########
 ######################
 
 ######################
@@ -216,18 +238,9 @@ desc_stats$statistics <- rownames(desc_stats)
 colnames(desc_stats)
 desc_stats <- desc_stats[, c("statistics", "age", "glucose", "BMI")]
 desc_stats
-# Save as a file, give a name if -O option not provided:
-if (is.null(args[['-O']]) == FALSE) {
-  output_name <- as.character(args[['-O']])
-  input_data <- fread(input_name, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
-} else {
-  # Warn if arguments not given:
-  outfile <- sprintf('desc_stats_%s.tsv', input_name)
-  warning(sprintf('Outfile name not given, using a default: %s', outfile))
-}
 
 # Save file:
-fwrite(desc_stats, outfile, 
+fwrite(desc_stats, output_file_name, 
        sep = '\t', na = 'NA',
        col.names = TRUE, row.names = FALSE,
        quote = FALSE)

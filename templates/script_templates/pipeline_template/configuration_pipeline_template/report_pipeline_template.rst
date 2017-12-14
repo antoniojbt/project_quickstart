@@ -1,323 +1,195 @@
-See rst-basics_ for webpages and tutorials.
+.. include:: report_substitution_vars.rst
 
-.. _rst-basics: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
-
-
-##############
+###########################
 |project_name|
-##############
-
------
-
-author1, author2, author3 …
-
-affiliation1, affiliation2, affiliation3 …
-
-Correspondence should be addressed to:
-
-Keywords:
-
-Running title:
+###########################
 
 
------
+Authored by:
+
+|all_author_names|
+
+Date: |date|
+
+Keywords: |keywords|
+
+version = |version|
+
+Licensed as |license|
+
+Check the project at:
+
+|project_url|
+
+Correspondence to: |author_email|
 
 
-Abstract
-########
+.. See rst-basics_ for webpages and tutorials.
 
-Background: 
+.. .. _rst-basics: https://github.com/EpiCompBio/welcome/blob/master/rst_basics.rst
 
-Methods: 
-
-Findings: 
-
-Interpretation:
-
-Funding: 
-
-Copyright: Open access article under the terms of CC BY.
 
 Introduction
 ############
 
-Include other rst files::
 
-  .. toctree::
-      :maxdepth: 2
-      :numbered:
-      :titlesonly:
-      :glob:
-      :hidden:
-
-      intro.rst
-      chapter1.rst
-      chapter2.rst
-
-See the toctree_ directive for full info.
-
-.. _toctree: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#include-other-rst-files-with-the-toctree-directive
+|short_description|
 
 
-Methods
-#######
-      
-Briefly, the primary objectives of 
+This file was created using Sphinx_. To modify it you'll need to change the
+following files:
 
-Briefly, 
+- Makefile
+- conf.py
+- index.rst
+- report_pipeline_pq_example.rst
+- report_substitution_vars.rst
 
-All data and results were handled according to the institutional guidelines in secure servers within 
+Makefile makes it easier to invoke sphinx commands.
 
------
+conf.py is the Sphinx configuration file, modify it to configure all aspects of how Sphinx reads and builds.
 
-Laboratory procedure1
+In report_substitution_vars.rst you can change some of the text that gets
+automatically replaced.
 
-Laboratory procedure2
+See the `Sphinx tutorial`_ to get a better idea of what's happening.
 
-Laboratory procedure3
-
------
-
-Statistical analysis
-
-A priori power for 
-
-Method 1
-
-.. Glob all methods*.rst files:
-
-.. toctree::
-    :glob:
-    
-    methods*rst
-
-Method 2
-
-Method 3
-
-
-Statistical power calculations for 
-
-We estimated that 
-
-Taking a two-sided alpha of 0.05 t-test, beta of 10%, standard deviation of 0.7, fold-change of 2 and equal size group estimated a sample size of for each group.
-
-Calculations were performed using the base package in R and pwr (v1.1-3).
-
------
-
-Quality control, normalisation and xxx
-
-Quality control was carried out according to 
-
-Quality assessment of 
-
-We removed samples that failed 
-
-We found that xxx samples 
-
-We excluded 
-
-Pre-processing and filtering included  
-
-Linear regression association tests were carried out using 
-
-We corrected for 
-
-To explore 
-
-The primary comparison was a 
-
-We tested for linear or quadratic effects of 
-
-We also performed a linear mixed model analysis with 
-
-We used an additive linear model as implemented in the R package 
-R packages were run using R 3.2.4 (R Core Team, 2016). We used ggplot2 (v. 2.1.0), package specific functions (pwr, xxx) as well as scripts from xxx for xxx and data.table (v. 1.9.6) for processing.
-
------
-
-Role of the funding source
-
-The study received funding from xxx grant number xxx.
-
-The funders had no role in data collection, analysis, interpretation or writing of the report. 
-
-All authors had access to all the data in the study. 
-
-Registration:
+.. _Sphinx: http://www.sphinx-doc.org
+.. _`Sphinx tutorial`: http://www.sphinx-doc.org/en/stable/tutorial.html
 
 
 Results
 #######
 
-Result 1
+Figures
+============
 
-.. Glob all legends*.rst files:
 
-.. toctree::
-    :glob:
-    
-    legends*rst
-    interpretation*rst    
+.. figure:: ../F1_mtcars.*
 
-Include an image::
+    This is from "../F1_mtcars.*"
 
-  .. image:: images/ball1.gif
-  
-Or::
+    You can add a legend here.
 
-  .. image:: images/xxx.png
-    :height: 100
-    :width: 200
-    :scale: 50
-    :alt: alternate text
 
-See image_ directive full markup.
 
-.. _image: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
+.. figure:: ../F2_mtcars.*
+   :height: 300
+   :width: 300
+   :scale: 75
+   :alt: A multi-panel plot from the R dataset mtcars
 
-Or import a figure which can have a caption and whatever else you add::
 
-  .. figure:: xxx.jpg
-      :width: 200px
-      :align: center
-      :height: 100px
-      :alt: alternate text
-      :figclass: align-center
-      
-      a caption would be written here as plain text. You can add more with eg::
-  
-    .. code-block:: python
 
-        import image
+.. figure:: ../F2_mtcars.*
+   :align: center
 
-Include a simple csv table::
+   This is a multi-panel plot from the file F2_mtcars.*
 
-  .. csv-table:: a title
-     :header: "name", "firstname", "age"
-     :widths: 20, 20, 10
-     
-     "Smith", "John", 40
-     "Smith", "John, Junior", 20
 
-See csv-table_ directive for example.
+.. figure:: ../my_dataframe.*
+   :align: center
 
-.. _csv-table: http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html#the-csv-table-directive
+   These are python matplotlib plots.
 
-Result 2
+   The legend follows the empty line after the caption.
 
-Result 3
+
+You can see the `image directive`_ for details.
+
+.. _`image directive`: http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
+
 
 -----
 
-We had xx% power to detect xxx or greater change in xxx with a sample size of xxx per arm in xxx
 
-Considering all samples
+PDF files can also be included e.g.::
 
-We next formally tested for the
+  :download:`F1_mtcars.pdf <../F1_mtcars.pdf>`
 
-Our primary pre-defined comparison sought to define
+but they'll only be available in html outputs.
 
-We then considered
+To hide it in PDFs, use::
 
-We next increased power by
+  .. only:: builder_html
 
-These results would thus require validation in larger studies.
+     See :download:`this example script <../example.py>`.
 
-However, neither of these analyses
+You can see more information on this here_.
 
-Given that our primary comparison
-
-We hypothesised that 
-
-Discussion
-##########
-
-Overall, we found
-
-To our knowledge, this is the
-
-Although preliminary, our results suggest that
-
-An important question in the field is whether 
-
-Our study has several limitations. We did not carry out 
-
-Indeed, other studies have observed
-
-We cannot address whether
-
-This study shows that 
-
-Future studies will need to 
-
-Our study highlights 
+.. _here: http://www.sphinx-doc.org/en/stable/markup/inline.html#referencing-downloadable-files
 
 
-Research in context
-###################
+Tables
+============
 
-Evidence before this study
+To output tables as csv or tsv you can use::
 
-Added value of this study
+   .. csv-table::
+   :file: ../desc_stats_my_dataframe.tsv
+   :delim: tab
 
-Implications of all the available evidence
+to embed results in either html or pdf output:
 
-
-Funding and acknowledgements
-############################
-We would like to thank all the study participants, 
-
-XYZ was funded by xxx (Grant xxx) 
-
-We thank the xxx with grant xxx for the generation of data.
+.. csv-table::
+   :file: ../desc_stats_my_dataframe.tsv
+   :delim: tab
 
 
-Data access
-###########
-xxx data are available through ArrayExpress (xxx). 
+If you have html or tex files you can use the raw directive as a workaround.
+Best not abused though. The :file: option may represent a security risk.
+You'll need to use both html and latex files for their corresponding outputs. 
 
-xxx, phenotype and xxx data are available through the European Genome-Phenome Archive (EGA, request through EGASxxxx). 
+Note that for PDFs floating in latex (i.e. controlling where figures and tables will
+appear) can be hard to control. See the raw version of this file, conf.py for latex options and `this webpage`_
+for some information. 
 
-Code used is available at  https://github.com/xxx .
+.. _`this webpage`: https://tex.stackexchange.com/questions/39017/how-to-influence-the-position-of-float-environments-like-figure-and-table-in-lat/39020#39020
 
-Figure legends
-##############
 
-Figure 1:
+.. raw:: latex
+   :file: ../my_dataframe_lm_table.tex
 
-Figure 2:
 
-Figure 3:
+-----
 
-Supplementary information, figures and tables
-#############################################
 
-Appendix 1: Data analysis protocol
+.. raw:: html
+   :file: ../my_dataframe_lm_table.html
 
-Supplementary Figure 1:
 
-Supplementary Figure 2:
 
-Supplementary Figure 3:
+.. raw:: latex
+   :file: ../mtcars_lm_table.tex
 
-Supplementary Table 1:
 
-Supplementary Table 2:
+-----
 
-Supplementary Table 3:
+
+.. raw:: html
+   :file: ../mtcars_lm_table.html
+
 
 
 References
 ##########
 
-References, e.g. [CIT2002]_ are defined at the bottom of the page as::
+Code used is available at |project_url|
 
-  .. [CIT2002] A citation
+References, e.g. :cite:`RN2398`, are pulled from a bibtex file which must be
+specified at the bottom of the page as::
 
-and called with::
+  .. bibliography:: scipy_references.bib
 
-  [CIT2002]_
 
+See the sphinxcontrib-bibtex_ extension for details.
+
+There are other ways of including citations, see the `citation directive`_ for a simple approach.
+
+.. _sphinxcontrib-bibtex: https://github.com/mcmtroffaes/sphinxcontrib-bibtex
+
+.. _`citation directive`: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#citations
+
+
+.. bibliography:: scipy_references.bib
 
