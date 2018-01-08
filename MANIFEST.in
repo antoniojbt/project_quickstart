@@ -32,6 +32,7 @@ include KNOWN_BUGS.rst
 include THANKS.rst
 include TODO.rst
 include COPYING
+include *.sh
 
 # Include dependency specifications and Docker:
 include external_dependencies.rst
@@ -67,6 +68,8 @@ recursive-include templates *.py
 recursive-include templates *.rst
 recursive-include templates Makefile
 recursive-include templates/examples *
+recursive-include templates *.bib
+recursive-include templates *.sh
 
 # Files to exclude:
 exclude .gitignore
@@ -82,6 +85,7 @@ exclude templates/project_template/project_template/.dir_bash_history
 recursive-exclude docs *.pdf
 recursive-exclude docs *.html
 recursive-exclude project_quickstart *.refactor
+recursive-exclude * .DS_Store
 
 # Extensions to include:
 #include *.pyxbld

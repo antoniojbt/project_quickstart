@@ -16,7 +16,7 @@ legacy/*refactor
 *.gz
 .dir_bash_history
 *.dir_bash_history
-.DS_Store
+*.DS_Store
 .ipynb_checkpoints
 
 # Vim:
@@ -49,3 +49,4 @@ docs/_build
 docs/_static
 docs/_templates
 docs/*pdf
+docs/*html
