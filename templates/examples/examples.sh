@@ -12,7 +12,7 @@ pandas_out=my_dataframe
 infile=my_dataframe.tsv
 plotA=my_dataframe_gender_glucose_boxplot.svg
 plotB=my_dataframe_age_histogram.svg
-svg_out=my_dataframe
+svg_out=F1_mydataframe
 
 # First set of examples
 python ../code/pq_example/pq_example.py --createDF -O ${pandas_out} # you'll need pythonw if on a Mac
