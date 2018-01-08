@@ -234,7 +234,8 @@ If you have CGATPipelines_ installed you can try the following. Note that curren
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
-   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config
+   # Get a copy of the configuration files, you need to modify the ini file manually:
+   python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config 
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py printconfig
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py plot full
