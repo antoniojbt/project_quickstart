@@ -11,7 +11,7 @@
    title should be brief, but clearly convey the central message of the study
    avoid the inclusion of detailed data sets or lists of numbers
    
-   
+.. See this for a few tips and a toolkit for publication: http://www.tandfonline.com/doi/pdf/10.1185/03007995.2010.499344?needAccess=true   
 
 
 #############
