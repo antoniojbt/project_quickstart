@@ -7,6 +7,13 @@
 # Bash traps:
 # http://aplawrence.com/Basics/trapping_errors.html
 # https://stelfox.net/blog/2013/11/fail-fast-in-bash-scripts/
+
+# TO DO:
+# In future check:
+# https://github.com/ralish/bash-script-template
+# https://natelandau.com/boilerplate-shell-script-template/
+# https://unix.stackexchange.com/questions/122845/using-a-b-for-variable-assignment-in-scripts/122848#122848
+# https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 ###########################
 
 ###########################
@@ -32,6 +39,9 @@ set -o errtrace
 greeting=hello
 name=antonio
 more_to_say=$1
+# Set default values:
+# https://stackoverflow.com/questions/9332802/how-to-write-a-bash-script-that-takes-optional-input-arguments
+param_default=${1-use_foo_if_not_set}
 ###########################
 
 ###########################
