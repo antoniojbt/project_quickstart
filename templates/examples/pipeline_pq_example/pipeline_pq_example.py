@@ -106,9 +106,9 @@ import sqlite3
 
 # Try getting CGAT: 
 try:
-    import CGAT.IOTools as IOTools
-    import CGATPipelines.Pipeline as P
-    import CGAT.Experiment as E
+    import CGATCore.IOTools as IOTools
+    from CGATCore import Pipeline as P
+    import CGATCore.Experiment as E
 
 except ImportError:
     print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
@@ -141,6 +141,7 @@ ini_paths = [os.path.abspath(os.path.dirname(sys.argv[0])),
              "../",
              os.getcwd(),
              ]
+#print(ini_paths)
 
 def getParamsFiles(paths = ini_paths):
     '''
@@ -152,15 +153,20 @@ def getParamsFiles(paths = ini_paths):
     p_params_files = []
     for path in ini_paths:
         for f in os.listdir(os.path.abspath(path)):
-            ini_file = re.search(r'pipelin(.*).ini', f)
+            ini_file = re.search(r'pipelin(.*).yml', f)
             if ini_file:
                 ini_file = os.path.join(os.path.abspath(path), ini_file.group())
                 p_params_files.append(ini_file)
     return(p_params_files)
 
-P.getParameters(getParamsFiles())
+#P.getParameters(getParamsFiles()) # old way
+PARAMS = P.Parameters.get_parameters(getParamsFiles()) # works
+#print(["{}/pipeline.yml".format(os.path.splitext(__file__)[0])])
+#PARAMS = P.get_params()["%s/pipeline.yml" % os.path.splitext(__file__)[0]] # wrong path
+#PARAMS = P.get_params()["{}/pipeline.yml".format(os.path.splitext(__file__)[0])] # wrong path
+#PARAMS = P.get_params()[getParamsFiles()] # passes a list and errors
+#PARAMS = P.get_params()["some_section"] # what it should be
 
-PARAMS = P.PARAMS
 # Print the options loaded from ini files and possibly a .cgat file:
 #pprint.pprint(PARAMS)
 # From the command line:
@@ -176,11 +182,11 @@ def get_py_exec():
     Look for the python executable. This is only in case of running on a Mac
     which needs pythonw for matplotlib for instance.
     '''
-    
+
     try:
-        if str('python') in PARAMS["py_exec"]:
-            print(PARAMS["py_exec"])
-            py_exec = '{}'.format(PARAMS['py_exec'])
+        if str('python') in PARAMS["general_py_exec"]:
+            print(PARAMS["general_py_exec"])
+            py_exec = '{}'.format(PARAMS['general_py_exec'])
     except NameError:
         E.warn('''
                You need to specify the python executable, just "python" or
@@ -202,7 +208,7 @@ def getINIpaths():
     e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
     '''
     try:
-        project_scripts_dir = '{}/'.format(PARAMS['project_scripts_dir'])
+        project_scripts_dir = '{}/'.format(PARAMS['general_project_scripts_dir'])
         E.info('''
                Location set for the projects scripts is:
                {}
@@ -245,7 +251,9 @@ def tsvName():
     Setup the name of the initial tsv dataframe
     '''
     if "pipeline_tsv_example" in PARAMS:
-        tsv_example = P.asList(PARAMS["pipeline_tsv_example"])
+        #tsv_example = P.asList(PARAMS["pipeline_tsv_example"])
+        tsv_example = [PARAMS["pipeline_tsv_example"]] # get PARAMS and pass as
+                                                       # list
     else:
         tsv_example = 'pandas_df'
 
