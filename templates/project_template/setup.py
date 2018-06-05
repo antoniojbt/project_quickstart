@@ -52,7 +52,7 @@ import os
 import glob
 
 # Always prefer setuptools over distutils:
-import setuptools
+#import setuptools
 
 from setuptools import setup, find_packages
 
@@ -228,7 +228,7 @@ setup(  # Package information:
         package_data = {'': extra_files},
         # Dependencies:
         install_requires = install_requires,
-        entry_points = entry_points, # TO DO: Uncomment and define above
+        #entry_points = entry_points, # TO DO: Uncomment and define above
         # Other options:
         zip_safe = False,
         )
