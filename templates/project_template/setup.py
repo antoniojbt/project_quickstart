@@ -200,6 +200,10 @@ extra_files = package_files(os.path.join(here, 'templates'))
 # Set up entry point for command line use:
 # TO DO:
 #entry_points = {'console_scripts': ['my_cmd = my_project.my_project:main'] }
+
+# Include scripts that are run from the command line and make them available in
+# PATH:
+scripts = ['script_templates/*', 'simulation_scripts/*']
 #################
 
 
@@ -228,6 +232,8 @@ setup(  # Package information:
         package_data = {'': extra_files},
         # Dependencies:
         install_requires = install_requires,
+        # scripts to run from the command line:
+        scripts = scripts,
         #entry_points = entry_points, # TO DO: Uncomment and define above
         # Other options:
         zip_safe = False,
