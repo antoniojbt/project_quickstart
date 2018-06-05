@@ -161,6 +161,7 @@ def getParamsFiles(paths = ini_paths):
 
 #P.getParameters(getParamsFiles()) # old way
 PARAMS = P.Parameters.get_parameters(getParamsFiles()) # works
+#print(PARAMS)
 #print(["{}/pipeline.yml".format(os.path.splitext(__file__)[0])])
 #PARAMS = P.get_params()["%s/pipeline.yml" % os.path.splitext(__file__)[0]] # wrong path
 #PARAMS = P.get_params()["{}/pipeline.yml".format(os.path.splitext(__file__)[0])] # wrong path
@@ -184,9 +185,10 @@ def get_py_exec():
     '''
 
     try:
-        if str('python') in PARAMS["general_py_exec"]:
-            print(PARAMS["general_py_exec"])
-            py_exec = '{}'.format(PARAMS['general_py_exec'])
+        if str('python') in PARAMS["general"]["py_exec"]:
+            print(PARAMS["general"]["py_exec"])
+            #py_exec = '{}'.format(PARAMS["general"]["py_exec"])
+            py_exec = '%s' % PARAMS["general"]["py_exec"]
     except NameError:
         E.warn('''
                You need to specify the python executable, just "python" or
@@ -200,6 +202,7 @@ def get_py_exec():
     #    else:
     #        py_exec = 'python'
     return(py_exec)
+#get_py_exec()
 
 def getINIpaths():
     '''
@@ -208,7 +211,7 @@ def getINIpaths():
     e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
     '''
     try:
-        project_scripts_dir = '{}/'.format(PARAMS['general_project_scripts_dir'])
+        project_scripts_dir = '{}/'.format(PARAMS['general']['project_scripts_dir'])
         E.info('''
                Location set for the projects scripts is:
                {}
@@ -222,6 +225,8 @@ def getINIpaths():
         raise
 
     return(project_scripts_dir)
+
+#print(getINIpaths())
 ################
 
 ################
@@ -237,7 +242,7 @@ def connect():
 
     dbh = sqlite3.connect(PARAMS["database_name"])
     statement = '''ATTACH DATABASE '%s' as annotations''' % (
-        PARAMS["annotations_database"])
+        PARAMS["annotations"]["database"])
     cc = dbh.cursor()
     cc.execute(statement)
     cc.close()
@@ -252,8 +257,7 @@ def tsvName():
     '''
     if "pipeline_tsv_example" in PARAMS:
         #tsv_example = P.asList(PARAMS["pipeline_tsv_example"])
-        tsv_example = [PARAMS["pipeline_tsv_example"]] # get PARAMS and pass as
-                                                       # list
+        tsv_example = PARAMS["pipeline"]["tsv_example"]
     else:
         tsv_example = 'pandas_df'
 
@@ -271,11 +275,14 @@ def getPandasDF(outfile):
     '''
     Call a python example script from project_quickstart to create a pandas dataframe
     '''
+    py_exec = get_py_exec()
+    project_scripts_dir = getINIpaths()
+
     statement = '''
                 %(py_exec)s %(project_scripts_dir)s/pq_example.py \
                                                        --createDF \
                                                        -O %(outfile)s ;
-                touch %(outfile)s
+                touch %(outfile)s.tsv
                 '''
     # execute command contained in the statement.
     # The command will be sent to the cluster (by default, but this can be
@@ -287,7 +294,7 @@ def getPandasDF(outfile):
     # contents of the variable "infile"
     # py_exec provides the basename of the directory where the project scripts
     # live.
-    P.run() # run() lives in cgat/CGAT/Experiment.py
+    P.run(statement) # run() lives in cgat/CGAT/Experiment.py
 
 @follows(tsvName, getPandasDF)
 def renameList():
@@ -297,6 +304,7 @@ def renameList():
     '''
     tsv_example = tsvName()
     tsv_example_full = []
+
     for f in tsv_example:
         f = str(f + '.tsv')
         tsv_example_full.append(f)
@@ -314,6 +322,10 @@ def run_pq_examples(infile, touchFile, outname):
     # command line statement to execute, to run in bash:
     # touch %(outfile)s gives Ruffus a timestamp, not the most elegant way but
     # helpful if there are multiple outputs from a script
+
+    py_exec = get_py_exec()
+    project_scripts_dir = getINIpaths()
+
     statement = '''
                 Rscript %(project_scripts_dir)s/pq_example.R -I %(infile)s \
                                                              -O %(outname)s ;
@@ -321,7 +333,7 @@ def run_pq_examples(infile, touchFile, outname):
                                                             -I %(infile)s ;
                 touch %(touchFile)s
                 '''
-    P.run()
+    P.run(statement)
 
 @follows(run_pq_examples)
 @transform(tsv_example, regex(r'(.*)'), r'\1.multiPanel.touch')
@@ -330,6 +342,10 @@ def pandasMultiPanel(infile, outfile):
     Creates a multi-panel figure from the plots generated from
     pq_example.R and plot_pq_example_pandas.R
     '''
+
+    py_exec = get_py_exec()
+    project_scripts_dir = getINIpaths()
+
     statement = '''
                 %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
                               --plotA=%(infile)s_gender_glucose_boxplot.svg \
@@ -337,7 +353,7 @@ def pandasMultiPanel(infile, outfile):
                               -O %(infile)s ;
                 touch %(outfile)s ;
                 '''
-    P.run()
+    P.run(statement)
 
 
 # Make sure the python executable and project scripts dir are set:
@@ -355,6 +371,9 @@ def run_mtcars(outfile):
     #            '''
 
     # R scripts for mtcars dataset example:
+
+    project_scripts_dir = getINIpaths()
+
     statement = '''
                 Rscript %(project_scripts_dir)s/pq_example_mtcars.R ;
                 checkpoint ;
@@ -362,7 +381,7 @@ def run_mtcars(outfile):
                 checkpoint ;
                 touch %(outfile)s
                 '''
-    P.run()
+    P.run(statement)
 
 
 @follows(run_mtcars)
@@ -372,6 +391,9 @@ def mtcarsMultiPanel(outfile1, outfile2):
     Generate a multi-panel plot from existing svg files using the svgutils
     python package. Plots can be generated by run_mtcars().
     '''
+
+    py_exec = get_py_exec()
+    project_scripts_dir = getINIpaths()
 
     statement = '''
                 %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
@@ -386,7 +408,7 @@ def mtcarsMultiPanel(outfile1, outfile2):
                                           -O F2_mtcars ;
                 touch %(outfile2)s
                 '''
-    P.run()
+    P.run(statement)
 
 ################
 
@@ -421,7 +443,7 @@ def make_report():
                         ln -s _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
-        P.run()
+        P.run(statement)
 
     else:
         sys.exit(''' The directory "pipeline_report" does not exist. Did you run the config

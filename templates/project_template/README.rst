@@ -87,8 +87,14 @@ To use
 Contribute
 ----------
 
-- Issue Tracker: github.com/|project_name|/|project_name|/issues
-- Source Code: github.com/|project_name|/|project_name|
+- `Issue Tracker`_
+  
+.. _`Issue Tracker`: github.com/|github_user|/|project_name|/issues
+
+- `Source Code`_
+  
+.. _`Source Code`: github.com/|github_user|/|project_name|
+
 - Pull requests welcome!
 
 

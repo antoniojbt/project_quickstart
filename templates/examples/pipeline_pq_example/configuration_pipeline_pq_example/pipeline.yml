@@ -10,39 +10,39 @@
     # Deleting them will cause conf.py to error.
     
 metadata:
-    project_name :  pq_example
+    project_name: pq_example
     
-    author_name :  calvin
+    author_name: calvin
     
-    all_author_names :  susie, calvin, hobbes
+    all_author_names: susie, calvin, hobbes
     
-    date :  '2 October 2017'
+    date: '2 October 2017'
     
-    project_url :  https://github.com/AntonioJBT/project_quickstart
+    project_url: https://github.com/AntonioJBT/project_quickstart
     
-    download_url :  https://github.com/AntonioJBT/project_quickstart.git
+    download_url: https://github.com/AntonioJBT/project_quickstart.git
     
-    author_email :  
+    author_email: 
     
-    license :  GPL
+    license: GPL
     
-    license_year :  2017
+    license_year: 2017
     
-    version :  0.1.1
+    version: 0.1.1
     
-    keywords :  reproducibility, Python, Ruffus, pipelines
+    keywords: reproducibility, Python, Ruffus, pipelines
     
-    short_description :  These are example scripts and pipelines to demonstrate the use of project_quickstart, Python, Ruffus and CGAT tools.
+    short_description: These are example scripts and pipelines to demonstrate the use of project_quickstart, Python, Ruffus and CGAT tools.
     
     # long_description can be read rom README.rst within setup.py but PyPI doesn't render it.
-    long_description :  short_description
+    long_description: short_description
     
     # The same version is used for pipelines, scripts and project:
     # This is easier to edit directly in the file version.py 
     
-    classifiers :  None
+    classifiers: None
     
-    platforms :  'any'
+    platforms: 'any'
     ################################################################
     
     
@@ -50,19 +50,19 @@ metadata:
     # Pipeline general options:
 general:
     # Specify the location of the scripts for this project. Needs to be set.
-    project_scripts_dir :  ../code/pq_example
+    project_scripts_dir: ../code/pq_example
     
     # Specify the python executable, this is if running on a Mac and using matplotlib (which needs pythonw):
-    py_exec :  python
+    py_exec: pythonw
     #either "python" or "pythonw"
     
     # scratchdir for data not to be backed up
-    scratchdir :  
+    scratchdir: /tmp 
     #/tmp
     
     # Pipeline database options:
 database:
-    name :  csvdb
+    name: csvdb
     
     # Specific external tools to run in this pipeline (e.g. when more than one 
     # association tool, mapper, etc. are available in the pipeline)
@@ -70,7 +70,7 @@ database:
     # tool1
     # tool2
     # etc
-    cmd_tools :  
+    cmd_tools:
     
     ################################################################
     
@@ -78,7 +78,9 @@ database:
     # Pipeline specific options:
 pipeline:
     # One or more names of output files can be given, each will generate its own results
-    tsv_example :  pandas_DF_from_INI, my_dataframe
+    tsv_example:
+                - pandas_DF_from_INI
+                - my_dataframe
     
     ################################################################
     
@@ -87,16 +89,16 @@ pipeline:
 my_cmd_tool:
     # Write some helpful notes here and add parameters to be called
     # These need to be picked up by the pipeline itself
-    #options : 
-    #threads :  12
+    #options: 
+    #threads: 12
     # e.g. memory required for xxx programme jobs:
-    # memory : 
+    # memory: 
     
     # e.g. executable
-    executable :  
+    executable:
     
 my_other_cmd_tool:
     # Write some helpful notes here and add parameters to be called
     # These need to be picked up by the pipeline itself
-    some_option :  
+    some_option:
     ################################################################

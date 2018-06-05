@@ -314,7 +314,7 @@ def createDF(sample_size = 1000, outfile = 'pandas_dataframe_example.tsv'):
     # and SDs are arbitrary. Some values though:
     # age: 40.0 average age of the UK population
     # gender: 50.89% in 2011 apparently
-    # glucose: Normal – Fasting plasma glucose <100 mg/dL (5.6 mmol/L)
+    # glucose: Normal Fasting plasma glucose <100 mg/dL (5.6 mmol/L)
     # BMI: roughly 26 in men and women for the UK in 2010
     # Some references:
     # https://en.wikipedia.org/wiki/Demography_of_the_United_Kingdom
