@@ -28,13 +28,12 @@ include *.ini
 include LICENSE
 include INSTALL
 include README.rst
-include KNOWN_BUGS.rst
 include THANKS.rst
 include TODO.rst
 include COPYING
 
 # Include dependency specifications and Docker:
-include external_dependencies.rst
+include external_dependencies.txt
 include requirements.rst
 include Dockerfile
 
@@ -51,9 +50,11 @@ include tox.ini
 include .travis.yml
 include run_travis_tests.sh
 recursive-include tests *
+include rsync.rst
+include substitution_vars.rst
 
 # Include addtional files needed, example data, etc.:
-include data_examples *
+#include data_examples *
 
 # Files to exclude:
 exclude .gitignore

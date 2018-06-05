@@ -33,15 +33,15 @@ Upload to PyPI after this if for general use.
 # Get modules
 
 # Py3 to 2 from pasteurize:
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+#from __future__ import print_function
+#from __future__ import unicode_literals
+#from __future__ import division
+#from __future__ import absolute_import
 
 from builtins import open
 from builtins import str
-from future import standard_library
-standard_library.install_aliases()
+#from future import standard_library
+#standard_library.install_aliases()
 
 # To use a consistent encoding
 from codecs import open
@@ -50,9 +50,10 @@ from codecs import open
 import sys
 import os
 import glob
+import itertools
 
 # Always prefer setuptools over distutils:
-#import setuptools
+import setuptools
 
 from setuptools import setup, find_packages
 
@@ -203,7 +204,20 @@ extra_files = package_files(os.path.join(here, 'templates'))
 
 # Include scripts that are run from the command line and make them available in
 # PATH:
-scripts = ['script_templates/*', 'simulation_scripts/*']
+executables = ['*.R', '*.py', '*.sh']
+
+def get_cli_scripts():
+    files = []
+    for filename in executables:
+        scripts = [fn for fn in glob.glob(os.path.join('**/', filename),
+                                          recursive = True)
+                   if not os.path.basename(fn).startswith('__init__')
+                   ]
+        files.append(scripts)
+    flatten_list = list(itertools.chain.from_iterable(files))
+    return(flatten_list)
+
+scripts = get_cli_scripts()
 #################
 
 
