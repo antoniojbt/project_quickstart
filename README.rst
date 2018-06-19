@@ -228,7 +228,7 @@ You can run most of this with a bash script:
    # Use pythonw if on a Mac, otherwise python:
    bash ../code/pq_example/examples.sh pythonw > examples.log
    # You'll need to change the executable to pythonw on a Mac
-   open pq_example.pdf report_pipeline_pq_example.html # in a Mac
+   open configuration*/pq_example.pdf configuration*/report_pipeline_pq_example.html # in a Mac
 
 If you have CGATPipelines_ installed you can try the following. Note that currently I'm running this off a `CGATPipelines fork`_ though. The plan is to drop the fork in future though.
 
