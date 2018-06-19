@@ -57,10 +57,13 @@ RUN cd /usr/bin \
 RUN export PATH="/usr/local/miniconda/bin:$PATH"
 
 # Add conda channels:
-RUN /bin/bash -c 'conda config --add channels r \
-    && conda config --add channels defaults \
-    && conda config --add channels conda-forge \
-    && conda config --add channels bioconda'
+# Consider also these channels, anaconda and anaconda-fusion if needed:
+#RUN /bin/bash -c 'conda config --add channels r \
+    #&& conda config --add channels defaults \
+
+# Leave only these otherwise to avoid clashes:
+RUN /bin/bash -c 'conda config --add channels conda-forge \
+                 && conda config --add channels bioconda'
 
 # There are dependency issues, specially rpy2, with clashes between conda-forge
 # and default r (r-base), see here for icu 54 vs 56:

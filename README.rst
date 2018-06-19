@@ -104,7 +104,7 @@ Please raise an issue if you have problems.
 Dependencies
 ============
 
-- Python 3.5
+- Python >3.5
 - See requirements.rst for Python libraries needed
 - If you run the examples option you will need many more tools. See
   the Dockerfiles included for specific instructions.
@@ -172,12 +172,14 @@ other dependencies which need manual installation (inkscape and latex for exampl
 
    wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements_pq_example.sh
    bash requirements_pq_example.sh
+   # If you're on Mac OS X you'll also need:
+   conda install python.app
 
 Once you have everything installed, run:
 
 .. code-block:: bash
 
-   source activate py35_test
+   conda activate pq_test
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
    python ../code/pq_example/pq_example.py --createDF -O my_dataframe # You'll need pythonw for matplotlib if on a Mac

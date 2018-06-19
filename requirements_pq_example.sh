@@ -2,20 +2,26 @@
   
 # Set bash script options:
 # https://kvz.io/blog/2013/11/21/bash-best-practices/
+# Exit when a command fails:
 set -o errexit
+# Catch  piped commands which fail. The exit status of
+# the last command that threw a non-zero exit code is returned:
 set -o pipefail
+# Exit when trying to use an undeclared variable:
 set -o nounset
 
 # You need to install conda first, then run:
-# Create a virtual environment and install
-# project_quickstart
-# a fork of CGATPipelines
-# cgat
-# dependencies for project_quickstart's example
 
 # Create conda environment:
-bash -c 'conda create -yn pq_test python'
-bash -c 'conda activate pq_test'
+conda create -yn pq_test python
+conda activate pq_test
+
+# Specify conda channels to avoid clashes with R:
+conda config --add channels conda-forge
+conda config --add channels bioconda
+
+# Install R:
+conda install -y r
 
 # Install project_quickstart and pq_example requirements:
 bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.rst ; \
@@ -23,14 +29,13 @@ bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/ma
          pip install svgutils cairosvg ; \
          pip install --upgrade git+git://github.com/AntonioJBT/project_quickstart.git ; \
          pip install sphinxcontrib-bibtex ; \
-         conda install -y r-docopt ; \
-         conda install -y r-data.table'
+         conda install -y r-docopt r-data.table r-ggplot2 r-stringr; \
+         conda install pandas matplotlib scipy'
 
-# Get R packages not available with conda:
-bash -c 'R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")' ; \
-         conda install -y r-ggplot2 ; \
-         R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")' ; \
-         conda install -y r-string'
+# Get R packages not available with conda (in the channels specified, might be
+# elsewhere):
+R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
+R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")'
 
 # Install CGAT tools with fork:
 #bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/CGATPipeline_core/master/requirements.txt ; \
@@ -39,7 +44,12 @@ bash -c 'R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install
 #         pip install cgat ; \
 #         conda install -y rpy2'
 
+# Use cgat-core and cgat-flow:
+bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
+         pip install -r conda_requires.txt ; \
+         pip install --upgrade git+git://github.com/cgat-developers/cgat-core'
+
 # Finish and deactivate conda environment:
-bash -c 'conda deactivate'
+conda deactivate
 echo "All done, packages downloaded and installed. Activate your environment
 using 'conda activate pq_test'"
