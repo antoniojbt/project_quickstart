@@ -225,7 +225,8 @@ You can run most of this with a bash script:
 
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
-   bash ../code/pq_example/examples.sh > examples.log
+   # Use pythonw if on a Mac, otherwise python:
+   bash ../code/pq_example/examples.sh pythonw > examples.log
    # You'll need to change the executable to pythonw on a Mac
    open pq_example.pdf report_pipeline_pq_example.html # in a Mac
 

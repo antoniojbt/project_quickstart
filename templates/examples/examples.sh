@@ -30,6 +30,7 @@ set -o errtrace
 
 ###########################
 # Variables to substitute:
+python_exec=$1 # you'll need pythonw if on a Mac
 pandas_out=my_dataframe
 infile=my_dataframe.tsv
 plotA=my_dataframe_gender_glucose_boxplot.svg
@@ -39,10 +40,10 @@ svg_out=F1_mydataframe
 
 ###########################
 # First set of examples
-python ../code/pq_example/pq_example.py --createDF -O ${pandas_out} # you'll need pythonw if on a Mac
+${python_exec} ../code/pq_example/pq_example.py --createDF -O ${pandas_out}
 Rscript ../code/pq_example/pq_example.R -I ${infile}
 Rscript ../code/pq_example/plot_pq_example_pandas.R -I ${infile}
-python ../code/pq_example/svgutils_pq_example.py \
+${python_exec} ../code/pq_example/svgutils_pq_example.py \
                         --plotA=${plotA} \
                         --plotB=${plotB} \
                         -O ${svg_out}
@@ -57,7 +58,7 @@ svg_out=F1_mtcars
 
 Rscript ../code/pq_example/pq_example_mtcars.R
 Rscript ../code/pq_example/plot_pq_example_mtcars.R
-python ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
+${python_exec} ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
                                                  --plotB=${plotB} \
                                                  -O ${svg_out}
 ###########################
@@ -69,7 +70,7 @@ plotA=mtcars_wt_histogram.svg
 plotB=mtcars_boxplot_lm.svg
 svg_out=F2_mtcars
 
-python ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
+${python_exec} ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
                                                  --plotB=${plotB} \
                                                  -O ${svg_out}
 ###########################
