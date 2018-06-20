@@ -267,7 +267,7 @@ def countWords(infile, outfile):
     # configuration files or variable that are declared in the calling
     # function.  For example, %(infile)s will we substituted with the
     # contents of the variable "infile".
-    P.run()
+    P.run(statement)
 
 
 @transform(countWords,
@@ -305,7 +305,7 @@ def make_report():
                         ln -s _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
-        P.run()
+        P.run(statement)
 
     else:
         E.stop(''' The directory "report" does not exist. Did you run the config

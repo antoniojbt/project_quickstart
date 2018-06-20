@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-  
+
+echo "
+This script is intended as an example only.
+If you get errors simply copy-paste commands and adapt to
+the system you are working on.
+"
+
 # Set bash script options:
 # https://kvz.io/blog/2013/11/21/bash-best-practices/
 # Exit when a command fails:
@@ -45,9 +51,9 @@ R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages
 #         conda install -y rpy2'
 
 # Use cgat-core and cgat-flow:
-bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
-         pip install -r conda_requires.txt ; \
-         pip install --upgrade git+git://github.com/cgat-developers/cgat-core'
+#bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
+#         pip install -r conda_requires.txt ; \
+#         pip install --upgrade git+git://github.com/cgat-developers/cgat-core'
 
 # Finish and deactivate conda environment:
 conda deactivate
