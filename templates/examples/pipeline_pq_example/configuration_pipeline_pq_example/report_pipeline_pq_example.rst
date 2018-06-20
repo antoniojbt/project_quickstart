@@ -164,7 +164,7 @@ And::
    This is a multi-panel plot from the file F2_mtcars.*
 
 
-.. figure:: ../F1_mydataframe.*
+.. figure:: ../F1_my_dataframe.*
    :align: center
 
    These are python matplotlib plots.

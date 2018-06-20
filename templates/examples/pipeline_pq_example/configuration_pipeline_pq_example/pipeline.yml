@@ -30,7 +30,11 @@ metadata:
     
     version: 0.1.1
     
-    keywords: reproducibility, Python, Ruffus, pipelines
+    keywords: 
+              - reproducibility
+              - Python
+              - Ruffus
+              - pipelines
     
     short_description: These are example scripts and pipelines to demonstrate the use of project_quickstart, Python, Ruffus and CGAT tools.
     

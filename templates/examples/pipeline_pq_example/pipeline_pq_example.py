@@ -279,10 +279,10 @@ def getPandasDF(outfile):
     project_scripts_dir = getINIpaths()
 
     statement = '''
-                %(py_exec)s %(project_scripts_dir)s/pq_example.py \
+                python %(project_scripts_dir)s/pq_example.py \
                                                        --createDF \
                                                        -O %(outfile)s ;
-                touch %(outfile)s.tsv
+                touch %(outfile)s
                 '''
     # execute command contained in the statement.
     # The command will be sent to the cluster (by default, but this can be
@@ -335,6 +335,7 @@ def run_pq_examples(infile, touchFile, outname):
                 '''
     P.run(statement)
 
+
 @follows(run_pq_examples)
 @transform(tsv_example, regex(r'(.*)'), r'\1.multiPanel.touch')
 def pandasMultiPanel(infile, outfile):
@@ -350,7 +351,7 @@ def pandasMultiPanel(infile, outfile):
                 %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
                               --plotA=%(infile)s_gender_glucose_boxplot.svg \
                               --plotB=%(infile)s_age_histogram.svg \
-                              -O %(infile)s ;
+                              -O F1_%(infile)s ;
                 touch %(outfile)s ;
                 '''
     P.run(statement)
@@ -376,9 +377,7 @@ def run_mtcars(outfile):
 
     statement = '''
                 Rscript %(project_scripts_dir)s/pq_example_mtcars.R ;
-                checkpoint ;
                 Rscript %(project_scripts_dir)s/plot_pq_example_mtcars.R ;
-                checkpoint ;
                 touch %(outfile)s
                 '''
     P.run(statement)
@@ -401,7 +400,6 @@ def mtcarsMultiPanel(outfile1, outfile2):
                                       --plotB=mtcars_hp_qsec_scatterplot.svg \
                                       -O F1_mtcars ;
                 touch %(outfile1)s ;
-                checkpoint ;
                 %(py_exec)s %(project_scripts_dir)s/svgutils_pq_example.py \
                                           --plotA=mtcars_wt_histogram.svg  \
                                           --plotB=mtcars_boxplot_lm.svg \
@@ -435,12 +433,10 @@ def make_report():
     '''
     if os.path.exists('pipeline_report'):
         statement = ''' cd pipeline_report ;
-                        checkpoint ;
                         make html ;
-                        ln -s _build/html/report_pipeline_pq_example.html . ;
-                        checkpoint ;
+                        ln -sf _build/html/report_pipeline_pq_example.html . ;
                         make latexpdf ;
-                        ln -s _build/latex/pq_example.pdf .
+                        ln -sf _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
         P.run(statement)

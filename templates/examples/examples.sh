@@ -35,7 +35,7 @@ pandas_out=my_dataframe
 infile=my_dataframe.tsv
 plotA=my_dataframe_gender_glucose_boxplot.svg
 plotB=my_dataframe_age_histogram.svg
-svg_out=F1_mydataframe
+svg_out=F1_my_dataframe
 ###########################
 
 ###########################
