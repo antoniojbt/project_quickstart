@@ -168,10 +168,14 @@ To create and run within a conda environment you can try the following bash
 script. You may need to run commands manually if it fails though and there are
 other dependencies which need manual installation (inkscape and latex for example).
 
+If you intend to run the pipeline example below, you may want to install cgat-core_ before and within that environment install the additional tools required.
+
+.. _cgat-core: https://github.com/cgat-developers/cgat-core
+
 .. code-block:: bash
 
    wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements_pq_example.sh
-   bash requirements_pq_example.sh
+   bash requirements_pq_example.sh # provided as an example, you probably want to inspect it first and run commands manually
    # If you're on Mac OS X you'll also need:
    conda install python.app
 
@@ -230,7 +234,7 @@ You can run most of this with a bash script:
    # You'll need to change the executable to pythonw on a Mac
    open configuration*/pq_example.pdf configuration*/report_pipeline_pq_example.html # in a Mac
 
-If you have CGATPipelines_ installed you can try the following. Note that currently I'm running this off a `CGATPipelines fork`_ though. The plan is to drop the fork in future though.
+If you have cgat-core_ installed you can try the following:
 
 .. code-block:: bash
 
