@@ -208,7 +208,7 @@ def getINIpaths():
     '''
     Get the path to scripts for this project, e.g.
     project_xxxx/code/project_xxxx/:
-    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
+    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.get_params()
     '''
     try:
         project_scripts_dir = '{}/'.format(PARAMS['general']['project_scripts_dir'])

@@ -204,6 +204,9 @@ def getINIpaths():
     project_xxxx/code/project_xxxx/:
     e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
     '''
+    # Check getParams as was updated to get_params but
+    # PARAMS = P.Parameters.get_parameters(getParamsFiles())
+    # is what seems to work
     try:
         project_scripts_dir = '{}/'.format(PARAMS['project_scripts_dir'])
         E.info('''

@@ -203,7 +203,7 @@ def main():
             print(''' Copying a pipeline template into the current working
                     directory.
                     This includes a Ruffus pipeline.py script template,
-                    pipeline ini configuration template for parameters,
+                    pipeline yml configuration template for parameters,
                     a report directory with a restructuredText template,
                     and sphinx-quickstart modified conf.py and Makefile
                     files.''')
@@ -446,7 +446,7 @@ def main():
         ''' Copy script templates and rename
             them according to option given.
             For pipeline option this creates a directory
-            with a Ruffus pipeline script template, ini parameters
+            with a Ruffus pipeline script template, yml/ini parameters
             file and sphinx-quickstart modified templates.
         '''
         cwd = os.getcwd()
@@ -557,7 +557,7 @@ def main():
 
     # Create a script template copy
     # R and py templates are single, standalone files that get renamed on the
-    # go. --script-pipeline copies a directory with script, Sphinx, ini and rst
+    # go. --script-pipeline copies a directory with script, Sphinx, yml/ini and rst
     # files which get renamed in function above.
     if (options['--script-python']
             or options['--script-R']
