@@ -494,7 +494,7 @@ def main():
                                )
                 # Copy sphinx-quickstart config files:
                 copySingleFiles(sphinx_configs,
-                                os.path.join(copy_to, 'configuration_pipeline_template'),
+                                os.path.join(copy_to, 'configuration'),
                                 *sphinx_files)
                 # Rename all 'template' substrings:
                 pipeline_name = str(pipeline_dir_name).strip('pipeline_')
@@ -539,7 +539,7 @@ def main():
                         os.path.join(code_dir,
                                      'project_template',
                                      'pipeline_template',
-                                     'configuration_pipeline_template'),
+                                     'configuration'),
                         *sphinx_files)
         # Copy the report templates to the manuscript directory:
         copySingleFiles(report_templates, manuscript_dir, r'rst')
