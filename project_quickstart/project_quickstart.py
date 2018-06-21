@@ -210,7 +210,7 @@ def main():
             pipeline_dir_name = str(options["--script-pipeline"]).strip('[]').strip("''")
             pipeline_dir_name = str('pipeline_{}').format(pipeline_dir_name)
             # All files within the directory
-            # project_quickstart/templates/script_templates/pipeline_template
+            # project_quickstart/templates/script_templates/pipeline
             # plus project_quickstart/templates/script_templates/pipeline_template.py
             # will get copied over in function below.
 
