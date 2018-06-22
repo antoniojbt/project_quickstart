@@ -581,7 +581,7 @@ def main():
 
     # Print a nice welcome message (if successful):
     # tree_dir shortened:
-      basic_tree = '''
+      basic_tree = str('''
                    .
                    ├── TO_DO.rst
                    ├── code
@@ -589,7 +589,7 @@ def main():
                    ├── documents_and_manuscript
                    ├── results
                    └── rsync.rst
-                   '''
+                   ''')
 
     if options['--project-name']:
         end_msg = str( '\n' +
