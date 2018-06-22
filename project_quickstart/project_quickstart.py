@@ -580,6 +580,17 @@ def main():
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
+    # tree_dir shortened:
+      basic_tree = '''
+                   .
+                   ├── TO_DO.rst
+                   ├── code
+                   ├── data
+                   ├── documents_and_manuscript
+                   ├── results
+                   └── rsync.rst
+                   '''
+
     if options['--project-name']:
         end_msg = str( '\n' +
                    """ Done, welcome to {0}!
@@ -625,7 +636,7 @@ def main():
 
         """.format(project_root,
                    project_dir,
-                   tree_dir,
+                   basic_tree,
                    code_dir,
                    manuscript_dir,
                    data_dir,
