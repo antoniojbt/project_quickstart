@@ -439,11 +439,11 @@ def make_report():
 
     if os.path.exists('pipeline_report'):
         statement = '''cp %(report_path)s/* pipeline_report ;
-                        cd pipeline_report ;
-                        make html ;
-                        ln -sf _build/html/report_pipeline_pq_example.html . ;
-                        make latexpdf ;
-                        ln -sf _build/latex/pq_example.pdf .
+                       cd pipeline_report ;
+                       make html ;
+                       ln -sf _build/html/report_pipeline_pq_example.html . ;
+                       make latexpdf ;
+                       ln -sf _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
         P.run(statement)
