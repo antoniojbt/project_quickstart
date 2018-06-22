@@ -283,12 +283,16 @@ Change log
 
 v0.4 (future)
 
-- Minor bug in the example report conf.py
-- ggtheme template
 
 v0.3
 
-- updated templates
+- updated to cgat-core
+- switched from ini to yml
+- minor bugs in bash example
+- included function to find path to R script being executed
+- minor bug in the example report conf.py
+- added ggthem template
+- added scripts option in setup.py template to run package scripts from CLI
 - added rsync example command and instructions for remote copies
 - added Ruffus/CGAT simplified pipeline template script
 - added example scripts and pipeline, option '--example'
