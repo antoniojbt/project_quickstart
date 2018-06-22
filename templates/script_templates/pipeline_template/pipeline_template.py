@@ -71,7 +71,7 @@ software to be in the path:
 
 Requirements:
 
-* R >= 1.1
+* R >= 3
 * Python >= 3.5
 
 Documentation
@@ -97,9 +97,9 @@ import sqlite3
 
 # Try getting CGAT: 
 try:
-    import CGAT.IOTools as IOTools
-    import CGATPipelines.Pipeline as P
-    import CGAT.Experiment as E
+    import CGATCore.IOTools as IOTools
+    from CGATCore import Pipeline as P
+    import CGATCore.Experiment as E
 
 except ImportError:
     print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
@@ -157,13 +157,13 @@ def getParamsFiles(paths = ini_paths):
     p_params_files = []
     for path in ini_paths:
         for f in os.listdir(os.path.abspath(path)):
-            ini_file = re.search(r'pipelin(.*).ini', f)
+            ini_file = re.search(r'pipelin(.*).yml', f)
             if ini_file:
                 ini_file = os.path.join(os.path.abspath(path), ini_file.group())
                 p_params_files.append(ini_file)
     return(p_params_files)
 
-P.getParameters(getParamsFiles())
+P.Parameters.get_params()
 
 PARAMS = P.PARAMS
 # Print the options loaded from ini files and possibly a .cgat file:
@@ -181,34 +181,38 @@ def get_py_exec():
     Look for the python executable. This is only in case of running on a Mac
     which needs pythonw for matplotlib for instance.
     '''
+
     try:
-        PARAMS["py_exec"]
-        py_exec = '{}'.format(PARAMS['py_exec'])
+        if str('python') in PARAMS["general"]["py_exec"]:
+            print(PARAMS["general"]["py_exec"])
+            #py_exec = '{}'.format(PARAMS["general"]["py_exec"])
+            py_exec = '%s' % PARAMS["general"]["py_exec"]
     except NameError:
         E.warn('''
                You need to specify the python executable, just "python" or
                "pythonw" is needed. Trying to guess now...
                ''')
-    else:
-        test_cmd = subprocess.check_output(['which', 'pythonw'])
-        sys_return = re.search(r'(.*)pythonw', str(test_cmd))
-        if sys_return:
-            py_exec = 'pythonw'
-        else:
-            py_exec = 'python'
+    #else:
+    #    test_cmd = subprocess.check_output(['which', 'pythonw'])
+    #    sys_return = re.search(r'(.*)pythonw', str(test_cmd))
+    #    if sys_return:
+    #        py_exec = 'pythonw'
+    #    else:
+    #        py_exec = 'python'
     return(py_exec)
+#get_py_exec()
 
 def getINIpaths():
     '''
     Get the path to scripts for this project, e.g.
     project_xxxx/code/project_xxxx/:
-    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.getParams()
+    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.Parameters.get_params()
     '''
     # Check getParams as was updated to get_params but
     # PARAMS = P.Parameters.get_parameters(getParamsFiles())
     # is what seems to work
     try:
-        project_scripts_dir = '{}/'.format(PARAMS['project_scripts_dir'])
+        project_scripts_dir = '{}/'.format(PARAMS['general']['project_scripts_dir'])
         E.info('''
                Location set for the projects scripts is:
                {}
@@ -238,7 +242,7 @@ def connect():
 
     dbh = sqlite3.connect(PARAMS["database_name"])
     statement = '''ATTACH DATABASE '%s' as annotations''' % (
-        PARAMS["annotations_database"])
+        PARAMS["annotations"]["database"])
     cc = dbh.cursor()
     cc.execute(statement)
     cc.close()
@@ -292,7 +296,8 @@ def full():
 
 ################
 # Specify function to create reports pre-configured with sphinx-quickstart:
-@follows(mkdir('pipeline_report'))
+report_dir = 'pipeline_report'
+@follows(mkdir(report_dir))
 #@follows(full)
 def make_report():
     ''' Generates html and pdf versions of restructuredText files
@@ -305,16 +310,29 @@ def make_report():
                                                ))
     print('Copying report templates from: {}'.format(report_path))
 
-    if os.path.exists('pipeline_report'):
+    if (os.path.exists(report_dir) and
+            os.path.isdir(report_dir) and not
+            os.listdir(report_dir)):
         statement = '''cp %(report_path)s/* pipeline_report ;
-                        cd pipeline_report ;
-                        make html ;
-                        ln -sf _build/html/report_pipeline_pq_example.html . ;
-                        make latexpdf ;
-                        ln -sf _build/latex/pq_example.pdf .
+                       cd pipeline_report ;
+                       make html ;
+                       ln -sf _build/html/report_pipeline_pq_example.html . ;
+                       make latexpdf ;
+                       ln -sf _build/latex/pq_example.pdf .
                     '''
         E.info("Building pdf and html versions of your rst files.")
         P.run(statement)
+
+    elif (os.path.exists(report_dir) and
+            os.path.isdir(report_dir) and
+            os.listdir(report_dir)):
+        sys.exit(''' {} exists, not overwriting. You can manually run:
+                       make html ;
+                       ln -sf _build/html/report_pipeline_pq_example.html . ;
+                       make latexpdf ;
+                       ln -sf _build/latex/pq_example.pdf .
+                       Or delete the folder and re-run make_report
+                 '''.format(report_dir))
 
     else:
         sys.exit(''' The directory "pipeline_report" does not exist.
@@ -327,6 +345,7 @@ def make_report():
 
     return
 ################
+
 
 ################
 if __name__ == "__main__":

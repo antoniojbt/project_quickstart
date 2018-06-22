@@ -208,7 +208,7 @@ def getINIpaths():
     '''
     Get the path to scripts for this project, e.g.
     project_xxxx/code/project_xxxx/:
-    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.get_params()
+    e.g. my_cmd = "%(scripts_dir)s/bam2bam.py" % P.Parameters.get_params()
     '''
     try:
         project_scripts_dir = '{}/'.format(PARAMS['general']['project_scripts_dir'])
@@ -424,7 +424,8 @@ def full():
 
 ################
 # Specify function to create reports pre-configured with sphinx-quickstart:
-@follows(mkdir('pipeline_report'))
+report_dir = 'pipeline_report'
+@follows(mkdir(report_dir))
 #@follows(full)
 def make_report():
     ''' Generates html and pdf versions of restructuredText files
@@ -437,7 +438,9 @@ def make_report():
                                                ))
     print('Copying report templates from: {}'.format(report_path))
 
-    if os.path.exists('pipeline_report'):
+    if (os.path.exists(report_dir) and
+            os.path.isdir(report_dir) and not
+            os.listdir(report_dir)):
         statement = '''cp %(report_path)s/* pipeline_report ;
                        cd pipeline_report ;
                        make html ;
@@ -447,6 +450,17 @@ def make_report():
                     '''
         E.info("Building pdf and html versions of your rst files.")
         P.run(statement)
+
+    elif (os.path.exists(report_dir) and
+            os.path.isdir(report_dir) and
+            os.listdir(report_dir)):
+        sys.exit(''' {} exists, not overwriting. You can manually run:
+                       make html ;
+                       ln -sf _build/html/report_pipeline_pq_example.html . ;
+                       make latexpdf ;
+                       ln -sf _build/latex/pq_example.pdf .
+                       Or delete the folder and re-run make_report
+                 '''.format(report_dir))
 
     else:
         sys.exit(''' The directory "pipeline_report" does not exist.
