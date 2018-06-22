@@ -295,7 +295,44 @@ def full():
 
 
 ################
+# Copy to log enviroment from conda:
+# TO DO: add to pipeline.py?
+def conda_info():
+    '''
+    Print to screen conda information and packages installed.
+    '''
+
+    statement = '''conda info -a ;
+                   conda list -e > conda_packages.txt ;
+                   conda list --show-channel-urls ;
+                   conda env export > environment.yml
+                '''
+    P.run()
+
+################
+
+
+################
 # Specify function to create reports pre-configured with sphinx-quickstart:
+
+# Convert any svg files to PDF if needed:
+@transform('*.svg', suffix('.svg'), '.pdf')
+def svgToPDF(infile, outfile):
+    '''
+    Simple conversion of svg to pdf files with inkscape
+    '''
+    statement = '''
+                inkscape --without-gui \
+                         --export-area-drawing \
+                         --export-margin=2 \
+                         --file=%(infile)s \
+                         --export-pdf=%(outfile)s
+                '''
+    P.run()
+
+
+# Build the report:
+@follows(conda_info, svgToPDF)
 report_dir = 'pipeline_report'
 @follows(mkdir(report_dir))
 #@follows(full)
@@ -320,7 +357,8 @@ def make_report():
                        make latexpdf ;
                        ln -sf _build/latex/pq_example.pdf .
                     '''
-        E.info("Building pdf and html versions of your rst files.")
+        E.info('''Building pdf and html versions of your rst files in
+                  {}.'''.format(report_dir))
         P.run(statement)
 
     elif (os.path.exists(report_dir) and
@@ -344,6 +382,25 @@ def make_report():
                  '''.format(report_path))
 
     return
+
+#    if (os.path.exists('pipeline_report/_build/html/index.hmtl') and
+#       os.path.exists(os.path.join('pipeline_report/_build/latex/',
+#                                   project_name, '.pdf'))):
+#        statement = '''
+#                    ln -s pipeline_report/_build/html/index.hmtl %(project_name)s.html ;
+#                    ln -s pipeline_report/_build/latex/%(project_name)s.pdf .
+#                    '''
+#        E.info('''Done, links to the pdf and html versions of your rst files are in the main
+#               folder.''')
+#        P.run()
+#
+#    else:
+#        E.info('''
+#               The html and/or latex/pdf files did not build correctly. See the
+#               logs and go into pipeline_report to find out. You can also try
+#               building the report manually with make html and make latexpdf.
+#               ''')
+#        sys.exit()
 ################
 
 

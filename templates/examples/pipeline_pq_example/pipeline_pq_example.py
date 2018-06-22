@@ -104,7 +104,7 @@ from ruffus import *
 # Database:
 import sqlite3
 
-# Try getting CGAT: 
+# Try getting CGAT:
 try:
     import CGATCore.IOTools as IOTools
     from CGATCore import Pipeline as P
@@ -141,7 +141,6 @@ ini_paths = [os.path.abspath(os.path.dirname(sys.argv[0])),
              "../",
              os.getcwd(),
              ]
-#print(ini_paths)
 
 def getParamsFiles(paths = ini_paths):
     '''
