@@ -492,9 +492,16 @@ def main():
                                 copy_to,
                                 ignore = shutil.ignore_patterns(*files_to_ignore)
                                )
-                # Copy sphinx-quickstart config files:
+                # Report files are now kept in 'pipeline_report', which gets
+                # copied across from pipeline.py (as in CGAT pipelines) on
+                # execution (so here create skeleton copy)
+                # Copy pipeline.yml across:
                 copySingleFiles(sphinx_configs,
                                 os.path.join(copy_to, 'configuration'),
+                                'pipeline.yml')
+                # Copy pipeline_report files across:
+                copySingleFiles(sphinx_configs,
+                                os.path.join(copy_to, 'pipeline_report'),
                                 *sphinx_files)
                 # Rename all 'template' substrings:
                 pipeline_name = str(pipeline_dir_name).strip('pipeline_')
@@ -534,13 +541,20 @@ def main():
                                      'pipeline_template'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
                         )
-        # Copy sphinx templates to this pipeline directory:
+        # Copy sphinx templates to pipeline_report skeleton directory:
+        copySingleFiles(sphinx_configs,
+                        os.path.join(code_dir,
+                                     'project_template',
+                                     'pipeline_template',
+                                     'pipeline_report'),
+                        *sphinx_files)
+        # Copy pipeline yml file to configuration skeleton directory:
         copySingleFiles(sphinx_configs,
                         os.path.join(code_dir,
                                      'project_template',
                                      'pipeline_template',
                                      'configuration'),
-                        *sphinx_files)
+                        'pipeline.yml')
         # Copy the report templates to the manuscript directory:
         copySingleFiles(report_templates, manuscript_dir, r'rst')
         # Copy sphinx templates to this manuscript directory:
