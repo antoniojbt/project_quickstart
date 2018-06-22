@@ -580,15 +580,6 @@ def main():
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
-    # tree_dir shortened:
-    basic_tree = str(''' {}
-                              ├── TO_DO.rst
-                              ├── code
-                              ├── data
-                              ├── documents_and_manuscript
-                              ├── results
-                              └── rsync.rst
-                       '''.format(project_root))
 
     if options['--project-name']:
         end_msg = str( '\n' +
@@ -597,14 +588,18 @@ def main():
         The folder structure and files have been successfully copied to
         {1}
 
-        The folder structure is
-        {2}
+        The basic folder structure is:
+                              .
+                              ├── code
+                              ├── data
+                              ├── documents_and_manuscript
+                              └── results
 
         Remember to back up code, data and manuscript directories (or your
         equivalents).
 
         The directory
-        {3}
+        {2}
         can be uploaded to a version control system (file templates are for GitHub).
         You could link it to Travis CI, Zenodo and ReadtheDocs for example.
         There are some notes and reminders within the files copied over.
@@ -612,17 +607,17 @@ def main():
         uploading, freezing, packaging, etc.
 
         Script templates are in
-        {3}/{0}
+        {2}/{0}
 
         The structure largely follows Python packaging conventions.
         You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
         in here.
 
         You can work and save results in
-        {6}
+        {5}
 
         Install Sphinx to render your rst documents in
-        {4}
+        {3}
 
         Basic rst template files have been generated already.
         Install and use sphinx-quickstart if you want a more complete skeleton.
@@ -635,7 +630,6 @@ def main():
 
         """.format(project_root,
                    project_dir,
-                   basic_tree,
                    code_dir,
                    manuscript_dir,
                    data_dir,
