@@ -70,6 +70,7 @@ recursive-include templates Makefile
 recursive-include templates/examples *
 recursive-include templates *.bib
 recursive-include templates *.sh
+recursive-include templates *.yml
 
 # Files to exclude:
 exclude .gitignore
