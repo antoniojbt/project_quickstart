@@ -424,15 +424,22 @@ def full():
 
 ################
 # Specify function to create reports pre-configured with sphinx-quickstart:
-@follows(full)
+@follows(mkdir('pipeline_report'))
+#@follows(full)
 def make_report():
     ''' Generates html and pdf versions of restructuredText files
         using sphinx-quickstart pre-configured files (conf.py and Makefile).
         Pre-configured files need to be in a pre-existing report directory.
         Existing reports are overwritten.
     '''
+    report_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                               'pipeline_report'
+                                               ))
+    print('Copying report templates from: {}'.format(report_path))
+
     if os.path.exists('pipeline_report'):
-        statement = ''' cd pipeline_report ;
+        statement = '''cp %(report_path)s/* pipeline_report ;
+                        cd pipeline_report ;
                         make html ;
                         ln -sf _build/html/report_pipeline_pq_example.html . ;
                         make latexpdf ;
@@ -442,12 +449,13 @@ def make_report():
         P.run(statement)
 
     else:
-        sys.exit(''' The directory "pipeline_report" does not exist. Did you run the config
-                   option? This should copy across templates for easier
-                   reporting of your pipeline.
-                   If you changed the dir names, just go in and run "make html" or
-                   "make latexpdf" or follow Sphinx docs.
-                 ''')
+        sys.exit(''' The directory "pipeline_report" does not exist.
+                     Are the paths correct?
+                     Template files were tried to be copied from:
+                     {}
+                     You can also manually copy files and run "make html" or
+                     "make latexpdf".
+                 '''.format(report_path))
 
     return
 ################
