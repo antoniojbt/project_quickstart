@@ -220,16 +220,6 @@ def main():
                     directory "pipeline_NAME" ''')
             sys.exit()
 
-        if options['--example'] and not options['--project-name']:
-            print(''' Creating a project_quickstart example with runnable
-                      scripts and pipeline. Once the files are copied, run the
-                      scripts with python and R (Rscript). To run the pipeline
-                      script you will need to install several dependencies.
-                      To run the svg script and sphinx reports you
-                      will need several more packages (see the docs).
-                  ''')
-            # See end of script for execution of option
-
         # Exit if options not given:
         if (not options['--project-name']
                 and not options['--script-R']
@@ -585,10 +575,10 @@ def main():
         end_msg = str( '\n' +
                    """ Done, welcome to {0}!
 
-        The folder structure and files have been successfully copied to
+        Folders and files have been copied to
         {1}
 
-        The basic folder structure is:
+        The basic structure is:
                               .
                               ├── code
                               ├── data
