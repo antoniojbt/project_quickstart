@@ -1,18 +1,21 @@
 ################
-# Get locations of source code (this file)
-    # os.path.join note: a subsequent argument with an '/' discards anything
-    # before it
-    # For function to search path see: 
-    # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
-# MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
-import os
+# Python 3.3 changed the use of __init__.py
+# To avoid namespace problems use this for 2 and 3 compatibility with pkgutil
+# Otherwise omit __init__.py entirely unless you have sub-packages
 
-_ROOT = os.path.abspath(os.path.dirname(__file__))
-def getDir(path = _ROOT):
-    ''' Get the absolute path to where this function resides. Useful for
-    determining the user's path to a package. If a sub-directory is given it
-    will be added to the path returned. Use '..' to go up directory levels. '''
-   # src_top_dir = os.path.abspath(os.path.join(_ROOT, '..'))
-    src_dir = _ROOT
-    return(os.path.abspath(os.path.join(src_dir, path)))
+# See:
+# https://pymotw.com/2/pkgutil/
+# https://packaging.python.org/guides/packaging-namespace-packages/
+
+# and examples in:
+# https://github.com/pypa/sample-namespace-packages/tree/master/pkgutil
+
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
+
+# If you have modules in the same directory (as opposed to sub-directories),
+# try adding:
+#name = 'pipeline_XXX'
+
+# For each sub-directory, add an __init__.py that only contains:
+# name = 'sub-directory'
 ################
