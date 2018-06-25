@@ -28,7 +28,6 @@ include *.ini
 include LICENSE
 include INSTALL
 include README.rst
-include KNOWN_BUGS.rst
 include THANKS.rst
 include TODO.rst
 include COPYING

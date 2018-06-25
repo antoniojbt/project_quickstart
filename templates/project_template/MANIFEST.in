@@ -52,6 +52,7 @@ include run_travis_tests.sh
 recursive-include tests *
 include rsync.rst
 include substitution_vars.rst
+recursive-include pipeline* *.yml
 
 # Include addtional files needed, example data, etc.:
 #include data_examples *
