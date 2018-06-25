@@ -124,7 +124,7 @@ def main():
     options = docopt.docopt(__doc__, version = version)
     welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).' +
             '\n').format(version)
-    print(welcome_msg)
+    #print(welcome_msg)
     docopt_error_msg = str('project_quickstart exited due to an error.' + '\n')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
@@ -155,6 +155,7 @@ def main():
         # Programme specific options
         # Required:
         if options['--project-name']:
+            print(welcome_msg)
             project_name = str(options["--project-name"]).strip('[]').strip("''")
             project_root = str('{}').format(project_name)
 
@@ -177,6 +178,7 @@ def main():
         script_template_R = str('template.R')
 
         if options['--script-python'] and len(options['--script-python']) > 0:
+            print(welcome_msg)
             print(''' Copying a Python script template into the current working directory. ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
@@ -189,6 +191,7 @@ def main():
             sys.exit()
 
         if options['--script-R'] and len(options['--script-R']) > 0:
+            print(welcome_msg)
             print(''' Copying an R script template into the current working directory. ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
@@ -200,6 +203,7 @@ def main():
             sys.exit()
 
         if options['--script-pipeline'] and len(options['--script-pipeline']) > 0:
+            print(welcome_msg)
             print(''' Copying a pipeline template into the current working
                     directory.
                     This includes a Ruffus pipeline.py script template,
@@ -570,12 +574,11 @@ def main():
         scriptTemplate()
 
     # Print a nice welcome message (if successful):
-
     if options['--project-name']:
         end_msg = str( '\n' +
                    """ Done, welcome to {0}!
 
-        Folders and files have been copied to
+        Folders and files have been copied to:
         {1}
 
         The basic structure is:
@@ -588,25 +591,26 @@ def main():
         Remember to back up code, data and manuscript directories (or your
         equivalents).
 
-        The directory
+        The directory:
         {2}
+
         can be uploaded to a version control system (file templates are for GitHub).
         You could link it to Travis CI, Zenodo and ReadtheDocs for example.
         There are some notes and reminders within the files copied over.
         You may want to change the name 'code' to something more suitable when
         uploading, freezing, packaging, etc.
 
-        Script templates are in
+        Script templates are in:
         {2}/{0}
 
         The structure largely follows Python packaging conventions.
         You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
         in here.
 
-        You can work and save results in
+        You can work and save results in:
         {5}
 
-        Install Sphinx to render your rst documents in
+        Install Sphinx to render your rst documents in:
         {3}
 
         Basic rst template files have been generated already.
