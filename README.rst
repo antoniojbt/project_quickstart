@@ -231,7 +231,6 @@ You can run most of this with a bash script:
    cd pq_example/results
    # Use pythonw if on a Mac, otherwise python:
    bash ../code/pq_example/examples.sh pythonw > examples.log
-   # You'll need to change the executable to pythonw on a Mac
    open configuration*/pq_example.pdf configuration*/report_pipeline_pq_example.html # in a Mac
 
 If you have cgat-core_ installed you can try the following:
@@ -250,14 +249,9 @@ If you have cgat-core_ installed you can try the following:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make make_report --local
    open pipeline_report/_build/latex/pq_example.pdf pipeline_report/_build/html/report_pipeline_pq_example.html
 
-.. _CGATPipelines: https://github.com/CGATOxford/CGATPipelines
-
 .. _Ruffus: http://www.ruffus.org.uk/
 
 .. _sphinx-quickstart: http://www.sphinx-doc.org/en/stable/index.html
-
-.. _`CGATPipelines fork`: https://github.com/AntonioJBT/CGATPipeline_core
-
 
 Citation
 ########
@@ -505,7 +499,7 @@ I discovered CookieCutter_ while working on this. It probably does what I have s
 
 .. _CookieCutter: https://github.com/audreyr/cookiecutter-pypackage
 
-Also see its data-science_ and reproducibility_ templates, they look good.
+See its data-science_ and reproducibility_ templates for example.
 
 .. _reproducibility: https://github.com/mkrapp/cookiecutter-reproducible-science
 
