@@ -583,10 +583,10 @@ def main():
 
         The basic structure is:
                               .
-                              ├── code
-                              ├── data
-                              ├── documents_and_manuscript
-                              └── results
+                              |-- code
+                              |-- data
+                              |-- documents_and_manuscript
+                              |-- results
 
         Remember to back up code, data and manuscript directories (or your
         equivalents).
