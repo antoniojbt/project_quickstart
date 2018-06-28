@@ -97,7 +97,7 @@ __ https://hilaryparker.com/2013/04/03/personal-r-packages/
 Installation
 ############
 
-I've tested on MAC OS X and Linux. Untested in Windows and Python 2.7. 
+I've tested on MAC OS X and Linux.
 
 Please raise an issue if you have problems.
 
@@ -105,7 +105,6 @@ Dependencies
 ============
 
 - Python >3.5
-- See requirements.rst for Python libraries needed
 - If you run the examples option you will need many more tools. See
   the Dockerfiles included for specific instructions.
 
