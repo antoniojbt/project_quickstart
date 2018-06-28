@@ -48,7 +48,7 @@ RUN apk update && apk upgrade \
 # Install Python packages
 #########################
 
-RUN pip install --upgrade pip setuptools future \
+RUN pip install --upgrade pip setuptools \
     && pip list
 
 #########################

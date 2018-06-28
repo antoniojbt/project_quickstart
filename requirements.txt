@@ -1,4 +1,3 @@
-future
 docopt
 #cairosvg
 #svgutils

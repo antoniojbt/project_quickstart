@@ -93,7 +93,7 @@ RUN conda install -y git ; \
     pip install --upgrade pip cython numpy ; \
     pip install pysam ; \
     pip install pandas ; \
-    pip install future ruffus ; \
+    pip install ruffus ; \
     conda install -y sphinx ; \
     pip install sphinxcontrib-bibtex ; \
     conda install -y -c r r=3.3 ; \
