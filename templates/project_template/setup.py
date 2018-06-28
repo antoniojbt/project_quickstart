@@ -147,7 +147,7 @@ if (major == 2 and minor1 < 7) or major < 2:
 # Get Ptyhon modules required:
 install_requires = []
 
-with open(os.path.join(here, 'requirements.rst'), encoding='utf-8') as required:
+with open(os.path.join(here, 'requirements.txt'), encoding='utf-8') as required:
     for line in (required):
         if not line.startswith('#') and not line.startswith('\n'):
             line = line.strip()
