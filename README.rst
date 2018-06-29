@@ -167,7 +167,7 @@ To create and run within a conda environment you can try the following bash
 script. You may need to run commands manually if it fails though and there are
 other dependencies which need manual installation (inkscape and latex for example).
 
-If you intend to run the pipeline example below, you may want to install cgat-core_ before and within that environment install the additional tools required.
+Note that if you intend to run the pipeline example below, you may want to install cgat-core_ before and within that environment install the additional tools required.
 
 .. _cgat-core: https://github.com/cgat-developers/cgat-core
 
@@ -429,12 +429,9 @@ Try to follow Python style guides. See projects where these have been slightly a
 Dependencies
 ============
 
-These can become a nightmare as many programs are needed when running pipelines
-in biomedical research. Try to stick to one package manager, such as conda. Pip
-and conda usually play well and complement each other. 
+These can become a nightmare as many programs are needed when running pipelines in biomedical research. Try to stick to one package manager, such as conda. Pip and conda usually play well and complement each other. 
 
-Docker images and testing can also make things easier for reproducible
-environments.
+Docker images and testing can also make things easier for reproducible environments.
 
 To run the example pipeline above see the Dockerfiles in this repository for installation instructions and images you can try.
 
