@@ -30,8 +30,8 @@ conda config --add channels bioconda
 conda install -y r
 
 # Install project_quickstart and pq_example requirements:
-bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.rst ; \
-         pip install -r requirements.rst ; \
+bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.txt ; \
+         pip install -r requirements.txt ; \
          pip install svgutils cairosvg ; \
          pip install --upgrade git+git://github.com/AntonioJBT/project_quickstart.git ; \
          pip install sphinxcontrib-bibtex ; \

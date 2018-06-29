@@ -313,8 +313,7 @@ def conda_info():
 
 
 ################
-# Specify function to create reports pre-configured with sphinx-quickstart:
-
+# Build report with pre-configured files using sphinx-quickstart
 # Convert any svg files to PDF if needed:
 @transform('*.svg', suffix('.svg'), '.pdf')
 def svgToPDF(infile, outfile):
