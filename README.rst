@@ -323,7 +323,7 @@ Even if the code is project specific it can still be versioned, frozen and archi
 
 You can later on build computational pipelines using for example a pipeline quickstart tool based on a `Ruffus and CGAT framework`_.
 
-.. _`Ruffus and CGAT framework`: https://github.com/CGATOxford/CGATPipelines/blob/master/scripts/pipeline_quickstart.py
+.. _`Ruffus and CGAT framework`: https://github.com/cgat-developers/cgat-flow/blob/master/CGATPipelines/pipeline_quickstart.py
 
 You will need to install other software (e.g. R, Ruffus_, Sphinx_, etc.) to make full use depending on your preferences.
 
