@@ -28,7 +28,7 @@ from nose.tools import ok_
 # DIRECTORIES to examine for python modules/scripts
 EXPRESSIONS = (
     ('tests', 'tests/*.py'),
-    ('scripts', 'scripts/*.py'),
+    ('project_quickstart', 'project_quickstart/*.py'),
     )
 
 # Codes to ignore in the pep8 BaseReport
