@@ -185,9 +185,10 @@ Once you have everything installed, run:
    conda activate pq_test
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
-   python ../code/pq_example/pq_example.py --createDF -O my_dataframe # You'll need pythonw for matplotlib if on a Mac
+   python ../code/pq_example/pq_example.py --createDF -O ../data/raw/my_dataframe # Generate some start-up data in the raw data folder
+   ln -s ../data/raw/my_dataframe.tsv . # Create a symbolic link to your results directory
    Rscript ../code/pq_example/pq_example.R -I my_dataframe.tsv
-   Rscript ../code/pq_example/plot_pq_example_pandas.R -I my_dataframe.tsv
+   Rscript ../code/pq_example/plot_pq_example_pandas.R -I my_dataframe.tsv # You'll need pythonw for matplotlib if on a Mac
    python ../code/pq_example/svgutils_pq_example.py \
                         --plotA=my_dataframe_gender_glucose_boxplot.svg \
                         --plotB=my_dataframe_age_histogram.svg \
