@@ -14,6 +14,32 @@
 
 .. |here| replace:: bla bla bla
 
+.. |project_name| replace::
+
+.. |author_name| replace::
+
+.. |all_author_names| replace::
+
+.. |date| replace::
+
+.. |project_url| replace::
+
+.. |download_url| replace::
+
+.. |author_email| replace::
+
+.. |license| replace:: GPL
+
+.. |license_year| replace::
+
+.. |version| replace::
+
+.. |keywords| replace::
+
+.. |short_description| replace::
+
+
+
 
 .. |manuscript_title| replace::
 .. |funding| replace::
