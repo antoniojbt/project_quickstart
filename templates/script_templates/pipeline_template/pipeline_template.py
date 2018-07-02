@@ -332,8 +332,8 @@ def svg_to_pdf(infile, outfile):
 
 
 # Build the report:
-@follows(svg_to_pdf)
 report_dir = 'pipeline_report'
+@follows(svg_to_pdf)
 @follows(mkdir(report_dir))
 def make_report():
     ''' Generates html and pdf versions of restructuredText files
