@@ -63,15 +63,14 @@ Pipeline output
 Requirements
 ============
 
-CGATPipelines core setup, Ruffus as well as the following
-software to be in the path:
+cgat-core as well as the following software need to be in the path:
 
 .. Add any additional external requirements such as 3rd party software
    or R modules below:
 
 Requirements:
 
-* R >= 3
+* R >= 3.4
 * Python >= 3.5
 
 Documentation
@@ -95,18 +94,11 @@ from ruffus import *
 # Database:
 import sqlite3
 
-# Try getting CGAT: 
-try:
-    import CGATCore.IOTools as IOTools
-    from CGATCore import Pipeline as P
-    import CGATCore.Experiment as E
+# CGAT tools:
+import CGATCore.IOTools as IOTools
+import CGATCore.Pipeline as P
+import CGATCore.Experiment as E
 
-except ImportError:
-    print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
-    raise
-
-# required to make iteritems python2 and python3 compatible
-from builtins import dict
 
 # Import this project's module, uncomment if building something more elaborate: 
 #try: 
@@ -116,7 +108,7 @@ from builtins import dict
 #    print("Could not import this project's module, exiting") 
 #    raise 
 
-# Import additional packages: 
+# Import additional packages:
 # Set path if necessary:
 #os.system('''export PATH="~/xxxx/xxxx:$PATH"''')
 ################
@@ -164,6 +156,12 @@ def getParamsFiles(paths = ini_paths):
     return(p_params_files)
 
 P.Parameters.get_params()
+P.get_parameters(
+        ["%s/pipeline.yml" % os.path.splitext(__file__)[0],
+            "../pipeline.yml",
+            "pipeline.yml"],
+        )
+
 
 PARAMS = P.PARAMS
 # Print the options loaded from ini files and possibly a .cgat file:
@@ -184,13 +182,11 @@ def get_py_exec():
 
     try:
         if str('python') in PARAMS["general"]["py_exec"]:
-            print(PARAMS["general"]["py_exec"])
-            #py_exec = '{}'.format(PARAMS["general"]["py_exec"])
-            py_exec = '%s' % PARAMS["general"]["py_exec"]
+            py_exec = '{}'.format(PARAMS["general"]["py_exec"])
     except NameError:
         E.warn('''
                You need to specify the python executable, just "python" or
-               "pythonw" is needed. Trying to guess now...
+               "pythonw" is needed in pipeline.yml.
                ''')
     #else:
     #    test_cmd = subprocess.check_output(['which', 'pythonw'])
@@ -240,7 +236,7 @@ def connect():
     Returns an sqlite3 database handle.
     '''
 
-    dbh = sqlite3.connect(PARAMS["database_name"])
+    dbh = sqlite3.connect(PARAMS["database"]["name"])
     statement = '''ATTACH DATABASE '%s' as annotations''' % (
         PARAMS["annotations"]["database"])
     cc = dbh.cursor()
@@ -296,7 +292,7 @@ def full():
 
 ################
 # Copy to log enviroment from conda:
-# TO DO: add to pipeline.py?
+@follows(last_task)
 def conda_info():
     '''
     Print to screen conda information and packages installed.
@@ -307,16 +303,21 @@ def conda_info():
                    conda list --show-channel-urls ;
                    conda env export > environment.yml
                 '''
-    P.run()
-
+    P.run(statement)
 ################
 
+################
+# Create the "full" pipeline target to run all functions specified
+@follows(conda_info)
+def full():
+    pass
+################
 
 ################
 # Build report with pre-configured files using sphinx-quickstart
 # Convert any svg files to PDF if needed:
 @transform('*.svg', suffix('.svg'), '.pdf')
-def svgToPDF(infile, outfile):
+def svg_to_pdf(infile, outfile):
     '''
     Simple conversion of svg to pdf files with inkscape
     '''
@@ -327,14 +328,13 @@ def svgToPDF(infile, outfile):
                          --file=%(infile)s \
                          --export-pdf=%(outfile)s
                 '''
-    P.run()
+    P.run(statement)
 
 
 # Build the report:
-@follows(conda_info, svgToPDF)
+@follows(svg_to_pdf)
 report_dir = 'pipeline_report'
 @follows(mkdir(report_dir))
-#@follows(full)
 def make_report():
     ''' Generates html and pdf versions of restructuredText files
         using sphinx-quickstart pre-configured files (conf.py and Makefile).
@@ -401,9 +401,23 @@ def make_report():
 #               ''')
 #        sys.exit()
 ################
+# This is if pipeline is called directly from CLI:
+# TO DO:
+# Check if docopt and argparse can play to show my_pipeline options and P.py
+# options
 
+def main():
+    sys.exit(P.main(sys.argv))
+
+#def main(argv=None):
+#    if argv is None:
+#        argv = sys.argv
+#    P.main(argv)
+################
 
 ################
+# Otherwise just end pipeline as normally (with sys.exit commented):
 if __name__ == "__main__":
-    sys.exit(P.main(sys.argv))
+    main()
+    #sys.exit(P.main(sys.argv))
 ################
