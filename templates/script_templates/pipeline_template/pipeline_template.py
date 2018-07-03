@@ -102,7 +102,7 @@ import CGATCore.Experiment as E
 
 # Import this project's module, uncomment if building something more elaborate: 
 #try: 
-#    import module_template.py 
+#    import  pipeline_template.module_template
 
 #except ImportError: 
 #    print("Could not import this project's module, exiting") 
@@ -224,7 +224,6 @@ def getINIpaths():
     return(project_scripts_dir)
 ################
 
-
 ################
 # Utility functions
 def connect():
@@ -245,7 +244,6 @@ def connect():
 
     return dbh
 ################
-
 
 ################
 # Specific pipeline tasks
@@ -281,27 +279,21 @@ def loadWordCounts(infile, outfile):
     P.load(infile, outfile, "--add-index=word")
 ################
 
-
-################
-# Create the "full" pipeline target to run all functions specified
-@follows(loadWordCounts)
-def full():
-    pass
-################
-
-
 ################
 # Copy to log enviroment from conda:
-@follows(last_task)
-def conda_info():
+@follows(loadWordCounts)
+@originate(['conda_packages.txt', 'environment.yml'])
+def conda_info(outfiles):
     '''
     Print to screen conda information and packages installed.
     '''
+    packages = outfiles[0]
+    environment = outfiles[1]
 
     statement = '''conda info -a ;
-                   conda list -e > conda_packages.txt ;
+                   conda list -e > %(packages)s ;
                    conda list --show-channel-urls ;
-                   conda env export > environment.yml
+                   conda env export > %(environment)s
                 '''
     P.run(statement)
 ################
@@ -309,8 +301,10 @@ def conda_info():
 ################
 # Create the "full" pipeline target to run all functions specified
 @follows(conda_info)
-def full():
-    pass
+@originate('pipeline_complete.touch')
+def full(outfile):
+    statement = 'touch %(outfile)s'
+    P.run(statement)
 ################
 
 ################
