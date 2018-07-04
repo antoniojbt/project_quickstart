@@ -282,17 +282,18 @@ def loadWordCounts(infile, outfile):
 ################
 # Copy to log enviroment from conda:
 @follows(loadWordCounts)
-@originate(['conda_packages.txt', 'environment.yml'])
-def conda_info(outfiles):
+@originate('conda_info.txt')
+def conda_info(outfile):
     '''
-    Print to screen conda information and packages installed.
+    Save to logs conda information and packages installed.
     '''
-    packages = outfiles[0]
-    environment = outfiles[1]
+    packages = 'conda_packages.txt'
+    channels = 'conda_channels.txt'
+    environment = 'environment.yml'
 
-    statement = '''conda info -a ;
+    statement = '''conda info -a > %(outfile)s ;
                    conda list -e > %(packages)s ;
-                   conda list --show-channel-urls ;
+                   conda list --show-channel-urls > %(channels)s ;
                    conda env export > %(environment)s
                 '''
     P.run(statement)
