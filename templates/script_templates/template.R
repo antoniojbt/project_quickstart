@@ -163,17 +163,16 @@ print(input_name)
 suffix <- 'my_output'
 if (is.null(args[['-O']])) {
   stopifnot(!is.null(args[['-I']]))
-  print('Output file name prefix not given. Using:')
+  print('Output file name not given. Using:')
   # Split infile name at the last '.':
   input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
   output_file_name <- sprintf('%s.%s', input_name, suffix)
-  print('Name being used to save output files: ')
   print(output_file_name)
 } else {
   output_file_name <- as.character(args[['-O']])
   # output_file_name <- 'testing'
   output_file_name <- sprintf('%s.%s', output_file_name, suffix)
-  print(sprintf('Output file names will contain %s', output_file_name))
+  print(sprintf('Output file names: %s', output_file_name))
 }
 ##########
 ######################
