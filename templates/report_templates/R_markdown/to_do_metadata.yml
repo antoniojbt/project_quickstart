@@ -1,0 +1,23 @@
+## Output options:
+#output: do not use if in _output.yml
+pdf_document:
+  df_print: kable
+  # fig_width: 7
+  # fig_height: 6
+  fig_caption: true
+  keep_tex: true
+  #toc: yes
+  #citation_package: natbib
+  #latex_engine: pdflatex
+  #template: ~/path_to/some_templates/latex_template.tex
+## Latex options:
+fontsize: 11pt
+spacing: doublespacing
+linenumbers: no
+capsize: normalsize
+geometry: margin=1in
+## Bibliography options:
+# bibliography: ~/path_to/project_XXXX.bib
+# biblio-style: apsr
+# endnote: yes
+## Other options

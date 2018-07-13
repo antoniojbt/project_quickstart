@@ -1,0 +1,257 @@
+---
+title: Rmarkdown notes
+titlerunning: short title here
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+author: some author
+# These do not work for pdf:
+# - name: Someone 1
+#   affilnum: '1,2'
+#   email: author@example.com
+# - name: Another Author
+#   affilnum: 2
+#   email: another@example.com
+# - name: someone three
+#   affilnum: 3
+#   email: author3@example.com
+## Output options:
+output:
+  pdf_document:
+    df_print: kable
+    # fig_width: 7
+    # fig_height: 6
+    fig_caption: true
+    keep_tex: false
+    #toc: yes
+    #citation_package: natbib
+    #latex_engine: pdflatex
+    #template: ~/path_to/some_templates/latex_template.tex
+## Latex options:
+fontsize: 11pt
+spacing: doublespacing
+linenumbers: no
+capsize: normalsize
+geometry: margin=1in
+## Bibliography options:
+# bibliography: ~/path_to/project_XXXX.bib
+# biblio-style: apsr
+# endnote: yes
+## Other options
+---
+
+# Preliminaries and setup
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook which has been modified to work as a template for a manuscript.
+
+Some suggestions:
+  
+  - Althought you can use this with literate programming, I suggest you write heavy code elsewhere, produce tables and plots that you pull in here.
+- Write all the manuscript text here and then convert to the format that's needed by collaborators and journals (PDF, HTML, Word)
+
+Add the setup options here:
+```{r setup, include = FALSE, echo = FALSE}
+# source("https://bioconductor.org/biocLite.R")
+# biocLite('captioner')
+library(rmarkdown)
+library(pander)
+library(knitr)
+opts_chunk$set(warning = FALSE, message = FALSE, 
+cache = 1, comment = NA, verbose = TRUE)
+```
+
+To render this document:
+
+- use RStudio (click *Preview* or *Cmd+Shift+K* to preview an HTML file.)
+- from the command line run:
+```
+R -e "rmarkdown::render_site()"
+```
+
+The preview shows you a rendered HTML copy of the contents of the editor. Unlike *Knit*, it *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+- from an R script run:
+```
+{r render_R}
+library(rmarkdown)
+rmarkdown::render('my_article.Rmd', output_file = 'my_article.pdf')
+```
+
+For a multi-document notebook use a master YAML file that pulls in all documents together with links. If using a metadata.yml file, delete the header and use eg:
+```
+{r head, child="metadata.yaml"}
+```
+Although this seems to fail more often than not for a PDF. See the shared options section for HTML in the R markdown guide (which uses _output.yml).
+
+To place content from a different Rmd file use eg:
+```
+{r results1, child = 'results1.Rmd'}
+```
+
+# Abstract
+
+Some text 
+
+# Introduction
+
+rmarkdown basics:
+
+- Single asterisks italicize text *like this*. 
+- Double asterisks embolden text **like this**.
+
+Start a new paragraph with a blank line separating paragraphs.
+
+- Unordered list environment
+- Second item
+- A sublist after four spaces
+- third item
+
+1. numerical list.
+2. second in numerical
+
+# new Section
+## subsection
+### subsubsection
+
+Table:
+
+Table Header  | Second Header
+------------- | -------------
+Table Cell    | Cell 2
+Cell 3        | Cell 4 
+
+Separators *do not* have to be aligned.
+
+Image:
+
+`![caption for my image](path/to/image.jpg)`
+
+`fig_caption: yes` will provide a caption (YAML header)
+
+Footnotes.[^1] and.[^2]
+
+[^1]: first footnote
+[^2]: second
+
+For citations:
+
+- Use the bibtex key as eg @smith1984, where:
+
+- @smith1984 for in-text citation (e.g. Smith (1984) says...)
+- [@smith1984] for parenthetical citation (Smith, 1984)
+
+And this will create a reference list at the end of the document.
+
+URLs:
+
+[In-text link to Google](http://google.com)
+
+
+# Methods
+
+More text here
+
+
+# Results
+
+If you write some code here, try eg:
+```{r a plot, fig.cap = 'A plot of cars'}
+plot(cars)
+```
+
+
+```{r carDataPlot, fig.cap = "Car speed and stopping distances."}
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)", 
+las = 1)
+lines(lowess(cars$speed, cars$dist, f = 2/3, iter = 3), col = "red")
+```
+
+Another plot:
+```{r other_plot, fig.cap = "Several plots here."}
+par(mfrow = c(2,2))
+plot(1:10, col = 2)
+plot(density(runif(100, 0.0, 1.0)))
+plot(runif(100, 0.0, 1.0), type = "l")
+```
+
+Insert an image like this:
+```
+{r foo, out.width="100%", fig.cap = "An example image."}
+knitr::include_graphics("foo.png")
+```
+
+Pull in multiple figures from a folder using knitr include_graphics:
+```
+{r}
+myimages <- list.files("images/", pattern = ".pdf", full.names = TRUE)
+include_graphics(myimages)
+```
+
+Include a table using a code chunk:
+```{r table1, results = 'asis', echo = FALSE, cache = FALSE}
+data("iris")
+knitr::kable(head(iris), caption = "Table with kable")
+```
+
+# Discussion
+
+
+# References
+
+The bibliography should appear at the end of the document when using the bibliography setup in the yaml header and the @ symbol with the bib key.
+
+[Rmarkdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+[Rmarkdown another cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+[Rmarkdown guide](https://bookdown.org/yihui/rmarkdown/document-templates.html)
+
+[Rmarkdown with Overleaf and GitHub](https://medium.com/@arinbasu/a-tutorial-on-how-to-interface-an-r-notebook-with-overleaf-11f23c306cfd)
+
+Rnotebook/markdown templates:
+
+- http://jianghao.wang/post/2017-12-08-rmarkdown-templates/
+- https://github.com/petrkeil/Blog/blob/master/2015_03_12_R_ms_template/manuscript_template.Rmd
+- http://svmiller.com/blog/2016/02/svm-r-markdown-manuscript/
+- https://github.com/jhollist/manuscriptPackage
+
+Some tutorials:
+
+- http://rstudio-pubs-static.s3.amazonaws.com/368020_865af4d4afaa4c5cbdb95a7b2670c812.html#38
+- https://github.com/rladies/meetup-presentations_london_ontario/tree/master/2018-03-06_rmarkdown
+- http://plain-text.co/index.html#introduction
+- https://libscie.github.io/rmarkdown-workshop/handout.html
+- http://galahad.well.ox.ac.uk/repro/
+- https://github.com/humburg/reproducible-reports
+
+For running a report on multiple datasets see:
+
+- http://www.nagraj.net/notes/multiple-rmarkdown-reports/
+- http://brooksandrew.github.io/simpleblog/articles/render-reports-directly-from-R-scripts/
+
+Multi-page knitr child function:
+
+- http://yihui.name/knitr/demo/child/
+- https://stackoverflow.com/questions/25824795/how-to-combine-two-rmarkdown-rmd-files-into-a-single-output
+- https://stackoverflow.com/questions/26304576/how-to-best-generate-multiple-html-files-from-rmarkdown-based-on-one-dataset
+
+On Pandoc, Rmarkdown, knitr, etc. relationships:
+
+- https://stackoverflow.com/questions/40563479/relationship-between-r-markdown-knitr-pandoc-and-bookdown?rq=1
+
+Images:
+
+- https://www.zevross.com/blog/2017/06/19/tips-and-tricks-for-working-with-images-and-figures-in-r-markdown-documents/#default-settings-for-including-images-and-figures-in-r-markdown
+
+Tables:
+
+- http://kbroman.org/knitr_knutshell/pages/figs_tables.html
+
+Also see templates in tne [rticles package](https://cran.r-project.org/web/packages/rticles/rticles.pdf) eg:
+```
+{r run_rticles}
+draft("MyArticle.Rmd", template = "plos_article", package = "rticles")
+```
+
+Rmd to Word:
+
+- https://rmarkdown.rstudio.com/articles_docx.html
+- https://vimeo.com/110804387
+
+Conversions work but can be limited. The basic YAML options usually work fine but customising can get quite tricky quickly. Word has few options.

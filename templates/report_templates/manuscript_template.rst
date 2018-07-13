@@ -20,9 +20,9 @@ Project title
 
 -----
 
-author1, author2, author3 …
+author1, author2, author3
 
-affiliation1, affiliation2, affiliation3 …
+affiliation1, affiliation2, affiliation3
 
 Correspondence should be addressed to:
 
@@ -41,7 +41,7 @@ Abstract
 
 Background: 
 
-- What’s the topic?
+- What's the topic?
 - Clearly describe the problem and its importance
 - Summarise current gaps in knowledge
 - Clearly state the aim or hypothesis early on

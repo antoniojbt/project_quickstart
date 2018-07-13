@@ -1,0 +1,29 @@
+standalone:
+  smart:
+  normalize:
+  toc:
+  highlight-style: tango
+
+t: html5
+self-contained:
+  webtex:
+  template: include/report.html5
+c: include/buttondown.css
+default-image-extension: gif
+filter: include/equation.py
+include-in-header: include/equation.js
+include/affiliation.js
+
+t: latex
+latex-engine: xelatex
+template: include/report.latex
+V: geometry:margin=2cm
+geometry:driver=xetex
+documentclass:report
+classoption:a4paper
+H: include/captions.tex
+filter: include/equation.py
+default-image-extension: png
+
+t: docx
+default-image-extension: gif

@@ -54,7 +54,7 @@ Our manuscript complies with xxx journal policy.
 
 .. Funding and open access research:
 The research has been funded through the |funding|. Its publication must comply with their open access policy.
-In order to ensure compliance, as corresponding author and on behalf of all the authors, we will retain the rights to provide a copy of the authors’ final manuscript, including all modifications from the publishing and peer review process, to an open repository database at the time the manuscript is accepted for publication. By accepting this manuscript for review, your journal's publisher accepts these terms.
+In order to ensure compliance, as corresponding author and on behalf of all the authors, we will retain the rights to provide a copy of the authors' final manuscript, including all modifications from the publishing and peer review process, to an open repository database at the time the manuscript is accepted for publication. By accepting this manuscript for review, your journal's publisher accepts these terms.
 
 .. Any other special considerations
 
