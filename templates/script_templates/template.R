@@ -16,7 +16,6 @@ Purpose
 
 |description|
 
-Run exploratory stats and plots.
 
 Usage and options
 =================
@@ -52,6 +51,7 @@ Requirements:
 
     library(docopt)
     library(data.table)
+    library(ggplot2)
 
 Documentation
 =============
@@ -112,7 +112,7 @@ LocationOfThisScript = function() # Function LocationOfThisScript returns the lo
     # But it may also be called from the command line
     cmd.args = commandArgs(trailingOnly = FALSE) 
     cmd.args.trailing = commandArgs(trailingOnly = TRUE)
-    cmd.args = cmd.args[seq.int(from=1, length.out=length(cmd.args) - length(cmd.args.trailing))]
+    cmd.args = cmd.args[seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
     res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
     
     # If multiple --file arguments are given, R uses the last one
@@ -126,13 +126,15 @@ Rscripts_dir <- LocationOfThisScript()
 print('Location where this script lives:')
 Rscripts_dir
 # R scripts sourced with source() have to be in the same directory as this one
-# (or the path constructed appropriately with file.path)
+# (or the path constructed appropriately with file.path) eg:
+#source(file.path(Rscripts_dir, 'moveme.R')) #, chdir = TRUE)
 ######################
 
 ######################
 # Import libraries
 # source('http://bioconductor.org/biocLite.R')
 # biocLite()
+library(ggplot2)
 library(data.table)
 # https://github.com/Rdatatable/data.table/wiki/Getting-started
 # source functions from a different R script:
@@ -294,6 +296,75 @@ plot_name <- svg(sprintf('%s_%s_%s.svg', input_name, x_var_name, y_var_name))
 boxplot(input_data_df[,  y_var_name] ~ input_data_df[,  x_var_name])
 dev.off()
 ######################
+
+######################
+####
+# Histogram overlaid with kernel density curve
+# http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
+
+# Setup:
+plot_name <- sprintf('%s_%s_histogram.svg', input_name, x_var)
+x_var_label <- x_var
+# Plot:
+ggplot(input_data, aes(x = input_data[, x_var])) +
+       geom_histogram(aes( y = ..density..), # Histogram with density instead of count on y-axis
+                 binwidth = 0.5,
+                 colour = "black", fill = "white") +
+       geom_density(alpha = 0.2, fill = "#FF6666") + # Overlay with transparent density plot
+       ylab('density') +
+       xlab(x_var_label)
+# Save to file:
+ggsave(plot_name)
+# Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
+# Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
+dev.off()
+####
+
+####
+# A boxplot
+# Setup:
+var3_label <- var3
+var3_factor <- factor(input_data[, var3])
+y_var_label <- y_var
+plot_name <- sprintf('%s_%s_%s_boxplot.svg', input_name, var3, y_var)
+# Plot:
+ggplot(input_data, aes(x = var3_factor, y = input_data[, y_var], fill = var3_factor)) +
+       geom_boxplot() +
+       ylab(y_var_label) +
+       xlab(var3_label) +
+       theme_classic() +
+       theme(legend.position = 'none')
+# Save to file:
+ggsave(plot_name)
+# Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
+# Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
+dev.off()
+####
+
+####
+# Scatterplot and legend:
+# http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
+# Setup:
+x_var_label <- x_var
+y_var_label <- y_var
+plot_name <- sprintf('%s_%s_%s_scatterplot.svg', input_name, x_var, y_var)
+# Plot:
+ggplot(input_data, aes(x = input_data[, x_var], y = input_data[, y_var], colour = var3_factor)) +
+       geom_point() +
+       geom_smooth(method = lm) +
+       ylab(y_var_label) +
+       xlab(x_var_label) +
+       labs(colour = var3) +
+       theme_classic()
+# Save:
+ggsave(plot_name)
+# Prevent Rplots.pdf from being generated. ggsave() without weight/height opens a device.
+# Rscript also saves Rplots.pdf by default, these are deleted at the end of this script.
+dev.off()
+####
+######################
+
+
 
 ######################
 # Some inferential stats:
