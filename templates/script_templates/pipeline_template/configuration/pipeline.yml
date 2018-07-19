@@ -65,7 +65,7 @@ general:
 
 # Pipeline database options:
 database:
-    name: csvdb
+    url: sqlite:///./csvdb
 
 # Specific external tools to run in this pipeline (e.g. when more than one 
 # association tool, mapper, etc. are available in the pipeline)
