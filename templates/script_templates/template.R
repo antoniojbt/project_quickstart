@@ -6,7 +6,7 @@
 script_name
 ===============
 
-Author: |author_names| 
+Author: |author_names|
 Release: |version|
 Date: |today|
 
@@ -35,7 +35,7 @@ Usage: script_name (-I <INPUT_FILE>)
 Options:
   -I <INPUT_FILE>                 Input file name
   -O <OUTPUT_FILE>                Output file name
-  --session=<R_SESSION_NAME>      R session name if to be saved
+  --session <R_SESSION_NAME>      R session name if to be saved
   -h --help                       Show this screen
   -var                            some numeric argument [default: 0.001].
 
@@ -100,25 +100,25 @@ str(args)
 # https://github.com/molgenis/molgenis-pipelines/wiki/How-to-source-another_file.R-from-within-your-R-script
 # Couldn't find a licence at the time (12 June 2018)
 LocationOfThisScript = function() # Function LocationOfThisScript returns the location of this .R script (may be needed to source other files in same dir)
-{   
+{
     this.file = NULL
-    # This file may be 'sourced' 
+    # This file may be 'sourced'
     for (i in -(1:sys.nframe())) {
         if (identical(sys.function(i), base::source)) this.file = (normalizePath(sys.frame(i)$ofile))
     }
-    
+
     if (!is.null(this.file)) return(dirname(this.file))
-    
+
     # But it may also be called from the command line
-    cmd.args = commandArgs(trailingOnly = FALSE) 
+    cmd.args = commandArgs(trailingOnly = FALSE)
     cmd.args.trailing = commandArgs(trailingOnly = TRUE)
     cmd.args = cmd.args[seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
     res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
-    
+
     # If multiple --file arguments are given, R uses the last one
     res = tail(res[res != ""], 1)
     if (0 < length(res)) return(dirname(res))
-    
+
     # Both are not the case. Maybe we are in an R GUI?
     return(NULL)
 }
@@ -136,6 +136,7 @@ Rscripts_dir
 # biocLite()
 library(ggplot2)
 library(data.table)
+library(svglite) # prefer over base R svg()
 # https://github.com/Rdatatable/data.table/wiki/Getting-started
 # source functions from a different R script:
 #source(file.path(Rscripts_dir, 'moveme.R')) #, chdir = TRUE)
@@ -144,7 +145,8 @@ library(data.table)
 ######################
 ##########
 # Read files, this is with data.table:
-if (is.null(args[['-I']]) == FALSE) {
+if (!is.null(args[['-I']])) { # for docopt this will be NULL or chr, if boolean
+	                            # remove is.null function and test with ==
   input_name <- as.character(args[['-I']])
   # For tests:
   # input_name <- 'XXX'
@@ -153,7 +155,7 @@ if (is.null(args[['-I']]) == FALSE) {
 } else {
   # Stop if arguments not given:
   print('You need to provide an input file. This has to be tab separated with headers.')
-  stopifnot(!is.null(args[['-I']]) == TRUE)
+  stopifnot(!is.null(args[['-I']]))
 }
 
 print('File being used: ')
@@ -163,18 +165,18 @@ print(input_name)
 ##########
 # Set output file names:
 suffix <- 'my_output'
-if (is.null(args[['-O']])) {
-  stopifnot(!is.null(args[['-I']]))
-  print('Output file name not given. Using:')
+if (is.null(args[['-O']])) { # arg is NULL
   # Split infile name at the last '.':
   input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
   output_file_name <- sprintf('%s.%s', input_name, suffix)
+  print('Output file name not given. Using: ')
   print(output_file_name)
 } else {
-  output_file_name <- as.character(args[['-O']])
+  output_name <- as.character(args[['-O']])
   # output_file_name <- 'testing'
-  output_file_name <- sprintf('%s.%s', output_file_name, suffix)
-  print(sprintf('Output file names: %s', output_file_name))
+  output_file_name <- sprintf('%s.%s', output_name, suffix)
+  print(sprintf('Output file name provided: %s', output_file_name))
+  print(output_file_name)
 }
 ##########
 ######################
@@ -204,7 +206,7 @@ input_data_df <- as.data.frame(input_data) # create a new object
 class(input_data_df)
 class(input_data)
 # Pass variables as parameters for data.table
-# If re-using, automating, etc. you might want to do this, 
+# If re-using, automating, etc. you might want to do this,
 # so you can then specify variables fom the command line.
 # Generally it's just easier (and safer and more readable) to name variables explicitely
 # for project specific analysis.
@@ -234,7 +236,7 @@ head(input_data[, eval(var3)])
 ######################
 
 
-###################### 
+######################
 # What's the question?
 # What's the hypothesis?
 # Descriptive:
@@ -253,7 +255,7 @@ cols_summary <- c(3, 5, 6)
 # Control precision for printing, can be nightmarish. Here enforce printing e.g. 0.00
 # See:
 # https://stackoverflow.com/questions/3443687/formatting-decimal-places-in-r
-# Modified here so that FUN is function to run, x the number to format 
+# Modified here so that FUN is function to run, x the number to format
 # and k the number of decimals to show.
 # This function could/should be moved to a separate script and sourced here.
 specify_decimal <- function(FUN, x, k) trimws(format(round(FUN(x, na.rm = TRUE), k), nsmall = k))
@@ -281,7 +283,7 @@ desc_stats <- desc_stats[, c("statistics", "age", "glucose", "BMI")]
 desc_stats
 
 # Save file:
-fwrite(desc_stats, output_file_name, 
+fwrite(desc_stats, output_file_name,
        sep = '\t', na = 'NA',
        col.names = TRUE, row.names = FALSE,
        quote = FALSE)
@@ -392,16 +394,16 @@ dev.off()
 #save(list=objects_to_save, file=R_session_saved_image, compress='gzip')
 
 # Filename to save current R session, data and objects at the end:
-if (is.null(args[['--session']]) == FALSE) {
+if (!is.null(args[['--session']])) { # arg is NULL
   save_session <- as.character(args[['--session']]) #args $ `--session`
-  R_session_saved_image <- sprintf('R_session_saved_image_%s.RData', save_session)
+  R_session_saved_image <- sprintf('%s.RData', save_session)
   print(sprintf('Saving an R session image as: %s', R_session_saved_image))
   save.image(file = R_session_saved_image, compress = 'gzip')
 } else {
   print('Not saving an R session image, this is the default. Specify the --session option otherwise')
 }
 
-# If using Rscript and creating plots, Rscript will create the file Rplots.pdf 
+# If using Rscript and creating plots, Rscript will create the file Rplots.pdf
 # by default, it doesn't look like there is an easy way to suppress it, so deleting here:
 print('Deleting the file Rplots.pdf...')
 system('rm -f Rplots.pdf')
