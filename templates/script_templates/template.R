@@ -35,7 +35,7 @@ Usage: script_name (-I <INPUT_FILE>)
 Options:
   -I <INPUT_FILE>                 Input file name
   -O <OUTPUT_FILE>                Output file name
-  --session <R_SESSION_NAME>      R session name if to be saved
+  --session                       R session if to be saved
   -h --help                       Show this screen
   -var                            some numeric argument [default: 0.001].
 
@@ -167,7 +167,7 @@ print(input_name)
 suffix <- 'my_output'
 if (is.null(args[['-O']])) { # arg is NULL
   # Split infile name at the last '.':
-  input_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
+  output_name <- strsplit(input_name, "[.]\\s*(?=[^.]+$)", perl = TRUE)[[1]][1]
   output_file_name <- sprintf('%s.%s', input_name, suffix)
   print('Output file name not given. Using: ')
   print(output_file_name)
@@ -395,10 +395,9 @@ dev.off()
 
 # Filename to save current R session, data and objects at the end:
 if (!is.null(args[['--session']])) { # arg is NULL
-  save_session <- as.character(args[['--session']]) #args $ `--session`
-  R_session_saved_image <- sprintf('%s.RData', save_session)
-  print(sprintf('Saving an R session image as: %s', R_session_saved_image))
-  save.image(file = R_session_saved_image, compress = 'gzip')
+	save_session <- sprintf('%s_%s.RData', output_name, suffix)
+  print(sprintf('Saving an R session image as: %s', save_session))
+  save.image(file = save_session, compress = 'gzip')
 } else {
   print('Not saving an R session image, this is the default. Specify the --session option otherwise')
 }
