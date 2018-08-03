@@ -249,6 +249,10 @@ If you have cgat-core_ installed you can try the following:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py make make_report --local
    open pipeline_report/_build/latex/pq_example.pdf pipeline_report/_build/html/report_pipeline_pq_example.html
 
+You can also see this tutorial_ on pipelines with Ruffus and CGAT tools from Ian Sudbery's lab.
+
+.. _tutorial: https://github.com/sudlab/pipeline_tutorial
+
 .. _Ruffus: http://www.ruffus.org.uk/
 
 .. _sphinx-quickstart: http://www.sphinx-doc.org/en/stable/index.html
