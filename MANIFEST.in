@@ -70,6 +70,8 @@ recursive-include templates/examples *
 recursive-include templates *.bib
 recursive-include templates *.sh
 recursive-include templates *.yml
+recursive-include templates *.Rmd
+recursive-include templates *.txt
 
 # Files to exclude:
 exclude .gitignore
