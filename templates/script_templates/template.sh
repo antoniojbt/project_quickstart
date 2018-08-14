@@ -19,18 +19,17 @@
 ###########################
 # Set bash script options
 
-# exit when a command fails
+# exit when a command fails:
 set -o errexit
 
-# exit if any pipe commands fail
+# exit if any pipe commands fail:
 set -o pipefail
 
-# exit when your script tries to use undeclared variables
+# exit if there are undeclared variables:
 set -o nounset
 
-# trace what gets executed
+# trace what gets executed:
 set -o xtrace
-
 set -o errtrace
 ###########################
 
