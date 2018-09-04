@@ -194,7 +194,6 @@ colnames(input_data)
 input_data[, 2, with = FALSE] # by column position, preferable by column name to avoid silent bugs
 ######################
 
-
 ######################
 # Process variables
 str(input_data)
@@ -234,7 +233,6 @@ var3_name <- 'age'
 var3 <- pass_var_dt('age')
 head(input_data[, eval(var3)])
 ######################
-
 
 ######################
 # What's the question?
@@ -366,13 +364,31 @@ dev.off()
 ####
 ######################
 
-
+######################
+# # Run in parallel blurb
+# # Define cores:
+# num_cores <- max(1, detectCores() - 1)
+# # Create output holder:
+# list_length <- length(unique(df[[some_col]]))
+# # List of unique individuals to extract:
+# list_unique_ids <- unique(df[[some_id]])
+# # Output holder:
+# unique_inds <- vector(mode = 'list', length = list_length)
+# # Loop through in parallel:
+# doFuture::registerDoFuture()
+# future::availableCores()
+# future::availableWorkers()
+# future::plan(multiprocess, workers = num_cores)
+# my_out <- foreach(i = 1:length(list_unique_ids)) %dopar% {
+# 	# Do something here:
+# 	#
+# }
+# gc() # Clear memory, may not be necessary, especially if running with functions
+######################
 
 ######################
-# Some inferential stats:
-
-# Make a table from the output of the linear regression:
-
+# Some inferential stats
+# Make a table from the output of the linear regression
 ######################
 
 ######################
