@@ -51,5 +51,5 @@ docs/_templates
 docs/*pdf
 docs/*html
 
-# flaek8:
+# flake8:
 .cache/

@@ -1,5 +1,4 @@
-.. sort out tests!
-.. .. image:: https://travis-ci.org/AntonioJBT/project_quickstart.svg?branch=master
+.. image:: https://travis-ci.org/AntonioJBT/project_quickstart.svg?branch=master
    :target: https://travis-ci.org/AntonioJBT/project_quickstart
 
 .. image:: https://readthedocs.org/projects/project-quickstart/badge/?version=latest

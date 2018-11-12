@@ -3,7 +3,7 @@
 *.gz
 .dir_bash_history
 *.dir_bash_history
-.DS_Store
+*.DS_Store
 .ipynb_checkpoints
 
 # Vim:
@@ -13,7 +13,7 @@
 # Compiled python modules:
 *.pyc
 
-# Ptyhon packaging, setuptools, eggs, etc.:
+# Python packaging, setuptools, eggs, etc.:
 MANIFEST
 PKG-INFO
 *.egg-info
@@ -35,3 +35,8 @@ lib64
 docs/_build
 docs/_static
 docs/_templates
+docs/*pdf
+docs/*html
+
+# flake8:
+.cache/
