@@ -14,7 +14,7 @@ __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
 # If you have modules in the same directory (as opposed to sub-directories),
 # try adding:
-#name = 'pipeline_XXX'
+# name = 'pipeline_XXX'
 
 # For each sub-directory, add an __init__.py that only contains:
 # name = 'sub-directory'

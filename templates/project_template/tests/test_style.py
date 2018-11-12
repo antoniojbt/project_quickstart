@@ -32,7 +32,7 @@ EXPRESSIONS = (('tests', 'tests/*.py'),
 
 # Codes to ignore in the pep8 BaseReport
 IGNORE = set(('E101',  # indentation contains mixed spaces and tabs
-              'E116',  # unexpected indentation (comment) 
+              'E116',  # unexpected indentation (comment)
               'E201',  # whitespace after '('
               'E202',  # whitespace before ')'
               'E122',  # continuation line missing indentation or outdented

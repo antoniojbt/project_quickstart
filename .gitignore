@@ -50,3 +50,6 @@ docs/_static
 docs/_templates
 docs/*pdf
 docs/*html
+
+# flaek8:
+.cache/

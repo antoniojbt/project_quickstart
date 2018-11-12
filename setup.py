@@ -153,8 +153,8 @@ print(install_requires)
 # in though:
 # packages = [CONFIG['metadata']['project_name']]
 
-# If the packaging directory structure is not the conventional on it needs to be
-# specified with package_dir. See:
+# If the packaging directory structure is not the conventional one
+# then it needs to be specified with package_dir. See:
 # https://docs.python.org/3.6/distutils/setupscript.html
 # package_dir = {'project_quickstart': 'project_quickstart'}
 

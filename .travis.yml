@@ -25,7 +25,7 @@ sudo: false
 ################
 # https://docs.travis-ci.com/user/multi-os/
 os:
-  - osx
+#  - osx
   - linux
 ################
 
