@@ -35,19 +35,15 @@ Upload to PyPI after this if for general use.
 # Standard modules:
 import sys
 import os
-import glob
 
 # Always prefer setuptools over distutils:
 import setuptools
 
 from setuptools import setup, find_packages
 
-# To run custom install warning use:
-from setuptools.command.install import install
-
 from distutils.version import LooseVersion
 if LooseVersion(setuptools.__version__) < LooseVersion('1.1'):
-    print ("Version detected:", LooseVersion(setuptools.__version__))
+    print("Version detected:", LooseVersion(setuptools.__version__))
     raise ImportError(
         "Setuptools 1.1 or higher is required")
 #################
@@ -76,6 +72,8 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 # Function to find the project ini file:
 cwd = os.getcwd()
+
+
 def getINIdir(path = cwd):
     ''' Search for an INI file, default is where the current working directory '''
     f_count = 0
@@ -92,6 +90,7 @@ def getINIdir(path = cwd):
         sys.exit()
 
     return(INI_file)
+
 
 # Get the actual ini file and read its values:
 ini_file = getINIdir()
@@ -111,7 +110,7 @@ src_dir = str(CONFIG['metadata']['project_name'])
 sys.path.insert(0, src_dir)
 print(src_dir)
 
-import version
+import version  # needs to be after sys.path.insert() because of name clashes (?)
 
 version = version.set_version()
 print(version)
@@ -141,35 +140,35 @@ print(install_requires)
 # Use README as long description if desired, otherwise get it from INI file (or
 # write it out in setup()):
 
-#with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
+# with open(os.path.join(here, 'README.rst'), encoding='utf-8') as readme:
 #    description = readme.read()
 
 # PyPI doesn't render an rst README though, so maybe just leave a long
 # description or the url.
 #################
 
-
-
 #################
 # Define project specific elements:
 # find_packages() from setuptools makes it easier, can use INI or directly type
 # in though:
-#packages = [CONFIG['metadata']['project_name']]
+# packages = [CONFIG['metadata']['project_name']]
 
-# If the packaging directory structure is not the conventional on it needs to be specified with package_dir. See:
+# If the packaging directory structure is not the conventional on it needs to be
+# specified with package_dir. See:
 # https://docs.python.org/3.6/distutils/setupscript.html
-#package_dir = {'project_quickstart': 'project_quickstart'}
+# package_dir = {'project_quickstart': 'project_quickstart'}
 
 classifiers = CONFIG['metadata']['classifiers']
 
 # Include addtional data files that are outside of the src dir:
 # See: https://docs.python.org/3.6/distutils/setupscript.html#installing-package-data
-#data_files = []
-#directories = glob.glob('templates/*/')
-#for directory in directories:
+# data_files = []
+# directories = glob.glob('templates/*/')
+# for directory in directories:
 #    files = glob.glob(directory+'*')
 #    data_files.append((directory, files))
 # then pass data_files to setup()
+
 
 def package_files(directory):
     paths = []
@@ -178,12 +177,13 @@ def package_files(directory):
             paths.append(os.path.join('..', path, filename))
     return paths
 
+
 extra_files = package_files(os.path.join(here, 'templates'))
 
 
 # Set up entry point for command line use:
 # TO DO:
-#entry_points = {'console_scripts': ['my_cmd = my_project.my_project:main'] }
+# entry_points = {'console_scripts': ['my_cmd = my_project.my_project:main'] }
 #################
 
 
@@ -205,15 +205,15 @@ setup(  # Package information:
         classifiers = list(filter(None, classifiers.split("\n"))),
         # Package contents:
         packages = find_packages(),
-        #package_dir = package_dir,
+        # package_dir = package_dir,
         include_package_data = True,
-        #data_files = [('templates', [glob.glob('templates/*'))], ('templates',
+        # data_files = [('templates', [glob.glob('templates/*'))], ('templates',
         #    [glob.glob('templates/*/*')])],
         package_data = {'': extra_files},
         # Dependencies:
         install_requires = install_requires,
-        entry_points = { 'console_scripts': ['project_quickstart = project_quickstart.project_quickstart:main'] },
+        entry_points = {'console_scripts': [
+                        'project_quickstart = project_quickstart.project_quickstart:main']},
         # Other options:
-        zip_safe = False,
-        )
+        zip_safe = False,)
 #################

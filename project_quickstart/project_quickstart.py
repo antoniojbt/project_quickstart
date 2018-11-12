@@ -11,8 +11,8 @@ Purpose
 =======
 
 This script creates a python data science project template. The idea is
-to be able to easily turn a project into a package with software testing, version
-control, reporting, docs, etc.
+to be able to easily turn a project into a package with software testing,
+version control, reporting, docs, etc.
 
 Once you've quickstarted your project you can run the --script options to
 create python and R script templates or a Ruffus/CGAT pipeline template.
@@ -42,12 +42,16 @@ Usage:
 
 Options:
     --project-name=DIR -n DIR     Creates a project skeleton
-    --script-python=FILE          Create a python script template, '.py' is appended.
-    --script-R=FILE               Create an R script template, '.R' is appended.
-    --script-pipeline=FILE        Create a Ruffus/CGAT pipeline template, 'pipeline_FILE.py' is created.
+    --script-python=FILE          Create a python script template, '.py' is
+                                  appended.
+    --script-R=FILE               Create an R script template, '.R' is
+                                  appended.
+    --script-pipeline=FILE        Create a Ruffus/CGAT pipeline template,
+                                  'pipeline_FILE.py' is created.
     --example                     Create a project_quickstart example with
                                   runnable scripts and pipeline.
-    -f --force                    Take care, forces to overwrite files and directories.
+    -f --force                    Take care, forces to overwrite files and
+                                  directories.
     -h --help                     Show this screen.
     --version                     Show version.
     --dry-run                     Print to screen only.
@@ -63,23 +67,14 @@ Documentation
 ##############################
 # Standard Python modules:
 import sys
-import re
 import os
 import shutil
-import collections
-import glob
-import string
 
 # Modules with Py2 to 3 conflicts:
 try:
     import configparser
 except ImportError:  # Py2 to Py3
     import ConfigParser as configparser
-
-try:
-    from io import StringIO
-except ImportError:  # Python 3
-    from io import StringIO
 
 # Modules not in core library:
 import docopt
@@ -94,7 +89,7 @@ version = version.set_version()
 src_dir = projectQuickstart.getDir('..')
 
 # For debugging:
-#print('project_quickstart package directory is:', '\n', src_dir)
+# print('project_quickstart package directory is:', '\n', src_dir)
 
 # Global variable for configuration file ('.ini')
 # allow_no_value addition is from:
@@ -113,8 +108,8 @@ def main():
     '''
     options = docopt.docopt(__doc__, version = version)
     welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).' +
-            '\n').format(version)
-    #print(welcome_msg)
+                      '\n').format(version)
+    # print(welcome_msg)
     docopt_error_msg = str('project_quickstart exited due to an error.' + '\n')
     docopt_error_msg = str(docopt_error_msg
                            + '\n'
@@ -149,7 +144,7 @@ def main():
             project_name = str(options["--project-name"]).strip('[]').strip("''")
             project_root = str('{}').format(project_name)
 
-            # Set up default paths, directoy and file names:                                   
+            # Set up default paths, directoy and file names:
             project_dir = os.path.join(os.getcwd(), project_root)
 
             if not os.path.exists(project_dir):
@@ -158,9 +153,10 @@ def main():
             else:
                 print(docopt_error_msg)
                 print(str('''The directory with the name {} already exists.
-                            Use --force to overwrite.'''
-                            + '\n'
-                            ).format(project_root))
+                             Use --force to overwrite.'''
+                          + '\n'
+                          ).format(project_root)
+                      )
                 sys.exit()
 
         # Addional/alternative command line options:
@@ -169,7 +165,8 @@ def main():
 
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(welcome_msg)
-            print(''' Copying a Python script template into the current working directory. ''')
+            print(''' Copying a Python script template into the current working
+                    directory. ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
             script_name = str('{}.py').format(script_name)
@@ -182,7 +179,8 @@ def main():
 
         if options['--script-R'] and len(options['--script-R']) > 0:
             print(welcome_msg)
-            print(''' Copying an R script template into the current working directory. ''')
+            print(''' Copying an R script template into the current working
+            directory. ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
 
@@ -205,7 +203,8 @@ def main():
             pipeline_dir_name = str('pipeline_{}').format(pipeline_dir_name)
             # All files within the directory
             # project_quickstart/templates/script_templates/pipeline
-            # plus project_quickstart/templates/script_templates/pipeline_template.py
+            # plus
+            # project_quickstart/templates/script_templates/pipeline_template.py
             # will get copied over in function below.
 
         elif options['--script-pipeline'] and len(options['--script-pipeline']) == 0:
@@ -219,8 +218,7 @@ def main():
                 and not options['--script-R']
                 and not options['--script-python']
                 and not options['--script-pipeline']
-                and not options['--example']
-            ):
+                and not options['--example']):
             print(docopt_error_msg)
             print('Error in  the options given or none supplied.',
                   '\n',
@@ -237,22 +235,23 @@ def main():
     # Get locations of source code
     # os.path.join note: a subsequent argument with an '/' discards anything
     # before it
-    # For function to search path see: 
+    # For function to search path see:
     # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
-    # MANIFEST.in file instructs the project_quickstart/templates folder to be included in installation
+    # MANIFEST.in file instructs the project_quickstart/templates folder to be
+    # included in installation
 
     template_dir = projectQuickstart.getDir('../templates')
     py_package_template = os.path.join(template_dir, 'project_template')
     report_templates = os.path.join(template_dir, 'report_templates')
     script_templates = os.path.join(template_dir, 'script_templates')
-    pipeline_templates = os.path.join(script_templates,'pipeline_template')
+    pipeline_templates = os.path.join(script_templates, 'pipeline_template')
     examples_dir = os.path.join(template_dir, 'examples')
 
-    # Modified sphinx-quickstart templates only live in: 
-        # templates/project_template/docs/
-        # but are needed in
-        # code/docs, report directory
-        # and pipeline directory:
+    # Modified sphinx-quickstart templates only live in:
+    # templates/project_template/docs/
+    # but are needed in
+    # code/docs, report directory
+    # and pipeline directory:
     sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
     sphinx_files = ['conf.py',
                     'Makefile',
@@ -268,7 +267,7 @@ def main():
                            py_package_template,
                            report_templates,
                            script_templates
-                          ]
+                           ]
 
         # Sanity check:
             for d in dirs_to_use:
@@ -277,9 +276,10 @@ def main():
                     print(''' The directory:
                                {}
                                does not exist.
-                               Are the paths correct? Did the programme install in the
-                               right location?
-                               'bin' or equivalent dir should be where project_quickstart installed,
+                               Are the paths correct? Did the programme install
+                               in the right location?
+                               'bin' or equivalent dir should be where
+                               project_quickstart installed,
                                'templates' and 'project_template' come with this
                                package.
                           '''.format(d))
@@ -292,8 +292,9 @@ def main():
         results_dir = os.path.join(project_dir, 'results')
 
         dirnames = [manuscript_dir,
-                   # code_dir, # leave out as shutil.copytree needs to create the
-                   # shutil root dir, otherwise files are not copied
+                    # code_dir, # leave out as shutil.copytree needs to
+                    # create the
+                    # shutil root dir, otherwise files are not copied
                     data_dir,
                     results_dir
                     ]
@@ -312,9 +313,10 @@ def main():
         # If directory paths are OK, continue:
         print(str('Path in use:' + '\n'
                   + template_dir + '\n'
-                  #+ py_package_template
+                  # + py_package_template
                   + '\n' + '\n'
-                  + 'Creating the project structure for {} in:'.format(project_name) + '\n'
+                  + 'Creating the project structure for {} in:'.format(project_name)
+                  + '\n'
                   + project_dir + '\n')
               )
 
@@ -349,7 +351,7 @@ def main():
                        '__pycache__',
                        '*.bak',
                        'dummy*',
-                      ]
+                       ]
 
     def projectTemplate(src, dst):
         '''
@@ -408,7 +410,7 @@ def main():
                     if old_substring in f:
                         os.rename(os.path.join(d, f),
                                   os.path.join(d, f.replace(old_substring,
-                                        '{}').format(new_substring))
+                                               '{}').format(new_substring))
                                   )
 
             for d in dirname:
@@ -417,12 +419,12 @@ def main():
                               os.path.join(str(dirpath), d.replace(
                                   old_substring, '{}').format(new_substring))
                               )
-            # Files in the root dir called don't get renamed, run here:     
+            # Files in the root dir called don't get renamed, run here:
             for f in os.listdir(dirpath):
                 if old_substring in f:
                     os.rename(os.path.join(dirpath, f),
                               os.path.join(dirpath, f.replace(old_substring,
-                                    '{}').format(new_substring))
+                                           '{}').format(new_substring))
                               )
 
     # Make single copies of script templates as standalone function:
@@ -475,7 +477,7 @@ def main():
                 shutil.copytree(pipeline_templates,
                                 copy_to,
                                 ignore = shutil.ignore_patterns(*files_to_ignore)
-                               )
+                                )
                 # Report files are now kept in 'pipeline_report', which gets
                 # copied across from pipeline.py (as in CGAT pipelines) on
                 # execution (so here create skeleton copy)
@@ -498,8 +500,8 @@ def main():
 
         else:
             print(docopt_error_msg)
-            raise ValueError(''' Bad arguments/options used for script template, try --help''')
-
+            raise ValueError(''' Bad arguments/options used for script template,
+                    try --help''')
 
     # Call functions according to option given:
     if options['--project-name']:
@@ -511,13 +513,14 @@ def main():
         copySingleFiles(script_templates,
                         os.path.join(code_dir, 'project_template'),
                         r'.py', r'.R')
-                                # code_dir + 'project_template'
-                                # will become the user's
-                                # new_project/code/new_project directory 
-                                # where scripts can go in 
+                        # code_dir + 'project_template'
+                        # will become the user's
+                        # new_project/code/new_project directory
+                        # where scripts can go in
         # Copy a first pipeline directory with templates on project creation
         # This will have the project name
-        # Pipelines created with --script-pipeline are given a different name held
+        # Pipelines created with --script-pipeline are given a different
+        # name held
         # in pipeline_dir_name:
         shutil.copytree(pipeline_templates,
                         os.path.join(code_dir,
@@ -555,7 +558,8 @@ def main():
 
     # Create a script template copy
     # R and py templates are single, standalone files that get renamed on the
-    # go. --script-pipeline copies a directory with script, Sphinx, yml/ini and rst
+    # go. --script-pipeline copies a directory with script, Sphinx,
+    # yml/ini and rst
     # files which get renamed in function above.
     if (options['--script-python']
             or options['--script-R']
@@ -565,8 +569,7 @@ def main():
 
     # Print a nice welcome message (if successful):
     if options['--project-name']:
-        end_msg = str( '\n' +
-                   """ Done, welcome to {0}!
+        end_msg = str('\n' + """ Done, welcome to {0}!
 
         Folders and files have been copied to:
         {1}
@@ -584,18 +587,19 @@ def main():
         The directory:
         {2}
 
-        can be uploaded to a version control system (file templates are for GitHub).
+        can be uploaded to a version control system (file templates are for
+        GitHub).
         You could link it to Travis CI, Zenodo and ReadtheDocs for example.
         There are some notes and reminders within the files copied over.
-        You may want to change the name 'code' to something more suitable when
-        uploading, freezing, packaging, etc.
+        You may want to change the name 'code' to something more suitable
+        when uploading, freezing, packaging, etc.
 
         Script templates are in:
         {2}/{0}
 
         The structure largely follows Python packaging conventions.
-        You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.)
-        in here.
+        You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and
+        Makefiles, etc.) in here.
 
         You can work and save results in:
         {5}
@@ -633,6 +637,7 @@ def main():
                         )
 
     return
+
 
 if __name__ == '__main__':
     # if using docopt:

@@ -1,7 +1,7 @@
 '''test_style - test coding style confirmation
 ==============================================
 
-This script is taken and modified from:
+This script modified from:
 https://github.com/CGATOxford/CGATPipelines/blob/master/tests/test_style.py
 
 Original author Andreas Heger
@@ -26,16 +26,17 @@ import os
 from nose.tools import ok_
 
 # DIRECTORIES to examine for python modules/scripts
-EXPRESSIONS = (
-    ('tests', 'tests/*.py'),
-    ('project_quickstart', 'project_quickstart/*.py'),
-    )
+EXPRESSIONS = (('tests', 'tests/*.py'),
+               ('project_quickstart', 'project_quickstart/*.py'),
+               )
 
 # Codes to ignore in the pep8 BaseReport
 IGNORE = set(('E101',  # indentation contains mixed spaces and tabs
+              'E116',  # unexpected indentation (comment) 
               'E201',  # whitespace after '('
               'E202',  # whitespace before ')'
               'E122',  # continuation line missing indentation or outdented
+              'E251',  # asks for no spaces around =, /, etc.
               'E265',  # block comment should start with '# '
               'E501',  # line too long (82 > 79 characters)
               'E502',  # the backslash is redundant between brackets
