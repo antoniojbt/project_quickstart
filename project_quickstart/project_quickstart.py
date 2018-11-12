@@ -107,8 +107,8 @@ def main():
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''
     options = docopt.docopt(__doc__, version = version)
-    welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).' +
-                      '\n').format(version)
+    welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).'
+                      + '\n').format(version)
     # print(welcome_msg)
     docopt_error_msg = str('project_quickstart exited due to an error.' + '\n')
     docopt_error_msg = str(docopt_error_msg
