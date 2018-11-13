@@ -22,15 +22,19 @@ language: python
 python:
   - "3.5"
   - "3.6"
-#  - "3.7"
+  - "3.7"
 ################
 
 ################
 # Install dependencies:
+before_install:
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew upgrade python; fi
+
 install:
   - pip install -r requirements.txt # --use-mirrors errors in Py3.5
   - python setup.py install
-  - pip install flake8 pyyaml nose pep8
+#  - pip install tox-travis
 #  - pip install coverage # coveralls.io continuously monitors test case coverage
 #  - pip install coveralls
 ################

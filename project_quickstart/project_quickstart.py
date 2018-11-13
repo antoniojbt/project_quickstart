@@ -29,8 +29,7 @@ help quickstart your data science project with packaging, testing, scripts and
 other templates.
 
 Usage:
-       project_quickstart [--project-name=<project_name> | -n
-                              <project_name>] ...
+       project_quickstart [--project-name=<project_name> | -n <project_name>] ...
        project_quickstart [--script-python=<script_name>]
        project_quickstart [--script-R=<script_name>]
        project_quickstart [--script-pipeline=<pipeline_name>]
@@ -42,16 +41,13 @@ Usage:
 
 Options:
     --project-name=DIR -n DIR     Creates a project skeleton
-    --script-python=FILE          Create a python script template, '.py' is
-                                  appended.
-    --script-R=FILE               Create an R script template, '.R' is
-                                  appended.
+    --script-python=FILE          Create a python script template, '.py' is appended.
+    --script-R=FILE               Create an R script template, '.R' is appended.
     --script-pipeline=FILE        Create a Ruffus/CGAT pipeline template,
                                   'pipeline_FILE.py' is created.
     --example                     Create a project_quickstart example with
                                   runnable scripts and pipeline.
-    -f --force                    Take care, forces to overwrite files and
-                                  directories.
+    -f --force                    Take care, forces to overwrite files and directories.
     -h --help                     Show this screen.
     --version                     Show version.
     --dry-run                     Print to screen only.
@@ -165,40 +161,34 @@ def main():
 
         if options['--script-python'] and len(options['--script-python']) > 0:
             print(welcome_msg)
-            print(''' Copying a Python script template into the current working
-                    directory. ''')
+            print(''' Copying a Python script template into the current working directory. ''')
             # py3.5 formatting:
             script_name = str(options["--script-python"]).strip('[]').strip("''")
             script_name = str('{}.py').format(script_name)
 
         elif options['--script-python'] and len(options['--script-python']) == 0:
             print(docopt_error_msg)
-            print(''' You need to provide a script name. This will be prefixed to
-                  ".py" ''')
+            print(''' You need to provide a script name. This will be prefixed to ".py" ''')
             sys.exit()
 
         if options['--script-R'] and len(options['--script-R']) > 0:
             print(welcome_msg)
-            print(''' Copying an R script template into the current working
-            directory. ''')
+            print(''' Copying an R script template into the current working directory. ''')
             script_name = str(options["--script-R"]).strip('[]').strip("''")
             script_name = str('{}.R').format(script_name)
 
         elif options['--script-R'] and len(options['--script-R']) == 0:
             print(docopt_error_msg)
-            print(''' You need to provide a script name. This will be prefixed to
-                  ".R" ''')
+            print(''' You need to provide a script name. This will be prefixed to ".R" ''')
             sys.exit()
 
         if options['--script-pipeline'] and len(options['--script-pipeline']) > 0:
             print(welcome_msg)
-            print(''' Copying a pipeline template into the current working
-                    directory.
+            print(''' Copying a pipeline template into the current working directory.
                     This includes a Ruffus pipeline.py script template,
                     pipeline yml configuration template for parameters,
                     a report directory with a restructuredText template,
-                    and sphinx-quickstart modified conf.py and Makefile
-                    files.''')
+                    and sphinx-quickstart modified conf.py and Makefile files.''')
             pipeline_dir_name = str(options["--script-pipeline"]).strip('[]').strip("''")
             pipeline_dir_name = str('pipeline_{}').format(pipeline_dir_name)
             # All files within the directory
@@ -280,8 +270,7 @@ def main():
                                in the right location?
                                'bin' or equivalent dir should be where
                                project_quickstart installed,
-                               'templates' and 'project_template' come with this
-                               package.
+                               'templates' and 'project_template' come with this package.
                           '''.format(d))
                     sys.exit()
 
@@ -429,8 +418,7 @@ def main():
 
     # Make single copies of script templates as standalone function:
     def scriptTemplate():
-        ''' Copy script templates and rename
-            them according to option given.
+        ''' Copy script templates and rename them according to option given.
             For pipeline option this creates a directory
             with a Ruffus pipeline script template, yml/ini parameters
             file and sphinx-quickstart modified templates.
@@ -581,14 +569,12 @@ def main():
                               |-- documents_and_manuscript
                               |-- results
 
-        Remember to back up code, data and manuscript directories (or your
-        equivalents).
+        Remember to back up code, data and manuscript directories (or your equivalents).
 
         The directory:
         {2}
 
-        can be uploaded to a version control system (file templates are for
-        GitHub).
+        can be uploaded to a version control system (file templates are for GitHub).
         You could link it to Travis CI, Zenodo and ReadtheDocs for example.
         There are some notes and reminders within the files copied over.
         You may want to change the name 'code' to something more suitable
