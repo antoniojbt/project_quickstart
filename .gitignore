@@ -43,6 +43,7 @@ develop-eggs
 .installed.cfg
 lib
 lib64
+tests/__pycache__
 
 # Sphinx:
 docs/_build
