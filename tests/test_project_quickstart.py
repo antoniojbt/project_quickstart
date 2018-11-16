@@ -67,7 +67,6 @@ dirs = ['{}'.format(test_name),
         'pq_example',  # this is fixed for --example
         ]
 
-
 # Not tested:
 # project_quickstart --help
 # project_quickstart --version
@@ -78,7 +77,7 @@ dirs = ['{}'.format(test_name),
 
 
 # Get directory for reference files:
-ref_dir = os.path.abspath('ref_files')
+ref_dir = os.path.abspath(os.path.join('tests', 'ref_files'))
 print(ref_dir)
 
 # Create temporary directory for test outputs:
@@ -106,15 +105,16 @@ def dir_trees():
 # Collect and compare directory tree files (should all end in eg '.tree'):
 # Tree dir files prob get collected and compared twice
 # pytest only picks files AND functions starting with 'test_'
-def test_collect_and_compare_trees():
-    ref_tree = pytest_helpers.collect_files(ref_dir, '.tree')
-    test_tree = pytest_helpers.collect_files(test_dir, '.tree')
-    pytest_helpers.compare_all_files(ref_tree, test_tree)
+# def test_collect_and_compare_trees(run_cmds, dir_trees):
+    # ref_tree = pytest_helpers.collect_files(ref_dir, '.tree')
+    # test_tree = pytest_helpers.collect_files(test_dir, '.tree')
+    # pytest_helpers.compare_all_files(ref_tree, test_tree)
 
 
 # Collect and compare for each dir from ref and test, this will include files
-# created with '--script-' options:
-def test_collect_and_compare_all_files():
+# created with '--script-' options and files with tree dirs:
+def test_collect_and_compare_all_files(run_cmds, dir_trees):
+    dirs.append('.')  # Add cwd after creating tree dirs else erros as different lengths
     pytest_helpers.compare_ref_and_test_dirs(dirs, ref_dir, test_dir, suffix = '')
 
 

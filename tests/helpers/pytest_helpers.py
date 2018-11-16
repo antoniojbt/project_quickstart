@@ -52,7 +52,7 @@ def run_CLI_options(options):
 def create_dir_tree(dirs, suffix):
     '''
     For a given directory d create a tree directory using
-    ls -Ra1 > d.suffix
+    ls -Ra1 d > d.suffix
     '''
     print('\n', 'Test message: ', 'Creating trees of directories from: {}'.format(dirs),)
     for d in dirs:
@@ -86,7 +86,7 @@ def collect_files(dir_to_search, suffix):
     for dirpath, dirnames, filenames in os.walk(dir_to_search):
         for d in dirnames:
             for f in filenames:
-                f = os.path.join(dir_to_search, f)
+                f = os.path.join(dirpath, f)
                 if f.endswith(suffix) and f not in file_list:
                     file_list.append(f)
 
@@ -136,7 +136,9 @@ def compare_all_files(ref_list, test_list):
     print('\n', 'ref list is: ', ref_list)
     print('\n', 'test list is: ', test_list)
 
-    # Check length is the same:
+    # Check length is the same and not 0:
+    assert len(ref_list) > 0
+    assert len(test_list) > 0
     assert len(ref_list) == len(test_list)
     print('\n', 'Test message: ', 'Lengths of ref list and test list are the same')
 
@@ -149,9 +151,7 @@ def compare_all_files(ref_list, test_list):
 
     # Compare files:
     for ref, test in zip(ref_list, test_list):
-        assert ref == test
-        if ref == test:
-            compare_files(ref, test)
+        compare_files(ref, test)
 
     return
 

@@ -27,3 +27,7 @@ project_quickstart --script-R=${test_name}
 project_quickstart --script-pipeline=${test_name}
 project_quickstart --example
 
+# Generate files with tree directories:
+ls -Ra1 pq_test_ref > pq_test_ref.tree
+ls -Ra1 pq_example > pq_example.tree
+ls -Ra1 pipeline_pq_test_ref > pipeline_pq_test_ref.tree

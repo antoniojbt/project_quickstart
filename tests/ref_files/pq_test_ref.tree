@@ -89,7 +89,6 @@ pq_test_ref/code/tests:
 ..
 file_to_compare_against.gold_std
 sample_data.data
-test_style.py
 
 pq_test_ref/data:
 .
