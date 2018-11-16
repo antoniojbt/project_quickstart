@@ -132,6 +132,9 @@ def compare_all_files(ref_list, test_list):
     '''
     Compare files between ref_list and test_list
     '''
+    # Sort lists to ensure order:
+    ref_list.sort()  # in place
+    test_list.sort()  # in place
     print('\n', 'Test message: ', 'Comparing files between two sets of files')
     print('\n', 'ref list is: ', ref_list)
     print('\n', 'test list is: ', test_list)
