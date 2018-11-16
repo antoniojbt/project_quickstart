@@ -44,7 +44,6 @@ scripts.rst
 pq_example/code/pq_example:
 .
 ..
-.dir_bash_history
 Dockerfile_pq_example_alpine
 Dockerfile_pq_example_ubuntu
 __init__.py
@@ -63,7 +62,6 @@ version.py
 pq_example/code/pq_example/pipeline_pq_example:
 .
 ..
-.dir_bash_history
 __init__.py
 configuration
 pipeline_pq_example.py
@@ -72,13 +70,11 @@ pipeline_report
 pq_example/code/pq_example/pipeline_pq_example/configuration:
 .
 ..
-.dir_bash_history
 pipeline.yml
 
 pq_example/code/pq_example/pipeline_pq_example/pipeline_report:
 .
 ..
-.dir_bash_history
 Makefile
 conf.py
 index.rst
@@ -97,6 +93,7 @@ pq_example/code/tests:
 ..
 file_to_compare_against.gold_std
 sample_data.data
+test_pq_example.py
 
 pq_example/data:
 .
