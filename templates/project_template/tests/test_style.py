@@ -15,10 +15,10 @@ Purpose
 
 This script runs pep8 on all scripts
 
-This script is best run within nosetests::
+Currently running with pytest at root dir.
+This is largely redundant with flake8?
 
-   nosetests tests/test_style.py
-
+TO DO: prob delete this file and run flake8 only
 '''
 import pep8
 import glob
