@@ -146,6 +146,8 @@ def compare_all_files(ref_list, test_list):
     for ref, test in zip(ref_list, test_list):
         ref_base = os.path.basename(ref)
         test_base = os.path.basename(test)
+        print('ref base is: ', ref_base)
+        print('test base is: ', test_base)
         assert str(ref_base) == str(test_base)
     print('Test message: ', 'ref list and test list contain the same elements')
 
