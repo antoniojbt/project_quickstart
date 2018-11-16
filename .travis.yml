@@ -31,7 +31,6 @@ install:
   - pip install -r requirements.txt # --use-mirrors errors in Py3.5
   - python setup.py install
   - pip install flake8
-#  - pip install flake8 pyyaml nose pep8
 #  - pip install coverage # coveralls.io continuously monitors test case coverage
 #  - pip install coveralls
 ################

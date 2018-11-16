@@ -14,6 +14,13 @@ Helper functions for tests for project_quickstart
 
 Import as a module
 
+A file conftest.py needs to exist containing:
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'helpers'))
+
+for pytest to import this file as a module.
+
 '''
 ##############
 # Get all the modules needed

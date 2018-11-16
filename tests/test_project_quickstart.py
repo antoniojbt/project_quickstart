@@ -91,6 +91,7 @@ os.chdir(test_dir)
 #####
 # Generate test sets
 # Run each project_quickstart CLI option:
+# Functions that are needed to create test files should use the pytest.fixture decorator
 @pytest.fixture
 def run_cmds():
     pytest_helpers.run_CLI_options(cli_options)
@@ -104,6 +105,7 @@ def dir_trees():
 
 # Collect and compare directory tree files (should all end in eg '.tree'):
 # Tree dir files prob get collected and compared twice
+# pytest only picks files AND functions starting with 'test_'
 def test_collect_and_compare_trees():
     ref_tree = pytest_helpers.collect_files(ref_dir, '.tree')
     test_tree = pytest_helpers.collect_files(test_dir, '.tree')

@@ -2,14 +2,18 @@
 
 # Generate reference files to test against for project_quickstart:
 # These should be the same as options in test_project_quickstart.py
+# After updating templates, commit and push, travis will fail, locally run:
+# pip install git+git://github.com/AntonioJBT/project_quickstart.git
+# and run this file to generate the new reference set.
 
 # Create folder, this should be the same as in test file: 
-ref_dir = 'ref_files'
+ref_dir='ref_files'
+
 mkdir ${ref_dir}
 cd ${ref_dir}
 
 # test_name should also be the same as in the test file:
-test_name = 'pq_test_ref'
+test_name='pq_test_ref'
 
 # Test command line options that only go to stdout:
 project_quickstart --version
