@@ -7,7 +7,7 @@
 # and run this file to generate the new reference set.
 
 # Create folder, this should be the same as in test file: 
-ref_dir='ref_files'
+ref_dir='ref_files2'
 
 mkdir ${ref_dir}
 cd ${ref_dir}
@@ -31,3 +31,6 @@ project_quickstart --example
 ls -Ra1 pq_test_ref > pq_test_ref.tree
 ls -Ra1 pq_example > pq_example.tree
 ls -Ra1 pipeline_pq_test_ref > pipeline_pq_test_ref.tree
+
+# Generate lists of files from directories using python (ls -Ra1 has different flavours?):
+python ../generate_python_file_lists.py

@@ -72,6 +72,17 @@ def create_dir_tree(dirs, suffix):
         # https://docs.python.org/3/library/subprocess.html#subprocess.run
         # print(cmd)
 
+        # Use python instead to avoid system problems:
+        for d in dirs:
+            name = str(str(d) + '.py_tree')
+            name = open(name, 'w')
+            d_list = []
+            for dirpath, dirnames, filenames in os.walk(d):
+                for f in filenames:
+                    d_list.append(f)
+            name.write('\n'.join(d_list))
+            name.close()
+
     return
 
 
