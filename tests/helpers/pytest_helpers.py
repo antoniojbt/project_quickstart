@@ -57,20 +57,22 @@ def create_dir_tree(dirs, suffix):
     '''
     print('\n', 'Test message: ', 'Creating trees of directories from: {}'.format(dirs),)
     for d in dirs:
-        name = str(str(d) + suffix)
-        print('Test message: ', 'Creating tree directory: {}'.format(name),)
+        # ls in OS X doesn't seem to print first folder grouping, Ubuntu does
+        # ref vs test files will fail in travis, use python file lists only
+        # name = str(str(d) + suffix)
+        # print('Test message: ', 'Creating tree directory: {}'.format(name),)
         # The following doesn't work with pipes
         # Also note that shell = True changes how the first arguments are interpreted
         # See:
         # https://medium.com/python-pandemonium/a-trap-of-shell-true-in-the-subprocess-module-6db7fc66cdfd
         # cmd = ['ls', '-Ra1', str(d), str('>'), str(name)]
-        cmd = 'ls -Ra1 {} > {}'.format(str(d), str(name))
-        subprocess.run(cmd, check = True, shell = True)
+        # cmd = 'ls -Ra1 {} > {}'.format(str(d), str(name))
+        # print(cmd)
+        # subprocess.run(cmd, check = True, shell = True)
         # Note security issues with shell = True, should instead do eg:
         # https://stackoverflow.com/questions/24306205/file-not-found-error-when-launching-a-subprocess-containing-piped-commands
         # https://stackoverflow.com/questions/13332268/python-subprocess-command-with-pipe
         # https://docs.python.org/3/library/subprocess.html#subprocess.run
-        # print(cmd)
 
         # Use python instead to avoid system problems:
         for d in dirs:
