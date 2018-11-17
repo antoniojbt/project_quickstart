@@ -35,8 +35,9 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 RUN apk update && apk upgrade \
     && apk add \
     tree \
-    sudo
-#    vim \
+    sudo \
+    vim \
+    vimdiff
 
 #    wget \
 #    bzip2 \
@@ -49,6 +50,7 @@ RUN apk update && apk upgrade \
 #########################
 
 RUN pip install --upgrade pip setuptools \
+    && pip install flake8 pytest \
     && pip list
 
 #########################

@@ -38,6 +38,7 @@ for d in dirs:
     for dirpath, dirnames, filenames in os.walk(d):
         for f in filenames:
             d_list.append(f)
+    d_list.sort()
     name.write('\n'.join(d_list))
     name.close()
 

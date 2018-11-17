@@ -7,7 +7,7 @@
 # and run this file to generate the new reference set.
 
 # Create folder, this should be the same as in test file: 
-ref_dir='ref_files2'
+ref_dir='ref_files'
 
 mkdir ${ref_dir}
 cd ${ref_dir}
