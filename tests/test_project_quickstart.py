@@ -93,12 +93,18 @@ os.chdir(test_dir)
 # Functions that are needed to create test files should use the pytest.fixture decorator
 @pytest.fixture
 def run_cmds():
+    '''
+    Run command line options for project_quickstart
+    '''
     pytest_helpers.run_CLI_options(cli_options)
 
 
 # For each dir generate and compare directory tree files:
 @pytest.fixture
 def dir_trees():
+    '''
+    Generate files with the directory trees for project_quickstart
+    '''
     pytest_helpers.create_dir_tree(dirs, '.tree')
 
 
@@ -114,6 +120,11 @@ def dir_trees():
 # Collect and compare for each dir from ref and test, this will include files
 # created with '--script-' options and files with tree dirs:
 def test_collect_and_compare_all_files(run_cmds, dir_trees):
+    '''
+    Run project_quickstart commands and files with directory tree for this test and
+    compare outputs of test vs reference files. Checks number of files, names of files
+    and content of each test vs ref pair.
+    '''
     dirs.append('.')  # Add cwd after creating tree dirs else erros as different lengths
     pytest_helpers.compare_ref_and_test_dirs(dirs, ref_dir, test_dir, suffix = '')
 

@@ -29,6 +29,7 @@ import os
 import hashlib
 import subprocess
 import sys
+import difflib
 ##############
 
 
@@ -100,7 +101,7 @@ def collect_files(dir_to_search, suffix):
 # Function to compare text files:
 def compare_files(ref, test):
     '''
-    Compare text files line by line. Only provides a coarse output.
+    Compare text files line by line, outputs lines which differ.
     '''
     print('\n', 'Test message: ', 'Comparing individual files')
     print('Test message: ', 'ref file is: ', ref)
@@ -113,16 +114,26 @@ def compare_files(ref, test):
     with open(test, 'r') as test:
         test = test.read()
 
-    assert ref == test
-
     if ref != test:
-        sys.exit('''Test message: Files are not the same, compared:
+        print('''Test message: Files are not the same, compared:
                  {}
                  and
                  {}'''.format(ref, test)
-                 )
+              )
+        # Compare line by line and output differences:
+        print('Comparing line by line:', '\n')
+        diff = difflib.unified_diff(ref.readlines(),
+                                    test.readlines(),
+                                    fromfile = 'ref',
+                                    tofile = 'test'
+                                    )
+        for line in diff:
+            sys.stdout.write(line)
+
     else:
         print('Files are the same')
+
+    assert ref == test
 
     return
 
