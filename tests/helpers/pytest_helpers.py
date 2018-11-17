@@ -108,32 +108,55 @@ def compare_files(ref, test):
     print('Test message: ', 'test file is: ', test)
 
     # Read each file:
-    with open(ref, 'r') as ref:
-        ref = ref.read()
+    ref1 = open(ref, 'r')
+    test1 = open(test, 'r')
+    ref_read = ref1.read()
+    test_read = test1.read()
 
-    with open(test, 'r') as test:
-        test = test.read()
-
-    if ref != test:
-        print('''Test message: Files are not the same, compared:
+    if ref_read != test_read:
+        print('''\n,
+                 Test message: Files are not the same, compared:
                  {}
                  and
-                 {}'''.format(ref, test)
+                 {}
+              '''.format(ref, test)
               )
-        # Compare line by line and output differences:
-        print('Comparing line by line:', '\n')
-        diff = difflib.unified_diff(ref.readlines(),
-                                    test.readlines(),
+        # Compare line by line and output differences
+        # Files were read already so close and read again
+        # Files should be small, must be a better way though
+        ref1.close()
+        test1.close()
+
+        print('Test message: ', 'Comparing line by line:', '\n')
+        # Re-open for readlines():
+        ref = open(ref, 'r')
+        test = open(test, 'r')
+        diff = difflib.unified_diff(ref.read(),  # ref.readlines(),
+                                    test.read(),  # test.readlines(),
                                     fromfile = 'ref',
                                     tofile = 'test'
+                                    # lineterm = '\n'
                                     )
+
+        # TO DO: Print first lines only
+        # counter = 0
+        # while counter < 21:
+            # print(counter)
         for line in diff:
+            # counter += 1
             sys.stdout.write(line)
 
-    else:
-        print('Files are the same')
+        # Clean up:
+        print('\n', 'Test message: ', 'End of file comparison')
+        ref.close()
+        test.close()
+        sys.exit('Test message: Exiting now...')
 
-    assert ref == test
+    else:
+        print('Test message: ', 'Files are the same')
+        assert ref_read == test_read
+        ref1.close()
+        test1.close()
 
     return
 
