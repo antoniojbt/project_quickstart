@@ -25,6 +25,10 @@ conda activate pq_test
 # Specify conda channels to avoid clashes with R:
 conda config --add channels conda-forge
 conda config --add channels bioconda
+conda config --add channels r
+
+# You may need to install compilers:
+conda install gxx_linux-64 gcc_linux-64 gfortran_linux-64
 
 # Install R:
 conda install -y r
