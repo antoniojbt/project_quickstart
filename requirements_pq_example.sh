@@ -18,36 +18,39 @@ set -o nounset
 
 # You need to install conda first, then run:
 
-# Create conda environment:
-conda create -yn pq_test python
-conda activate pq_test
-
-# Specify conda channels to avoid clashes with R:
+# Specify conda channels to avoid clashes with R (this will add channels to your .condarc):
 conda config --add channels conda-forge
 conda config --add channels bioconda
 conda config --add channels r
 
+# Create conda environment:
+conda create -yn pq_test
+conda activate pq_test
+
 # You may need to install compilers:
-conda install gxx_linux-64 gcc_linux-64 gfortran_linux-64
+#conda install gxx_linux-64 gcc_linux-64 gfortran_linux-64
 
 # Install R:
-conda install -y r
+conda install -y r=3.4
+
+# Install python:
+conda install -y python=3.5
+# issues with cairo with python 3.7
 
 # Install project_quickstart and pq_example requirements:
-bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/project_quickstart/master/requirements.txt ; \
-         pip install -r requirements.txt ; \
+bash -c 'pip install project_quickstart ; \
          pip install svgutils cairosvg ; \
-         pip install --upgrade git+git://github.com/AntonioJBT/project_quickstart.git ; \
          pip install sphinxcontrib-bibtex ; \
          conda install -y r-docopt r-data.table r-ggplot2 r-stringr; \
-         conda install pandas matplotlib scipy'
+         conda install -y docopt pandas matplotlib scipy'
 
 # Get R packages not available with conda (in the channels specified, might be
 # elsewhere):
-R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
-R --vanilla -e 'source("https://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")'
+R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
+R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")'
+# svglite fails due to gdtools failing for R 3.5
 
-# Install CGAT tools with fork:
+# Install CGAT tools:
 #bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/CGATPipeline_core/master/requirements.txt ; \
 #         pip install -r requirements.txt ; \
 #         pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
