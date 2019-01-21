@@ -54,9 +54,13 @@ R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages(
 
 # Install CGAT tools
 # cgat-core:
-#bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/CGATPipeline_core/master/requirements.txt ; \
-#         while read requirement; do conda install --yes $requirement; done < requirements.txt ; \
+#bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
+#         while read requirement; do conda install --yes $requirement; done < conda_requires.txt ; \
+#         conda install -y sqlalchemy ; \
 #         pip install git+git://github.com/cgat-developers/cgat-core.git '
+
+# Check things are installed with eg:
+#while read requirement; do conda list | grep $requirement; done < conda_requires.txt
 
 # Finish and deactivate conda environment:
 conda deactivate
