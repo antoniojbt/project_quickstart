@@ -41,8 +41,10 @@ conda install -y python=3.5
 bash -c 'pip install project_quickstart ; \
          pip install svgutils cairosvg ; \
          pip install sphinxcontrib-bibtex ; \
+         conda install -y latexmk ; \
          conda install -y r-docopt r-data.table r-ggplot2 r-stringr; \
          conda install -y docopt pandas matplotlib scipy'
+# latexmk is now needed for make latexpdf
 
 # Get R packages not available with conda (in the channels specified, might be
 # elsewhere):
