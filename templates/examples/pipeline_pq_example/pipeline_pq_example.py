@@ -106,9 +106,9 @@ import sqlite3
 
 # Try getting CGAT:
 try:
-    import CGATCore.IOTools as IOTools
-    from CGATCore import Pipeline as P
-    import CGATCore.Experiment as E
+    from cgatcore import iotools as iotools
+    from cgatcore import pipeline as P
+    from cgatcore import experiment as E
 
 except ImportError:
     print('\n', "Warning: Couldn't import CGAT modules, these are required. Exiting...")
@@ -158,14 +158,9 @@ def getParamsFiles(paths = ini_paths):
                 p_params_files.append(ini_file)
     return(p_params_files)
 
-#P.getParameters(getParamsFiles()) # old way
-PARAMS = P.Parameters.get_parameters(getParamsFiles()) # works
+PARAMS = P.get_parameters(getParamsFiles()) # works
 #print(PARAMS)
 #print(["{}/pipeline.yml".format(os.path.splitext(__file__)[0])])
-#PARAMS = P.get_params()["%s/pipeline.yml" % os.path.splitext(__file__)[0]] # wrong path
-#PARAMS = P.get_params()["{}/pipeline.yml".format(os.path.splitext(__file__)[0])] # wrong path
-#PARAMS = P.get_params()[getParamsFiles()] # passes a list and errors
-#PARAMS = P.get_params()["some_section"] # what it should be
 
 # Print the options loaded from ini files and possibly a .cgat file:
 #pprint.pprint(PARAMS)
