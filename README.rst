@@ -240,7 +240,7 @@ If you have cgat-core_ installed you can try the following:
    project_quickstart --example # will create a project with runnable scripts and pipeline
    cd pq_example/results
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py --help
-   # Get a copy of the configuration files, you need to modify the ini file manually:
+   # Get a copy of the configuration files, you need to modify the yml file manually:
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py config 
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py show full
    python ../code/pq_example/pipeline_pq_example/pipeline_pq_example.py printconfig
