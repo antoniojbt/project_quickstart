@@ -41,8 +41,10 @@ conda install -y python=3.5
 bash -c 'pip install project_quickstart ; \
          pip install svgutils cairosvg ; \
          pip install sphinxcontrib-bibtex ; \
-         conda install -y r-docopt r-data.table r-ggplot2 r-stringr; \
+         conda install -y latexmk ; \
+         conda install -y r-docopt r-data.table r-ggplot2 r-stringr ; \
          conda install -y docopt pandas matplotlib scipy'
+# latexmk is now needed for make latexpdf
 
 # Get R packages not available with conda (in the channels specified, might be
 # elsewhere):
@@ -50,17 +52,15 @@ R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages(
 R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")'
 # svglite fails due to gdtools failing for R 3.5
 
-# Install CGAT tools:
-#bash -c 'wget https://raw.githubusercontent.com/AntonioJBT/CGATPipeline_core/master/requirements.txt ; \
-#         pip install -r requirements.txt ; \
-#         pip install git+git://github.com/AntonioJBT/CGATPipeline_core.git ; \
-#         pip install cgat ; \
-#         conda install -y rpy2'
-
-# Use cgat-core and cgat-flow:
+# Install CGAT tools
+# cgat-core:
 #bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
-#         pip install -r conda_requires.txt ; \
-#         pip install --upgrade git+git://github.com/cgat-developers/cgat-core'
+#         while read requirement; do conda install --yes $requirement; done < conda_requires.txt ; \
+#         conda install -y sqlalchemy ; \
+#         pip install git+git://github.com/cgat-developers/cgat-core.git '
+
+# Check things are installed with eg:
+#while read requirement; do conda list | grep $requirement; done < conda_requires.txt
 
 # Finish and deactivate conda environment:
 conda deactivate
