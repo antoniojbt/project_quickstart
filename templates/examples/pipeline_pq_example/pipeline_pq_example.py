@@ -78,8 +78,7 @@ See Dockerfile_pq for instructions and dependencies
 * R data.table
 * R stargazer
 * R ggplot2
-* CGATPipelines
-* CGAT
+* cgatcore
 
 
 Documentation
