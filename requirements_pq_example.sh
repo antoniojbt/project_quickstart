@@ -60,10 +60,13 @@ bash -c 'conda install -y texlive-core latexmk perl-local-lib perl==5.20.3.1' # 
 
 # Install CGAT tools
 # cgat-core:
+bash -c 'conda install -y cgatcore'
+
 #bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
 #         while read requirement; do conda install --yes $requirement; done < conda_requires.txt ; \
 #         conda install -y sqlalchemy drmaa; \
 #         pip install git+git://github.com/cgat-developers/cgat-core.git '
+
 
 # drmaa is the python-drmaa binding needed to communicate with the cluster
 # https://drmaa-python.readthedocs.io/en/latest/
@@ -71,6 +74,8 @@ bash -c 'conda install -y texlive-core latexmk perl-local-lib perl==5.20.3.1' # 
 # http://www.drmaa.org/
 # For PBSPro/Torque this would be:
 # http://apps.man.poznan.pl/trac/pbs-drmaa
+# For more references and instructions see:
+# https://github.com/AntonioJBT/pipeline_example
 
 # Check things are installed with eg:
 #while read requirement; do conda list | grep $requirement; done < conda_requires.txt
