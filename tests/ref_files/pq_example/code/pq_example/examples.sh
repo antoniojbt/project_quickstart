@@ -77,8 +77,8 @@ ${python_exec} ../code/pq_example/svgutils_pq_example.py --plotA=${plotA} \
 
 ###########################
 # Create the report:
-cp -r ../code/pq_example/pipeline_pq_example/configuration .
-cd configuration
+cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example .
+cd configuration_pipeline_pq_example
 make html
 ln -fs _build/html/report_pipeline_pq_example.html .
 make latexpdf

@@ -57,7 +57,7 @@ general:
     project_scripts_dir: ../code/pq_example
 
 # Specify the python executable, this is if running on a Mac and using matplotlib (which needs pythonw):
-    py_exec: pythonw
+    py_exec: python
 #either "python" or "pythonw"
 
 # scratchdir for data not to be backed up
