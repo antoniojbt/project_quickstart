@@ -295,7 +295,7 @@ v0.4 (future)
 
 v0.3
 
-- updated to cgat-core
+- updated to cgat-core 0.5.6
 - switched from ini to yml
 - minor bugs in bash example
 - included function to find path to R script being executed
