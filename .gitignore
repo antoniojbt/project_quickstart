@@ -44,7 +44,8 @@ develop-eggs
 lib
 lib64
 tests/__pycache__
-
+tests/helpers/__pycache__
+tests/*.pyc
 
 # Sphinx:
 docs/_build
