@@ -97,7 +97,7 @@ __ https://hilaryparker.com/2013/04/03/personal-r-packages/
 Installation
 ############
 
-I've tested on MAC OS X and Linux.
+Tested on macOS, Windows and Linux.
 
 Please raise an issue if you have problems.
 
