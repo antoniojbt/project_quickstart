@@ -5,24 +5,54 @@
 
 ################
 # Use container-based infrastructure on Travis:
-sudo: false
+#sudo: false
 ################
 
 ################
 # https://docs.travis-ci.com/user/multi-os/
-os:
+#os:
 #  - osx # needs more work, maybe download miniconda first
-  - linux
+#  - linux
+################
+
+################
+# Copied from: https://docs.travis-ci.com/user/languages/python/
+language: python            # this works for Linux but is an error on macOS or Windows
+matrix:
+  include:
+    - name: "Python 3.6 on Xenial Linux"
+      python: 3.5           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+    - name: "Python 3.6 on Xenial Linux"
+      python: 3.6           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+    - name: "Python 3.7.1 on Xenial Linux"
+      python: 3.7           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+    - name: "Python 3.7.2 on macOS"
+      os: osx
+      osx_image: xcode10.2  # Python 3.7.2 running on macOS 10.14.3
+      language: shell       # 'language: python' is an error on Travis CI macOS
+    - name: "Python 3.7.3 on Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install: choco install python
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+install: pip3 install --upgrade pip  # all three OSes agree about 'pip3'
+# 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
+# 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
+#script: python3 my_app.py || python my_app.py
 ################
 
 ################
 # Specify runtime and versions
 # See: https://docs.travis-ci.com/user/customizing-the-build/#Specifying-Runtime-Versions
-language: python
-python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
+#dist: xenial
+#language: python
+#python:
+#  - "3.5"
+#  - "3.6"
+#  - "3.7"
 ################
 
 ################
