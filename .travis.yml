@@ -74,7 +74,6 @@ before_script:
 
 # command to run tests
 script:
-  - which python || which python3
   - pytest -rP -v --cache-clear
 #  - coverage run --source=project_quickstart setup.py test
 
