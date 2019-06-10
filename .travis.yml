@@ -5,35 +5,48 @@
 
 ################
 # Use container-based infrastructure on Travis:
-sudo: false
+#sudo: false
 ################
 
 ################
-# https://docs.travis-ci.com/user/multi-os/
-#os:
-#  - osx # needs more work, maybe download miniconda first
-#  - linux
-################
-
-################
-# Specify runtime and versions
-# See: https://docs.travis-ci.com/user/customizing-the-build/#Specifying-Runtime-Versions
-language: python
-dist: xenial
-python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
+# Copied from: https://docs.travis-ci.com/user/languages/python/
+# Also see: https://docs.travis-ci.com/user/multi-os/
+language: python            # this works for Linux but is an error on macOS or Windows
+matrix:
+  include:
+    - name: "Python 3.6 on Xenial Linux"
+      python: 3.5           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+    - name: "Python 3.6 on Xenial Linux"
+      python: 3.6           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+    - name: "Python 3.7.1 on Xenial Linux"
+      python: 3.7           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+    - name: "Python 3.7.2 on macOS"
+      os: osx
+      osx_image: xcode10.2  # Python 3.7.2 running on macOS 10.14.3
+      language: shell       # 'language: python' is an error on Travis CI macOS
+    - name: "Python 3.7.3 on Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install:
+          - choco install python
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 ################
 
 ################
 # Install dependencies:
 install:
-  - pip install -r requirements.txt # --use-mirrors errors in Py3.5
-  - python setup.py install
-  - pip install flake8
+  - pip3 install --upgrade pip  || pip3 install --user pip # all three OSes agree about 'pip3'
+                                                           # Windows complained denied permission
+                                                           # use || so that the right executables get
+                                                           # called depending on the OS
+  - pip3 install -r requirements.txt # --use-mirrors errors in Py3.5
+  - python setup.py install || python3 setup.py install
+  - pip3 install flake8
+  - pip3 install -U pytest
 #  - pip install coverage # coveralls.io continuously monitors test case coverage
-#  - pip install coveralls
 ################
 
 ################
@@ -47,7 +60,7 @@ before_script:
     - flake8 .
 
 # command to run tests
-script: 
+script:
   - pytest -rP -v --cache-clear
 #  - coverage run --source=project_quickstart setup.py test
 
