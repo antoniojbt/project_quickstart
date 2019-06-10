@@ -10,19 +10,20 @@ sudo: false
 
 ################
 # https://docs.travis-ci.com/user/multi-os/
-os:
+#os:
 #  - osx # needs more work, maybe download miniconda first
-  - linux
+#  - linux
 ################
 
 ################
 # Specify runtime and versions
 # See: https://docs.travis-ci.com/user/customizing-the-build/#Specifying-Runtime-Versions
 language: python
+dist: xenial
 python:
   - "3.5"
   - "3.6"
-#  - "3.7"
+  - "3.7"
 ################
 
 ################
