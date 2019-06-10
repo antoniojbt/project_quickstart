@@ -9,14 +9,8 @@
 ################
 
 ################
-# https://docs.travis-ci.com/user/multi-os/
-#os:
-#  - osx # needs more work, maybe download miniconda first
-#  - linux
-################
-
-################
 # Copied from: https://docs.travis-ci.com/user/languages/python/
+# Also see: https://docs.travis-ci.com/user/multi-os/
 language: python            # this works for Linux but is an error on macOS or Windows
 matrix:
   include:
@@ -40,7 +34,6 @@ matrix:
           - choco install python
           #- pip install -U pytest
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-install: pip3 install --upgrade pip  # all three OSes agree about 'pip3'
 ################
 
 ################
@@ -57,13 +50,14 @@ install: pip3 install --upgrade pip  # all three OSes agree about 'pip3'
 ################
 # Install dependencies:
 install:
-  - pip install -r requirements.txt # --use-mirrors errors in Py3.5
+  - pip3 install --upgrade pip  # all three OSes agree about 'pip3'
+  - pip3 install -r requirements.txt # --use-mirrors errors in Py3.5
   # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
   # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
   #script: python3 my_app.py || python my_app.py
   - python setup.py install || python3 setup.py install
-  - pip install flake8
-  - pip install -U pytest
+  - pip3 install flake8
+  - pip3 install -U pytest
 #  - pip install coverage # coveralls.io continuously monitors test case coverage
 #  - pip install coveralls
 ################
@@ -79,7 +73,8 @@ before_script:
     - flake8 .
 
 # command to run tests
-script: 
+script:
+  - which python || which python3
   - pytest -rP -v --cache-clear
 #  - coverage run --source=project_quickstart setup.py test
 
