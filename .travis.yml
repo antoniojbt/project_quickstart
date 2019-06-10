@@ -41,9 +41,6 @@ matrix:
           - pip install -U pytest
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
 install: pip3 install --upgrade pip  # all three OSes agree about 'pip3'
-# 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
-# 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
-#script: python3 my_app.py || python my_app.py
 ################
 
 ################
@@ -61,7 +58,10 @@ install: pip3 install --upgrade pip  # all three OSes agree about 'pip3'
 # Install dependencies:
 install:
   - pip install -r requirements.txt # --use-mirrors errors in Py3.5
-  - python setup.py install
+  # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
+  # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
+  #script: python3 my_app.py || python my_app.py
+  - python setup.py install || python3 setup.py install
   - pip install flake8
 #  - pip install coverage # coveralls.io continuously monitors test case coverage
 #  - pip install coveralls
