@@ -32,34 +32,21 @@ matrix:
       language: shell       # 'language: python' is an error on Travis CI Windows
       before_install:
           - choco install python
-          #- pip install -U pytest
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-################
-
-################
-# Specify runtime and versions
-# See: https://docs.travis-ci.com/user/customizing-the-build/#Specifying-Runtime-Versions
-#dist: xenial
-#language: python
-#python:
-#  - "3.5"
-#  - "3.6"
-#  - "3.7"
 ################
 
 ################
 # Install dependencies:
 install:
   - pip3 install --upgrade pip  || pip3 install --user pip # all three OSes agree about 'pip3'
+                                                           # Windows complained denied permission
+                                                           # use || so that the right executables get
+                                                           # called depending on the OS
   - pip3 install -r requirements.txt # --use-mirrors errors in Py3.5
-  # 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
-  # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
-  #script: python3 my_app.py || python my_app.py
   - python setup.py install || python3 setup.py install
   - pip3 install flake8
   - pip3 install -U pytest
 #  - pip install coverage # coveralls.io continuously monitors test case coverage
-#  - pip install coveralls
 ################
 
 ################
