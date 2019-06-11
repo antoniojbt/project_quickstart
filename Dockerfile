@@ -49,6 +49,7 @@ RUN apk update && apk upgrade \
 #    git \ # Already in Alpine Python
 
 #####
+# If running the example pipelines:
 # Cairo graphics libraries are needed for svg plots.
 # On Debian images run eg:
 #apt-get update
@@ -67,6 +68,10 @@ RUN apk update && apk upgrade \
 
 # For cairo libraries run:
 #sudo apt-get install libcairo2-dev
+
+# Install inkscape:
+#sudo apt install inkscape
+
 #####
 
 #########################
