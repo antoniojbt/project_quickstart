@@ -40,13 +40,12 @@ conda install -y python=3.5
 # Install project_quickstart and pq_example requirements:
 bash -c 'pip install project_quickstart ; \
          conda install -y r-docopt r-data.table r-ggplot2 r-stringr ; \
-         conda install -y docopt pandas matplotlib scipy svgutils cairosvg'
+         conda install -y docopt pandas matplotlib scipy svgutils cairosvg \
+         conda install -y r-svglite r-stargazer'
 
 # Get R packages not available with conda (in the channels specified, might be
 # elsewhere):
-R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
-R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("svglite", repos = "http://cran.us.r-project.org") ; library("svglite")'
-# svglite fails due to gdtools failing for R 3.5
+#R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
 
 # Install latex and requirements for report building:
 bash -c 'conda install -y sphinxcontrib-bibtex' # for both pdf and html reports
@@ -57,16 +56,9 @@ bash -c 'conda install -y texlive-core latexmk perl-local-lib perl==5.20.3.1' # 
 # perl and perl local::lib are needed for latex and sphinx report building, perl without local::lib gives compilation errors and missing modules
 # This only affects latex and pdf building though, html reports are fine
 
-
 # Install CGAT tools
 # cgat-core:
 bash -c 'conda install -y cgatcore'
-
-#bash -c 'wget https://raw.githubusercontent.com/cgat-developers/cgat-core/master/conda_requires.txt ; \
-#         while read requirement; do conda install --yes $requirement; done < conda_requires.txt ; \
-#         conda install -y sqlalchemy drmaa; \
-#         pip install git+git://github.com/cgat-developers/cgat-core.git '
-
 
 # drmaa is the python-drmaa binding needed to communicate with the cluster
 # https://drmaa-python.readthedocs.io/en/latest/
