@@ -19,6 +19,10 @@ FROM jfloff/alpine-python
 # docker run --rm -ti jfloff/alpine-python bash
 # docker run --rm -ti jfloff/alpine-python python hello.py
 
+# An interactive shell based on Debian with miniconda3 is:
+# docker pull continuumio/miniconda3
+# docker run -i -t continuumio/miniconda3 /bin/bash
+
 #########
 # Contact
 #########
@@ -44,6 +48,26 @@ RUN apk update && apk upgrade \
 #    unzip \
 #    git \ # Already in Alpine Python
 
+#####
+# Cairo graphics libraries are needed for svg plots.
+# On Debian images run eg:
+#apt-get update
+#apt-get upgrade
+#apt-get install
+#apt-get clean
+
+# Then install packages to allow apt to use a repository over HTTPS:
+#apt-get install \
+#    apt-transport-https \
+#    ca-certificates \
+#    curl \
+#    gnupg2 \
+#    software-properties-common \
+#    sudo
+
+# For cairo libraries run:
+#sudo apt-get install libcairo2-dev
+#####
 
 #########################
 # Install Python packages
