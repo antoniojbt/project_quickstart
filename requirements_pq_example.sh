@@ -40,11 +40,12 @@ conda install -y python=3.5
 # Install project_quickstart and pq_example requirements:
 bash -c 'pip install project_quickstart ; \
          conda install -y r-docopt r-data.table r-ggplot2 r-stringr ; \
-         conda install -y docopt pandas matplotlib scipy svgutils cairosvg \
+         conda install -y docopt pandas matplotlib scipy svgutils cairosvg ; \
          conda install -y r-svglite r-stargazer'
 
-# Get R packages not available with conda (in the channels specified, might be
-# elsewhere):
+# stargazer may need to be:
+#conda install -c fongchun r-stargazer 
+# Or get R packages not available with conda (in the channels specified, might be elsewhere):
 #R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
 
 # To get svg graphics you'll need the cairo libraries and Inkscape package:
