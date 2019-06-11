@@ -216,9 +216,10 @@ You can get a simple example of a report, based on sphinx-quickstart_, by doing:
 
 .. code-block:: bash
 
-   cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example .
-   cd configuration_pipeline_pq_example
-   make html
+   cp -r ../code/pq_example/pipeline_pq_example/pipeline_report .
+   cd pipeline_report
+   ln -s ../../code/pq_example/pipeline_pq_example/configuration/pipeline.yml .
+   make html 
    ln -s _build/html/report_pipeline_pq_example.html .
    make latexpdf
    ln -s _build/latex/pq_example.pdf .
@@ -231,7 +232,7 @@ You can run most of this with a bash script:
    cd pq_example/results
    # Use pythonw if on a Mac, otherwise python:
    bash ../code/pq_example/examples.sh python > examples.log
-   open configuration*/pq_example.pdf configuration*/report_pipeline_pq_example.html # in a Mac
+   open pipeline_report/pq_example.pdf pipeline_report/report_pipeline_pq_example.html # in a Mac
 
 If you have cgat-core_ installed you can try the following:
 
