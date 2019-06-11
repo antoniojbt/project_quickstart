@@ -157,15 +157,14 @@ This will create data, code, manuscript and results directories along with Pytho
 The --script options will create additional copies of script templates in the current working directory.
 
 
-A simple example
-================
+A pipeline example
+==================
 
 To run an example of a project with scripts, pipeline and report, you'll need to install several additional tools.
 See the Dockerfiles on how to do this for Linux.
 
-To create and run within a conda environment you can try the following bash
-script. You may need to run commands manually if it fails though and there are
-other dependencies which need manual installation (inkscape and latex for example).
+To create and run within a conda environment you can try the following bash script.
+You may need to run commands manually if it fails though and there are other dependencies which need manual installation. You'll need Cairo graphics libraries, Inkscape and latex for the plotting scripts and report.
 
 Note that if you intend to run the pipeline example below, you may want to install cgat-core_ before and within that environment install the additional tools required.
 
@@ -217,9 +216,10 @@ You can get a simple example of a report, based on sphinx-quickstart_, by doing:
 
 .. code-block:: bash
 
-   cp -r ../code/pq_example/pipeline_pq_example/configuration_pipeline_pq_example .
-   cd configuration_pipeline_pq_example
-   make html
+   cp -r ../code/pq_example/pipeline_pq_example/pipeline_report .
+   cd pipeline_report
+   ln -s ../../code/pq_example/pipeline_pq_example/configuration/pipeline.yml .
+   make html 
    ln -s _build/html/report_pipeline_pq_example.html .
    make latexpdf
    ln -s _build/latex/pq_example.pdf .
@@ -232,7 +232,7 @@ You can run most of this with a bash script:
    cd pq_example/results
    # Use pythonw if on a Mac, otherwise python:
    bash ../code/pq_example/examples.sh python > examples.log
-   open configuration*/pq_example.pdf configuration*/report_pipeline_pq_example.html # in a Mac
+   open pipeline_report/pq_example.pdf pipeline_report/report_pipeline_pq_example.html # in a Mac
 
 If you have cgat-core_ installed you can try the following:
 
