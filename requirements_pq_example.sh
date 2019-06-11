@@ -47,6 +47,11 @@ bash -c 'pip install project_quickstart ; \
 # elsewhere):
 #R --vanilla -e 'source("http://bioconductor.org/biocLite.R") ; install.packages("stargazer", repos = "http://cran.us.r-project.org") ; library("stargazer")'
 
+# To get svg graphics you'll need the cairo libraries and Inkscape package:
+# https://cairographics.org/
+# https://inkscape.org/
+# See the Dockerfile with examples for installation on Alpine or Debian
+
 # Install latex and requirements for report building:
 bash -c 'conda install -y sphinxcontrib-bibtex' # for both pdf and html reports
 bash -c 'conda install -y texlive-core latexmk perl-local-lib perl==5.20.3.1' # for pdf reports
