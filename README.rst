@@ -157,15 +157,14 @@ This will create data, code, manuscript and results directories along with Pytho
 The --script options will create additional copies of script templates in the current working directory.
 
 
-A simple example
-================
+A pipeline example
+==================
 
 To run an example of a project with scripts, pipeline and report, you'll need to install several additional tools.
 See the Dockerfiles on how to do this for Linux.
 
-To create and run within a conda environment you can try the following bash
-script. You may need to run commands manually if it fails though and there are
-other dependencies which need manual installation (inkscape and latex for example).
+To create and run within a conda environment you can try the following bash script.
+You may need to run commands manually if it fails though and there are other dependencies which need manual installation. You'll need Cairo graphics libraries, Inkscape and latex for the plotting scripts and report.
 
 Note that if you intend to run the pipeline example below, you may want to install cgat-core_ before and within that environment install the additional tools required.
 
