@@ -95,9 +95,9 @@ from ruffus import *
 import sqlite3
 
 # CGAT tools:
-import CGATCore.IOTools as IOTools
-import CGATCore.Pipeline as P
-import CGATCore.Experiment as E
+import cgatcore.iotools as iotools
+import cgatcore.pipeline as P
+import cgatcore.experiment as E
 
 
 # Import this project's module, uncomment if building something more elaborate: 

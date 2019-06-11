@@ -75,7 +75,7 @@ from builtins import dict
 
 # Try getting CGAT:
 try:
-    import CGAT.IOTools as IOTools
+    import CGAT.iotools as iotools
     import CGATPipeline.Pipeline as P
     import CGATPipeline.Experiment as E
 
