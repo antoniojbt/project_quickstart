@@ -6,15 +6,26 @@ rsync, run e.g.:
 
 # Specify full path names carefully: remote_url should end in "/", e.g. /ifs/projects/proj_YYY/
 
+# To do a dry run, show progress, continue with partially synchronised files and show an itemised update do:
+rsync --dry-run -rvltoDPi
+
 # Explanation of some options for rsync:
 
 # -u option to avoid deleting newer files at target, ie do not delete the destination file and do not copy the old file.
 # --delete delete at target if absent at source (not used here though)
 # -z to compress during transmission (faster)
-# -P show progress
+# -P --progress --partial show progress and allow recovery of partially transferred files (default is to delete)
 # -a archive mode; same as -rlptgoD (no -H); which ensures that symbolic links, devices, attributes, permissions,  ownerships, etc. are preserved in the transfer. The -r option copies recursively.
 # -i view differences between source and destination files
 # -L transform symlink into referent file/dir (which here overwrites the -l included in the archive option).
+
+# Others:
+# -o tries to set the owner of the destination as the source
+# -l recreates symlink
+# -r recursively copies
+# -t copies the times across
+# -D --devices --specials tries to transfer character and block device files and special files
+
 ##########
 
 
