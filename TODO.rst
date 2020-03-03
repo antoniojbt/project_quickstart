@@ -2,7 +2,7 @@
 Things to do
 ############
 
-:Date: 25 April 2017
+:Date: February 2020
 
 
 - Conda recipe
@@ -22,3 +22,5 @@ __ https://github.com/conda/kapsel
 __ https://daler.github.io/sphinxdoc-test/includeme.html
 
 - Have methods and plot scripts output legend\*.rst with parameters used, method\*.rst and generic interpretation\*.rst files output to disk to then glob into manuscript template.
+
+- Check other tools: https://docs.google.com/spreadsheets/d/1W2I9Di-_PEPicMUR2_Kj9WRoeYCaOJLVBPSR8AsfZy8/edit#gid=0
