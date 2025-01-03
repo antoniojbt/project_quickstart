@@ -44,6 +44,15 @@ param_default=${1-use_foo_if_not_set}
 ###########################
 
 ###########################
+# Trap for cleanup
+trap 'rm -f "$tempfile"; exit' INT TERM EXIT
+# trap: monitor signals (INT, TERM, EXIT) to clean up temp dir (delete) if script gets interrupted
+
+# Create a temporary directory:
+mkdir -p "$TEMP_DIR"
+###########################
+
+###########################
 # If running from the command line and using positional arguments:
 #greeting=$1
 #name=$2
