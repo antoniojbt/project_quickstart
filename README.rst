@@ -1,3 +1,7 @@
+.. image:: https://www.repostatus.org/badges/latest/inactive.svg
+   :alt: Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.
+   :target: https://www.repostatus.org/#inactive
+
 .. image:: https://travis-ci.org/AntonioJBT/project_quickstart.svg?branch=master
    :target: https://travis-ci.org/AntonioJBT/project_quickstart
 
