@@ -633,7 +633,7 @@ def main(argv=None):
 
 def create_project(name, *, argv_prefix=None):
     """Programmatically create a project skeleton."""
-    args = [f"--project-name={name}"]
+    args = [f"-n={name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
