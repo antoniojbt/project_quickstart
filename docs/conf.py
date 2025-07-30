@@ -94,36 +94,9 @@ for key in CONFIG:
 
 #################
 # Get version, this will be in project_XXXX/code/project_XXXX/version.py:
-def getVersionDir():
-    project_name = str(CONFIG['metadata']['project_name'])
-    #print(project_name, '\n')
-    version_dir = os.path.join(here, '..', 'code', project_name)
-    version_dir_2 = os.path.join(here, '..', project_name)
-    #print(version_dir, '\n', version_dir_2)
-    if os.path.exists(version_dir):
-        sys.path.insert(0, version_dir)
-        import version
-        version = version.set_version()
-    elif os.path.exists(version_dir_2):
-        sys.path.insert(0, version_dir_2)
-        import version
-        version = version.set_version()
-    else:
-        version = '0.1.0'
-        print(str('version not found, the directories: ' +
-                  version_dir +
-                  '\n' +
-                  version_dir_2 +
-                  'do not seem to exist' +
-                  'version set to 0.1.0' +
-                  'Edit the Sphinx conf.py manually to change.'
-                  )
-              )
-    #print(version, '\n')
-    return(version)
+# The package version is defined in ``project_quickstart.version``.
+from project_quickstart.version import __version__ as version
 
-version = str(getVersionDir())
-print(version)
 #################
 
 
