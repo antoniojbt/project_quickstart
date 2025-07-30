@@ -39,7 +39,7 @@ project_quickstart = "project_quickstart.project_quickstart:main"
 include-package-data = true
 
 [tool.setuptools.package-data]
-"*" = ["templates/**"]
+"project_quickstart" = ["templates/**"]
 
 [tool.setuptools.packages.find]
 include = ["project_quickstart"]
