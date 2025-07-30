@@ -107,12 +107,10 @@ for key in CONFIG:
 #################
 # Get version:
 src_dir = str(CONFIG['metadata']['project_name'])
-sys.path.insert(0, src_dir)
 print(src_dir)
 
-import version  # needs to be after sys.path.insert() because of name clashes (?)
+from project_quickstart.version import __version__ as version  # single source of truth
 
-version = version.set_version()
 print(version)
 #################
 

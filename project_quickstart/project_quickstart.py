@@ -77,9 +77,7 @@ import docopt
 
 # Package module:
 import project_quickstart.projectQuickstart as projectQuickstart
-import project_quickstart.version as version
-
-version = version.set_version()
+from project_quickstart.version import __version__ as version
 
 # Get package source directory in (param path) '
 src_dir = projectQuickstart.getDir('..')
