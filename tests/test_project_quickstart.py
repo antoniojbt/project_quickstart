@@ -39,8 +39,6 @@ Options:
 # System:
 import pytest
 import os
-import tempfile
-import sys
 
 # Import helper functions from this package:
 import pytest_helpers
@@ -57,12 +55,21 @@ test_name = 'pq_test_ref'
 # For each dir generate and compare directory trees and compare ref and test files
 # For each script (py and R) compare ref and test files
 
-cli_options = [[sys.executable, '-m', 'project_quickstart.project_quickstart', '-n', '{}'.format(test_name)],
-               [sys.executable, '-m', 'project_quickstart.project_quickstart', '--script-python={}'.format(test_name)],
-               [sys.executable, '-m', 'project_quickstart.project_quickstart', '--script-R={}'.format(test_name)],
-               [sys.executable, '-m', 'project_quickstart.project_quickstart', '--script-pipeline={}'.format(test_name)],
-               [sys.executable, '-m', 'project_quickstart.project_quickstart', '--example'],
-               ]
+from project_quickstart.project_quickstart import (
+    create_project,
+    create_python_script,
+    create_r_script,
+    create_pipeline,
+    create_example,
+)
+
+cli_options = [
+    lambda: create_project('{}'.format(test_name)),
+    lambda: create_python_script('{}'.format(test_name)),
+    lambda: create_r_script('{}'.format(test_name)),
+    lambda: create_pipeline('{}'.format(test_name)),
+    lambda: create_example,
+]
 
 dirs = ['{}'.format(test_name),
         'pipeline_{}'.format(test_name),
@@ -82,10 +89,14 @@ dirs = ['{}'.format(test_name),
 ref_dir = os.path.abspath(os.path.join('tests', 'ref_files'))
 print(ref_dir)
 
-# Create temporary directory for test outputs:
-test_dir = tempfile.mkdtemp()
-print(test_dir)
-os.chdir(test_dir)
+
+@pytest.fixture(scope="module")
+def workspace(tmp_path_factory):
+    tmp_dir = tmp_path_factory.mktemp("pq_test")
+    cwd = os.getcwd()
+    os.chdir(tmp_dir)
+    yield str(tmp_dir)
+    os.chdir(cwd)
 #####
 
 
@@ -94,16 +105,17 @@ os.chdir(test_dir)
 # Run each project_quickstart CLI option:
 # Functions that are needed to create test files should use the pytest.fixture decorator
 @pytest.fixture
-def run_cmds():
+def run_cmds(workspace):
     '''
     Run command line options for project_quickstart
     '''
-    pytest_helpers.run_CLI_options(cli_options)
+    for fn in cli_options:
+        fn()
 
 
 # For each dir generate and compare directory tree files:
 @pytest.fixture
-def dir_trees():
+def dir_trees(workspace):
     '''
     Generate files with the directory trees for project_quickstart
     '''
@@ -122,14 +134,14 @@ def dir_trees():
 # Collect and compare for each dir from ref and test, this will include files
 # created with '--script-' options and files with tree dirs:
 @pytest.mark.skip(reason="Known issue: pipeline template files missing during CI")
-def test_collect_and_compare_all_files(run_cmds, dir_trees):
+def test_collect_and_compare_all_files(run_cmds, dir_trees, workspace):
     '''
     Run project_quickstart commands and files with directory tree for this test and
     compare outputs of test vs reference files. Checks number of files, names of files
     and content of each test vs ref pair.
     '''
     dirs.append('.')  # Add cwd after creating tree dirs else erros as different lengths
-    pytest_helpers.compare_ref_and_test_dirs(dirs, ref_dir, test_dir, suffix = '')
+    pytest_helpers.compare_ref_and_test_dirs(dirs, ref_dir, workspace, suffix = '')
 
 
 print('Tests finished')
