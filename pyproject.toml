@@ -44,8 +44,6 @@ include-package-data = true
 [tool.setuptools.packages.find]
 include = ["project_quickstart"]
 
-[project.scripts]
-project_quickstart = "project_quickstart.project_quickstart:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "project_quickstart.version.__version__"}
