@@ -1,0 +1,2 @@
+ignore_paths:
+  - tests/ref_files
