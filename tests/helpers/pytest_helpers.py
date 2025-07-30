@@ -236,7 +236,8 @@ def compute_checksum(filename):
     '''
     Return md5 checksum
     '''
-    md5 = hashlib.md5(open(filename, 'rb').read(), usedforsecurity=False).hexdigest()
+    with open(filename, 'rb') as f:
+        md5 = hashlib.md5(f.read(), usedforsecurity=False).hexdigest()
 
     return(md5)
 ##############
