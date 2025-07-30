@@ -2,8 +2,8 @@
    :alt: Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.
    :target: https://www.repostatus.org/#inactive
 
-.. image:: https://travis-ci.org/AntonioJBT/project_quickstart.svg?branch=master
-   :target: https://travis-ci.org/AntonioJBT/project_quickstart
+.. image:: https://github.com/AntonioJBT/project_quickstart/actions/workflows/tests.yml/badge.svg
+   :target: https://github.com/AntonioJBT/project_quickstart/actions/workflows/tests.yml
 
 .. image:: https://readthedocs.org/projects/project-quickstart/badge/?version=latest
    :target: http://project-quickstart.readthedocs.io/en/latest/?badge=latest
@@ -36,7 +36,7 @@ This tool was produced with the following in mind:
 - Use of Ruffus_ as a pipeline tool and `CGAT tools`_ for support 
 - Python_ programming and packaging_
 - restructuredText_ and Sphinx_ for reporting
-- Travis_ and tox_ for testing
+- GitHub Actions_ and tox_ for testing
 - Conda_ and Docker_ for management and development
 - GitHub_ for version control
 
@@ -44,7 +44,7 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 
 - ReadtheDocs_ (to easily render your documentation online)
 - Zenodo_ (for archiving your code and generating a DOI)
-- Travis CI (to integrate code testing)
+- GitHub Actions (to integrate code testing)
 
 .. _Ruffus: http://www.ruffus.org.uk/
 
@@ -58,7 +58,7 @@ I've additionally put some basic instructions/reminders to link GitHub with:
 
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 
-.. _Travis: https://travis-ci.org/
+.. _GitHub Actions: https://github.com/features/actions
 
 .. _tox: https://tox.readthedocs.io/en/latest/
 
@@ -156,7 +156,7 @@ Create a project directory skeleton. From the command line do:
    project_quickstart --script-R my_super_script # which will create an R script template called my_super_script.R
    project_quickstart --script-python my_super_script # which will create a Python script template called my_super_script.py
 
-This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, Travis CI, Sphinx, etc.
+This will create data, code, manuscript and results directories along with Python and R template scripts and the necessary skeleton files for Python packaging, Docker, GitHub Actions CI, Sphinx, etc.
 
 The --script options will create additional copies of script templates in the current working directory.
 
@@ -329,8 +329,8 @@ Project workflow
 
 #. Run this package to setup folders, github repo structure, code testing, py package files, etc.
 #. Download packages, tools, etc. Setup Docker, conda kaspel, or other form of tracking environment, packages and their versions.
-#. Manually connect GitHub with integrated services (Travis CI, Zenodo, RTD).
-#. Code and test code with tox, travis and py.test
+#. Manually connect GitHub with integrated services (GitHub Actions CI, Zenodo, RTD).
+#. Code and test code with tox, GitHub Actions and py.test
 #. Analyse
 #. Create new scripts, new pipelines, test them
 #. Document code as you go, update with sphinx autodoc
@@ -364,7 +364,7 @@ See this layout_ for one explanation on organising Python projects
 project_quickstart.py copies the contents of project_quickstart/templates/project_template/ so as to have all the skeleton files needed for:
 
 - Github repository files (but not .git) like: .gitignore, README, THANKS, TODO, LICENCE, etc.
-- Travis testing files, tests dir with skeleton files
+- GitHub Actions workflow files, tests dir with skeleton files
 - Tox python testing
 - Python packaging files
 - Dockerfile
@@ -383,8 +383,8 @@ Make additional script template copies with project_quickstart.py (located in pr
 Testing
 =======
 
-- See tox, travis and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
-- Check travis setup, add pep8 and flake8 to improve your code.
+- See tox, GitHub Actions and py.test for a proper setup of py virtualenv, CI and unit testing respectively.
+- Check GitHub Actions setup, add pep8 and flake8 to improve your code.
 - See CGAT docs for an explanation `on testing`_.
 	
 .. _`on testing`: https://www.cgat.org/downloads/public/cgat/documentation/testing.html#testing
