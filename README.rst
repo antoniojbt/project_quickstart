@@ -108,7 +108,7 @@ Please raise an issue if you have problems.
 Dependencies
 ============
 
-- Python >3.5
+- Python >=3.8
 - If you run the examples option you will need many more tools. See
   the Dockerfiles included for specific instructions.
 
