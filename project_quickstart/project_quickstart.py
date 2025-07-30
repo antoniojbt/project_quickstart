@@ -96,7 +96,7 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 
 ##############################
-def main():
+def main():  # noqa: C901
     ''' with docopt main() expects a dictionary with arguments from docopt()
     docopt will automatically check your docstrings for usage, set -h, etc.
     '''

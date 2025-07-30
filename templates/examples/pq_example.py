@@ -177,9 +177,9 @@ def handleErrors():
     except TypeError: #some error to catch
         print('Wrong type of variable') #some helpful message or other option
         raise # Raise the system error anyway
-    except: # 'except:' by itself will catch everything, potentially disastrous
+    except Exception:
         print("Unexpected error:", sys.exc_info()[0])
-        raise # even if caught raise the error
+        raise  # even if caught raise the error
     finally:
         print('Did this work?')#do this regardless of the above, also dangerous
 #####
@@ -215,14 +215,14 @@ class SuperHero:
       print("Total SuperHero saves %d" % SuperHero.SuperSaves)
 
     def displaySuperHero(self):
-        print("Name: ", self.name,  " Power: ", self.power, " Saves: ", self.saves)
+        print("Name:", self.name, "Power:", self.power, "Saves:", self.saves)
 
 def runOOPHeroes(saves):
     ''' Example function that runs OOP code for SuperHeroes '''
     # First object in class:
     super1 = SuperHero("SuperWoman", 'Strong', saves)
     # Second object in class:
-    super2 = SuperHero("AveJoe", 'Common Sense', saves = (saves - 2))
+    super2 = SuperHero("AveJoe", 'Common Sense', saves=(saves - 2))
 
     # Check the Attributes:
     super1.displaySuperHero()
