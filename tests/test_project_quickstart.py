@@ -68,7 +68,7 @@ cli_options = [
     lambda: create_python_script('{}'.format(test_name)),
     lambda: create_r_script('{}'.format(test_name)),
     lambda: create_pipeline('{}'.format(test_name)),
-    lambda: create_example,
+    lambda: create_example(),
 ]
 
 dirs = ['{}'.format(test_name),
