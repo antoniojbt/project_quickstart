@@ -39,7 +39,6 @@ Options:
 # System:
 import pytest
 import os
-import sys
 
 # Import helper functions from this package:
 import pytest_helpers
