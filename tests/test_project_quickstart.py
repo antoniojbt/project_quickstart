@@ -40,6 +40,7 @@ Options:
 import pytest
 import os
 import tempfile
+import sys
 
 # Import helper functions from this package:
 import pytest_helpers
@@ -55,7 +56,6 @@ test_name = 'pq_test_ref'
 
 # For each dir generate and compare directory trees and compare ref and test files
 # For each script (py and R) compare ref and test files
-import sys
 
 cli_options = [[sys.executable, '-m', 'project_quickstart.project_quickstart', '-n', '{}'.format(test_name)],
                [sys.executable, '-m', 'project_quickstart.project_quickstart', '--script-python={}'.format(test_name)],
