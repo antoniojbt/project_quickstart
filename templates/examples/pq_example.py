@@ -215,14 +215,14 @@ class SuperHero:
       print("Total SuperHero saves %d" % SuperHero.SuperSaves)
 
     def displaySuperHero(self):
-        print("Name: ", self.name,  " Power: ", self.power, " Saves: ", self.saves)
+        print("Name:", self.name, "Power:", self.power, "Saves:", self.saves)
 
 def runOOPHeroes(saves):
     ''' Example function that runs OOP code for SuperHeroes '''
     # First object in class:
     super1 = SuperHero("SuperWoman", 'Strong', saves)
     # Second object in class:
-    super2 = SuperHero("AveJoe", 'Common Sense', saves = (saves - 2))
+    super2 = SuperHero("AveJoe", 'Common Sense', saves=(saves - 2))
 
     # Check the Attributes:
     super1.displaySuperHero()

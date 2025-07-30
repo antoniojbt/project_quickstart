@@ -217,8 +217,7 @@ setup(  # Package information:
         package_data = {'': extra_files},
         # Dependencies:
         install_requires = install_requires,
-        entry_points = {'console_scripts': [
-                        'project_quickstart = project_quickstart.project_quickstart:main']},
+        # entry point defined in pyproject.toml
         # Other options:
         zip_safe = False,)
 #################
