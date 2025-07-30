@@ -177,9 +177,9 @@ def handleErrors():
     except TypeError: #some error to catch
         print('Wrong type of variable') #some helpful message or other option
         raise # Raise the system error anyway
-    except: # 'except:' by itself will catch everything, potentially disastrous
+    except Exception:
         print("Unexpected error:", sys.exc_info()[0])
-        raise # even if caught raise the error
+        raise  # even if caught raise the error
     finally:
         print('Did this work?')#do this regardless of the above, also dangerous
 #####

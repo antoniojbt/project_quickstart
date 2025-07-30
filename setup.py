@@ -105,15 +105,20 @@ for key in CONFIG:
 
 
 #################
-# Get version:
+# Get version without importing the package
 src_dir = str(CONFIG['metadata']['project_name'])
-sys.path.insert(0, src_dir)
-print(src_dir)
+version_path = os.path.join(here, src_dir, 'version.py')
 
-import version  # needs to be after sys.path.insert() because of name clashes (?)
+def read_version(path):
+    """Return the ``__version__`` string from the given file."""
+    with open(path, encoding='utf-8') as f:
+        for line in f:
+            if line.startswith('__version__'):
+                delim = '"' if '"' in line else "'"
+                return line.split(delim)[1]
+    raise RuntimeError('Unable to find version string')
 
-version = version.set_version()
-print(version)
+version = read_version(version_path)
 #################
 
 

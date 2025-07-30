@@ -4,10 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "project_quickstart"
-version = "0.3.8"
+dynamic = ["version"]
 description = "Boilerplate tools and templates for setting up a data analysis project."
 readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = ["docopt"]
 license = {file = "LICENSE"}
 
+[project.scripts]
+project_quickstart = "project_quickstart.project_quickstart:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "project_quickstart.version.__version__"}
