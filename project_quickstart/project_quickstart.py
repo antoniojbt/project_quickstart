@@ -98,11 +98,17 @@ CONFIG = configparser.ConfigParser(allow_no_value = True)
 
 
 ##############################
-def main():
-    ''' with docopt main() expects a dictionary with arguments from docopt()
-    docopt will automatically check your docstrings for usage, set -h, etc.
-    '''
-    options = docopt.docopt(__doc__, version = version)
+def main(argv=None):
+    """Execute the command line interface.
+
+    Parameters
+    ----------
+    argv : list[str] or None, optional
+        Arguments to parse with :func:`docopt.docopt`.  When ``None`` the
+        arguments are taken from ``sys.argv`` (the default behaviour of
+        ``docopt``).
+    """
+    options = docopt.docopt(__doc__, argv=argv, version=version)
     welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).'
                       + '\n').format(version)
     # print(welcome_msg)
@@ -623,6 +629,36 @@ def main():
                         )
 
     return
+
+
+def create_project(name, *, argv_prefix=None):
+    """Programmatically create a project skeleton."""
+    args = [f"--project-name={name}"]
+    return main(args if argv_prefix is None else argv_prefix + args)
+
+
+def create_python_script(name, *, argv_prefix=None):
+    """Create a standalone Python script template."""
+    args = [f"--script-python={name}"]
+    return main(args if argv_prefix is None else argv_prefix + args)
+
+
+def create_r_script(name, *, argv_prefix=None):
+    """Create a standalone R script template."""
+    args = [f"--script-R={name}"]
+    return main(args if argv_prefix is None else argv_prefix + args)
+
+
+def create_pipeline(name, *, argv_prefix=None):
+    """Create a pipeline template directory."""
+    args = [f"--script-pipeline={name}"]
+    return main(args if argv_prefix is None else argv_prefix + args)
+
+
+def create_example(*, argv_prefix=None):
+    """Generate the example project."""
+    args = ["--example"]
+    return main(args if argv_prefix is None else argv_prefix + args)
 
 
 if __name__ == '__main__':
