@@ -10,9 +10,40 @@ readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = ["docopt"]
 license = {file = "LICENSE"}
+authors = [
+    {name = "Antonio J Berlanga-Taylor", email = "a.berlanga@imperial.ac.uk"},
+]
+keywords = ["data science", "boilerplate", "utility"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved",
+    "Programming Language :: Python",
+    "Topic :: Software Development",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Utilities",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+]
+
+[project.urls]
+Homepage = "https://github.com/AntonioJBT/project_quickstart"
+Download = "https://github.com/AntonioJBT/project_quickstart.git"
 
 [project.scripts]
 project_quickstart = "project_quickstart.project_quickstart:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"project_quickstart" = ["templates/**"]
+
+[tool.setuptools.packages.find]
+include = ["project_quickstart"]
+
 
 [tool.setuptools.dynamic]
 version = {attr = "project_quickstart.version.__version__"}
