@@ -128,7 +128,7 @@ or clone from GitHub (https example, you may need ssh):
 
    git clone https://github.com/AntonioJBT/project_quickstart.git
    cd project_quickstart
-   python setup.py install
+   pip install -e .
 
 See stackoverflow_ example and pip docs_ for further help and explanations pip and git installs.
 
