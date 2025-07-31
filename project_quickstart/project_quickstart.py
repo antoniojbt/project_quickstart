@@ -100,56 +100,6 @@ CONFIG = configparser.ConfigParser(allow_no_value=True)
 
 ##############################
 
-def _welcome_msg():
-    return f"\nWelcome to project_quickstart version {version} (!)!\n"
-
-
-def _docopt_error_msg(options):
-    return (
-        "project_quickstart exited due to an error.\n\n"
-        "Try project_quickstart --help\n\n"
-        "Options in place:\n" + str(options) + "\n"
-    )
-
-
-def _end_msg(project_root, project_dir, code_dir, manuscript_dir, data_dir, results_dir):
-    return (
-        "\n Done, welcome to {0}!\n\n"
-        "Folders and files have been copied to:\n{1}\n\n"
-        "The basic structure is:\n"
-        "                              .\n"
-        "                              |-- code\n"
-        "                              |-- data\n"
-        "                              |-- documents_and_manuscript\n"
-        "                              |-- results\n\n"
-        "Remember to back up code, data and manuscript directories (or your equivalents).\n\n"
-        "The directory:\n{2}\n\n"
-        "can be uploaded to a version control system (file templates are for GitHub).\n"
-        "You could link it to Travis CI, Zenodo and ReadtheDocs for example.\n"
-        "There are some notes and reminders within the files copied over.\n"
-        "You may want to change the name 'code' to something more suitable\n"
-        "when uploading, freezing, packaging, etc.\n\n"
-        "Script templates are in:\n{2}/{0}\n\n"
-        "The structure largely follows Python packaging conventions.\n"
-        "You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.) in here.\n\n"
-        "You can work and save results in:\n{5}\n\n"
-        "Install Sphinx to render your rst documents in:\n{3}\n\n"
-        "Basic rst template files have been generated already.\n"
-        "Install and use sphinx-quickstart if you want a more complete skeleton.\n\n"
-        "Feel free to raise issues, fork or contribute at:\n\n"
-        "https://github.com/AntonioJBT/project_quickstart\n\n"
-        "Have fun!\n"
-    ).format(
-        project_root,
-        project_dir,
-        code_dir,
-        manuscript_dir,
-        data_dir,
-        results_dir,
-    )
-
-
-
 
 def _welcome_msg():
     return f"\nWelcome to project_quickstart version {version} (!)!\n"
