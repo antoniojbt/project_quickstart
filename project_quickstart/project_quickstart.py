@@ -300,7 +300,7 @@ def validate_options(options):
         or options['--example']
     ):
         raise ValueError(
-            'A project name is required or use --script-*/--example to generate templates.'
+            'A project name is required or use --script-python, --script-R, --script-pipeline, or --example to generate templates.'
         )
 
 
