@@ -533,8 +533,9 @@ def main(argv=None):
 
     # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
-        os.system('project_quickstart -n pq_example')
-        os.system('rm -rf pq_example/code/pq_example')
+        # Avoid spawning shell processes; call into the library directly
+        create_project('pq_example')
+        shutil.rmtree('pq_example/code/pq_example', ignore_errors=True)
         shutil.copytree(examples_dir,
                         os.path.abspath('pq_example/code/pq_example'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
