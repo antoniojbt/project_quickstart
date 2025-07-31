@@ -28,6 +28,7 @@ for pytest to import this file as a module.
 import os
 import hashlib
 import subprocess
+import shutil
 import sys
 import difflib
 ##############
@@ -44,7 +45,11 @@ def run_CLI_options(options):
     '''
     for option in options:
         print('\n', 'Test message: ', 'Executing command: ', ' '.join(option))
-        subprocess.run(option, check = True)
+        cmd = option[0]
+        cmd_path = shutil.which(cmd)
+        if not cmd_path:
+            raise FileNotFoundError(f'{cmd} executable not found')
+        subprocess.run([cmd_path] + option[1:], check=True)
 
     return
 
