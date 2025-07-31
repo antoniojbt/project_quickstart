@@ -110,7 +110,7 @@ def _project_template(src, dst, *, ignore=(), force=False, error_msg=""):
 def _copy_single_files(src, dst, patterns):
     """Copy files matching patterns from ``src`` into ``dst``."""
     for f in os.listdir(src):
-        if any(p in f for p in patterns):
+        if any(fnmatch.fnmatch(f, p) for p in patterns):
             shutil.copy2(os.path.join(src, f), dst)
 
 
