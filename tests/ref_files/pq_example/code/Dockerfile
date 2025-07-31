@@ -27,10 +27,10 @@ LABEL maintainer="author_name <author_email>"
 
 # Install system dependencies
 # If running on Debian and anaconda/miniconda image, use apt-get:
-RUN apt-get update && apt-get upgrade -qy --no-install-recommends apt-utils \
+RUN apt-get update && apt-get upgrade -qy apt-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -qy --no-install-recommends gcc \
+RUN apt-get install -qy gcc \
     g++ \
     tzdata \
     wget \
@@ -42,7 +42,7 @@ RUN apt-get install -qy --no-install-recommends gcc \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Get plotting libraries:
-RUN apt-get install -qy --no-install-recommends \
+RUN apt-get install -qy \
             inkscape \
             graphviz \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -81,9 +81,9 @@ RUN conda install python=3.6 \
     && conda install -y r
 
 # Install python packages:
-RUN pip install --no-cache-dir --upgrade pip numpy setuptools \
-    && pip install --no-cache-dir cython \
-    && pip install --no-cache-dir pandas \
+RUN pip install --upgrade pip numpy setuptools \
+    && pip install cython \
+    && pip install pandas \
     && pip list
 
 # Install project specific packages:
@@ -117,7 +117,7 @@ RUN conda install -y r-docopt=0.4.5 r-data.table=1.10.4 r-ggplot2=2.2.1 ; \
 # Install package of interest
 ##############################
 
-RUN pip install --no-cache-dir git+git://github.com/EpiCompBio/stats_utils.git
+RUN pip install git+git://github.com/EpiCompBio/stats_utils.git
 
 ############################
 # Default action to start in

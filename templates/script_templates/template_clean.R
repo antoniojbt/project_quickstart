@@ -113,7 +113,7 @@ LocationOfThisScript = function() # Function LocationOfThisScript returns the lo
         # But it may also be called from the command line
         cmd.args = commandArgs(trailingOnly = FALSE)
         cmd.args.trailing = commandArgs(trailingOnly = TRUE)
-        cmd.args = cmd.args [seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
+        cmd.args = cmd.args[seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
         res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
 
         # If multiple --file arguments are given, R uses the last one
