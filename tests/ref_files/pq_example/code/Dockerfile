@@ -8,7 +8,7 @@
 # Base image
 ############
 
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:25.3.1-1
 # It runs on Debian GNU/Linux 8; use e.g. uname -a ; cat /etc/issue.net
 # https://hub.docker.com/r/continuumio/miniconda/
 # Or simply run:
