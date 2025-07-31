@@ -116,7 +116,7 @@ def _copy_single_files(src, dst, patterns):
 
 def _rename_tree(path, old, new):
     """Rename ``old`` substrings to ``new`` for files and folders below ``path``."""
-    for dirpath, dirnames, filenames in os.walk(path):
+    for dirpath, dirnames, filenames in os.walk(path, topdown=False):
         for name in list(dirnames) + list(filenames):
             if old in name:
                 src = os.path.join(dirpath, name)
@@ -174,7 +174,7 @@ def _make_script(options, script_templates, pipeline_templates, pipeline_name,
             os.path.join(copy_to, "pipeline_report"),
             sphinx_files,
         )
-        _rename_tree(copy_to, "template", options["--script-pipeline"])
+        _rename_tree(copy_to, "template", options["--script-pipeline"][1:])
         print("Created in:\n", copy_to)
 
 
@@ -545,25 +545,25 @@ def main(argv=None):
 
 def create_project(name, *, argv_prefix=None):
     """Programmatically create a project skeleton."""
-    args = [f"-n={name}"]
+    args = ["-n", f"{name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
 def create_python_script(name, *, argv_prefix=None):
     """Create a standalone Python script template."""
-    args = [f"--script-python={name}"]
+    args = ["--script-python", f"{name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
 def create_r_script(name, *, argv_prefix=None):
     """Create a standalone R script template."""
-    args = [f"--script-R={name}"]
+    args = ["--script-R", f"{name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
 def create_pipeline(name, *, argv_prefix=None):
     """Create a pipeline template directory."""
-    args = [f"--script-pipeline={name}"]
+    args = ["--script-pipeline", f"{name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
