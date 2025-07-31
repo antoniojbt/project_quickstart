@@ -81,9 +81,9 @@ RUN conda install python=3.6 \
     && conda install -y r
 
 # Install python packages:
-RUN pip install --upgrade pip numpy setuptools \
-    && pip install cython \
-    && pip install pandas \
+RUN pip install --no-cache-dir --upgrade pip numpy setuptools \
+    && pip install --no-cache-dir cython \
+    && pip install --no-cache-dir pandas \
     && pip list
 
 # Install project specific packages:
@@ -117,7 +117,7 @@ RUN conda install -y r-docopt=0.4.5 r-data.table=1.10.4 r-ggplot2=2.2.1 ; \
 # Install package of interest
 ##############################
 
-RUN pip install git+git://github.com/EpiCompBio/stats_utils.git
+RUN pip install --no-cache-dir git+git://github.com/EpiCompBio/stats_utils.git
 
 ############################
 # Default action to start in

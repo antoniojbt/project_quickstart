@@ -38,7 +38,7 @@ conda install -y python=3.5
 # issues with cairo with python 3.7
 
 # Install project_quickstart and pq_example requirements:
-bash -c 'pip install project_quickstart ; \
+bash -c 'pip install --no-cache-dir project_quickstart ; \
          conda install -y r-docopt r-data.table r-ggplot2 r-stringr ; \
          conda install -y docopt pandas matplotlib scipy svgutils cairosvg ; \
          conda install -y r-svglite r-stargazer'
