@@ -65,6 +65,7 @@ Documentation
 import sys
 import os
 import shutil
+import subprocess
 
 # Modules with Py2 to 3 conflicts:
 try:
@@ -533,12 +534,16 @@ def main(argv=None):
 
     # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
-        os.system('project_quickstart -n pq_example')
-        os.system('rm -rf pq_example/code/pq_example')
-        shutil.copytree(examples_dir,
-                        os.path.abspath('pq_example/code/pq_example'),
-                        ignore = shutil.ignore_patterns(*files_to_ignore)
-                        )
+        pq_exec = shutil.which('project_quickstart')
+        if not pq_exec:
+            raise FileNotFoundError('project_quickstart executable not found')
+        subprocess.run([pq_exec, '-n', 'pq_example'], check=True)
+        shutil.rmtree('pq_example/code/pq_example', ignore_errors=True)
+        shutil.copytree(
+            examples_dir,
+            os.path.abspath('pq_example/code/pq_example'),
+            ignore=shutil.ignore_patterns(*files_to_ignore),
+        )
 
     return
 
