@@ -423,6 +423,9 @@ def main(argv=None):
     except ValueError:
         logger.error(_docopt_error_msg(options))
         raise
+    except FileExistsError as e:
+        logger.error("FileExistsError encountered during project creation: %s", e)
+        raise
 
     if options['--dry-run']:
         logger.info('Dry run, only print what folders will be created.')
