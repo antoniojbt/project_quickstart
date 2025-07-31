@@ -314,9 +314,10 @@ def handle_project_creation(options, template_dir, py_package_template,
     project_dir = os.path.join(os.getcwd(), project_root)
 
     if os.path.exists(project_dir):
-        raise FileExistsError(
+        logging.error(
             f"The directory with the name {project_root} already exists. Use --force to overwrite."
         )
+        sys.exit(1)
 
     os.makedirs(project_dir)
 
