@@ -239,13 +239,18 @@ def _make_script(config: ScriptConfig):
         print("Created in:\n", copy_to)
 
 
-def _create_project_dirs(project_dir, template_dir, py_package_template,
-                         report_templates, script_templates, project_name,
-                         error_msg):
+class ProjectDirsConfig:
+    def __init__(self, template_dir, py_package_template, report_templates, script_templates):
+        self.template_dir = template_dir
+        self.py_package_template = py_package_template
+        self.report_templates = report_templates
+        self.script_templates = script_templates
+
+def _create_project_dirs(project_dir, config, project_name, error_msg):
     """Create the directory skeleton for a project."""
 
-    dirs_to_use = [template_dir, py_package_template, report_templates,
-                   script_templates]
+    dirs_to_use = [config.template_dir, config.py_package_template, config.report_templates,
+                   config.script_templates]
     for d in dirs_to_use:
         if not os.path.exists(d):
             print(error_msg)
