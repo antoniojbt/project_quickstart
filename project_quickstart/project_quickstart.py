@@ -100,6 +100,7 @@ CONFIG = configparser.ConfigParser(allow_no_value=True)
 
 ##############################
 
+
 def _welcome_msg():
     return f"\nWelcome to project_quickstart version {version} (!)!\n"
 
@@ -147,8 +148,6 @@ def _end_msg(project_root, project_dir, code_dir, manuscript_dir, data_dir, resu
         data_dir,
         results_dir,
     )
-
-
 
 
 ##############################
@@ -301,7 +300,7 @@ def validate_options(options):
         or options['--example']
     ):
         raise ValueError(
-            'A project name is required or use --script-*/--example to generate templates.'
+            'A project name is required or use --script-python, --script-R, --script-pipeline, or --example to generate templates.'
         )
 
 
