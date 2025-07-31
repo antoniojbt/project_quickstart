@@ -624,7 +624,14 @@ def main(argv=None):
         if not pq_exec:
             raise FileNotFoundError('project_quickstart executable not found')
         subprocess.run([pq_exec, '-n', 'pq_example'], check=True)
-        shutil.rmtree('pq_example/code/pq_example', ignore_errors=True)
+        try:
+            shutil.rmtree('pq_example/code/pq_example')
+        except FileNotFoundError:
+            print("Directory 'pq_example/code/pq_example' not found. Skipping removal.")
+        except PermissionError:
+            print("Permission denied while removing 'pq_example/code/pq_example'.")
+        except Exception as e:
+            print(f"An unexpected error occurred while removing 'pq_example/code/pq_example': {e}")
         shutil.copytree(examples_dir,
                         os.path.abspath('pq_example/code/pq_example'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
