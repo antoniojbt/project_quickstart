@@ -621,7 +621,7 @@ def main(argv=None):
     # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
         subprocess.run(
-            [sys.executable, '-m', 'project_quickstart', '-n', 'pq_example'],
+            [sys.executable, os.path.abspath(__file__), '-n', 'pq_example'],
             check=True,
         )
         shutil.rmtree('pq_example/code/pq_example', ignore_errors=True)
