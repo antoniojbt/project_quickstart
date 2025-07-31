@@ -294,7 +294,9 @@ You are more than welcome to fork or submit pull requests (!).
 Change log
 ##########
 
-v0.4 (future)
+v0.4
+
+- refactored and updated, see release tag for details
 
 
 v0.3
