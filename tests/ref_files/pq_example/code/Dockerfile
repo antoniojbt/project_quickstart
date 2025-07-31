@@ -37,12 +37,14 @@ RUN apt-get install -qy --no-install-recommends gcc \
     unzip \
     sudo \
     bash \
-    fixincludes
+    fixincludes \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Get plotting libraries:
 RUN apt-get install -qy --no-install-recommends \
             inkscape \
-            graphviz
+            graphviz \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #########################
 # Install conda
