@@ -241,7 +241,7 @@ dev.off()
 # object_sizes <- sapply(ls(), function(x) object.size(get(x)))
 # as.matrix(rev(sort(object_sizes))[1:10])
 #rm(list=ls(xxx))
-#objects_to_save <- (c('xxx_var'))
+#objects_to_save <- 'xxx_var'
 #save(list=objects_to_save, file=R_session_saved_image, compress='gzip')
 
 # Filename to save current R session, data and objects at the end:
