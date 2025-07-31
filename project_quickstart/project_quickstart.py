@@ -248,6 +248,7 @@ class ProjectDirsConfig:
         self.report_templates = report_templates
         self.script_templates = script_templates
 
+
 def _create_project_dirs(project_dir, config, project_name, error_msg):
     """Create the directory skeleton for a project."""
 
@@ -287,11 +288,11 @@ def _create_project_dirs(project_dir, config, project_name, error_msg):
             sys.exit()
 
     print(
-        (
-            "Path in use:\n" + template_dir + "\n\n" +
-            f"Creating the project structure for {project_name} in:\n" +
-            project_dir + "\n"
-        )
+           (
+                  "Path in use:\n" + config.template_dir + "\n\n" +
+                  f"Creating the project structure for {project_name} in:\n" +
+                  project_dir + "\n"
+           )
     )
 
     dirnames.extend([f"{data_dir}/raw", f"{data_dir}/processed",
