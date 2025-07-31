@@ -58,6 +58,7 @@ Documentation
 import os
 import sys
 import glob
+import shutil
 import subprocess
 
 # Options and help:
@@ -125,9 +126,12 @@ def plotSVG(plotA, plotB, outfile = 'F1_test'):
     #cairosvg.svg2pdf(url = layout_name_1,
     #                 write_to = layout_name_2
     #                 )
-    # Alternatively with inkscape:                                         
+    # Alternatively with inkscape:
+    inkscape = shutil.which('inkscape')
+    if not inkscape:
+        raise FileNotFoundError('inkscape executable not found')
     subprocess.run([
-        'inkscape',
+        inkscape,
         '--without-gui',
         '--export-area-drawing',
         '--export-margin=1',

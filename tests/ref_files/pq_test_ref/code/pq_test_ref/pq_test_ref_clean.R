@@ -227,7 +227,7 @@ if (!is.null(args[['--session']])) { # arg is NULL
 # If using Rscript and creating plots, Rscript will create the file Rplots.pdf
 # by default, it doesn't look like there is an easy way to suppress it, so deleting here:
 print('Deleting the file Rplots.pdf...')
-system('rm -f Rplots.pdf')
+if (file.exists('Rplots.pdf')) file.remove('Rplots.pdf')
 print('Finished successfully.')
 sessionInfo()
 q()
