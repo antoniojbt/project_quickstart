@@ -184,12 +184,12 @@ head(input_data[, eval(var3)])
 nrow(input_data)
 length(which(complete.cases(input_data) == TRUE))
 summary(input_data)
-summary(input_data[, c(2:3)])
+summary(input_data[, 2:3])
 
 # Get the mean for one var specified above:
 input_data[, .(mean = mean(eval(var3), na.rm = TRUE))] # drop with and put column name, usually better practice
 # Get the mean for all columns except the first one in data.table:
-input_data[, lapply(.SD, mean), .SDcols = c(2:ncol(input_data))]
+input_data[, lapply(.SD, mean), .SDcols = 2:ncol(input_data)]
 # Specify columns to get some summary stats (numeric variables):
 colnames(input_data)
 cols_summary <- c(3, 5, 6)
