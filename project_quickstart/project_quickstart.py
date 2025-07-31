@@ -65,6 +65,7 @@ Documentation
 import sys
 import os
 import shutil
+import subprocess
 
 # Modules with Py2 to 3 conflicts:
 try:
@@ -533,13 +534,23 @@ def main(argv=None):
 
     # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
-        # Avoid spawning shell processes; call into the library directly
-        create_project('pq_example')
-        shutil.rmtree('pq_example/code/pq_example', ignore_errors=True)
-        shutil.copytree(examples_dir,
-                        os.path.abspath('pq_example/code/pq_example'),
-                        ignore = shutil.ignore_patterns(*files_to_ignore)
-                        )
+        pq_exec = shutil.which('project_quickstart')
+        if not pq_exec:
+            raise FileNotFoundError('project_quickstart executable not found')
+        subprocess.run([pq_exec, '-n', 'pq_example'], check=True)
+        try:
+            shutil.rmtree('pq_example/code/pq_example')
+        except FileNotFoundError:
+            print("Warning: Directory 'pq_example/code/pq_example' not found. Skipping removal.")
+        except PermissionError:
+            print("Error: Permission denied while trying to remove 'pq_example/code/pq_example'.")
+        except Exception as e:
+            print(f"Error: An unexpected issue occurred while removing 'pq_example/code/pq_example': {e}")
+        shutil.copytree(
+            examples_dir,
+            os.path.abspath('pq_example/code/pq_example'),
+            ignore=shutil.ignore_patterns(*files_to_ignore),
+        )
 
     return
 
