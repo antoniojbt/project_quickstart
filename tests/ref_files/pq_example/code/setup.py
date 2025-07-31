@@ -11,7 +11,7 @@ http://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/index.html
 For Python 3.5
 Before packaging or installing run:
 
-    pip install -U pip twine check-manifest setuptools
+    pip install --no-cache-dir -U pip twine check-manifest setuptools
 
 TO DO: to add tests see https://python-packaging.readthedocs.io/en/latest/testing.html
 
