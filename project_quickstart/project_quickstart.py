@@ -124,10 +124,71 @@ def _rename_tree(path, old, new):
                 os.rename(src, dst)
 
 
-def _make_script(options, script_templates, pipeline_templates, pipeline_name,
-                 script_template_py, script_template_R, files_to_ignore,
-                 sphinx_configs, sphinx_files, error_msg):
+from dataclasses import dataclass
+
+@dataclass
+class ScriptConfig:
+    options: dict
+    script_templates: str
+    pipeline_templates: str
+    pipeline_name: str
+    script_template_py: str
+    script_template_R: str
+    files_to_ignore: list
+    sphinx_configs: str
+    sphinx_files: list
+    error_msg: str
+
+def _make_script(config: ScriptConfig):
     """Create script or pipeline templates based on CLI options."""
+    cwd = os.getcwd()
+    if config.options["--script-python"]:
+        copy_to = os.path.join(cwd, config.options["--script-python"] + ".py")
+        if os.path.exists(copy_to) and not config.options["--force"]:
+            print(config.error_msg)
+            raise OSError(
+                f"File {copy_to} already exists - not overwriting,"
+                " see --help or use --force to overwrite."
+            )
+        copy_from = os.path.join(config.script_templates, config.script_template_py)
+        shutil.copy2(copy_from, copy_to)
+        print(copy_to)
+    elif config.options["--script-R"]:
+        copy_to = os.path.join(cwd, config.options["--script-R"] + ".R")
+        if os.path.exists(copy_to) and not config.options["--force"]:
+            print(config.error_msg)
+            raise OSError(
+                f"File {copy_to} already exists - not overwriting,"
+                " see --help or use --force to overwrite."
+            )
+        copy_from = os.path.join(config.script_templates, config.script_template_R)
+        shutil.copy2(copy_from, copy_to)
+        print(copy_to)
+    elif config.options["--script-pipeline"]:
+        copy_to = os.path.join(cwd, config.pipeline_name)
+        if os.path.exists(copy_to) and not config.options["--force"]:
+            print(config.error_msg)
+            raise OSError(
+                f"Directory {copy_to} already exists - not overwriting,"
+                " see --help or use --force to overwrite."
+            )
+        shutil.copytree(
+            config.pipeline_templates,
+            copy_to,
+            ignore=shutil.ignore_patterns(*config.files_to_ignore),
+        )
+        _copy_single_files(
+            config.sphinx_configs,
+            os.path.join(copy_to, "configuration"),
+            ["pipeline.yml"],
+        )
+        _copy_single_files(
+            config.sphinx_configs,
+            os.path.join(copy_to, "pipeline_report"),
+            config.sphinx_files,
+        )
+        _rename_tree(copy_to, "template", config.options["--script-pipeline"])
+        print("Created in:\n", copy_to)
     cwd = os.getcwd()
     if options["--script-python"]:
         copy_to = os.path.join(cwd, options["--script-python"] + ".py")
