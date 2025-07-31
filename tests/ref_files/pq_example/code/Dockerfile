@@ -8,7 +8,7 @@
 # Base image
 ############
 
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:25.3.1-1
 # It runs on Debian GNU/Linux 8; use e.g. uname -a ; cat /etc/issue.net
 # https://hub.docker.com/r/continuumio/miniconda/
 # Or simply run:
@@ -27,9 +27,9 @@ MAINTAINER author_name <author_email>
 
 # Install system dependencies
 # If running on Debian and anaconda/miniconda image, use apt-get:
-RUN apt-get update && apt-get upgrade -qy apt-utils
+RUN apt-get update && apt-get upgrade -qy --no-install-recommends apt-utils
 
-RUN apt-get install -qy gcc \
+RUN apt-get install -qy --no-install-recommends gcc \
     g++ \
     tzdata \
     wget \
@@ -37,12 +37,14 @@ RUN apt-get install -qy gcc \
     unzip \
     sudo \
     bash \
-    fixincludes
+    fixincludes \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Get plotting libraries:
-RUN apt-get install -qy \
+RUN apt-get install -qy --no-install-recommends \
             inkscape \
-            graphviz
+            graphviz \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #########################
 # Install conda
