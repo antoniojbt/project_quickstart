@@ -472,7 +472,7 @@ def main(argv=None):
             _docopt_error_msg(options),
         )
 
-    if options['--project-name'] and project_paths:
+    if project_paths:
         end_msg = _end_msg(*project_paths)
         logger.info(end_msg)
 
