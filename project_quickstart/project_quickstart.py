@@ -65,7 +65,6 @@ Documentation
 import sys
 import os
 import shutil
-import subprocess
 
 # Modules with Py2 to 3 conflicts:
 try:
@@ -111,7 +110,7 @@ def _project_template(src, dst, *, ignore=(), force=False, error_msg=""):
 def _copy_single_files(src, dst, patterns):
     """Copy files matching patterns from ``src`` into ``dst``."""
     for f in os.listdir(src):
-        if any(fnmatch.fnmatch(f, p) for p in patterns):
+        if any(p in f for p in patterns):
             shutil.copy2(os.path.join(src, f), dst)
 
 
@@ -125,80 +124,18 @@ def _rename_tree(path, old, new):
                 os.rename(src, dst)
 
 
-from dataclasses import dataclass
-
-@dataclass
-class ScriptConfig:
-    options: dict
-    script_templates: str
-    pipeline_templates: str
-    pipeline_name: str
-    script_template_py: str
-    script_template_R: str
-    files_to_ignore: list
-    sphinx_configs: str
-    sphinx_files: list
-    error_msg: str
-
-def _make_script(config: ScriptConfig):
+def _make_script(options, script_templates, pipeline_templates, pipeline_name,
+                 script_template_py, script_template_R, files_to_ignore,
+                 sphinx_configs, sphinx_files, error_msg):
     """Create script or pipeline templates based on CLI options."""
     cwd = os.getcwd()
-    if config.options["--script-python"]:
-        copy_to = os.path.join(cwd, config.options["--script-python"] + ".py")
-        if os.path.exists(copy_to) and not config.options["--force"]:
-            print(config.error_msg)
-            raise OSError(
-                f"File {copy_to} already exists - not overwriting,"
-                " see --help or use --force to overwrite."
-            )
-        copy_from = os.path.join(config.script_templates, config.script_template_py)
-        shutil.copy2(copy_from, copy_to)
-        print(copy_to)
-    elif config.options["--script-R"]:
-        copy_to = os.path.join(cwd, config.options["--script-R"] + ".R")
-        if os.path.exists(copy_to) and not config.options["--force"]:
-            print(config.error_msg)
-            raise OSError(
-                f"File {copy_to} already exists - not overwriting,"
-                " see --help or use --force to overwrite."
-            )
-        copy_from = os.path.join(config.script_templates, config.script_template_R)
-        shutil.copy2(copy_from, copy_to)
-        print(copy_to)
-    elif config.options["--script-pipeline"]:
-        copy_to = os.path.join(cwd, config.pipeline_name)
-        if os.path.exists(copy_to) and not config.options["--force"]:
-            print(config.error_msg)
-            raise OSError(
-                f"Directory {copy_to} already exists - not overwriting,"
-                " see --help or use --force to overwrite."
-            )
-        shutil.copytree(
-            config.pipeline_templates,
-            copy_to,
-            ignore=shutil.ignore_patterns(*config.files_to_ignore),
-        )
-        _copy_single_files(
-            config.sphinx_configs,
-            os.path.join(copy_to, "configuration"),
-            ["pipeline.yml"],
-        )
-        _copy_single_files(
-            config.sphinx_configs,
-            os.path.join(copy_to, "pipeline_report"),
-            config.sphinx_files,
-        )
-        _rename_tree(copy_to, "template", config.options["--script-pipeline"])
-        print("Created in:\n", copy_to)
-    cwd = os.getcwd()
-
     if options["--script-python"]:
         copy_to = os.path.join(cwd, options["--script-python"] + ".py")
         if os.path.exists(copy_to) and not options["--force"]:
             print(error_msg)
             raise OSError(
-                f"File {copy_to} already exists - not overwriting,"
-                " see --help or use --force to overwrite."
+                f"File {copy_to} already exists - not overwriting, "
+                "see --help or use --force to overwrite."
             )
         copy_from = os.path.join(script_templates, script_template_py)
         shutil.copy2(copy_from, copy_to)
@@ -208,8 +145,8 @@ def _make_script(config: ScriptConfig):
         if os.path.exists(copy_to) and not options["--force"]:
             print(error_msg)
             raise OSError(
-                f"File {copy_to} already exists - not overwriting,"
-                " see --help or use --force to overwrite."
+                f"File {copy_to} already exists - not overwriting, "
+                "see --help or use --force to overwrite."
             )
         copy_from = os.path.join(script_templates, script_template_R)
         shutil.copy2(copy_from, copy_to)
@@ -219,8 +156,8 @@ def _make_script(config: ScriptConfig):
         if os.path.exists(copy_to) and not options["--force"]:
             print(error_msg)
             raise OSError(
-                f"Directory {copy_to} already exists - not overwriting,"
-                " see --help or use --force to overwrite."
+                f"Directory {copy_to} already exists - not overwriting, "
+                "see --help or use --force to overwrite."
             )
         shutil.copytree(
             pipeline_templates,
@@ -241,19 +178,13 @@ def _make_script(config: ScriptConfig):
         print("Created in:\n", copy_to)
 
 
-class ProjectDirsConfig:
-    def __init__(self, template_dir, py_package_template, report_templates, script_templates):
-        self.template_dir = template_dir
-        self.py_package_template = py_package_template
-        self.report_templates = report_templates
-        self.script_templates = script_templates
-
-
-def _create_project_dirs(project_dir, config, project_name, error_msg):
+def _create_project_dirs(project_dir, template_dir, py_package_template,
+                         report_templates, script_templates, project_name,
+                         error_msg):
     """Create the directory skeleton for a project."""
 
-    dirs_to_use = [config.template_dir, config.py_package_template, config.report_templates,
-                   config.script_templates]
+    dirs_to_use = [template_dir, py_package_template, report_templates,
+                   script_templates]
     for d in dirs_to_use:
         if not os.path.exists(d):
             print(error_msg)
@@ -288,11 +219,12 @@ def _create_project_dirs(project_dir, config, project_name, error_msg):
             sys.exit()
 
     print(
-           (
-                  "Path in use:\n" + config.template_dir + "\n\n" +
-                  f"Creating the project structure for {project_name} in:\n" +
-                  project_dir + "\n"
-           )
+        (
+            "Path in use:\n" + template_dir + "\n\n"
+            + f"Creating the project structure for {project_name} in: \n"
+            + project_dir
+            + "\n"
+        )
     )
 
     dirnames.extend([f"{data_dir}/raw", f"{data_dir}/processed",
@@ -525,15 +457,14 @@ def main(argv=None):
             or options['--script-R']
             or options['--script-pipeline']
             and not options['--project-name']):
+        pipeline_dir_name = None
         if options['--script-pipeline']:
             pipeline_dir_name = f"pipeline_{options['--script-pipeline']}"
-        else:
-            pipeline_dir_name = ''
         _make_script(
             options,
             script_templates,
             pipeline_templates,
-            pipeline_dir_name,
+            pipeline_dir_name if pipeline_dir_name else "default_pipeline",
             script_template_py,
             script_template_R,
             files_to_ignore,
@@ -602,22 +533,13 @@ def main(argv=None):
 
     # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
-        pq_exec = shutil.which('project_quickstart')
-        if not pq_exec:
-            raise FileNotFoundError('project_quickstart executable not found')
-        subprocess.run([pq_exec, '-n', 'pq_example'], check=True)
-        try:
-            shutil.rmtree('pq_example/code/pq_example')
-        except FileNotFoundError:
-            print("Directory 'pq_example/code/pq_example' not found. Skipping removal.")
-        except PermissionError:
-            print("Permission denied while removing 'pq_example/code/pq_example'.")
-        except Exception as e:
-            print(f"An unexpected error occurred while removing 'pq_example/code/pq_example': {e}")
+        os.system('project_quickstart -n pq_example')
+        os.system('rm -rf pq_example/code/pq_example')
         shutil.copytree(examples_dir,
                         os.path.abspath('pq_example/code/pq_example'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
                         )
+
     return
 
 
