@@ -27,7 +27,8 @@ LABEL maintainer="author_name <author_email>"
 
 # Install system dependencies
 # If running on Debian and anaconda/miniconda image, use apt-get:
-RUN apt-get update && apt-get upgrade -qy --no-install-recommends apt-utils
+RUN apt-get update && apt-get upgrade -qy --no-install-recommends apt-utils \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install -qy --no-install-recommends gcc \
     g++ \
