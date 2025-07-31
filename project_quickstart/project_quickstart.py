@@ -191,6 +191,7 @@ def _make_script(config: ScriptConfig):
         _rename_tree(copy_to, "template", config.options["--script-pipeline"])
         print("Created in:\n", copy_to)
     cwd = os.getcwd()
+
     if options["--script-python"]:
         copy_to = os.path.join(cwd, options["--script-python"] + ".py")
         if os.path.exists(copy_to) and not options["--force"]:
@@ -301,6 +302,7 @@ def _create_project_dirs(project_dir, config, project_name, error_msg):
         os.makedirs(d, exist_ok=True)
 
     return code_dir, manuscript_dir, data_dir, results_dir, tree_dir
+
 
 def main(argv=None):
     """Execute the command line interface.
