@@ -90,12 +90,151 @@ src_dir = projectQuickstart.getDir('..')
 # https://github.com/docopt/docopt/blob/master/examples/config_file_example.py
 # By using `allow_no_value=True` we are allowed to
 # write `--force` instead of `--force=true` below.
-CONFIG = configparser.ConfigParser(allow_no_value = True)
+CONFIG = configparser.ConfigParser(allow_no_value=True)
 
 ##############################
 
 
 ##############################
+def _project_template(src, dst, *, ignore=(), force=False, error_msg=""):
+    """Copy the project template directory."""
+    if os.path.exists(dst) and not force:
+        print(error_msg)
+        raise OSError(
+            f"Directory {dst} already exists - not overwriting."
+            " see --help or use --force to overwrite."
+        )
+    shutil.copytree(src, dst, ignore=shutil.ignore_patterns(*ignore))
+
+
+def _copy_single_files(src, dst, patterns):
+    """Copy files matching patterns from ``src`` into ``dst``."""
+    for f in os.listdir(src):
+        if any(p in f for p in patterns):
+            shutil.copy2(os.path.join(src, f), dst)
+
+
+def _rename_tree(path, old, new):
+    """Rename ``old`` substrings to ``new`` for files and folders below ``path``."""
+    for dirpath, dirnames, filenames in os.walk(path):
+        for name in list(dirnames) + list(filenames):
+            if old in name:
+                src = os.path.join(dirpath, name)
+                dst = os.path.join(dirpath, name.replace(old, new))
+                os.rename(src, dst)
+
+
+def _make_script(options, script_templates, pipeline_templates, pipeline_name,
+                 script_template_py, script_template_R, files_to_ignore,
+                 sphinx_configs, sphinx_files, error_msg):
+    """Create script or pipeline templates based on CLI options."""
+    cwd = os.getcwd()
+    if options["--script-python"]:
+        copy_to = os.path.join(cwd, options["--script-python"] + ".py")
+        if os.path.exists(copy_to) and not options["--force"]:
+            print(error_msg)
+            raise OSError(
+                f"File {copy_to} already exists - not overwriting,"
+                " see --help or use --force to overwrite."
+            )
+        copy_from = os.path.join(script_templates, script_template_py)
+        shutil.copy2(copy_from, copy_to)
+        print(copy_to)
+    elif options["--script-R"]:
+        copy_to = os.path.join(cwd, options["--script-R"] + ".R")
+        if os.path.exists(copy_to) and not options["--force"]:
+            print(error_msg)
+            raise OSError(
+                f"File {copy_to} already exists - not overwriting,"
+                " see --help or use --force to overwrite."
+            )
+        copy_from = os.path.join(script_templates, script_template_R)
+        shutil.copy2(copy_from, copy_to)
+        print(copy_to)
+    elif options["--script-pipeline"]:
+        copy_to = os.path.join(cwd, pipeline_name)
+        if os.path.exists(copy_to) and not options["--force"]:
+            print(error_msg)
+            raise OSError(
+                f"Directory {copy_to} already exists - not overwriting,"
+                " see --help or use --force to overwrite."
+            )
+        shutil.copytree(
+            pipeline_templates,
+            copy_to,
+            ignore=shutil.ignore_patterns(*files_to_ignore),
+        )
+        _copy_single_files(
+            sphinx_configs,
+            os.path.join(copy_to, "configuration"),
+            ["pipeline.yml"],
+        )
+        _copy_single_files(
+            sphinx_configs,
+            os.path.join(copy_to, "pipeline_report"),
+            sphinx_files,
+        )
+        _rename_tree(copy_to, "template", options["--script-pipeline"])
+        print("Created in:\n", copy_to)
+
+
+def _create_project_dirs(project_dir, template_dir, py_package_template,
+                         report_templates, script_templates, project_name,
+                         error_msg):
+    """Create the directory skeleton for a project."""
+
+    dirs_to_use = [template_dir, py_package_template, report_templates,
+                   script_templates]
+    for d in dirs_to_use:
+        if not os.path.exists(d):
+            print(error_msg)
+            print(
+                """ The directory: {} does not exist.
+                               Are the paths correct? Did the programme install
+                               in the right location?
+                               'bin' or equivalent dir should be where
+                               project_quickstart installed,
+                               'templates' and 'project_template' come with this package.
+                """.format(d)
+            )
+            sys.exit()
+
+    manuscript_dir = os.path.join(project_dir, "documents_and_manuscript")
+    code_dir = os.path.join(project_dir, "code")
+    data_dir = os.path.join(project_dir, "data")
+    results_dir = os.path.join(project_dir, "results")
+
+    dirnames = [manuscript_dir, data_dir, results_dir]
+
+    for d in dirnames:
+        if os.path.exists(d):
+            print(error_msg)
+            print(
+                """ The directory:
+                           {}
+                           already exists.
+                           To overwrite use --force.
+                """.format(d)
+            )
+            sys.exit()
+
+    print(
+        (
+            "Path in use:\n" + template_dir + "\n\n" +
+            f"Creating the project structure for {project_name} in:\n" +
+            project_dir + "\n"
+        )
+    )
+
+    dirnames.extend([f"{data_dir}/raw", f"{data_dir}/processed",
+                     f"{data_dir}/external"])
+
+    tree_dir = list(dirnames)
+    for d in dirnames:
+        os.makedirs(d, exist_ok=True)
+
+    return code_dir, manuscript_dir, data_dir, results_dir, tree_dir
+
 def main(argv=None):
     """Execute the command line interface.
 
@@ -254,310 +393,83 @@ def main(argv=None):
                     'index.rst',
                     ]
 
-    def createProject():
-        if options['--project-name']:
+    files_to_ignore = [
+        'dir_bash_history',
+        '__pycache__',
+        '*.bak',
+        'dummy*',
+    ]
 
-            dirs_to_use = [template_dir,
-                           py_package_template,
-                           report_templates,
-                           script_templates
-                           ]
-
-        # Sanity check:
-            for d in dirs_to_use:
-                if not os.path.exists(d):
-                    print(docopt_error_msg)
-                    print(''' The directory:
-                               {}
-                               does not exist.
-                               Are the paths correct? Did the programme install
-                               in the right location?
-                               'bin' or equivalent dir should be where
-                               project_quickstart installed,
-                               'templates' and 'project_template' come with this package.
-                          '''.format(d))
-                    sys.exit()
-
-        # Get the names for the directories to create for the project skeleton:
-        manuscript_dir = os.path.join(project_dir, 'documents_and_manuscript')
-        code_dir = os.path.join(project_dir, 'code')
-        data_dir = os.path.join(project_dir, 'data')
-        results_dir = os.path.join(project_dir, 'results')
-
-        dirnames = [manuscript_dir,
-                    # code_dir, # leave out as shutil.copytree needs to
-                    # create the
-                    # shutil root dir, otherwise files are not copied
-                    data_dir,
-                    results_dir
-                    ]
-
-        # Sanity check:
-        for d in dirnames:
-            if os.path.exists(d):
-                print(docopt_error_msg)
-                print(''' The directory:
-                           {}
-                           already exists.
-                           To overwrite use --force.
-                      '''.format(d))
-                sys.exit()
-
-        # If directory paths are OK, continue:
-        print(str('Path in use:' + '\n'
-                  + template_dir + '\n'
-                  # + py_package_template
-                  + '\n' + '\n'
-                  + 'Creating the project structure for {} in:'.format(project_name)
-                  + '\n'
-                  + project_dir + '\n')
-              )
-
-        # Create directories:
-        # TO DO: pass these from ini file
-        # Add hardcoded directories first for now:
-        dirnames.extend(["{}/raw".format(data_dir)])
-        dirnames.extend(["{}/processed".format(data_dir)])
-        dirnames.extend(["{}/external".format(data_dir)])
-
-        tree_dir = []
-        for d in map(str, dirnames):
-            tree_dir = [d for d in list(dirnames)]
-
-            if not os.path.exists(d):
-                os.makedirs(d)
-            else:
-                print(docopt_error_msg)
-                print('''The directory {} already exists, use --force to
-                        overwrite.'''.format(d))
-                sys.exit()
-
-        return(code_dir, manuscript_dir, data_dir, results_dir, tree_dir)
-
-    # Copy files from template directory:
-    # TO DO: 'code' dir is hard coded, change to ini parameter later
-    # The intention is to use the 'code' dir as a
-    # GitHub/packageable directory
-
-    # For shutil.copytree functions, ignore the following files:
-    files_to_ignore = ['dir_bash_history',
-                       '__pycache__',
-                       '*.bak',
-                       'dummy*',
-                       ]
-
-    def projectTemplate(src, dst):
-        '''
-        Copy across project template files for
-        a Python/GitHub/etc setup.
-        Files {} are ignored.
-        '''.format(files_to_ignore)
-
-        if os.path.exists(dst) and not options['--force']:
-            print(docopt_error_msg)
-            raise OSError('''
-                          Directory {} already exists - not overwriting.
-                          see --help or use --force
-                          to overwrite.
-                          '''.format(dst)
-                          )
-            sys.exit()
-        else:
-            shutil.copytree(src,
-                            dst,
-                            ignore = shutil.ignore_patterns(*files_to_ignore)
-                            )
-
-    # Copy across individual files outside of the 'templates' dir:
-    def copySingleFiles(src, dst, *args):
-        '''
-        Copies named files into the current working directory
-        from a given directory excluding
-        {}
-        '''.format(files_to_ignore)
-
-        files = []
-        for f in os.listdir(src):
-            for arg in args:
-                if arg in f:
-                    files.extend([f])
-                else:
-                    pass
-
-        for f in map(str, files):
-            shutil.copy2(os.path.join(src, f),
-                         dst
-                         )
-
-    # Replace all instances of template with 'name' from project_name as
-    # specified in options:
-    def renameTree(full_path, old_substring, new_substring):
-        '''
-        Rename 'template' and 'project_template' strings to name given for new
-        project.
-        '''
-        for dirpath, dirname, filename in os.walk(full_path):
-            for d in dirname:
-                for f in os.listdir(os.path.join(dirpath, d)):
-                    d = os.path.join(dirpath, d)
-                    if old_substring in f:
-                        os.rename(os.path.join(d, f),
-                                  os.path.join(d, f.replace(old_substring,
-                                               '{}').format(new_substring))
-                                  )
-
-            for d in dirname:
-                if old_substring in d:
-                    os.rename(os.path.join(str(dirpath), d),
-                              os.path.join(str(dirpath), d.replace(
-                                  old_substring, '{}').format(new_substring))
-                              )
-            # Files in the root dir called don't get renamed, run here:
-            for f in os.listdir(dirpath):
-                if old_substring in f:
-                    os.rename(os.path.join(dirpath, f),
-                              os.path.join(dirpath, f.replace(old_substring,
-                                           '{}').format(new_substring))
-                              )
-
-    # Make single copies of script templates as standalone function:
-    def scriptTemplate():
-        ''' Copy script templates and rename them according to option given.
-            For pipeline option this creates a directory
-            with a Ruffus pipeline script template, yml/ini parameters
-            file and sphinx-quickstart modified templates.
-        '''
-        cwd = os.getcwd()
-
-        if options['--script-python']:
-            copy_to = os.path.join(cwd, script_name)
-            if os.path.exists(copy_to) and not options['--force']:
-                print(docopt_error_msg)
-                raise OSError(''' File {} already exists - not overwriting,
-                              see --help or use --force to overwrite.
-                              '''.format(script_name)
-                              )
-            else:
-                copy_from = os.path.join(script_templates, script_template_py)
-                shutil.copy2(copy_from, copy_to)
-                print(copy_to)
-
-        elif options['--script-R']:
-            copy_to = os.path.join(cwd, script_name)
-            if os.path.exists(copy_to) and not options['--force']:
-                print(docopt_error_msg)
-                raise OSError(''' File {} already exists - not overwriting,
-                              see --help or use --force to overwrite.
-                              '''.format(script_name)
-                              )
-            else:
-                copy_from = os.path.join(script_templates, script_template_R)
-                shutil.copy2(copy_from, copy_to)
-                print(copy_to)
-
-        elif options['--script-pipeline']:
-            copy_to = os.path.join(cwd, pipeline_dir_name)
-            if os.path.exists(copy_to) and not options['--force']:
-                print(docopt_error_msg)
-                raise OSError(''' A directory with the name given
-                                  {}
-                                  already exists - not overwriting,
-                                  see --help or use --force to overwrite.
-                              '''.format(copy_to)
-                              )
-            else:
-                shutil.copytree(pipeline_templates,
-                                copy_to,
-                                ignore = shutil.ignore_patterns(*files_to_ignore)
-                                )
-                # Report files are now kept in 'pipeline_report', which gets
-                # copied across from pipeline.py (as in CGAT pipelines) on
-                # execution (so here create skeleton copy)
-                # Copy pipeline.yml across:
-                copySingleFiles(sphinx_configs,
-                                os.path.join(copy_to, 'configuration'),
-                                'pipeline.yml')
-                # Copy pipeline_report files across:
-                copySingleFiles(sphinx_configs,
-                                os.path.join(copy_to, 'pipeline_report'),
-                                *sphinx_files)
-                # Rename all 'template' substrings:
-                pipeline_name = str(pipeline_dir_name).strip('pipeline_')
-                renameTree(copy_to,
-                           'template',
-                           pipeline_name
-                           )
-                print('Created in:', '\n',
-                      copy_to)
-
-        else:
-            print(docopt_error_msg)
-            raise ValueError(''' Bad arguments/options used for script template,
-                    try --help''')
-
-    # Call functions according to option given:
     if options['--project-name']:
-        # Create the skeleton:
-        code_dir, manuscript_dir, data_dir, results_dir, tree_dir = createProject()
-        # Copy the code packaging structure and templates:
-        projectTemplate(py_package_template, code_dir)
-        # Copy script templates to code/project_XXXX/project_XXXX/ :
-        copySingleFiles(script_templates,
-                        os.path.join(code_dir, 'project_template'),
-                        r'.py', r'.R')
-                        # code_dir + 'project_template'
-                        # will become the user's
-                        # new_project/code/new_project directory
-                        # where scripts can go in
-        # Copy a first pipeline directory with templates on project creation
-        # This will have the project name
-        # Pipelines created with --script-pipeline are given a different
-        # name held
-        # in pipeline_dir_name:
-        shutil.copytree(pipeline_templates,
-                        os.path.join(code_dir,
-                                     'project_template',
-                                     'pipeline_template'),
-                        ignore = shutil.ignore_patterns(*files_to_ignore)
-                        )
-        # Copy sphinx templates to pipeline_report skeleton directory:
-        copySingleFiles(sphinx_configs,
-                        os.path.join(code_dir,
-                                     'project_template',
-                                     'pipeline_template',
-                                     'pipeline_report'),
-                        *sphinx_files)
-        # Copy pipeline yml file to configuration skeleton directory:
-        copySingleFiles(sphinx_configs,
-                        os.path.join(code_dir,
-                                     'project_template',
-                                     'pipeline_template',
-                                     'configuration'),
-                        'pipeline.yml')
-        # Copy the report templates to the manuscript directory:
-        copySingleFiles(report_templates, manuscript_dir, r'rst')
-        # Copy sphinx templates to this manuscript directory:
-        copySingleFiles(sphinx_configs,
-                        manuscript_dir,
-                        *sphinx_files)
-        # Add any additional files, like rsync command example:
-        copySingleFiles(template_dir, project_dir, r'rsync')
-        copySingleFiles(template_dir, project_dir, r'TO_DO')
-        copySingleFiles(data_dir, project_dir, r'README_data')
-        # Rename 'template' with the project name given:
-        renameTree(project_dir, 'project_template', project_name)
-        renameTree(project_dir, 'template', project_name)
+        code_dir, manuscript_dir, data_dir, results_dir, tree_dir = _create_project_dirs(
+            project_dir,
+            template_dir,
+            py_package_template,
+            report_templates,
+            script_templates,
+            project_name,
+            docopt_error_msg,
+        )
 
-    # Create a script template copy
-    # R and py templates are single, standalone files that get renamed on the
-    # go. --script-pipeline copies a directory with script, Sphinx,
-    # yml/ini and rst
-    # files which get renamed in function above.
+        _project_template(
+            py_package_template,
+            code_dir,
+            ignore=files_to_ignore,
+            force=options['--force'],
+            error_msg=docopt_error_msg,
+        )
+
+        _copy_single_files(
+            script_templates,
+            os.path.join(code_dir, 'project_template'),
+            ['.py', '.R']
+        )
+
+        shutil.copytree(
+            pipeline_templates,
+            os.path.join(code_dir, 'project_template', 'pipeline_template'),
+            ignore=shutil.ignore_patterns(*files_to_ignore),
+        )
+
+        _copy_single_files(
+            sphinx_configs,
+            os.path.join(code_dir, 'project_template', 'pipeline_template', 'pipeline_report'),
+            sphinx_files,
+        )
+
+        _copy_single_files(
+            sphinx_configs,
+            os.path.join(code_dir, 'project_template', 'pipeline_template', 'configuration'),
+            ['pipeline.yml'],
+        )
+
+        _copy_single_files(report_templates, manuscript_dir, ['rst'])
+        _copy_single_files(sphinx_configs, manuscript_dir, sphinx_files)
+        _copy_single_files(template_dir, project_dir, ['rsync', 'TO_DO'])
+        _copy_single_files(data_dir, project_dir, ['README_data'])
+
+        _rename_tree(project_dir, 'project_template', project_name)
+        _rename_tree(project_dir, 'template', project_name)
+
     if (options['--script-python']
             or options['--script-R']
             or options['--script-pipeline']
             and not options['--project-name']):
-        scriptTemplate()
+        pipeline_dir_name = ''
+        if options['--script-pipeline']:
+            pipeline_dir_name = f"pipeline_{options['--script-pipeline']}"
+        _make_script(
+            options,
+            script_templates,
+            pipeline_templates,
+            pipeline_dir_name,
+            script_template_py,
+            script_template_R,
+            files_to_ignore,
+            sphinx_configs,
+            sphinx_files,
+            docopt_error_msg,
+        )
 
     # Print a nice welcome message (if successful):
     if options['--project-name']:
