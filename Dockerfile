@@ -77,8 +77,8 @@ RUN apk add --no-cache \
 # Install Python packages
 #########################
 
-RUN pip install --upgrade pip setuptools \
-    && pip install flake8 pytest \
+RUN pip install --no-cache-dir --upgrade pip setuptools \
+    && pip install --no-cache-dir flake8 pytest \
     && pip list
 
 #########################
