@@ -66,6 +66,7 @@ import sys
 import os
 import shutil
 import subprocess
+import logging
 
 # Modules with Py2 to 3 conflicts:
 try:
@@ -83,6 +84,10 @@ from project_quickstart.version import __version__ as version
 # Get package source directory in (param path) '
 src_dir = projectQuickstart.getDir('..')
 
+# Configure basic logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # For debugging:
 # print('project_quickstart package directory is:', '\n', src_dir)
 
@@ -95,12 +100,62 @@ CONFIG = configparser.ConfigParser(allow_no_value=True)
 
 ##############################
 
+def _welcome_msg():
+    return f"\nWelcome to project_quickstart version {version} (!)!\n"
+
+
+def _docopt_error_msg(options):
+    return (
+        "project_quickstart exited due to an error.\n\n"
+        "Try project_quickstart --help\n\n"
+        "Options in place:\n" + str(options) + "\n"
+    )
+
+
+def _end_msg(project_root, project_dir, code_dir, manuscript_dir, data_dir, results_dir):
+    return (
+        "\n Done, welcome to {0}!\n\n"
+        "Folders and files have been copied to:\n{1}\n\n"
+        "The basic structure is:\n"
+        "                              .\n"
+        "                              |-- code\n"
+        "                              |-- data\n"
+        "                              |-- documents_and_manuscript\n"
+        "                              |-- results\n\n"
+        "Remember to back up code, data and manuscript directories (or your equivalents).\n\n"
+        "The directory:\n{2}\n\n"
+        "can be uploaded to a version control system (file templates are for GitHub).\n"
+        "You could link it to Travis CI, Zenodo and ReadtheDocs for example.\n"
+        "There are some notes and reminders within the files copied over.\n"
+        "You may want to change the name 'code' to something more suitable\n"
+        "when uploading, freezing, packaging, etc.\n\n"
+        "Script templates are in:\n{2}/{0}\n\n"
+        "The structure largely follows Python packaging conventions.\n"
+        "You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and Makefiles, etc.) in here.\n\n"
+        "You can work and save results in:\n{5}\n\n"
+        "Install Sphinx to render your rst documents in:\n{3}\n\n"
+        "Basic rst template files have been generated already.\n"
+        "Install and use sphinx-quickstart if you want a more complete skeleton.\n\n"
+        "Feel free to raise issues, fork or contribute at:\n\n"
+        "https://github.com/AntonioJBT/project_quickstart\n\n"
+        "Have fun!\n"
+    ).format(
+        project_root,
+        project_dir,
+        code_dir,
+        manuscript_dir,
+        data_dir,
+        results_dir,
+    )
+
+
+
 
 ##############################
 def _project_template(src, dst, *, ignore=(), force=False, error_msg=""):
     """Copy the project template directory."""
     if os.path.exists(dst) and not force:
-        print(error_msg)
+        logger.error(error_msg)
         raise OSError(
             f"Directory {dst} already exists - not overwriting."
             " see --help or use --force to overwrite."
@@ -133,29 +188,29 @@ def _make_script(options, script_templates, pipeline_templates, pipeline_name,
     if options["--script-python"]:
         copy_to = os.path.join(cwd, options["--script-python"] + ".py")
         if os.path.exists(copy_to) and not options["--force"]:
-            print(error_msg)
+            logger.error(error_msg)
             raise OSError(
                 f"File {copy_to} already exists - not overwriting, "
                 "see --help or use --force to overwrite."
             )
         copy_from = os.path.join(script_templates, script_template_py)
         shutil.copy2(copy_from, copy_to)
-        print(copy_to)
+        logger.info(copy_to)
     elif options["--script-R"]:
         copy_to = os.path.join(cwd, options["--script-R"] + ".R")
         if os.path.exists(copy_to) and not options["--force"]:
-            print(error_msg)
+            logger.error(error_msg)
             raise OSError(
                 f"File {copy_to} already exists - not overwriting, "
                 "see --help or use --force to overwrite."
             )
         copy_from = os.path.join(script_templates, script_template_R)
         shutil.copy2(copy_from, copy_to)
-        print(copy_to)
+        logger.info(copy_to)
     elif options["--script-pipeline"]:
         copy_to = os.path.join(cwd, pipeline_name)
         if os.path.exists(copy_to) and not options["--force"]:
-            print(error_msg)
+            logger.error(error_msg)
             raise OSError(
                 f"Directory {copy_to} already exists - not overwriting, "
                 "see --help or use --force to overwrite."
@@ -176,7 +231,7 @@ def _make_script(options, script_templates, pipeline_templates, pipeline_name,
             sphinx_files,
         )
         _rename_tree(copy_to, "template", options["--script-pipeline"][1:])
-        print("Created in:\n", copy_to)
+        logger.info("Created in:\n%s", copy_to)
 
 
 def _create_project_dirs(project_dir, template_dir, py_package_template,
@@ -188,15 +243,13 @@ def _create_project_dirs(project_dir, template_dir, py_package_template,
                    script_templates]
     for d in dirs_to_use:
         if not os.path.exists(d):
-            print(error_msg)
-            print(
-                """ The directory: {} does not exist.
-                               Are the paths correct? Did the programme install
-                               in the right location?
-                               'bin' or equivalent dir should be where
-                               project_quickstart installed,
-                               'templates' and 'project_template' come with this package.
-                """.format(d)
+            logger.error(error_msg)
+            logger.error(
+                " The directory: %s does not exist.\n"
+                "Are the paths correct? Did the programme install\n"
+                "in the right location? 'bin' or equivalent dir should be where\n"
+                "project_quickstart installed, 'templates' and 'project_template' come with this package.",
+                d,
             )
             sys.exit()
 
@@ -209,23 +262,18 @@ def _create_project_dirs(project_dir, template_dir, py_package_template,
 
     for d in dirnames:
         if os.path.exists(d):
-            print(error_msg)
-            print(
-                """ The directory:
-                           {}
-                           already exists.
-                           To overwrite use --force.
-                """.format(d)
+            logger.error(error_msg)
+            logger.error(
+                " The directory: %s already exists. To overwrite use --force.",
+                d,
             )
             sys.exit()
 
-    print(
-        (
-            "Path in use:\n" + template_dir + "\n\n"
-            + f"Creating the project structure for {project_name} in: \n"
-            + project_dir
-            + "\n"
-        )
+    logger.info(
+        "Path in use:\n%s\n\nCreating the project structure for %s in:\n%s\n",
+        template_dir,
+        project_name,
+        project_dir,
     )
 
     dirnames.extend([f"{data_dir}/raw", f"{data_dir}/processed",
@@ -238,143 +286,148 @@ def _create_project_dirs(project_dir, template_dir, py_package_template,
     return code_dir, manuscript_dir, data_dir, results_dir, tree_dir
 
 
-def main(argv=None):
-    """Execute the command line interface.
+def parse_cli(argv=None):
+    """Parse command line arguments."""
+    return docopt.docopt(__doc__, argv=argv, version=version)
 
-    Parameters
-    ----------
-    argv : list[str] or None, optional
-        Arguments to parse with :func:`docopt.docopt`.  When ``None`` the
-        arguments are taken from ``sys.argv`` (the default behaviour of
-        ``docopt``).
-    """
-    options = docopt.docopt(__doc__, argv=argv, version=version)
-    welcome_msg = str('\n' + 'Welcome to project_quickstart version {} (!).'
-                      + '\n').format(version)
-    # print(welcome_msg)
-    docopt_error_msg = str('project_quickstart exited due to an error.' + '\n')
-    docopt_error_msg = str(docopt_error_msg
-                           + '\n'
-                           + 'Try project_quickstart --help'
-                           + '\n' + '\n'
-                           + 'Options in place:'
-                           + '\n'
-                           + str(options)
-                           + '\n'
-                           )
 
+def validate_options(options):
+    """Validate command line options."""
+    if not (
+        options['--project-name']
+        or options['--script-R']
+        or options['--script-python']
+        or options['--script-pipeline']
+        or options['--example']
+    ):
+        raise ValueError(
+            'A project name is required or use --script-*/--example to generate templates.'
+        )
+
+
+def handle_project_creation(options, template_dir, py_package_template,
+                            report_templates, script_templates, pipeline_templates,
+                            sphinx_configs, sphinx_files, files_to_ignore,
+                            error_msg):
+    project_name = str(options["--project-name"]).strip('[]').strip("''")
+    project_root = f"{project_name}"
+    project_dir = os.path.join(os.getcwd(), project_root)
+
+    if os.path.exists(project_dir):
+        raise FileExistsError(
+            f"The directory with the name {project_root} already exists. Use --force to overwrite."
+        )
+
+    os.makedirs(project_dir)
+
+    code_dir, manuscript_dir, data_dir, results_dir, tree_dir = _create_project_dirs(
+        project_dir,
+        template_dir,
+        py_package_template,
+        report_templates,
+        script_templates,
+        project_name,
+        error_msg,
+    )
+
+    _project_template(
+        py_package_template,
+        code_dir,
+        ignore=files_to_ignore,
+        force=options['--force'],
+        error_msg=error_msg,
+    )
+
+    _copy_single_files(
+        script_templates,
+        os.path.join(code_dir, 'project_template'),
+        ['.py', '.R']
+    )
+
+    shutil.copytree(
+        pipeline_templates,
+        os.path.join(code_dir, 'project_template', 'pipeline_template'),
+        ignore=shutil.ignore_patterns(*files_to_ignore),
+    )
+
+    _copy_single_files(
+        sphinx_configs,
+        os.path.join(code_dir, 'project_template', 'pipeline_template', 'pipeline_report'),
+        sphinx_files,
+    )
+
+    _copy_single_files(
+        sphinx_configs,
+        os.path.join(code_dir, 'project_template', 'pipeline_template', 'configuration'),
+        ['pipeline.yml'],
+    )
+
+    _copy_single_files(report_templates, manuscript_dir, ['rst'])
+    _copy_single_files(sphinx_configs, manuscript_dir, sphinx_files)
+    _copy_single_files(template_dir, project_dir, ['rsync', 'TO_DO'])
+    _copy_single_files(data_dir, project_dir, ['README_data'])
+
+    _rename_tree(project_dir, 'project_template', project_name)
+    _rename_tree(project_dir, 'template', project_name)
+
+    return project_root, project_dir, code_dir, manuscript_dir, data_dir, results_dir
+
+
+def handle_script_generation(options, script_templates, pipeline_templates,
+                             sphinx_configs, sphinx_files, files_to_ignore,
+                             error_msg):
+    pipeline_dir_name = None
+    if options['--script-pipeline']:
+        pipeline_dir_name = f"pipeline_{options['--script-pipeline']}"
+
+    _make_script(
+        options,
+        script_templates,
+        pipeline_templates,
+        pipeline_dir_name if pipeline_dir_name else "default_pipeline",
+        'template.py',
+        'template.R',
+        files_to_ignore,
+        sphinx_configs,
+        sphinx_files,
+        error_msg,
+    )
+
+
+def run_example(examples_dir, files_to_ignore):
+    pq_exec = shutil.which('project_quickstart')
+    if not pq_exec:
+        raise FileNotFoundError('project_quickstart executable not found')
+    subprocess.run([pq_exec, '-n', 'pq_example'], check=True)
     try:
-        # Parse arguments, use file docstring as a parameter definition
-        # These arguments are optional
-        # help and version are handled automatically by docopt if set in
-        # options above.
-        # Standard options (log, verbose, version, quiet, dry-run, force):
-        if options['--dry-run']:
-            print('Dry run, only print what folders will be created.')
-            print('Option not in use at the moment')
-            pass  # TO DO
+        shutil.rmtree('pq_example/code/pq_example')
+    except FileNotFoundError:
+        logger.warning("Directory 'pq_example/code/pq_example' not found. Skipping removal.")
+    except PermissionError:
+        logger.error("Permission denied while trying to remove 'pq_example/code/pq_example'.")
+    except Exception as e:
+        logger.error("Unexpected issue removing 'pq_example/code/pq_example': %s", e)
+    shutil.copytree(
+        examples_dir,
+        os.path.abspath('pq_example/code/pq_example'),
+        ignore=shutil.ignore_patterns(*files_to_ignore),
+    )
 
-        if options['--force']:
-            print('Force overwriting directories and files')
-            print('Option not in use at the moment')
-            pass  # TO DO
 
-        # Programme specific options
-        # Required:
-        if options['--project-name']:
-            print(welcome_msg)
-            project_name = str(options["--project-name"]).strip('[]').strip("''")
-            project_root = str('{}').format(project_name)
-
-            # Set up default paths, directoy and file names:
-            project_dir = os.path.join(os.getcwd(), project_root)
-
-            if not os.path.exists(project_dir):
-                os.makedirs(project_dir)
-
-            else:
-                print(docopt_error_msg)
-                print(str('''The directory with the name {} already exists.
-                             Use --force to overwrite.'''
-                          + '\n'
-                          ).format(project_root)
-                      )
-                sys.exit()
-
-        # Addional/alternative command line options:
-        script_template_py = str('template.py')
-        script_template_R = str('template.R')
-
-        if options['--script-python'] and len(options['--script-python']) > 0:
-            print(welcome_msg)
-            print(''' Copying a Python script template into the current working directory. ''')
-            # py3.5 formatting:
-            script_name = str(options["--script-python"]).strip('[]').strip("''")
-            script_name = str('{}.py').format(script_name)
-
-        elif options['--script-python'] and len(options['--script-python']) == 0:
-            print(docopt_error_msg)
-            print(''' You need to provide a script name. This will be prefixed to ".py" ''')
-            sys.exit()
-
-        if options['--script-R'] and len(options['--script-R']) > 0:
-            print(welcome_msg)
-            print(''' Copying an R script template into the current working directory. ''')
-            script_name = str(options["--script-R"]).strip('[]').strip("''")
-            script_name = str('{}.R').format(script_name)
-
-        elif options['--script-R'] and len(options['--script-R']) == 0:
-            print(docopt_error_msg)
-            print(''' You need to provide a script name. This will be prefixed to ".R" ''')
-            sys.exit()
-
-        if options['--script-pipeline'] and len(options['--script-pipeline']) > 0:
-            print(welcome_msg)
-            print(''' Copying a pipeline template into the current working directory.
-                    This includes a Ruffus pipeline.py script template,
-                    pipeline yml configuration template for parameters,
-                    a report directory with a restructuredText template,
-                    and sphinx-quickstart modified conf.py and Makefile files.''')
-            pipeline_dir_name = str(options["--script-pipeline"]).strip('[]').strip("''")
-            pipeline_dir_name = str('pipeline_{}').format(pipeline_dir_name)
-            # All files within the directory
-            # project_quickstart/templates/script_templates/pipeline
-            # plus
-            # project_quickstart/templates/script_templates/pipeline_template.py
-            # will get copied over in function below.
-
-        elif options['--script-pipeline'] and len(options['--script-pipeline']) == 0:
-            print(docopt_error_msg)
-            print(''' You need to provide a pipeline name to generate the
-                    directory "pipeline_NAME" ''')
-            sys.exit()
-
-        # Exit if options not given:
-        if (not options['--project-name']
-                and not options['--script-R']
-                and not options['--script-python']
-                and not options['--script-pipeline']
-                and not options['--example']):
-            print(docopt_error_msg)
-            print('Error in  the options given or none supplied.',
-                  '\n',
-                  'A project name is required.',
-                  'Otherwise you need to use',
-                  '--script-R, --script-python or --script-pipeline.')
-            sys.exit()
-
-    # Handle exceptions:
-    except docopt.DocoptExit:
-        print(docopt_error_msg)
+def main(argv=None):
+    """Execute the command line interface."""
+    options = parse_cli(argv)
+    try:
+        validate_options(options)
+    except ValueError:
+        logger.error(_docopt_error_msg(options))
         raise
 
-    # Get locations of source code
-    # os.path.join note: a subsequent argument with an '/' discards anything
-    # before it
-    # For function to search path see:
-    # http://stackoverflow.com/questions/4519127/setuptools-package-data-folder-location
-    # MANIFEST.in file instructs the project_quickstart/templates folder to be
-    # included in installation
+    if options['--dry-run']:
+        logger.info('Dry run, only print what folders will be created.')
+
+    if options['--force']:
+        logger.info('Force overwriting directories and files')
 
     template_dir = projectQuickstart.getDir('../templates')
     py_package_template = os.path.join(template_dir, 'project_template')
@@ -383,174 +436,49 @@ def main(argv=None):
     pipeline_templates = os.path.join(script_templates, 'pipeline_template')
     examples_dir = os.path.join(template_dir, 'examples')
 
-    # Modified sphinx-quickstart templates only live in:
-    # templates/project_template/docs/
-    # but are needed in
-    # code/docs, report directory
-    # and pipeline directory:
     sphinx_configs = os.path.join(template_dir, 'project_template', 'docs')
-    sphinx_files = ['conf.py',
-                    'Makefile',
-                    'make.bat',
-                    'include_links.rst',
-                    'index.rst',
-                    ]
+    sphinx_files = ['conf.py', 'Makefile', 'make.bat', 'include_links.rst', 'index.rst']
 
-    files_to_ignore = [
-        'dir_bash_history',
-        '__pycache__',
-        '*.bak',
-        'dummy*',
-    ]
+    files_to_ignore = ['dir_bash_history', '__pycache__', '*.bak', 'dummy*']
+
+    project_paths = None
 
     if options['--project-name']:
-        code_dir, manuscript_dir, data_dir, results_dir, tree_dir = _create_project_dirs(
-            project_dir,
+        logger.info(_welcome_msg().strip())
+        project_paths = handle_project_creation(
+            options,
             template_dir,
             py_package_template,
             report_templates,
             script_templates,
-            project_name,
-            docopt_error_msg,
-        )
-
-        _project_template(
-            py_package_template,
-            code_dir,
-            ignore=files_to_ignore,
-            force=options['--force'],
-            error_msg=docopt_error_msg,
-        )
-
-        _copy_single_files(
-            script_templates,
-            os.path.join(code_dir, 'project_template'),
-            ['.py', '.R']
-        )
-
-        shutil.copytree(
             pipeline_templates,
-            os.path.join(code_dir, 'project_template', 'pipeline_template'),
-            ignore=shutil.ignore_patterns(*files_to_ignore),
-        )
-
-        _copy_single_files(
             sphinx_configs,
-            os.path.join(code_dir, 'project_template', 'pipeline_template', 'pipeline_report'),
             sphinx_files,
+            files_to_ignore,
+            _docopt_error_msg(options),
         )
 
-        _copy_single_files(
-            sphinx_configs,
-            os.path.join(code_dir, 'project_template', 'pipeline_template', 'configuration'),
-            ['pipeline.yml'],
-        )
-
-        _copy_single_files(report_templates, manuscript_dir, ['rst'])
-        _copy_single_files(sphinx_configs, manuscript_dir, sphinx_files)
-        _copy_single_files(template_dir, project_dir, ['rsync', 'TO_DO'])
-        _copy_single_files(data_dir, project_dir, ['README_data'])
-
-        _rename_tree(project_dir, 'project_template', project_name)
-        _rename_tree(project_dir, 'template', project_name)
-
-    if (options['--script-python']
-            or options['--script-R']
-            or options['--script-pipeline']
-            and not options['--project-name']):
-        pipeline_dir_name = None
-        if options['--script-pipeline']:
-            pipeline_dir_name = f"pipeline_{options['--script-pipeline']}"
-        _make_script(
+    if (
+        options['--script-python']
+        or options['--script-R']
+        or options['--script-pipeline']
+    ) and not options['--project-name']:
+        handle_script_generation(
             options,
             script_templates,
             pipeline_templates,
-            pipeline_dir_name if pipeline_dir_name else "default_pipeline",
-            script_template_py,
-            script_template_R,
-            files_to_ignore,
             sphinx_configs,
             sphinx_files,
-            docopt_error_msg,
+            files_to_ignore,
+            _docopt_error_msg(options),
         )
 
-    # Print a nice welcome message (if successful):
-    if options['--project-name']:
-        end_msg = str('\n' + """ Done, welcome to {0}!
+    if options['--project-name'] and project_paths:
+        end_msg = _end_msg(*project_paths)
+        logger.info(end_msg)
 
-        Folders and files have been copied to:
-        {1}
-
-        The basic structure is:
-                              .
-                              |-- code
-                              |-- data
-                              |-- documents_and_manuscript
-                              |-- results
-
-        Remember to back up code, data and manuscript directories (or your equivalents).
-
-        The directory:
-        {2}
-
-        can be uploaded to a version control system (file templates are for GitHub).
-        You could link it to Travis CI, Zenodo and ReadtheDocs for example.
-        There are some notes and reminders within the files copied over.
-        You may want to change the name 'code' to something more suitable
-        when uploading, freezing, packaging, etc.
-
-        Script templates are in:
-        {2}/{0}
-
-        The structure largely follows Python packaging conventions.
-        You can put scripts, modules and pipelines (eg Ruffus/CGAT, make and
-        Makefiles, etc.) in here.
-
-        You can work and save results in:
-        {5}
-
-        Install Sphinx to render your rst documents in:
-        {3}
-
-        Basic rst template files have been generated already.
-        Install and use sphinx-quickstart if you want a more complete skeleton.
-
-        Feel free to raise issues, fork or contribute at:
-
-        https://github.com/AntonioJBT/project_quickstart
-
-        Have fun!
-
-        """.format(project_root,
-                   project_dir,
-                   code_dir,
-                   manuscript_dir,
-                   data_dir,
-                   results_dir
-                   )
-        )
-
-        print(end_msg)
-
-    # Finally, last options to run if specified:
     if options['--example'] and not options['--project-name']:
-        pq_exec = shutil.which('project_quickstart')
-        if not pq_exec:
-            raise FileNotFoundError('project_quickstart executable not found')
-        subprocess.run([pq_exec, '-n', 'pq_example'], check=True)
-        try:
-            shutil.rmtree('pq_example/code/pq_example')
-        except FileNotFoundError:
-            print("Warning: Directory 'pq_example/code/pq_example' not found. Skipping removal.")
-        except PermissionError:
-            print("Error: Permission denied while trying to remove 'pq_example/code/pq_example'.")
-        except Exception as e:
-            print(f"Error: An unexpected issue occurred while removing 'pq_example/code/pq_example': {e}")
-        shutil.copytree(
-            examples_dir,
-            os.path.abspath('pq_example/code/pq_example'),
-            ignore=shutil.ignore_patterns(*files_to_ignore),
-        )
+        run_example(examples_dir, files_to_ignore)
 
     return
 
