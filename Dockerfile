@@ -11,7 +11,7 @@
 # FROM python:3-onbuild 
 # FROM ubuntu:17.04
 
-FROM jfloff/alpine-python:3.8
+FROM jfloff/alpine-python
 # https://github.com/jfloff/alpine-python
 # This is a minimal Python 3 image that can start from python or bash
 
@@ -77,8 +77,8 @@ RUN apk add --no-cache \
 # Install Python packages
 #########################
 
-RUN pip install --no-cache-dir --upgrade pip setuptools \
-    && pip install --no-cache-dir flake8 pytest \
+RUN pip install --upgrade pip setuptools \
+    && pip install flake8 pytest \
     && pip list
 
 #########################

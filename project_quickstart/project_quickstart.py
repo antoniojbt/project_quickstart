@@ -623,25 +623,25 @@ def main(argv=None):
 
 def create_project(name, *, argv_prefix=None):
     """Programmatically create a project skeleton."""
-    args = ["-n", name]
+    args = [f"-n={name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
 def create_python_script(name, *, argv_prefix=None):
     """Create a standalone Python script template."""
-    args = ["--script-python", name]
+    args = [f"--script-python={name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
 def create_r_script(name, *, argv_prefix=None):
     """Create a standalone R script template."""
-    args = ["--script-R", name]
+    args = [f"--script-R={name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
 def create_pipeline(name, *, argv_prefix=None):
     """Create a pipeline template directory."""
-    args = ["--script-pipeline", name]
+    args = [f"--script-pipeline={name}"]
     return main(args if argv_prefix is None else argv_prefix + args)
 
 
