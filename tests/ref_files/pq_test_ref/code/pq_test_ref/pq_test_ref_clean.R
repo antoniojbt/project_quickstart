@@ -120,7 +120,7 @@ LocationOfThisScript = function() # Function LocationOfThisScript returns the lo
     if (0 < length(res)) return(dirname(res))
 
     # Both are not the case. Maybe we are in an R GUI?
-    return(NULL)
+    NULL
 }
 Rscripts_dir <- LocationOfThisScript()
 print('Location where this script lives:')
