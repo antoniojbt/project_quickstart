@@ -521,9 +521,10 @@ def main(argv=None):
             or options['--script-R']
             or options['--script-pipeline']
             and not options['--project-name']):
-        pipeline_dir_name = ''
         if options['--script-pipeline']:
             pipeline_dir_name = f"pipeline_{options['--script-pipeline']}"
+        else:
+            pipeline_dir_name = ''
         _make_script(
             options,
             script_templates,
