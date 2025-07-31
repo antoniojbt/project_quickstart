@@ -77,6 +77,8 @@ Documentation
 import os
 import sys
 import glob
+import shutil
+import subprocess
 
 # Options and help:
 import docopt
@@ -87,6 +89,7 @@ import cairosvg
 
 # Get additional packages needed:
 import string
+import subprocess
 
 # Import this project's module, uncomment if building something more elaborate:
 #try:
@@ -195,13 +198,17 @@ def plotMultiSVG(plots_given, outfile, **kwargs):
         #                 )
 
         # Alternatively with inkscape:
-        os.system('''inkscape --without-gui \
-                              --export-area-drawing \
-                              --export-margin=2 \
-                              --file={} \
-                              --export-pdf={}'''.format(layout_name_1,
-                                                        layout_name_2)
-                 )
+        inkscape = shutil.which('inkscape')
+        if not inkscape:
+            raise FileNotFoundError('inkscape executable not found')
+        subprocess.run([
+            inkscape,
+            '--without-gui',
+            '--export-area-drawing',
+            '--export-margin=2',
+            f'--file={layout_name_1}',
+            f'--export-pdf={layout_name_2}',
+        ], check=True)
         # Inkscape has many more options, e.g. 
         # --export-background=white --export-dpi=300
         # See:

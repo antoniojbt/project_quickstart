@@ -102,7 +102,7 @@ else:
         print('Values found in INI file:', '\n')
         with open(ini_file, 'r') as ymlfile:
             try:
-                CONFIG = yaml.load(ymlfile)
+                CONFIG = yaml.safe_load(ymlfile)
                 print(yaml.dump(CONFIG))
 
             except yaml.YAMLError as e:
