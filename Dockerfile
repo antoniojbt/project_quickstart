@@ -26,7 +26,7 @@ FROM jfloff/alpine-python
 #########
 # Contact
 #########
-MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
+LABEL maintainer="Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>"
 
 
 #########################
@@ -36,8 +36,7 @@ MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
 # Install system dependencies
 # For Alpine see:
 # https://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management
-RUN apk update && apk upgrade \
-    && apk add \
+RUN apk add --no-cache \
     tree \
     sudo \
     vim \

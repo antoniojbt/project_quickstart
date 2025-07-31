@@ -107,20 +107,24 @@ LocationOfThisScript = function() # Function LocationOfThisScript returns the lo
         if (identical(sys.function(i), base::source)) this.file = (normalizePath(sys.frame(i)$ofile))
     }
 
-    if (!is.null(this.file)) return(dirname(this.file))
+    if (!is.null(this.file)) {
+        dirname(this.file)
+    } else {
+        # But it may also be called from the command line
+        cmd.args = commandArgs(trailingOnly = FALSE)
+        cmd.args.trailing = commandArgs(trailingOnly = TRUE)
+        cmd.args = cmd.args[seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
+        res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
 
-    # But it may also be called from the command line
-    cmd.args = commandArgs(trailingOnly = FALSE)
-    cmd.args.trailing = commandArgs(trailingOnly = TRUE)
-    cmd.args = cmd.args[seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
-    res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
-
-    # If multiple --file arguments are given, R uses the last one
-    res = tail(res[res != ""], 1)
-    if (0 < length(res)) return(dirname(res))
-
-    # Both are not the case. Maybe we are in an R GUI?
-    return(NULL)
+        # If multiple --file arguments are given, R uses the last one
+        res = tail(res[res != ""], 1)
+        if (0 < length(res)) {
+            dirname(res)
+        } else {
+            # Both are not the case. Maybe we are in an R GUI?
+            NULL
+        }
+    }
 }
 Rscripts_dir <- LocationOfThisScript()
 print('Location where this script lives:')
@@ -241,12 +245,12 @@ head(input_data[, eval(var3)])
 nrow(input_data)
 length(which(complete.cases(input_data) == TRUE))
 summary(input_data)
-summary(input_data[, c(2:3)])
+summary(input_data[, 2:3])
 
 # Get the mean for one var specified above:
 input_data[, .(mean = mean(eval(var3), na.rm = TRUE))] # drop with and put column name, usually better practice
 # Get the mean for all columns except the first one in data.table:
-input_data[, lapply(.SD, mean), .SDcols = c(2:ncol(input_data))]
+input_data[, lapply(.SD, mean), .SDcols = 2:ncol(input_data)]
 # Specify columns to get some summary stats (numeric variables):
 colnames(input_data)
 cols_summary <- c(3, 5, 6)

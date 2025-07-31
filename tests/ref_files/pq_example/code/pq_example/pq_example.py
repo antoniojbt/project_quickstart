@@ -228,7 +228,7 @@ def runOOPHeroes(saves):
     super1.displaySuperHero()
     super2.displaySuperHero()
     print("Total SuperHero saves %d" % SuperHero.SuperSaves)
-    return()
+
 #####
 
 #####
