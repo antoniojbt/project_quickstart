@@ -26,7 +26,7 @@ FROM jfloff/alpine-python
 #########
 # Contact
 #########
-MAINTAINER Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>
+LABEL maintainer="Antonio Berlanga-Taylor <a.berlanga@imperial.ac.uk>"
 
 
 #########################

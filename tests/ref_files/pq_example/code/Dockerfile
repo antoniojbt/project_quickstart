@@ -19,7 +19,7 @@ FROM continuumio/miniconda3:25.3.1-1
 #########
 # Contact
 #########
-MAINTAINER author_name <author_email>
+LABEL maintainer="author_name <author_email>"
 
 #########################
 # Update/install packages
