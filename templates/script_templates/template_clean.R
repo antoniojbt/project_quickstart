@@ -107,20 +107,24 @@ LocationOfThisScript = function() # Function LocationOfThisScript returns the lo
         if (identical(sys.function(i), base::source)) this.file = (normalizePath(sys.frame(i)$ofile))
     }
 
-    if (!is.null(this.file)) return(dirname(this.file))
+    if (!is.null(this.file)) {
+        dirname(this.file)
+    } else {
+        # But it may also be called from the command line
+        cmd.args = commandArgs(trailingOnly = FALSE)
+        cmd.args.trailing = commandArgs(trailingOnly = TRUE)
+        cmd.args = cmd.args [seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
+        res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
 
-    # But it may also be called from the command line
-    cmd.args = commandArgs(trailingOnly = FALSE)
-    cmd.args.trailing = commandArgs(trailingOnly = TRUE)
-    cmd.args = cmd.args[seq.int(from = 1, length.out = length(cmd.args) - length(cmd.args.trailing))]
-    res = gsub("^(?:--file=(.*)|.*)$", "\\1", cmd.args)
-
-    # If multiple --file arguments are given, R uses the last one
-    res = tail(res[res != ""], 1)
-    if (0 < length(res)) return(dirname(res))
-
-    # Both are not the case. Maybe we are in an R GUI?
-    NULL
+        # If multiple --file arguments are given, R uses the last one
+        res = tail(res[res != ""], 1)
+        if (0 < length(res)) {
+            dirname(res)
+        } else {
+            # Both are not the case. Maybe we are in an R GUI?
+            NULL
+        }
+    }
 }
 Rscripts_dir <- LocationOfThisScript()
 print('Location where this script lives:')
