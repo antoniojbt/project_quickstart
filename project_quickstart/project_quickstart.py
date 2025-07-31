@@ -636,7 +636,6 @@ def main(argv=None):
                         os.path.abspath('pq_example/code/pq_example'),
                         ignore = shutil.ignore_patterns(*files_to_ignore)
                         )
-
     return
 
 

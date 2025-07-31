@@ -89,6 +89,7 @@ import cairosvg
 
 # Get additional packages needed:
 import string
+import subprocess
 
 # Import this project's module, uncomment if building something more elaborate:
 #try:
